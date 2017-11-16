@@ -7,7 +7,7 @@ import store from './store';
 import {sync} from 'vuex-router-sync'
 import MintUI from 'mint-ui'
 import Navigation from 'vue-navigation'
-import vueScrollBehavior from 'vue-scroll-behavior'
+// import vueScrollBehavior from 'vue-scroll-behavior'
 import Raven from 'raven-js';
 import RavenVue from 'raven-js/plugins/vue';
 import RavenConfig from '@/lib/RavenConfig'
@@ -18,8 +18,8 @@ Raven
   .install();
 
 Vue.use(RavenConfig) // 监控
-
-Vue.use(vueScrollBehavior, {router: router}) // router ScrollBehavior
+//
+// Vue.use(vueScrollBehavior, {router: router}) // router ScrollBehavior
 
 Vue.use(Navigation, {router, store}) // 后退不刷新
 // Vue.use(Navigation, {router, store, moduleName: 'navigation', keyName: 'VNK'})

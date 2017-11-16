@@ -27,14 +27,10 @@
               </div>
             </div>
           </div>
-          <div slot="footer" @click="openFjList">
-            <div class="flow_list_card_ft_right">
-              <p>{{flowFiles.length !== 0 ? '附件个数：' + flowFiles.length : '暂无附件'}}</p>
-            </div>
-          </div>
-          <div slot="footer" @click="openHistory(flowHistory)">
+          <div slot="footer">
             <div class="flow_list_card_ft_left">
-              <p>{{flowHistory.current_task ? flowHistory.current_task : '当前节点：审批中'}}</p>
+              <p @click="openFjList"><span><img src="static/images/fj.png" width="12" height="12" style="padding-right: 2px"></span>{{flowFiles.length !== 0 ? '附件个数：' + flowFiles.length : '暂无附件'}}</p>
+              <p @click="openHistory(flowHistory)"><span><img src="static/images/je.png" width="13" height="13" style="padding-top: 5px; padding-right: 2px"></span>{{(flowHistory.current_task ? flowHistory.current_task : '当前节点：审批中'), 20 | subTitle}}</p>
             </div>
           </div>
         </flow-list-card>

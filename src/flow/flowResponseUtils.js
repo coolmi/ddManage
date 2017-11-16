@@ -54,6 +54,11 @@ export function doResponse(data, cb) {
 }
 
 export function doViewResponse(data) {
+  if (typeof data === 'string') {
+    // eslint-disable-next-line
+    data = eval('(' + data + ')');
+  }
+  console.log(data)
   if (data.result && data.result === 'success') {
     return true
   } else if (!data.result) {

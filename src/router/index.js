@@ -16,6 +16,11 @@ const router = new Router({
       meta: {title: '首页'}
     },
     {
+      path: '/cs',
+      component: require('@/views/cs'),
+      meta: {title: '测试'}
+    },
+    {
       path: '/reserve',
       component: require('@/views/reserve/Reserve'),
       meta: {title: '备用金申请'}

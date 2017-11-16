@@ -71,8 +71,6 @@
     },
     created() {
       let data = JSON.parse(this.$route.query.flowParams);
-      console.log(1)
-      console.log(data)
       for (let d of data.EDITARR_) {
         d.nvalue = ''
         if (d.component === 'checkbox' || d.component === 'radio') {

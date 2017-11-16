@@ -19,6 +19,7 @@ export function getRequestAuthCode(path) {
           },
           onFail: function (err) {
             store.dispatch('updateCode', false)
+            // window.alert('dd ding error: ' + window.location.href + JSON.stringify(err));
             whole.showTop(dingEM.ddRequestAuthCodeError)
           }
         })

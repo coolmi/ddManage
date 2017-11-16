@@ -199,8 +199,8 @@
           params.ddid = aa;
         }
         api.getMPostidByDdid(params, function (res) {
-          if (res.data.data && res.data.data.error) {
-            window.showTop('无法获取此人的岗位，请联系Hr人员');
+          if (res.data.data && res.data.data.error !== '') {
+            whole.showTop('无法获取此人的岗位，请联系HR人员');
             return;
           }
           let beAsigners = res.data.data.postids

@@ -3,19 +3,19 @@
     <div id="header">
       <ul class="libox libox1">
         <li class="true-li">
-          <div @click="go(0)"><img src="../../static/images/1.png" alt="none">
-            <p class="tt">待办任务</p></div>
+          <div @click="go(0)"><img src="../../static/images/待办.png" alt="none">
+            <p class="tt">待办</p></div>
         </li>
         <li class="true-li">
-          <div @click="go(1)"><img src="../../static/images/1.png" alt="none">
+          <div @click="go(1)"><img src="../../static/images/申请.png" alt="none">
             <p class="tt">申请中</p></div>
         </li>
         <li class="true-li">
-          <div @click="go(2)"><img src="../../static/images/1.png" alt="none">
+          <div @click="go(2)"><img src="../../static/images/已办.png" alt="none">
             <p class="tt">已办理</p></div>
         </li>
         <li class="true-li">
-          <div @click="go(3)"><img src="../../static/images/1.png" alt="none">
+          <div @click="go(3)"><img src="../../static/images/完成.png" alt="none">
             <p class="tt">已结束</p></div>
         </li>
       </ul>
@@ -144,5 +144,9 @@
   .tt {
     display: flex;
     justify-content: center;
+  }
+  img {
+    width: 46px;
+    height: 46px;
   }
 </style>

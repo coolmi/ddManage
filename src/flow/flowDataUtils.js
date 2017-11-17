@@ -1,5 +1,6 @@
 // let flowData = require('@/data/gmkrule.json');
 import dateFormatter from '@/lib/dateFormatter';
+import * as _ from 'underscore'
 
 let childCompFlag = [
   'text',
@@ -13,7 +14,8 @@ let childCompFlag = [
   'date1',
   'comma_concat',
   'table_form',
-  'table_ccmx'
+  'table_ccmx',
+  'table'
 ]
 let data = {
   PERNR_: '',
@@ -21,15 +23,22 @@ let data = {
   POSTID_: '',
   APPDA_: '',
   ID_: '',
-  EDITARR_: []
+  EDITARR_: [],
+  flowData: []
 }
 export function getFlowData(flowData) {
+  data.flowData = flowData.forms
   data.EDITARR_ = [];
   if (flowData.forms) {
     for (let sub of flowData.forms) {
+      if (sub.showLinkage && sub.showLinkage.length > 0) {
+        ifHidden(sub)
+      }
       if (sub.subComponents) {
         let subComp = sub.subComponents
         getSubComponents(subComp);
+        console.log('========')
+        console.log(subComp)
       } else {
         if (sub.name === 'pernr' && sub.component === 'hidden') {
           data.PERNR_ = sub.value
@@ -53,7 +62,7 @@ export function getFlowData(flowData) {
             if (sub.options) {
               for (let subOption of sub.options) {
                 if (sub.value === subOption.value) {
-                  sub.nvalue = subOption.title
+                  sub.nvalue = subOption.title || subOption.text
                 }
               }
             } else {
@@ -63,7 +72,7 @@ export function getFlowData(flowData) {
             if (sub.options) {
               for (let selectSubOption of sub.options) {
                 if (sub.value === selectSubOption.value) {
-                  sub.nvalue = selectSubOption.text
+                  sub.nvalue = selectSubOption.text || selectSubOption.title
                 }
               }
             } else {
@@ -93,8 +102,12 @@ export function getFlowData(flowData) {
             } else {
               sub.nvalue = sub.value;
             }
-          } else if (subcomp === 'table_form' || subcomp === 'table') {
+          } else if (subcomp === 'table_form') {
             sub.ntableForms = [];
+            flowData.forms.SHOWLZL = true
+            if (sub.tableForms.length === 1) {
+              flowData.forms.SHOWLZL = false;
+            }
             for (let tableIndex = 1, tabLength = sub.tableForms.length; tableIndex < tabLength; tableIndex++) {
               getSubComponents(sub.tableForms[tableIndex])
               let rows = sub.tableForms[tableIndex];
@@ -119,6 +132,37 @@ export function getFlowData(flowData) {
               sub.tableForms[tableIndex].nvalue = getValueSwitchType(rows[rTitleIndex]);
               sub.tableForms[tableIndex].nchildtableForms = rows
               sub.ntableForms.push(sub.tableForms[tableIndex])
+            }
+          } else if (subcomp === 'table') {
+            sub.ntableForms = [];
+            flowData.forms.SHOWLZL = true
+            if (sub.tableForms.length === 1) {
+              flowData.forms.SHOWLZL = false;
+            }
+            for (let tableIndex = 1, tabLength = sub.cells.length; tableIndex < tabLength; tableIndex++) {
+              getSubComponents(sub.cells[tableIndex])
+              let rows = sub.cells[tableIndex];
+              let titleIndex = sub.titleIndex || 0;
+              let lTitleIndex = titleIndex;
+              let rTitleIndex = titleIndex;
+              if (sub.lTitleIndex !== undefined && sub.lTitleIndex !== null) {
+                lTitleIndex = sub.lTitleIndex;
+              }
+              if (sub.rTitleIndex !== undefined && sub.rTitleIndex !== null) {
+                rTitleIndex = sub.rTitleIndex;
+              }
+
+              let title = ''
+              if (lTitleIndex === rTitleIndex) {
+                title = rows[lTitleIndex].title || rows[lTitleIndex].title1
+              } else {
+                title = getValueSwitchType(rows[lTitleIndex]);
+              }
+              sub.cells[tableIndex].title = title;
+              sub.cells[tableIndex].showCollapse = false;
+              sub.cells[tableIndex].nvalue = getValueSwitchType(rows[rTitleIndex]);
+              sub.cells[tableIndex].nchildtableForms = rows
+              sub.ntableForms.push(sub.cells[tableIndex])
             }
           } else if (subcomp === 'table_ccmx') {
             sub.ntableForms = [];
@@ -151,6 +195,9 @@ export function getFlowData(flowData) {
 
 function getSubComponents(subData) {
   for (let sub of subData) {
+    if (sub.showLinkage && sub.showLinkage.length > 0) {
+      ifHidden(sub)
+    }
     if (sub.subComponents) {
       let subComp = sub.subComponents
       getSubComponents(subComp);
@@ -177,7 +224,7 @@ function getSubComponents(subData) {
           if (sub.options) {
             for (let subOption of sub.options) {
               if (sub.value === subOption.value) {
-                sub.nvalue = subOption.title
+                sub.nvalue = subOption.title || subOption.text
               }
             }
           } else {
@@ -187,7 +234,7 @@ function getSubComponents(subData) {
           if (sub.options) {
             for (let selectSubOption of sub.options) {
               if (sub.value === selectSubOption.value) {
-                sub.nvalue = selectSubOption.text
+                sub.nvalue = selectSubOption.text || selectSubOption.title
               }
             }
           } else {
@@ -223,6 +270,10 @@ function getSubComponents(subData) {
           }
         } else if (subcomp === 'table_form') {
           sub.ntableForms = [];
+          subData.SHOWLZL = true
+          if (sub.tableForms.length === 1) {
+            subData.SHOWLZL = false;
+          }
           for (let tableIndex = 1, tabLength = sub.tableForms.length; tableIndex < tabLength; tableIndex++) {
             getSubComponents(sub.tableForms[tableIndex])
             let rows = sub.tableForms[tableIndex];
@@ -248,6 +299,37 @@ function getSubComponents(subData) {
             sub.tableForms[tableIndex].nchildtableForms = rows
             sub.ntableForms.push(sub.tableForms[tableIndex])
           }
+        } else if (subcomp === 'table') {
+          sub.ntableForms = [];
+          subData.SHOWLZL = true
+          if (sub.cells.length === 1) {
+            subData.SHOWLZL = false;
+          }
+          for (let tableIndex = 1, tabLength = sub.cells.length; tableIndex < tabLength; tableIndex++) {
+            getSubComponents(sub.cells[tableIndex])
+            let rows = sub.cells[tableIndex];
+            let titleIndex = sub.titleIndex || 0;
+            let lTitleIndex = titleIndex;
+            let rTitleIndex = titleIndex;
+            if (sub.lTitleIndex !== undefined && sub.lTitleIndex !== null) {
+              lTitleIndex = sub.lTitleIndex;
+            }
+            if (sub.rTitleIndex !== undefined && sub.rTitleIndex !== null) {
+              rTitleIndex = sub.rTitleIndex;
+            }
+
+            let title = ''
+            if (lTitleIndex === rTitleIndex) {
+              title = rows[lTitleIndex].title || rows[lTitleIndex].title1
+            } else {
+              title = getValueSwitchType(rows[lTitleIndex]);
+            }
+            sub.cells[tableIndex].title = title;
+            sub.cells[tableIndex].showCollapse = false;
+            sub.cells[tableIndex].nvalue = getValueSwitchType(rows[rTitleIndex]);
+            sub.cells[tableIndex].nchildtableForms = rows
+            sub.ntableForms.push(sub.cells[tableIndex])
+          }
         } else if (subcomp === 'table_ccmx') {
           sub.ntableForms = [];
           for (let tableIndex = 1, tabLength = sub.tableForms.length; tableIndex < tabLength; tableIndex++) {
@@ -269,6 +351,28 @@ function getSubComponents(subData) {
   }
 }
 
+function ifHidden(sub) { // 判断含有showLinkage的子项 然后搜索showLinkage的id 为 父类中name 的值 看是否包含
+  let subD = data.flowData
+  for (let item of sub.showLinkage) {
+    let id = item.id
+    let val = item.values || item.value
+    if (!id || !val) {
+      window.alert(123)
+    }
+    for (let sitem of subD) {
+      let index = _.findLastIndex(sitem.subComponents, {name: id}) // 找到name是【id】在父类中的位置
+      if (index !== -1) {
+        console.log(index)
+        let subDVal = sitem.subComponents[index].value
+        let ifHidden = true;
+        if (val.indexOf(subDVal) >= 0) { // 是否包含， 包含的话不用隐藏
+          ifHidden = false
+        }
+        sub.hidden = ifHidden
+      }
+    }
+  }
+}
 // 钱数转大写-正则
 function money2dx(tag) {
   let num = tag;
@@ -290,11 +394,15 @@ function money2dx(tag) {
 
 // 格式化金额数字
 function fixMoney(money) {
-  var tmpNumber = Number(money);
-  if (tmpNumber === 0) {
-    return '';
+  if (money) {
+    var tmpNumber = Number(money);
+    if (tmpNumber === 0) {
+      return '';
+    }
+    return Number(money).toFixed(2);
+  } else {
+    return ''
   }
-  return Number(money).toFixed(2);
 };
 
 function getValueSwitchType(comObj) {

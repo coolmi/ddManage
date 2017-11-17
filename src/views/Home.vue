@@ -1,24 +1,27 @@
 <template>
   <div>
-    <div id="header">
-      <ul class="libox libox1">
-        <li class="true-li">
-          <div @click="go(0)"><img src="../../static/images/待办.png" alt="none">
-            <p class="tt">待办</p></div>
-        </li>
-        <li class="true-li">
-          <div @click="go(1)"><img src="../../static/images/申请.png" alt="none">
-            <p class="tt">申请中</p></div>
-        </li>
-        <li class="true-li">
-          <div @click="go(2)"><img src="../../static/images/已办.png" alt="none">
-            <p class="tt">已办理</p></div>
-        </li>
-        <li class="true-li">
-          <div @click="go(3)"><img src="../../static/images/完成.png" alt="none">
-            <p class="tt">已结束</p></div>
-        </li>
-      </ul>
+    <div class="box">
+      <div id="content">
+        <div id="header">
+          <ul class="libox libox1">
+            <li class="libox1_li" @click="go(0)">
+              <div class="tips">
+                <img src="/static/images/sp3.png" alt="none">
+                待办列表
+              </div>
+            </li>
+            <li class="libox1_li" @click="go(1)">
+              <div class="tips"><img src="/static/images/wj3.png" alt="none">申请中</div>
+            </li>
+            <li class="libox1_li" @click="go(2)">
+              <div class="tips"><img src="/static/images/cs3.png" alt="none">已办理</div>
+            </li>
+            <li class="libox1_li" @click="go(3)">
+              <div class="tips"><img src="/static/images/wj4.png" alt="none">已结束</div>
+            </li>
+          </ul>
+        </div>
+      </div>
     </div>
     <!--<button @click="go(0)">待办任务</button>-->
     <!--<button @click="go(1)">申请中</button>-->
@@ -29,13 +32,13 @@
       <input v-model="itcode">
       <button @click="changeUser">切换用户</button>
     </div>
-    <grid>
-      <grid-item link="/reserve" label="备用金申请"></grid-item>
-      <grid-item link="/travel" label="出差申请"></grid-item>
-    </grid>
-    <group>
-      <cell title="备用金审批" @click.native="goFlowPage('/reserve')"></cell>
-    </group>
+    <!--<grid>-->
+      <!--<grid-item link="/reserve" label="备用金申请"></grid-item>-->
+      <!--<grid-item link="/travel" label="出差申请"></grid-item>-->
+    <!--</grid>-->
+    <!--<group>-->
+      <!--<cell title="备用金审批" @click.native="goFlowPage('/reserve')"></cell>-->
+    <!--</group>-->
   </div>
 </template>
 
@@ -118,35 +121,36 @@
 <style scoped lang="less">
   @import '~vux/src/styles/1px.less';
 
-  .libox {
-    display: flex;
+  box{
+    width:100%;
+    height:100%;
+    overflow: auto;
+    position: absolute;
+    top:0;
+    left: 0;
+  }
+  .libox{
+    display:flex;
     flex-direction: row;
     justify-content: space-around;
     width: 100%;
     flex-wrap: wrap;
     background-color: #fff;
+    padding-top:1rem;
+    padding-bottom:1rem;
   }
-
-  .libox .true-li {
-    width: 25%;
+  .libox .libox1_li{
+    width:24%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+  }
+  .tips{
     display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .libox1 {
-    box-sizing: content-box;
-    padding-top: 2rem;
-    padding-bottom: 2rem;
-    margin-bottom: 1rem;
-  }
-
-  .tt {
-    display: flex;
-    justify-content: center;
-  }
-  img {
-    width: 46px;
-    height: 46px;
+    justify-content:center;
+    align-items:center;
+    flex-direction: column;
+    position: relative;
+    line-height: 3rem;
   }
 </style>

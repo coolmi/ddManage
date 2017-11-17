@@ -22,7 +22,8 @@
             :value="ntable.nvalue"
             is-link
             :link="{path: '/flowDetails', query: {title: ntable.title, ctable: JSON.stringify(ntable.nchildtableForms)}}"
-            value-align="left">
+            value-align="left"
+            v-show="ntable.component !== 'hidden' && !ntable.hidden">
           </flow-child-card>
         </div>
         <!--<cell v-for="(subTable, index) in subC.tableForms" :key="index" :border-intent="false" :title="subTable.title" value="123" v-show="subC.component !== 'hidden' && subC.component !== 'table_form'"></cell>-->
@@ -35,7 +36,8 @@
             :value="ntable.nvalue"
             is-link
             :link="{path: '/flowDetails', query: {title: ntable.title, ctable: JSON.stringify(ntable.nchildtableForms)}}"
-            value-align="left">
+            value-align="left"
+            v-show="ntable.component !== 'hidden' && !ntable.hidden">
           </flow-child-card>
           <!--<acell-->
           <!--:title="ntable.title"-->
@@ -48,11 +50,23 @@
         <!--<cell v-for="(subTable, index) in subC.tableForms" :key="index" :border-intent="false" :title="subTable.title" value="123" v-show="subC.component !== 'hidden' && subC.component !== 'table_form'"></cell>-->
         <!--<flow-sub-content :subforms="subC.tableForms"></flow-sub-content>-->
       </template>
+      <template v-else-if="subC.component === 'table'">
+        <div v-for="(ntable, index) in  subC.ntableForms" :key="index">
+          <flow-child-card
+            v-for="(cn, index) in ntable" :key="index"
+            :title="cn.title"
+            :value="cn.nvalue || cn.value"
+            value-align="left"
+            v-show="cn.component !== 'hidden' && !subC.hidden"
+          >
+          </flow-child-card>
+        </div>
+      </template>
       <template v-else-if="subC.component === 'textarea'">
         <flow-child-card
           :title="subC.title"
           value-align="left"
-          v-show="subC.component !== 'hidden' && subC.title && subC.editable === false"
+          v-show="subC.component !== 'hidden' && !subC.hidden && subC.title && subC.editable === false"
         >
           <div slot="value">{{subC.nvalue || subC.value}}</div>
         </flow-child-card>
@@ -66,7 +80,7 @@
           :title="subC.title"
           :value="subC.nvalue || subC.value"
           value-align="left"
-          v-show="subC.component !== 'hidden' && subC.editable === false"
+          v-show="subC.component !== 'hidden' && !subC.hidden"
         >
         </flow-child-card>
       </template>

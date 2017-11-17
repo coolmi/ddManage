@@ -37,15 +37,15 @@
     methods: {
       openPdf(params) {
         let dd = window.dd;
-        let fujianUrl = baseConfig.baseURL + APILIST.openDingfile_url + '?docmentafrescoid=' + params.docmentafrescoid + '&docmentafresconame=' + params.docmentafresconame + '&ispdf=' + params.ispdf;
-        fujianUrl = encodeURIComponent(fujianUrl)
+        let fujianUrl = baseConfig.baseURL + APILIST.openDingfile_url + '?docmentafrescoid=' + params.docmentafrescoid + '&docmentafresconame=123.docx&ispdf=' + params.ispdf;
+//        fujianUrl = encodeURIComponent(fujianUrl)
         console.log(fujianUrl)
         console.log(ding.CORPID)
         console.log(params.docmentafresconame)
         dd.ready(function () {
           dd.biz.cspace.saveFile({
             corpId: ding.CORPID,
-            url: fujianUrl,
+            url: 'http://scm.xiangguang.com/front/registe/manual',
             name: params.docmentafresconame,
             onSuccess: function(data) {
               window.alert(JSON.stringify(data))

@@ -20,7 +20,7 @@ let APILIST = {
   // 打开附件 openfile.jsp
   // openfile_url: '/authapi/common/V1/getflowfile',
   openfile_url: '/authapi/common/V1/getflowfilefordding',
-  openDingfile_url: '/api/fordding/V1/getflowfilefordding',
+  openDingfile_url: '/authapi/common/V1/getflowfilefordding2',
 
   // 表单中的选人请求有值时 获取 name
   selectPersonName_url: '/authapi/common/V1/getPositionAndPersionItem',

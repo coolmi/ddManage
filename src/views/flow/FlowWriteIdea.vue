@@ -199,7 +199,7 @@
           params.ddid = aa;
         }
         api.getMPostidByDdid(params, function (res) {
-          if (res.data.data && res.data.data.error !== '') {
+          if (res.data.data && res.data.data.error !== undefined) {
             whole.showTop('无法获取此人的岗位，请联系HR人员');
             return;
           }

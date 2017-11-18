@@ -2,9 +2,9 @@
   <div class="flow_content">
     <div v-for="item in contentdata.forms" :key="item.pageid">
       <!--&& item.pageid !== 'jbxx' && item.pageid !== 'sqxx' && item.pageid !== 'sqrxx'-->
-      <div class="itemTitle" v-if="item.title && item.pageid !== 'fjxx' && item.pageid !== 'spjl'">{{item.title}}</div>
+      <div class="itemTitle" v-if="item.title && item.pageid !== 'fjxx' && item.pageid !== 'spjl' && item.pageid !== 'jbxx'">{{item.title}}</div>
       <flow-sub-content style="margin-top: 0" :subforms="item.subComponents"
-                        v-if="item.subComponents && item.pageid !== 'fjxx' && item.pageid !== 'spjl'"></flow-sub-content>
+                        v-if="item.subComponents && item.pageid !== 'fjxx' && item.pageid !== 'spjl' && item.pageid !== 'jbxx'"></flow-sub-content>
     </div>
   </div>
 </template>

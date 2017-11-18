@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-for="(subC, index) in subforms" :key="index">
+    <div v-for="(subC, index) in subforms" :key="index"  v-show="!subC.hidden">
       <template v-if="subC.subComponents">
         <template v-if="subC.panel_id !== ''">
           <flow-child-card

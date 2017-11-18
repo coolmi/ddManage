@@ -26,11 +26,13 @@ axios.interceptors.request.use((config) => {
 
 axios.interceptors.response.use((res) => {
   whole.leave()
+  console.log(res)
   if (res.data.code) {
     if (res.data.code === '200') {
       res.data.code = true;
     } else if (res.data.code === '401') {
-      ding.alertInfo(res.data.message);
+      window.alert('授权失败')
+      // ding.alertInfo(res.data.message);
       res.data.code = false;
       return Promise.resolve(res);
     } else {
@@ -53,7 +55,8 @@ axios.interceptors.response.use((res) => {
   return res;
 }, (error) => {
   whole.leave()
-  ding.alertInfo('网络异常，请刷新重试' + JSON.stringify(error));
+  ding.alertInfo('网络异常，请刷新重试');
+  console.log(JSON.stringify(error))
   this.$raven('错误URL' + error.request.url + error)
   return Promise.reject(error);
 })

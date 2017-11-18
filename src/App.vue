@@ -82,8 +82,20 @@
 <style>
   @import 'styles/reset.less';
 
+  html, body {
+    width: 100%;
+    heigth: 80%
+  }
+
   body {
     background-color: #F2F2F2;
+    line-height: 1.6;
+    font-size: 16px;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    padding-top: constant(safe-area-inset-top);
+    padding-left: constant(safe-area-inset-left);
+    padding-right: constant(safe-area-inset-right);
+    padding-bottom: 10px;
   }
 
   .position-vertical {

@@ -7,9 +7,9 @@
           <div class="flow_list_card_hd_left">
             <span>{{contentdata.name}}</span>
           </div>
-          <div class="flow_list_card_hd_right">
-            <span>NO.{{contentdata.APPID_}}</span>
-          </div>
+          <!--<div class="flow_list_card_hd_right">-->
+            <!--<span>NO.{{contentdata.APPID_}}</span>-->
+          <!--</div>-->
         </div>
         <div slot="content" class="flow_list_card_content" v-if="contentdata.nachn">
           <div class="flow_list_card_content_a" @click="openPerInfoPage">
@@ -72,7 +72,7 @@
   import FlowHistoryContent from 'comp/FlowHistoryContent';
 //  import flowRU from '@/flow/flowResponseUtils'
   import FDUtils from '@/flow/flowDataUtils';
-//  import FBtnUtils from '@/flow/flowButtonUtils';
+//   import FBtnUtils from '@/flow/flowButtonUtils';
   import FSM from '@/flow/flowShowMsg'
   import FFEU from '@/flow/flowFilesEventUtils'
   import ding from '@/lib/ding'
@@ -161,6 +161,7 @@
             _that.showButton = false;
             return;
           }
+          _that.buttonArr = ['tj', 'jq', 'zb'];
 //          api.getAuthor(flowParams, function (authorRes) {
 //            // 按钮处理
 //            let buttonData = authorRes.data;
@@ -172,9 +173,9 @@
 //              _that.flowParams.issignplushandleA = result.issignplushandleA // 按钮事件中用
 //            }
 //          })
-          _that.getDingUserInfo(flowdata.PERNR_)
-          _that.getHistory();
-          _that.getFlowFiles();
+//          _that.getDingUserInfo(flowdata.PERNR_)
+//          _that.getHistory();
+//          _that.getFlowFiles();
         } else if (!flowdata.result) {
           let errInfo = flowdata.error || flowdata.err;
           _that.alertInfoAndGoBack(errInfo)

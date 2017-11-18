@@ -1,8 +1,8 @@
 <template>
-  <div class="flow_footer vux-1px-t animated slideInUp">
+  <div class="flow_footer flow_footer_padding vux-1px-t animated slideInUp">
     <flexbox>
       <flexbox-item v-for="(btype, index) in buttonArr" :key="btype" style="margin-left: 0">
-        <div class="vux-1px-r flow_button" @click="clickButton(btype)">{{fbname.buttonName[btype]}}</div>
+        <div class="flow_button" @click="clickButton(btype)">{{fbname.buttonName[btype]}}</div>
       </flexbox-item>
     </flexbox>
   </div>
@@ -46,6 +46,15 @@
     },
     created() {
       this.fbname = fbname
+      let dd = window.dd
+      dd.ready(function () {
+        dd.device.base.getPhoneInfo({
+          onSuccess: function(data) {
+            console.log(data)
+          },
+          onFail: function(err) {}
+        });
+      })
     },
     methods: {
       clickButton(btype) {
@@ -77,10 +86,17 @@
     width: 100%;
     height: @flow_button_footer_height;
     line-height: @flow_button_footer_height;
-    padding: 10px 0;
+    padding-top: 10px;
+    padding-bottom: 20px;
     position: fixed;
     bottom: 0;
     background-color: @flow_button_footer_background_color;
+  }
+
+  @media only screen and (width: 375px) and (height: 690px) {
+    .flow_footer_padding {
+      padding-bottom: constant(safe-area-inset-bottom);
+    }
   }
 
   .flow_button {

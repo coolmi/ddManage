@@ -101,7 +101,7 @@
   .flow_list_card_ft_right {
     flex: 1;
     text-align: right;
-    padding: 14px 15px 10px;
+    padding: 118px 15px 10px;
     color: #806DF7;
     font-size: 13px;
     font-style: italic;

@@ -13,7 +13,7 @@
           "editable": false,
           "name": "appid",
           "title": "申请单号",
-          "value": "GMKGBX1711150001"
+          "value": "FXSPCWYGFY1711150002"
         },
         {
           "component": "date1",
@@ -25,149 +25,72 @@
         {
           "component": "label",
           "editable": false,
-          "label": "10000032-沈朝云",
+          "label": "10000084-孙毅夫",
           "name": "pernr",
           "title": "申请人姓名"
         },
         {
           "component": "label",
           "editable": false,
-          "label": "信息管理中心-信息管理中心",
+          "label": "生产运营中心-生产运营中心",
           "name": "sysbusinessunitname",
           "title": "所属部门"
-        },
-        {
-          "component": "text",
-          "editable": false,
-          "name": "pernrval",
-          "title": "员工编号",
-          "value": "10000032"
-        },
-        {
-          "component": "text",
-          "editable": false,
-          "name": "useridval",
-          "title": "员工ITCODE",
-          "value": "chaoyun.shen"
-        },
-        {
-          "component": "text",
-          "editable": false,
-          "name": "deptval",
-          "title": "员工所在部门",
-          "value": "信息管理中心"
-        },
-        {
-          "component": "text",
-          "editable": false,
-          "name": "bunisval",
-          "title": "职能中心/事业部",
-          "value": "信息管理中心"
         },
         {
           "component": "hidden",
           "editable": false,
           "name": "bukrs",
           "title": "",
-          "value": "8000"
-        },
-        {
-          "component": "text",
-          "editable": false,
-          "name": "bukrsval",
-          "title": "所在公司",
-          "value": "新凤祥控股集团有限责任公司"
-        },
-        {
-          "component": "text",
-          "editable": false,
-          "name": "tello",
-          "title": "办公电话",
-          "value": "0635-7136990"
-        },
-        {
-          "component": "text",
-          "editable": false,
-          "name": "phone",
-          "title": "手机号",
-          "value": "18863558010"
-        },
-        {
-          "component": "text",
-          "editable": false,
-          "name": "email",
-          "title": "邮箱",
-          "value": "chaoyun.shen@xiangguang.com"
+          "value": "2710"
         },
         {
           "component": "hidden",
           "editable": false,
           "name": "userid",
           "title": "",
-          "value": "chaoyun.shen"
+          "value": "yifu.sun"
         },
         {
           "component": "hidden",
           "editable": false,
           "name": "username",
           "title": "",
-          "value": "沈朝云"
-        },
-        {
-          "component": "hidden",
-          "editable": false,
-          "name": "pernr",
-          "title": "",
-          "value": "10000032"
+          "value": "孙毅夫"
         },
         {
           "component": "hidden",
           "editable": false,
           "name": "syspostname",
           "title": "",
-          "value": "信息管理中心总经理"
+          "value": "生产运营总监"
         },
         {
           "component": "hidden",
           "editable": false,
           "name": "sysdeptid",
           "title": "",
-          "value": "22060001"
-        },
-        {
-          "component": "hidden",
-          "editable": false,
-          "name": "sysdeptname",
-          "title": "",
-          "value": "信息管理中心"
+          "value": "64040000"
         },
         {
           "component": "hidden",
           "editable": false,
           "name": "sysbusinessunitid",
           "title": "",
-          "value": "22060001"
-        },
-        {
-          "component": "hidden",
-          "editable": false,
-          "name": "sysbusinessunitname",
-          "title": "",
-          "value": "信息管理中心"
+          "value": "64040000"
         },
         {
           "component": "hidden",
           "editable": false,
           "name": "postid",
           "title": "",
-          "value": "20037989"
+          "value": "90000277"
         },
         {
           "component": "hidden",
           "editable": false,
           "name": "id",
           "title": "",
-          "value": "1408"
+          "value": "FXSPCWYGFY1711150002"
         }
       ],
       "title": "基本信息"
@@ -175,147 +98,130 @@
     {
       "component": "panel",
       "editable": false,
-      "pageid": "sqxx",
+      "pageid": "bxrxx",
       "subComponents": [
         {
-          "component": "radio",
+          "component": "text",
           "editable": false,
-          "id": "butype",
-          "name": "butype",
-          "options": [
-            {
-              "title": "通用",
-              "value": "1"
-            },
-            {
-              "title": "内部订单",
-              "value": "2"
-            }
-          ],
-          "title": "预算类型",
-          "value": "1"
+          "name": "userid",
+          "title": "员工ITCODE",
+          "value": "yifu.sun"
         },
         {
-          "component": "radio",
+          "component": "text",
           "editable": false,
-          "name": "inside",
-          "options": [
-            {
-              "title": "预算内",
-              "value": "1"
-            },
-            {
-              "title": "预算外",
-              "value": "2"
-            }
-          ],
-          "title": "预算内/外",
-          "value": "1"
+          "name": "pernr",
+          "title": "员工编号",
+          "value": "10000084"
         },
         {
-          "component": "hidden",
+          "component": "text",
           "editable": false,
-          "name": "cdbukrs",
-          "title": "",
-          "value": "8000"
+          "name": "sysdeptname",
+          "title": "员工所在部门",
+          "value": "生产运营中心"
+        },
+        {
+          "component": "text",
+          "editable": false,
+          "name": "sysbusinessunitname",
+          "title": "职能中心/事业部",
+          "value": "生产运营中心"
         },
         {
           "component": "text",
           "editable": false,
           "name": "cdbukrsname",
-          "title": "费用承担公司",
-          "value": "新凤祥控股集团有限责任公司"
+          "title": "所在公司",
+          "value": "凤祥食品有限公司"
         },
         {
-          "component": "hidden",
+          "component": "text",
           "editable": false,
-          "name": "cdkostlsname",
-          "title": "",
-          "value": "信息部-核算系统开发"
+          "name": "pfach",
+          "title": "邮箱",
+          "value": "yifu.sun@fengxiang.com"
         },
         {
-          "component": "label",
+          "component": "text",
           "editable": false,
-          "label": "80008004信息部-核算系统开发",
-          "name": "cdkostlsvalname",
-          "showLinkage": [
-            {
-              "id": "butype",
-              "values": [
-                "1"
-              ]
-            }
-          ],
-          "title": "费用归集成本中心"
+          "name": "telnr",
+          "title": "办公电话",
+          "value": "0635-7136606"
         },
         {
-          "component": "label",
+          "component": "text",
           "editable": false,
-          "label": "",
-          "name": "ordernumval",
-          "showLinkage": [
-            {
-              "id": "butype",
-              "values": [
-                "2"
-              ]
-            }
-          ],
-          "title": "内部订单号"
-        },
-        {
-          "component": "comma_concat",
-          "editable": false,
-          "id": "reimtype",
-          "name": "reimtype",
-          "options": [
-            {
-              "text": "差旅往返交通、住宿、餐饮费",
-              "value": "1"
-            },
-            {
-              "text": "差旅交通费",
-              "value": "2"
-            },
-            {
-              "text": "业务招待费",
-              "value": "3"
-            },
-            {
-              "text": "员工其他差旅费",
-              "value": "4"
-            }
-          ],
-          "refer": "reimtype",
-          "title": "报销类别",
-          "value": "1"
+          "name": "telpr",
+          "title": "手机号",
+          "value": "15924419618"
         },
         {
           "component": "text",
           "editable": false,
           "name": "lifnr",
-          "title": "员工财务编号",
-          "value": "T-4313"
-        },
-        {
-          "component": "select",
-          "editable": false,
-          "name": "waers",
-          "options": [
-            {
-              "text": "人民币",
-              "value": "CNY"
-            }
-          ],
-          "title": "币种",
-          "value": "CNY"
+          "title": "员工财务编码",
+          "value": "T-6048"
         },
         {
           "component": "text",
           "editable": false,
-          "name": "buno",
-          "title": "出差申请号",
-          "value": "GMKFITR1705180002"
+          "name": "bankn",
+          "title": "员工银行账号"
+        },
+        {
+          "component": "text",
+          "editable": false,
+          "name": "banka",
+          "title": "开户行"
+        }
+      ],
+      "title": "报销人信息"
+    },
+    {
+      "component": "panel",
+      "editable": false,
+      "pageid": "sqxx",
+      "subComponents": [
+        {
+          "component": "select",
+          "editable": false,
+          "name": "notravle",
+          "options": [
+            {
+              "text": "差旅报销",
+              "value": "0"
+            }
+          ],
+          "title": "报销类型",
+          "value": "1"
+        },
+        {
+          "component": "select",
+          "editable": false,
+          "name": "protype",
+          "options": [
+            {
+              "text": "通用",
+              "value": "0"
+            }
+          ],
+          "title": "项目类型",
+          "value": "0"
+        },
+        {
+          "component": "label",
+          "editable": false,
+          "label": "2710凤祥食品有限公司",
+          "name": "cdbukrs",
+          "title": "费用承担公司"
+        },
+        {
+          "component": "label",
+          "editable": false,
+          "label": "27101605生产运营部",
+          "name": "cdkostls",
+          "title": "费用归集成本中心"
         },
         {
           "component": "text",
@@ -325,658 +231,22 @@
           "value": "1"
         },
         {
+          "component": "text",
+          "editable": false,
+          "name": "atrlnr",
+          "title": "出差申请单号",
+          "value": ""
+        },
+        {
           "component": "textarea",
           "editable": false,
-          "name": "remarks",
+          "name": "smemo",
           "rows": "3",
-          "title": "备注",
+          "title": "说明",
           "value": "1"
         }
       ],
       "title": "申请信息"
-    },
-    {
-      "component": "panel",
-      "editable": false,
-      "pageid": "ysxx",
-      "subComponents": [
-        {
-          "basePath": "gmpubexlist",
-          "component": "table_form",
-          "editable": false,
-          "id": "ysxx_table_one",
-          "tableForms": [
-            [
-              {
-                "component": "text",
-                "editablenode": "",
-                "name": "ysxx_bukrs",
-                "title": "公司代码"
-              },
-              {
-                "component": "label",
-                "editablenode": "",
-                "label": [
-                  "ysxx_cbzx",
-                  "",
-                  "ysxx_cbzxmc"
-                ],
-                "title": "预算控制成本中心/内部订单号"
-              },
-              {
-                "component": "select",
-                "editablenode": "",
-                "name": "ysxx_yskzlx",
-                "options": [
-                  {
-                    "text": "年",
-                    "value": "0"
-                  },
-                  {
-                    "text": "季",
-                    "value": "1"
-                  }
-                ],
-                "title": "预算控制类型"
-              },
-              {
-                "component": "text",
-                "editablenode": "",
-                "name": "ysxx_nd",
-                "title": "年度"
-              },
-              {
-                "component": "text",
-                "editablenode": "",
-                "name": "ysxx_jd",
-                "title": "季度"
-              },
-              {
-                "component": "text",
-                "editablenode": "",
-                "name": "ysxx_kjkmbh",
-                "title": "会计科目编号"
-              },
-              {
-                "component": "text",
-                "editablenode": "",
-                "name": "ysxx_kjkmmc",
-                "title": "会计科目名称"
-              },
-              {
-                "component": "text",
-                "editablenode": "",
-                "name": "ysxx_ysz",
-                "title": "预算值"
-              },
-              {
-                "component": "text",
-                "editablenode": "",
-                "name": "ysxx_bdjfse",
-                "title": "本单据发生额"
-              },
-              {
-                "component": "text",
-                "editablenode": "",
-                "name": "ysxx_oaxtlzzfy",
-                "title": "OA系统流转中费用"
-              },
-              {
-                "component": "text",
-                "editablenode": "",
-                "name": "ysxx_sapxtyjzfy",
-                "title": "SAP系统已记账费用"
-              },
-              {
-                "component": "text",
-                "name": "ysxx_sapxtysye",
-                "title": "预算余额"
-              }
-            ],
-            [
-              {
-                "component": "text",
-                "editable": false,
-                "name": "ysxx_bukrs",
-                "title": "公司代码",
-                "value": "8000"
-              },
-              {
-                "component": "label",
-                "editable": false,
-                "label": "8000800480008004-信息部",
-                "name": "ysxx_cbzx",
-                "title": "预算控制成本中心/内部订单号"
-              },
-              {
-                "component": "select",
-                "editable": false,
-                "name": "ysxx_yskzlx",
-                "options": [
-                  {
-                    "text": "年",
-                    "value": "0"
-                  },
-                  {
-                    "text": "季",
-                    "value": "1"
-                  }
-                ],
-                "title": "预算控制类型",
-                "value": "1"
-              },
-              {
-                "component": "text",
-                "editable": false,
-                "name": "ysxx_nd",
-                "title": "年度",
-                "value": "2017"
-              },
-              {
-                "component": "text",
-                "editable": false,
-                "name": "ysxx_jd",
-                "title": "季度",
-                "value": "04"
-              },
-              {
-                "component": "text",
-                "editable": false,
-                "name": "ysxx_kjkmbh",
-                "title": "会计科目编号",
-                "value": "6602010019"
-              },
-              {
-                "component": "text",
-                "editable": false,
-                "name": "ysxx_kjkmmc",
-                "title": "会计科目名称",
-                "value": "差旅费-国内-交通费"
-              },
-              {
-                "component": "text",
-                "editable": false,
-                "name": "ysxx_ysz",
-                "title": "预算值",
-                "value": "84220.00"
-              },
-              {
-                "component": "text",
-                "editable": false,
-                "name": "ysxx_bdjfse",
-                "title": "本单据发生额",
-                "value": "200.0"
-              },
-              {
-                "component": "text",
-                "editable": false,
-                "name": "ysxx_oaxtlzzfy",
-                "title": "OA系统流转中费用",
-                "value": "0.0"
-              },
-              {
-                "component": "text",
-                "editable": false,
-                "name": "ysxx_sapxtyjzfy",
-                "title": "SAP系统已记账费用",
-                "value": "0.0"
-              },
-              {
-                "component": "text",
-                "editable": false,
-                "name": "ysxx_sapxtysye",
-                "title": "预算余额",
-                "value": "84220.0"
-              }
-            ],
-            [
-              {
-                "component": "text",
-                "editable": false,
-                "name": "ysxx_bukrs",
-                "title": "公司代码",
-                "value": "8000"
-              },
-              {
-                "component": "label",
-                "editable": false,
-                "label": "8000800480008004-信息部",
-                "name": "ysxx_cbzx",
-                "title": "预算控制成本中心/内部订单号"
-              },
-              {
-                "component": "select",
-                "editable": false,
-                "name": "ysxx_yskzlx",
-                "options": [
-                  {
-                    "text": "年",
-                    "value": "0"
-                  },
-                  {
-                    "text": "季",
-                    "value": "1"
-                  }
-                ],
-                "title": "预算控制类型",
-                "value": "1"
-              },
-              {
-                "component": "text",
-                "editable": false,
-                "name": "ysxx_nd",
-                "title": "年度",
-                "value": "2017"
-              },
-              {
-                "component": "text",
-                "editable": false,
-                "name": "ysxx_jd",
-                "title": "季度",
-                "value": "04"
-              },
-              {
-                "component": "text",
-                "editable": false,
-                "name": "ysxx_kjkmbh",
-                "title": "会计科目编号",
-                "value": "6602010015"
-              },
-              {
-                "component": "text",
-                "editable": false,
-                "name": "ysxx_kjkmmc",
-                "title": "会计科目名称",
-                "value": "差旅费-国内-住宿费"
-              },
-              {
-                "component": "text",
-                "editable": false,
-                "name": "ysxx_ysz",
-                "title": "预算值",
-                "value": "100320.00"
-              },
-              {
-                "component": "text",
-                "editable": false,
-                "name": "ysxx_bdjfse",
-                "title": "本单据发生额",
-                "value": "400.0"
-              },
-              {
-                "component": "text",
-                "editable": false,
-                "name": "ysxx_oaxtlzzfy",
-                "title": "OA系统流转中费用",
-                "value": "0.0"
-              },
-              {
-                "component": "text",
-                "editable": false,
-                "name": "ysxx_sapxtyjzfy",
-                "title": "SAP系统已记账费用",
-                "value": "0.0"
-              },
-              {
-                "component": "text",
-                "editable": false,
-                "name": "ysxx_sapxtysye",
-                "title": "预算余额",
-                "value": "100320.0"
-              }
-            ],
-            [
-              {
-                "component": "text",
-                "editable": false,
-                "name": "ysxx_bukrs",
-                "title": "公司代码",
-                "value": "8000"
-              },
-              {
-                "component": "label",
-                "editable": false,
-                "label": "8000800480008004-信息部",
-                "name": "ysxx_cbzx",
-                "title": "预算控制成本中心/内部订单号"
-              },
-              {
-                "component": "select",
-                "editable": false,
-                "name": "ysxx_yskzlx",
-                "options": [
-                  {
-                    "text": "年",
-                    "value": "0"
-                  },
-                  {
-                    "text": "季",
-                    "value": "1"
-                  }
-                ],
-                "title": "预算控制类型",
-                "value": "1"
-              },
-              {
-                "component": "text",
-                "editable": false,
-                "name": "ysxx_nd",
-                "title": "年度",
-                "value": "2017"
-              },
-              {
-                "component": "text",
-                "editable": false,
-                "name": "ysxx_jd",
-                "title": "季度",
-                "value": "04"
-              },
-              {
-                "component": "text",
-                "editable": false,
-                "name": "ysxx_kjkmbh",
-                "title": "会计科目编号",
-                "value": "6602010016"
-              },
-              {
-                "component": "text",
-                "editable": false,
-                "name": "ysxx_kjkmmc",
-                "title": "会计科目名称",
-                "value": "差旅费-国内-餐费补助"
-              },
-              {
-                "component": "text",
-                "editable": false,
-                "name": "ysxx_ysz",
-                "title": "预算值",
-                "value": "18600.00"
-              },
-              {
-                "component": "text",
-                "editable": false,
-                "name": "ysxx_bdjfse",
-                "title": "本单据发生额",
-                "value": "300.0"
-              },
-              {
-                "component": "text",
-                "editable": false,
-                "name": "ysxx_oaxtlzzfy",
-                "title": "OA系统流转中费用",
-                "value": "0.0"
-              },
-              {
-                "component": "text",
-                "editable": false,
-                "name": "ysxx_sapxtyjzfy",
-                "title": "SAP系统已记账费用",
-                "value": "0.0"
-              },
-              {
-                "component": "text",
-                "editable": false,
-                "name": "ysxx_sapxtysye",
-                "title": "预算余额",
-                "value": "18600.0"
-              }
-            ]
-          ],
-          "titleIndex": 1
-        }
-      ],
-      "title": "预算信息"
-    },
-    {
-      "component": "panel",
-      "editable": false,
-      "panel_id": "total",
-      "subComponents": [
-        {
-          "component": "text",
-          "datatype": "money",
-          "editable": false,
-          "name": "cal_roudtramon",
-          "sumValue": {
-            "arrayPath": "summs",
-            "sumParam": "roudtramon"
-          },
-          "title": "往返交通费合计",
-          "value": 200
-        },
-        {
-          "component": "text",
-          "datatype": "money",
-          "editable": false,
-          "name": "cal_holmou",
-          "sumValue": {
-            "arrayPath": "summs",
-            "sumParam": "holmou"
-          },
-          "title": "住宿金额合计",
-          "value": 400
-        },
-        {
-          "component": "text",
-          "datatype": "money",
-          "editable": false,
-          "name": "cal_cymou",
-          "sumValue": {
-            "arrayPath": "summs",
-            "sumParam": "cymou"
-          },
-          "title": "餐饮金额合计",
-          "value": 300
-        },
-        {
-          "component": "text",
-          "datatype": "money",
-          "editable": false,
-          "name": "cal_tramou",
-          "sumValue": {
-            "arrayPath": "summs",
-            "sumParam": "tramou"
-          },
-          "title": "交通金额合计",
-          "value": 0
-        },
-        {
-          "component": "text",
-          "datatype": "money",
-          "editable": false,
-          "name": "cal_zdmou",
-          "sumValue": {
-            "arrayPath": "summs",
-            "sumParam": "zdmou"
-          },
-          "title": "招待金额合计",
-          "value": 0
-        },
-        {
-          "component": "text",
-          "datatype": "money",
-          "editable": false,
-          "name": "cal_othmou",
-          "sumValue": {
-            "arrayPath": "summs",
-            "sumParam": "othmou"
-          },
-          "title": "其他金额",
-          "value": 0
-        },
-        {
-          "component": "text",
-          "datatype": "money",
-          "editable": false,
-          "name": "cal_totalmou",
-          "sumValue": {
-            "arrayPath": "summs",
-            "sumParam": "totalmou"
-          },
-          "title": "总计",
-          "value": 900
-        },
-        {
-          "basePath": "summs",
-          "component": "table_form",
-          "editable": false,
-          "id": "summs_table_one",
-          "tableForms": [
-            [
-              {
-                "component": "text",
-                "datatype": "date",
-                "dateFormat": "yyyy-MM-dd",
-                "name": "sdate",
-                "title": "日期"
-              },
-              {
-                "component": "text",
-                "editablenode": "",
-                "name": "sdder",
-                "title": "出发地"
-              },
-              {
-                "component": "text",
-                "editablenode": "",
-                "name": "edder",
-                "title": "到达地"
-              },
-              {
-                "component": "text",
-                "datatype": "money",
-                "editablenode": "",
-                "name": "roudtramon",
-                "title": "往返交通金额"
-              },
-              {
-                "component": "text",
-                "datatype": "money",
-                "editablenode": "",
-                "name": "holmou",
-                "title": "住宿金额"
-              },
-              {
-                "component": "text",
-                "datatype": "money",
-                "editablenode": "",
-                "name": "cymou",
-                "title": "餐饮金额"
-              },
-              {
-                "component": "text",
-                "datatype": "money",
-                "editablenode": "",
-                "name": "tramou",
-                "title": "交通金额"
-              },
-              {
-                "component": "text",
-                "datatype": "money",
-                "editablenode": "",
-                "name": "zdmou",
-                "title": "招待金额"
-              },
-              {
-                "component": "text",
-                "datatype": "money",
-                "editablenode": "",
-                "name": "othmou",
-                "title": "其他金额"
-              },
-              {
-                "component": "text",
-                "datatype": "money",
-                "editablenode": "",
-                "name": "totalmou",
-                "title": "合计"
-              }
-            ],
-            [
-              {
-                "component": "text",
-                "datatype": "date",
-                "editable": false,
-                "name": "sdate",
-                "title": "日期",
-                "value": "2017-11-16"
-              },
-              {
-                "component": "text",
-                "editable": false,
-                "name": "sdder",
-                "title": "出发地",
-                "value": "ceshi"
-              },
-              {
-                "component": "text",
-                "editable": false,
-                "name": "edder",
-                "title": "到达地",
-                "value": "青岛"
-              },
-              {
-                "component": "text",
-                "datatype": "money",
-                "editable": false,
-                "name": "roudtramon",
-                "title": "往返交通金额",
-                "value": "200"
-              },
-              {
-                "component": "text",
-                "datatype": "money",
-                "editable": false,
-                "name": "holmou",
-                "title": "住宿金额",
-                "value": "400"
-              },
-              {
-                "component": "text",
-                "datatype": "money",
-                "editable": false,
-                "name": "cymou",
-                "title": "餐饮金额",
-                "value": "300"
-              },
-              {
-                "component": "text",
-                "datatype": "money",
-                "editable": false,
-                "name": "tramou",
-                "title": "交通金额",
-                "value": "0"
-              },
-              {
-                "component": "text",
-                "datatype": "money",
-                "editable": false,
-                "name": "zdmou",
-                "title": "招待金额",
-                "value": "0"
-              },
-              {
-                "component": "text",
-                "datatype": "money",
-                "editable": false,
-                "name": "othmou",
-                "title": "其他金额",
-                "value": "0"
-              },
-              {
-                "component": "text",
-                "datatype": "money",
-                "editable": false,
-                "name": "totalmou",
-                "title": "合计",
-                "value": "900"
-              }
-            ]
-          ],
-          "titleIndex": 0
-        }
-      ],
-      "title": "差旅汇总"
     },
     {
       "component": "panel",
@@ -986,766 +256,1867 @@
         {
           "component": "panel",
           "editable": false,
-          "panel_id": "cl",
-          "showLinkage": [
-            {
-              "id": "reimtype",
-              "value": "1"
-            }
-          ],
+          "panel_id": "ctjt",
           "subComponents": [
             {
               "basePath": "ltrads",
               "component": "table_form",
               "editable": false,
-              "id": "ltrads_table_one",
+              "id": "ltrads",
               "tableForms": [
                 [
                   {
+                    "component": "linkToMap",
+                    "editablenode": "",
+                    "linkToMap": {
+                      "linkMiddle": "stype",
+                      "linkToLable": "true",
+                      "linkType": "string",
+                      "mapBasePath": "mapByBukrs"
+                    },
+                    "name": "jtfs",
+                    "title": "",
+                    "title1": "交通方式"
+                  },
+                  {
+                    "component": "linkToMap",
+                    "editablenode": "",
+                    "linkToMap": {
+                      "linkMiddle": "mtype",
+                      "linkToLable": "true",
+                      "linkType": "string",
+                      "mapBasePath": "mapByBukrs"
+                    },
+                    "name": "jtlx",
+                    "title": "",
+                    "title1": "交通类型"
+                  },
+                  {
+                    "component": "select",
+                    "editablenode": "",
+                    "name": "abroadis",
+                    "options": [
+                      {
+                        "text": "境内",
+                        "value": "0"
+                      },
+                      {
+                        "text": "境外",
+                        "value": "1"
+                      }
+                    ],
+                    "title": "",
+                    "title1": "境内/境外"
+                  },
+                  {
+                    "component": "text",
+                    "editablenode": "",
+                    "name": "colnr",
+                    "title": "",
+                    "title1": "项目号"
+                  },
+                  {
                     "component": "date1",
                     "editablenode": "",
                     "name": "sdate",
-                    "title": "日期"
+                    "title": "",
+                    "title1": "出发日期"
+                  },
+                  {
+                    "component": "date1",
+                    "editablenode": "",
+                    "name": "edate",
+                    "title": "",
+                    "title1": "到达日期"
                   },
                   {
                     "component": "text",
                     "editablenode": "",
                     "name": "saddr",
-                    "title": "出发地"
+                    "title": "",
+                    "title1": "出发地"
                   },
                   {
                     "component": "text",
                     "editablenode": "",
                     "name": "eaddr",
-                    "title": "到达地"
+                    "title": "",
+                    "title1": "到达地"
                   },
                   {
                     "component": "text",
                     "editablenode": "",
-                    "name": "specificc",
-                    "title": "具体地点"
-                  },
-                  {
-                    "component": "select",
-                    "editablenode": "",
-                    "name": "stype",
-                    "refer": "trstsyps",
-                    "title": "类别"
-                  },
-                  {
-                    "component": "select",
-                    "editablenode": "",
-                    "name": "kuname",
-                    "refer": "matlevels",
-                    "title": "席位"
-                  },
-                  {
-                    "component": "text",
-                    "editablenode": "",
-                    "name": "sumdmbtr1",
-                    "title": "往返交通"
-                  },
-                  {
-                    "component": "text",
-                    "datatype": "money",
-                    "editablenode": "",
-                    "name": "sumdmbtr2",
-                    "title": "住宿金额"
-                  },
-                  {
-                    "component": "text",
-                    "datatype": "money",
-                    "editablenode": "",
-                    "name": "sumdmbtr3",
-                    "title": "餐饮费"
-                  },
-                  {
-                    "component": "text",
-                    "datatype": "money",
-                    "editablenode": "",
-                    "name": "sumdmbtr4",
-                    "title": "超标准费用"
-                  },
-                  {
-                    "component": "text",
-                    "datatype": "money",
-                    "editablenode": "",
-                    "name": "sumdmbtr5",
-                    "title": "扣除餐饮费"
-                  },
-                  {
-                    "component": "text",
-                    "datatype": "money",
-                    "editablenode": "",
-                    "name": "sumdmbtr6",
-                    "title": "合计"
-                  }
-                ],
-                [
-                  {
-                    "component": "date1",
-                    "editable": false,
-                    "name": "sdate",
-                    "title": "日期",
-                    "value": "1510761600000"
-                  },
-                  {
-                    "component": "text",
-                    "editable": false,
-                    "name": "saddr",
-                    "title": "出发地",
-                    "value": "ceshi"
-                  },
-                  {
-                    "component": "text",
-                    "editable": false,
-                    "name": "eaddr",
-                    "title": "到达地",
-                    "value": "青岛"
-                  },
-                  {
-                    "component": "text",
-                    "editable": false,
-                    "name": "specificc",
-                    "title": "具体地点",
-                    "value": "ceshi"
-                  },
-                  {
-                    "component": "select",
-                    "editable": false,
-                    "name": "stype",
-                    "options": [
+                    "name": "place",
+                    "showLinkage": [
                       {
-                        "text": "飞机",
-                        "value": "01"
-                      },
-                      {
-                        "text": "高铁",
-                        "value": "02"
-                      },
-                      {
-                        "text": "动车",
-                        "value": "03"
-                      },
-                      {
-                        "text": "火车400km以上",
-                        "value": "04"
-                      },
-                      {
-                        "text": "火车400km以下",
-                        "value": "05"
-                      },
-                      {
-                        "text": "轮船",
-                        "value": "06"
-                      },
-                      {
-                        "text": "汽车",
-                        "value": "07"
+                        "id": "abroadis",
+                        "values": [
+                          "1"
+                        ]
                       }
                     ],
-                    "refer": "trstsyps",
-                    "title": "类别",
-                    "value": "02"
+                    "title": "",
+                    "title1": "地点"
                   },
                   {
-                    "component": "select",
-                    "editable": false,
-                    "name": "kuname",
-                    "options": [
+                    "component": "text",
+                    "datatype": "money",
+                    "editablenode": "",
+                    "name": "wrbtr",
+                    "showLinkage": [
                       {
-                        "text": "飞机",
-                        "value": "0101"
-                      },
-                      {
-                        "text": "二等座",
-                        "value": "0201"
-                      },
-                      {
-                        "text": "无限制",
-                        "value": "0202"
-                      },
-                      {
-                        "text": "无限制",
-                        "value": "0301"
-                      },
-                      {
-                        "text": "二等座",
-                        "value": "0302"
-                      },
-                      {
-                        "text": "软卧",
-                        "value": "0401"
-                      },
-                      {
-                        "text": "硬卧",
-                        "value": "0402"
-                      },
-                      {
-                        "text": "软卧",
-                        "value": "0501"
-                      },
-                      {
-                        "text": "硬卧",
-                        "value": "0502"
-                      },
-                      {
-                        "text": "硬席",
-                        "value": "0503"
-                      },
-                      {
-                        "text": "一等舱",
-                        "value": "0601"
-                      },
-                      {
-                        "text": "二等舱",
-                        "value": "0602"
-                      },
-                      {
-                        "text": "无限制",
-                        "value": "0701"
+                        "id": "abroadis",
+                        "values": [
+                          "1"
+                        ]
                       }
                     ],
-                    "refer": "matlevels",
-                    "title": "席位",
-                    "value": "0201"
+                    "title": "",
+                    "title1": "原币总金额"
                   },
                   {
                     "component": "text",
-                    "editable": false,
-                    "name": "sumdmbtr1",
-                    "title": "往返交通",
-                    "value": "200"
+                    "editablenode": "",
+                    "name": "kursf",
+                    "showLinkage": [
+                      {
+                        "id": "abroadis",
+                        "values": [
+                          "1"
+                        ]
+                      }
+                    ],
+                    "title": "",
+                    "title1": "汇率"
                   },
                   {
-                    "component": "text",
-                    "datatype": "money",
-                    "editable": false,
-                    "name": "sumdmbtr2",
-                    "title": "住宿金额",
-                    "value": "400"
-                  },
-                  {
-                    "component": "text",
-                    "datatype": "money",
-                    "editable": false,
-                    "name": "sumdmbtr3",
-                    "title": "餐饮费",
-                    "value": "300"
-                  },
-                  {
-                    "component": "text",
-                    "datatype": "money",
-                    "editable": false,
-                    "name": "sumdmbtr4",
-                    "title": "超标准费用",
-                    "value": "0"
-                  },
-                  {
-                    "component": "text",
-                    "datatype": "money",
-                    "editable": false,
-                    "name": "sumdmbtr5",
-                    "title": "扣除餐饮费",
-                    "value": "0"
+                    "component": "linkToMap",
+                    "editablenode": "",
+                    "linkToMap": {
+                      "linkMiddle": "waers",
+                      "linkToLable": "true",
+                      "linkType": "string",
+                      "mapBasePath": "mapByBukrs"
+                    },
+                    "name": "bz",
+                    "showLinkage": [
+                      {
+                        "id": "abroadis",
+                        "values": [
+                          "1"
+                        ]
+                      }
+                    ],
+                    "title": "",
+                    "title1": "币种"
                   },
                   {
                     "component": "text",
                     "datatype": "money",
-                    "editable": false,
-                    "name": "sumdmbtr6",
-                    "title": "合计",
-                    "value": "900"
+                    "editablenode": "",
+                    "name": "dmbtr",
+                    "title": "",
+                    "title1": "总金额"
+                  },
+                  {
+                    "component": "text",
+                    "editablenode": "",
+                    "name": "ename",
+                    "title": "",
+                    "title1": "乘车人"
+                  },
+                  {
+                    "component": "text",
+                    "editablenode": "",
+                    "name": "kuname",
+                    "showLinkage": [
+                      {
+                        "id": "abroadis",
+                        "values": [
+                          "0"
+                        ]
+                      }
+                    ],
+                    "title": "",
+                    "title1": "客户名称"
+                  },
+                  {
+                    "component": "textarea",
+                    "editablenode": "",
+                    "name": "smemoltrad",
+                    "rows": "3",
+                    "title": "",
+                    "title1": "备注"
+                  },
+                  {
+                    "basePath": "reimltradList",
+                    "cells": [
+                      {
+                        "component": "text",
+                        "editablenode": "",
+                        "name": "reimtypetchildname",
+                        "title": "产品/组合编码"
+                      },
+                      {
+                        "component": "text",
+                        "datatype": "money",
+                        "editablenode": "",
+                        "name": "dmbtr",
+                        "title": "金额(RMB)"
+                      },
+                      {
+                        "component": "text",
+                        "editablenode": "",
+                        "name": "dmbtrtext",
+                        "title": "金额(大写)"
+                      }
+                    ],
+                    "component": "table",
+                    "titleIndex": 0
                   }
                 ]
               ],
-              "titleIndex": 4
-            },
-            {
-              "component": "textarea",
-              "editable": false,
-              "name": "clremark",
-              "rows": "2",
-              "title": "个人超限额说明",
-              "value": ""
+              "tabletype": "looppanel",
+              "title": "",
+              "titleIndex": 0
             }
           ],
-          "title": "差旅往返交通、住宿、餐饮费"
+          "title": "长途交通"
         },
         {
           "component": "panel",
           "editable": false,
-          "panel_id": "jt",
-          "showLinkage": [
-            {
-              "id": "reimtype",
-              "value": "2"
-            }
-          ],
+          "panel_id": "snjt",
           "subComponents": [
             {
               "basePath": "citys",
               "component": "table_form",
               "editable": false,
-              "id": "citys_table_one",
+              "id": "citys",
               "tableForms": [
                 [
+                  {
+                    "component": "linkToMap",
+                    "editablenode": "",
+                    "linkToMap": {
+                      "linkMiddle": "stypec",
+                      "linkToLable": "true",
+                      "linkType": "string",
+                      "mapBasePath": "mapByBukrs"
+                    },
+                    "name": "sn_jtfs",
+                    "title": "",
+                    "title1": "交通方式"
+                  },
+                  {
+                    "component": "linkToMap",
+                    "editablenode": "",
+                    "linkToMap": {
+                      "linkMiddle": "mtypec",
+                      "linkToLable": "true",
+                      "linkType": "string",
+                      "mapBasePath": "citySubMenu"
+                    },
+                    "name": "sn_jtlx",
+                    "title": "",
+                    "title1": "交通类型"
+                  },
+                  {
+                    "component": "select",
+                    "editablenode": "",
+                    "name": "abroadisc",
+                    "options": [
+                      {
+                        "text": "境内",
+                        "value": "0"
+                      },
+                      {
+                        "text": "境外",
+                        "value": "1"
+                      }
+                    ],
+                    "title": "",
+                    "title1": "境内/境外"
+                  },
+                  {
+                    "component": "text",
+                    "editablenode": "",
+                    "name": "colnrc",
+                    "title": "",
+                    "title1": "项目号"
+                  },
                   {
                     "component": "date1",
                     "editablenode": "",
                     "name": "sdatec",
-                    "title": "日期"
+                    "title": "",
+                    "title1": "出发日期"
+                  },
+                  {
+                    "component": "text",
+                    "datatype": "money",
+                    "editablenode": "",
+                    "name": "wrbtrc",
+                    "showLinkage": [
+                      {
+                        "id": "abroadisc",
+                        "values": [
+                          "1"
+                        ]
+                      }
+                    ],
+                    "title": "",
+                    "title1": "原币总金额"
+                  },
+                  {
+                    "component": "text",
+                    "editablenode": "",
+                    "name": "kursfc",
+                    "showLinkage": [
+                      {
+                        "id": "abroadisc",
+                        "values": [
+                          "1"
+                        ]
+                      }
+                    ],
+                    "title": "",
+                    "title1": "汇率"
+                  },
+                  {
+                    "component": "linkToMap",
+                    "editablenode": "",
+                    "linkToMap": {
+                      "linkMiddle": "waersc",
+                      "linkToLable": "true",
+                      "linkType": "string",
+                      "mapBasePath": "mapByBukrs"
+                    },
+                    "name": "bzc",
+                    "showLinkage": [
+                      {
+                        "id": "abroadisc",
+                        "values": [
+                          "1"
+                        ]
+                      }
+                    ],
+                    "title": "",
+                    "title1": "币种"
+                  },
+                  {
+                    "component": "text",
+                    "datatype": "money",
+                    "editablenode": "",
+                    "name": "dmbtrc",
+                    "title": "",
+                    "title1": "总金额"
                   },
                   {
                     "component": "text",
                     "editablenode": "",
                     "name": "saddrc",
-                    "title": "出发地"
+                    "title": "",
+                    "title1": "出发地"
                   },
                   {
                     "component": "text",
                     "editablenode": "",
                     "name": "eaddrc",
-                    "title": "到达地"
+                    "title": "",
+                    "title1": "到达地"
                   },
                   {
                     "component": "text",
-                    "datatype": "money",
                     "editablenode": "",
-                    "name": "citydmbtr",
-                    "title": "交通金额"
+                    "name": "enamec",
+                    "title": "",
+                    "title1": "乘车人"
                   },
                   {
                     "component": "textarea",
                     "editablenode": "",
-                    "name": "reason",
-                    "title": "事由"
+                    "name": "smemoc",
+                    "rows": "3",
+                    "title": "",
+                    "title1": "备注"
+                  },
+                  {
+                    "basePath": "reimcityList",
+                    "cells": [
+                      {
+                        "component": "text",
+                        "editablenode": "",
+                        "name": "reimtypetchildname",
+                        "title": "产品/组合编码"
+                      },
+                      {
+                        "component": "text",
+                        "datatype": "money",
+                        "editablenode": "",
+                        "name": "dmbtr",
+                        "title": "金额(RMB)"
+                      },
+                      {
+                        "component": "text",
+                        "editablenode": "",
+                        "name": "dmbtrtext",
+                        "title": "金额(大写)"
+                      }
+                    ],
+                    "component": "table",
+                    "titleIndex": 0
+                  }
+                ],
+                [
+                  {
+                    "component": "text",
+                    "editable": false,
+                    "name": "sn_jtfs",
+                    "title": "",
+                    "title1": "交通方式",
+                    "value": "2301-出租车"
+                  },
+                  {
+                    "component": "text",
+                    "editable": false,
+                    "name": "sn_jtlx",
+                    "title": "",
+                    "title1": "交通类型",
+                    "value": "2401-本地交通费"
+                  },
+                  {
+                    "component": "select",
+                    "editable": false,
+                    "name": "abroadisc",
+                    "options": [
+                      {
+                        "text": "境内",
+                        "value": "0"
+                      },
+                      {
+                        "text": "境外",
+                        "value": "1"
+                      }
+                    ],
+                    "title": "",
+                    "title1": "境内/境外",
+                    "value": "0"
+                  },
+                  {
+                    "component": "text",
+                    "editable": false,
+                    "name": "colnrc",
+                    "title": "",
+                    "title1": "项目号",
+                    "value": "031605"
+                  },
+                  {
+                    "component": "date1",
+                    "editable": false,
+                    "name": "sdatec",
+                    "title": "",
+                    "title1": "出发日期",
+                    "value": "1510675200000"
                   },
                   {
                     "component": "text",
                     "datatype": "money",
-                    "editablenode": "",
-                    "name": "ulfee",
-                    "title": "超标准费用"
+                    "editable": false,
+                    "name": "wrbtrc",
+                    "showLinkage": [
+                      {
+                        "id": "abroadisc",
+                        "values": [
+                          "1"
+                        ]
+                      }
+                    ],
+                    "title": "",
+                    "title1": "原币总金额",
+                    "value": "0"
+                  },
+                  {
+                    "component": "text",
+                    "editable": false,
+                    "name": "kursfc",
+                    "showLinkage": [
+                      {
+                        "id": "abroadisc",
+                        "values": [
+                          "1"
+                        ]
+                      }
+                    ],
+                    "title": "",
+                    "title1": "汇率",
+                    "value": "0"
+                  },
+                  {
+                    "component": "text",
+                    "editable": false,
+                    "name": "bzc",
+                    "showLinkage": [
+                      {
+                        "id": "abroadisc",
+                        "values": [
+                          "1"
+                        ]
+                      }
+                    ],
+                    "title": "",
+                    "title1": "币种",
+                    "value": "-null"
+                  },
+                  {
+                    "component": "text",
+                    "datatype": "money",
+                    "editable": false,
+                    "name": "dmbtrc",
+                    "title": "",
+                    "title1": "总金额",
+                    "value": "1"
+                  },
+                  {
+                    "component": "text",
+                    "editable": false,
+                    "name": "saddrc",
+                    "title": "",
+                    "title1": "出发地",
+                    "value": "1"
+                  },
+                  {
+                    "component": "text",
+                    "editable": false,
+                    "name": "eaddrc",
+                    "title": "",
+                    "title1": "到达地",
+                    "value": "1"
+                  },
+                  {
+                    "component": "text",
+                    "editable": false,
+                    "name": "enamec",
+                    "title": "",
+                    "title1": "乘车人",
+                    "value": "孙毅夫"
+                  },
+                  {
+                    "component": "textarea",
+                    "editable": false,
+                    "name": "smemoc",
+                    "rows": "3",
+                    "title": "",
+                    "title1": "备注",
+                    "value": "1"
+                  },
+                  {
+                    "basePath": "reimcityList",
+                    "cells": [
+                      [
+                        {
+                          "component": "text",
+                          "editablenode": "",
+                          "name": "reimtypetchildname",
+                          "title": "产品/组合编码"
+                        },
+                        {
+                          "component": "text",
+                          "datatype": "money",
+                          "editablenode": "",
+                          "name": "dmbtr",
+                          "title": "金额(RMB)"
+                        },
+                        {
+                          "component": "text",
+                          "editablenode": "",
+                          "name": "dmbtrtext",
+                          "title": "金额(大写)"
+                        }
+                      ],
+                      [
+                        {
+                          "component": "text",
+                          "editable": false,
+                          "name": "reimtypetchildname",
+                          "title": "产品/组合编码",
+                          "value": "公共类"
+                        },
+                        {
+                          "component": "text",
+                          "datatype": "money",
+                          "editable": false,
+                          "name": "dmbtr",
+                          "title": "金额(RMB)",
+                          "value": "1"
+                        },
+                        {
+                          "component": "text",
+                          "editable": false,
+                          "name": "dmbtrtext",
+                          "title": "金额(大写)",
+                          "value": "壹元整"
+                        }
+                      ]
+                    ],
+                    "component": "table",
+                    "editable": false,
+                    "titleIndex": 0
                   }
                 ]
               ],
-              "titleIndex": 3
-            },
-            {
-              "component": "text",
-              "datatype": "money",
-              "editable": false,
-              "name": "jtdmbtr",
-              "title": "总计（小写）",
-              "value": "0"
-            },
-            {
-              "component": "text",
-              "datatype": "money2dx",
-              "dxname": "jtdmbtrcap",
-              "editable": false,
-              "name": "jtdmbtr",
-              "title": "总计（大写）",
-              "value": "0"
-            },
-            {
-              "component": "textarea",
-              "editable": false,
-              "name": "jtremark",
-              "rows": "2",
-              "title": "个人超限额说明",
-              "value": ""
+              "tabletype": "looppanel",
+              "title": "",
+              "titleIndex": 0
             }
           ],
-          "title": "差旅交通费"
+          "title": "市内交通"
         },
         {
           "component": "panel",
           "editable": false,
-          "panel_id": "bu",
-          "showLinkage": [
-            {
-              "id": "reimtype",
-              "value": "3"
-            }
-          ],
+          "panel_id": "bgfy",
           "subComponents": [
             {
-              "basePath": "business",
+              "basePath": "offices",
               "component": "table_form",
               "editable": false,
-              "id": "business_table_one",
+              "id": "offices",
               "tableForms": [
                 [
                   {
+                    "component": "linkToMap",
+                    "editablenode": "",
+                    "linkToMap": {
+                      "linkMiddle": "stypeo",
+                      "linkToLable": "true",
+                      "linkType": "string",
+                      "mapBasePath": "mapByBukrs"
+                    },
+                    "name": "bgfylx",
+                    "title": "",
+                    "title1": "办公费用类型"
+                  },
+                  {
+                    "component": "select",
+                    "editablenode": "",
+                    "name": "abroadiso",
+                    "options": [
+                      {
+                        "text": "境内",
+                        "value": "0"
+                      },
+                      {
+                        "text": "境外",
+                        "value": "1"
+                      }
+                    ],
+                    "title": "",
+                    "title1": "境内/境外"
+                  },
+                  {
+                    "component": "text",
+                    "editablenode": "",
+                    "name": "colnro",
+                    "title": "",
+                    "title1": "项目号"
+                  },
+                  {
                     "component": "date1",
                     "editablenode": "",
-                    "name": "bdate",
-                    "title": "招待日期"
-                  },
-                  {
-                    "component": "text",
-                    "editablenode": "",
-                    "name": "battend",
-                    "title": "出席员工姓名"
-                  },
-                  {
-                    "component": "text",
-                    "editablenode": "",
-                    "name": "bcustom",
-                    "title": "客户"
-                  },
-                  {
-                    "component": "text",
-                    "editablenode": "",
-                    "name": "baddress",
-                    "title": "招待地点"
-                  },
-                  {
-                    "component": "text",
-                    "editablenode": "",
-                    "name": "bnumber",
-                    "title": "用餐人数"
+                    "name": "sdateo",
+                    "title": "",
+                    "title1": "日期"
                   },
                   {
                     "component": "text",
                     "datatype": "money",
                     "editablenode": "",
-                    "name": "bmoney",
-                    "title": "消费金额"
+                    "name": "wrbtro",
+                    "showLinkage": [
+                      {
+                        "id": "abroadiso",
+                        "values": [
+                          "1"
+                        ]
+                      }
+                    ],
+                    "title": "",
+                    "title1": "原币总金额"
+                  },
+                  {
+                    "component": "text",
+                    "editablenode": "",
+                    "name": "kursfo",
+                    "showLinkage": [
+                      {
+                        "id": "abroadiso",
+                        "values": [
+                          "1"
+                        ]
+                      }
+                    ],
+                    "title": "",
+                    "title1": "汇率"
+                  },
+                  {
+                    "component": "linkToMap",
+                    "editablenode": "",
+                    "linkToMap": {
+                      "linkMiddle": "waerso",
+                      "linkToLable": "true",
+                      "linkType": "string",
+                      "mapBasePath": "mapByBukrs"
+                    },
+                    "name": "bzo",
+                    "showLinkage": [
+                      {
+                        "id": "abroadiso",
+                        "values": [
+                          "1"
+                        ]
+                      }
+                    ],
+                    "title": "",
+                    "title1": "币种"
+                  },
+                  {
+                    "component": "text",
+                    "datatype": "money",
+                    "editablenode": "",
+                    "name": "dmbtro",
+                    "title": "",
+                    "title1": "总金额"
+                  },
+                  {
+                    "component": "text",
+                    "editablenode": "",
+                    "name": "enameo",
+                    "title": "",
+                    "title1": "使用人"
+                  },
+                  {
+                    "component": "text",
+                    "editablenode": "",
+                    "name": "kunameo",
+                    "title": "",
+                    "title1": "客户名称"
                   },
                   {
                     "component": "textarea",
                     "editablenode": "",
-                    "name": "breason",
-                    "title": "事由说明"
+                    "name": "smemoo",
+                    "rows": "3",
+                    "title": "",
+                    "title1": "事由"
                   },
                   {
-                    "component": "textarea",
-                    "editablenode": "",
-                    "name": "bremarks",
-                    "title": "备注"
+                    "basePath": "reimofficeList",
+                    "cells": [
+                      {
+                        "component": "text",
+                        "editablenode": "",
+                        "name": "reimtypetchildname",
+                        "title": "产品/组合编码"
+                      },
+                      {
+                        "component": "text",
+                        "datatype": "money",
+                        "editablenode": "",
+                        "name": "dmbtr",
+                        "title": "金额(RMB)"
+                      },
+                      {
+                        "component": "text",
+                        "editablenode": "",
+                        "name": "dmbtrtext",
+                        "title": "金额(大写)"
+                      }
+                    ],
+                    "component": "table",
+                    "titleIndex": 0
                   }
                 ]
               ],
-              "titleIndex": 3
-            },
-            {
-              "component": "text",
-              "datatype": "money",
-              "editable": false,
-              "name": "budmbtr",
-              "title": "总计（小写）",
-              "value": "0"
-            },
-            {
-              "component": "text",
-              "datatype": "money2dx",
-              "dxname": "budmbtrcap",
-              "editable": false,
-              "name": "budmbtr",
-              "title": "总计（大写）",
-              "value": "0"
-            },
-            {
-              "component": "textarea",
-              "editable": false,
-              "name": "buremark",
-              "rows": "2",
-              "title": "个人超限额说明",
-              "value": ""
+              "tabletype": "looppanel",
+              "title": "",
+              "titleIndex": 0
             }
           ],
-          "title": "业务招待费"
+          "title": "办公费用"
         },
         {
           "component": "panel",
           "editable": false,
-          "panel_id": "other",
-          "showLinkage": [
-            {
-              "id": "reimtype",
-              "value": "4"
-            }
-          ],
+          "panel_id": "zdf",
           "subComponents": [
             {
-              "basePath": "others",
+              "basePath": "mealfs",
               "component": "table_form",
               "editable": false,
-              "id": "others_table_one",
+              "id": "mealfs",
               "tableForms": [
                 [
                   {
+                    "component": "linkToMap",
+                    "editablenode": "",
+                    "linkToMap": {
+                      "linkMiddle": "stypem",
+                      "linkToLable": "true",
+                      "linkType": "string",
+                      "mapBasePath": "mapByBukrs"
+                    },
+                    "name": "cflx",
+                    "title": "",
+                    "title1": "餐费类型"
+                  },
+                  {
+                    "component": "select",
+                    "editablenode": "",
+                    "name": "abroadism",
+                    "options": [
+                      {
+                        "text": "境内",
+                        "value": "0"
+                      },
+                      {
+                        "text": "境外",
+                        "value": "1"
+                      }
+                    ],
+                    "title": "",
+                    "title1": "境内/境外"
+                  },
+                  {
+                    "component": "text",
+                    "editablenode": "",
+                    "name": "colnrm",
+                    "title": "",
+                    "title1": "项目号"
+                  },
+                  {
                     "component": "date1",
                     "editablenode": "",
-                    "name": "odate",
-                    "title": "日期"
+                    "name": "sdatem",
+                    "title": "",
+                    "title1": "日期"
+                  },
+                  {
+                    "component": "text",
+                    "editablenode": "",
+                    "name": "saddrm",
+                    "title": "",
+                    "title1": "地点"
+                  },
+                  {
+                    "component": "text",
+                    "editablenode": "",
+                    "name": "eaterym",
+                    "title": "",
+                    "title1": "餐馆名称"
                   },
                   {
                     "component": "text",
                     "datatype": "money",
                     "editablenode": "",
-                    "name": "omoney",
+                    "name": "wrbtrm",
+                    "showLinkage": [
+                      {
+                        "id": "abroadism",
+                        "values": [
+                          "1"
+                        ]
+                      }
+                    ],
+                    "title": "",
+                    "title1": "原币总金额"
+                  },
+                  {
+                    "component": "text",
+                    "editablenode": "",
+                    "name": "kursfm",
+                    "showLinkage": [
+                      {
+                        "id": "abroadism",
+                        "values": [
+                          "1"
+                        ]
+                      }
+                    ],
+                    "title": "",
+                    "title1": "汇率"
+                  },
+                  {
+                    "component": "linkToMap",
+                    "editablenode": "",
+                    "linkToMap": {
+                      "linkMiddle": "waersm",
+                      "linkToLable": "true",
+                      "linkType": "string",
+                      "mapBasePath": "mapByBukrs"
+                    },
+                    "name": "bzm",
+                    "showLinkage": [
+                      {
+                        "id": "abroadism",
+                        "values": [
+                          "1"
+                        ]
+                      }
+                    ],
+                    "title": "",
+                    "title1": "币种"
+                  },
+                  {
+                    "component": "text",
+                    "datatype": "money",
+                    "editablenode": "",
+                    "name": "dmbtrm",
+                    "title": "",
+                    "title1": "总金额"
+                  },
+                  {
+                    "component": "text",
+                    "editablenode": "",
+                    "name": "enamem",
+                    "title": "",
+                    "title1": "参加内部人员"
+                  },
+                  {
+                    "component": "text",
+                    "editablenode": "",
+                    "name": "eatnum",
+                    "title": "",
+                    "title1": "参加人数"
+                  },
+                  {
+                    "component": "text",
+                    "editablenode": "",
+                    "name": "kunamem",
+                    "title": "",
+                    "title1": "客户名称"
+                  },
+                  {
+                    "component": "textarea",
+                    "editablenode": "",
+                    "name": "smemom",
+                    "rows": "3",
+                    "title": "",
+                    "title1": "用餐原因"
+                  },
+                  {
+                    "basePath": "reimealfeeList",
+                    "cells": [
+                      {
+                        "component": "text",
+                        "editablenode": "",
+                        "name": "reimtypetchildname",
+                        "title": "产品/组合编码"
+                      },
+                      {
+                        "component": "text",
+                        "datatype": "money",
+                        "editablenode": "",
+                        "name": "dmbtr",
+                        "title": "金额(RMB)"
+                      },
+                      {
+                        "component": "text",
+                        "editablenode": "",
+                        "name": "dmbtrtext",
+                        "title": "金额(大写)"
+                      }
+                    ],
+                    "component": "table",
+                    "titleIndex": 0
+                  }
+                ]
+              ],
+              "tabletype": "looppanel",
+              "title": "",
+              "titleIndex": 0
+            }
+          ],
+          "title": "招待费"
+        },
+        {
+          "component": "panel",
+          "editable": false,
+          "panel_id": "zsandcb",
+          "subComponents": [
+            {
+              "basePath": "hotels",
+              "component": "table_form",
+              "editable": false,
+              "id": "hotels",
+              "tableForms": [
+                [
+                  {
+                    "component": "linkToMap",
+                    "editablenode": "",
+                    "linkToMap": {
+                      "linkMiddle": "stypeh",
+                      "linkToLable": "true",
+                      "linkType": "string",
+                      "mapBasePath": "mapByBukrs"
+                    },
+                    "name": "zslx",
+                    "title": "",
+                    "title1": "住宿类型"
+                  },
+                  {
+                    "component": "select",
+                    "editablenode": "",
+                    "name": "abroadish",
+                    "options": [
+                      {
+                        "text": "境内",
+                        "value": "0"
+                      },
+                      {
+                        "text": "境外",
+                        "value": "1"
+                      }
+                    ],
+                    "title": "",
+                    "title1": "境内/境外"
+                  },
+                  {
+                    "component": "text",
+                    "editablenode": "",
+                    "name": "colnrh",
+                    "title": "",
+                    "title1": "项目号"
+                  },
+                  {
+                    "component": "text",
+                    "editablenode": "",
+                    "name": "saddrh",
+                    "title": "",
+                    "title1": "酒店地点"
+                  },
+                  {
+                    "component": "date1",
+                    "editablenode": "",
+                    "name": "sdateh",
+                    "title": "",
+                    "title1": "入住日期"
+                  },
+                  {
+                    "component": "date1",
+                    "editablenode": "",
+                    "name": "edateh",
+                    "title": "",
+                    "title1": "退房日期"
+                  },
+                  {
+                    "component": "text",
+                    "editablenode": "",
+                    "name": "hotelh",
+                    "title": "",
+                    "title1": "酒店名称"
+                  },
+                  {
+                    "component": "text",
+                    "editablenode": "",
+                    "name": "placeh",
+                    "showLinkage": [
+                      {
+                        "id": "abroadish",
+                        "values": [
+                          "1"
+                        ]
+                      }
+                    ],
+                    "title": "",
+                    "title1": "境外地点"
+                  },
+                  {
+                    "component": "text",
+                    "datatype": "money",
+                    "editablenode": "",
+                    "name": "wrbtrh",
+                    "showLinkage": [
+                      {
+                        "id": "abroadish",
+                        "values": [
+                          "1"
+                        ]
+                      }
+                    ],
+                    "title": "",
+                    "title1": "原币总金额"
+                  },
+                  {
+                    "component": "text",
+                    "editablenode": "",
+                    "name": "kursfh",
+                    "showLinkage": [
+                      {
+                        "id": "abroadish",
+                        "values": [
+                          "1"
+                        ]
+                      }
+                    ],
+                    "title": "",
+                    "title1": "汇率"
+                  },
+                  {
+                    "component": "linkToMap",
+                    "editablenode": "",
+                    "linkToMap": {
+                      "linkMiddle": "waersh",
+                      "linkToLable": "true",
+                      "linkType": "string",
+                      "mapBasePath": "mapByBukrs"
+                    },
+                    "name": "bzh",
+                    "showLinkage": [
+                      {
+                        "id": "abroadish",
+                        "values": [
+                          "1"
+                        ]
+                      }
+                    ],
+                    "title": "",
+                    "title1": "币种"
+                  },
+                  {
+                    "component": "text",
+                    "datatype": "money",
+                    "editablenode": "",
+                    "name": "dmbtrh",
+                    "title": "",
+                    "title1": "住宿总金额"
+                  },
+                  {
+                    "component": "text",
+                    "editablenode": "",
+                    "name": "enameh",
+                    "title": "",
+                    "title1": "同住人员"
+                  },
+                  {
+                    "component": "text",
+                    "datatype": "money",
+                    "editablenode": "",
+                    "name": "mealsuph",
+                    "title": "",
+                    "title1": "餐补"
+                  },
+                  {
+                    "component": "text",
+                    "datatype": "money",
+                    "editablenode": "",
+                    "name": "subsidyh",
+                    "title": "",
+                    "title1": "住宿补助"
+                  },
+                  {
+                    "component": "text",
+                    "datatype": "money",
+                    "editablenode": "",
+                    "name": "demealh",
+                    "title": "",
+                    "title1": "扣除餐补"
+                  },
+                  {
+                    "component": "textarea",
+                    "editablenode": "",
+                    "name": "smemoh",
+                    "rows": "3",
+                    "title": "",
+                    "title1": "住宿原因"
+                  },
+                  {
+                    "basePath": "reimhotelList",
+                    "cells": [
+                      {
+                        "component": "text",
+                        "editablenode": "",
+                        "name": "reimtypetchildname",
+                        "title": "产品/组合编码"
+                      },
+                      {
+                        "component": "text",
+                        "datatype": "money",
+                        "editablenode": "",
+                        "name": "dmbtr",
+                        "title": "住宿金额(RMB)"
+                      },
+                      {
+                        "component": "text",
+                        "editablenode": "",
+                        "name": "dmbtrtext",
+                        "title": "金额(大写)"
+                      },
+                      {
+                        "component": "text",
+                        "datatype": "money",
+                        "editablenode": "",
+                        "name": "dmbtrm",
+                        "title": "补助金额(RMB)"
+                      },
+                      {
+                        "component": "text",
+                        "editablenode": "",
+                        "name": "dmbtrmtext",
+                        "title": "金额(大写)"
+                      }
+                    ],
+                    "component": "table"
+                  }
+                ]
+              ],
+              "tabletype": "looppanel",
+              "title": "",
+              "titleIndex": 0
+            }
+          ],
+          "title": "住宿及餐补"
+        },
+        {
+          "component": "panel",
+          "editable": false,
+          "panel_id": "pxf",
+          "subComponents": [
+            {
+              "basePath": "trains",
+              "component": "table_form",
+              "editable": false,
+              "id": "trains",
+              "tableForms": [
+                [
+                  {
+                    "component": "linkToMap",
+                    "editablenode": "",
+                    "linkToMap": {
+                      "linkMiddle": "stypeg",
+                      "linkToLable": "true",
+                      "linkType": "string",
+                      "mapBasePath": "mapByBukrs"
+                    },
+                    "name": "pxlx",
+                    "title": "",
+                    "title1": "培训类型"
+                  },
+                  {
+                    "component": "select",
+                    "editablenode": "",
+                    "name": "abroadist",
+                    "options": [
+                      {
+                        "text": "境内",
+                        "value": "0"
+                      },
+                      {
+                        "text": "境外",
+                        "value": "1"
+                      }
+                    ],
+                    "title": "",
+                    "title1": "境内/境外"
+                  },
+                  {
+                    "component": "text",
+                    "editablenode": "",
+                    "name": "colnrt",
+                    "title": "",
+                    "title1": "项目号"
+                  },
+                  {
+                    "component": "date1",
+                    "editablenode": "",
+                    "name": "sdatet",
+                    "title": "",
+                    "title1": "开始日期"
+                  },
+                  {
+                    "component": "date1",
+                    "editablenode": "",
+                    "name": "edatet",
+                    "title": "",
+                    "title1": "结束日期"
+                  },
+                  {
+                    "component": "text",
+                    "editablenode": "",
+                    "name": "traint",
+                    "title": "",
+                    "title1": "书籍／课程名称"
+                  },
+                  {
+                    "component": "text",
+                    "datatype": "money",
+                    "editablenode": "",
+                    "name": "wrbtrt",
+                    "showLinkage": [
+                      {
+                        "id": "abroadist",
+                        "values": [
+                          "1"
+                        ]
+                      }
+                    ],
+                    "title": "",
+                    "title1": "原币总金额"
+                  },
+                  {
+                    "component": "text",
+                    "editablenode": "",
+                    "name": "kursft",
+                    "showLinkage": [
+                      {
+                        "id": "abroadist",
+                        "values": [
+                          "1"
+                        ]
+                      }
+                    ],
+                    "title": "",
+                    "title1": "汇率"
+                  },
+                  {
+                    "component": "linkToMap",
+                    "editablenode": "",
+                    "linkToMap": {
+                      "linkMiddle": "waerst",
+                      "linkToLable": "true",
+                      "linkType": "string",
+                      "mapBasePath": "mapByBukrs"
+                    },
+                    "name": "bzt",
+                    "showLinkage": [
+                      {
+                        "id": "abroadist",
+                        "values": [
+                          "1"
+                        ]
+                      }
+                    ],
+                    "title": "",
+                    "title1": "币种"
+                  },
+                  {
+                    "component": "text",
+                    "datatype": "money",
+                    "editablenode": "",
+                    "name": "dmbtrt",
+                    "title": "",
+                    "title1": "总金额"
+                  },
+                  {
+                    "component": "textarea",
+                    "editablenode": "",
+                    "name": "smemot",
+                    "rows": "3",
+                    "title": "",
+                    "title1": "培训说明"
+                  },
+                  {
+                    "component": "text",
+                    "editablenode": "",
+                    "name": "tnlnrt",
+                    "title": "",
+                    "title1": "培训申请单号"
+                  },
+                  {
+                    "basePath": "reimtrainList",
+                    "cells": [
+                      {
+                        "component": "text",
+                        "editablenode": "",
+                        "name": "reimtypetchildname",
+                        "title": "产品/组合编码"
+                      },
+                      {
+                        "component": "text",
+                        "datatype": "money",
+                        "editablenode": "",
+                        "name": "dmbtr",
+                        "title": "金额(RMB)"
+                      },
+                      {
+                        "component": "text",
+                        "editablenode": "",
+                        "name": "dmbtrtext",
+                        "title": "金额(大写)"
+                      }
+                    ],
+                    "component": "table"
+                  }
+                ]
+              ],
+              "tabletype": "looppanel",
+              "title": "",
+              "titleIndex": 0
+            }
+          ],
+          "title": "培训费"
+        },
+        {
+          "component": "panel",
+          "editable": false,
+          "panel_id": "txf",
+          "subComponents": [
+            {
+              "basePath": "telnets",
+              "component": "table_form",
+              "editable": false,
+              "id": "telnets",
+              "tableForms": [
+                [
+                  {
+                    "component": "linkToMap",
+                    "editablenode": "",
+                    "linkToMap": {
+                      "linkMiddle": "stypee",
+                      "linkToLable": "true",
+                      "linkType": "string",
+                      "mapBasePath": "mapByBukrs"
+                    },
+                    "name": "txlx",
+                    "title": "",
+                    "title1": "通讯类型"
+                  },
+                  {
+                    "component": "select",
+                    "editablenode": "",
+                    "name": "abroadise",
+                    "options": [
+                      {
+                        "text": "境内",
+                        "value": "0"
+                      },
+                      {
+                        "text": "境外",
+                        "value": "1"
+                      }
+                    ],
+                    "title": "",
+                    "title1": "境内/境外"
+                  },
+                  {
+                    "component": "text",
+                    "editablenode": "",
+                    "name": "colnre",
+                    "title": "",
+                    "title1": "项目号"
+                  },
+                  {
+                    "component": "text",
+                    "editablenode": "",
+                    "name": "sdatee",
+                    "title": "",
+                    "title1": "月份"
+                  },
+                  {
+                    "component": "text",
+                    "datatype": "money",
+                    "editablenode": "",
+                    "name": "wrbtre",
+                    "showLinkage": [
+                      {
+                        "id": "abroadise",
+                        "values": [
+                          "1"
+                        ]
+                      }
+                    ],
+                    "title": "",
+                    "title1": "原币总金额"
+                  },
+                  {
+                    "component": "text",
+                    "editablenode": "",
+                    "name": "kursfe",
+                    "showLinkage": [
+                      {
+                        "id": "abroadise",
+                        "values": [
+                          "1"
+                        ]
+                      }
+                    ],
+                    "title": "",
+                    "title1": "汇率"
+                  },
+                  {
+                    "component": "linkToMap",
+                    "editablenode": "",
+                    "linkToMap": {
+                      "linkMiddle": "waerse",
+                      "linkToLable": "true",
+                      "linkType": "string",
+                      "mapBasePath": "mapByBukrs"
+                    },
+                    "name": "bze",
+                    "showLinkage": [
+                      {
+                        "id": "abroadise",
+                        "values": [
+                          "1"
+                        ]
+                      }
+                    ],
+                    "title": "",
+                    "title1": "币种"
+                  },
+                  {
+                    "component": "text",
+                    "datatype": "money",
+                    "editablenode": "",
+                    "name": "dmbtre",
+                    "title": "",
+                    "title1": "总金额"
+                  },
+                  {
+                    "basePath": "reimtelnetList",
+                    "cells": [
+                      {
+                        "component": "text",
+                        "editablenode": "",
+                        "name": "reimtypetchildname",
+                        "title": "产品/组合编码"
+                      },
+                      {
+                        "component": "text",
+                        "datatype": "money",
+                        "editablenode": "",
+                        "name": "dmbtr",
+                        "title": "金额(RMB)"
+                      },
+                      {
+                        "component": "text",
+                        "editablenode": "",
+                        "name": "dmbtrtext",
+                        "title": "金额(大写)"
+                      }
+                    ],
+                    "component": "table"
+                  }
+                ]
+              ],
+              "tabletype": "looppanel",
+              "title": "",
+              "titleIndex": 0
+            }
+          ],
+          "title": "通讯费"
+        },
+        {
+          "component": "panel",
+          "editable": false,
+          "panel_id": "lpf",
+          "subComponents": [
+            {
+              "basePath": "giftfees",
+              "component": "table_form",
+              "editable": false,
+              "id": "giftfees",
+              "tableForms": [
+                [
+                  {
+                    "component": "linkToMap",
+                    "editablenode": "",
+                    "linkToMap": {
+                      "linkMiddle": "stypeg",
+                      "linkToLable": "true",
+                      "linkType": "string",
+                      "mapBasePath": "mapByBukrs"
+                    },
+                    "name": "lpfylx",
+                    "title": "",
+                    "title1": "礼品费用类型"
+                  },
+                  {
+                    "component": "select",
+                    "editablenode": "",
+                    "name": "abroadisg",
+                    "options": [
+                      {
+                        "text": "境内",
+                        "value": "0"
+                      },
+                      {
+                        "text": "境外",
+                        "value": "1"
+                      }
+                    ],
+                    "title": "",
+                    "title1": "境内/境外"
+                  },
+                  {
+                    "component": "text",
+                    "editablenode": "",
+                    "name": "colnrg",
+                    "title": "",
+                    "title1": "项目号"
+                  },
+                  {
+                    "component": "date1",
+                    "editablenode": "",
+                    "name": "sdateg",
+                    "title": "",
+                    "title1": "发生日期"
+                  },
+                  {
+                    "component": "text",
+                    "datatype": "money",
+                    "editablenode": "",
+                    "name": "wrbtrg",
+                    "showLinkage": [
+                      {
+                        "id": "abroadisg",
+                        "values": [
+                          "1"
+                        ]
+                      }
+                    ],
+                    "title": "",
+                    "title1": "原币总金额"
+                  },
+                  {
+                    "component": "text",
+                    "editablenode": "",
+                    "name": "kursfg",
+                    "showLinkage": [
+                      {
+                        "id": "abroadisg",
+                        "values": [
+                          "1"
+                        ]
+                      }
+                    ],
+                    "title": "",
+                    "title1": "汇率"
+                  },
+                  {
+                    "component": "linkToMap",
+                    "editablenode": "",
+                    "linkToMap": {
+                      "linkMiddle": "waersg",
+                      "linkToLable": "true",
+                      "linkType": "string",
+                      "mapBasePath": "mapByBukrs"
+                    },
+                    "name": "bzg",
+                    "showLinkage": [
+                      {
+                        "id": "abroadisg",
+                        "values": [
+                          "1"
+                        ]
+                      }
+                    ],
+                    "title": "",
+                    "title1": "币种"
+                  },
+                  {
+                    "component": "text",
+                    "datatype": "money",
+                    "editablenode": "",
+                    "name": "dmbtrg",
+                    "title": "",
+                    "title1": "总金额"
+                  },
+                  {
+                    "component": "text",
+                    "editablenode": "",
+                    "name": "enameg",
+                    "title": "",
+                    "title1": "慰问人"
+                  },
+                  {
+                    "component": "textarea",
+                    "editablenode": "",
+                    "name": "smemg",
+                    "rows": "3",
+                    "title": "",
+                    "title1": "慰问事由"
+                  },
+                  {
+                    "basePath": "reimgiftfeeList",
+                    "cells": [
+                      {
+                        "component": "text",
+                        "editablenode": "",
+                        "name": "reimtypetchildname",
+                        "title": "产品/组合编码"
+                      },
+                      {
+                        "component": "text",
+                        "datatype": "money",
+                        "editablenode": "",
+                        "name": "dmbtr",
+                        "title": "金额(RMB)"
+                      },
+                      {
+                        "component": "text",
+                        "editablenode": "",
+                        "name": "dmbtrtext",
+                        "title": "金额(大写)"
+                      }
+                    ],
+                    "component": "table"
+                  }
+                ]
+              ],
+              "tabletype": "looppanel",
+              "title": "",
+              "titleIndex": 0
+            }
+          ],
+          "title": "礼品费"
+        },
+        {
+          "component": "panel",
+          "editable": false,
+          "panel_id": "hz",
+          "subComponents": [
+            {
+              "basePath": "rulist",
+              "cells": [
+                [
+                  {
+                    "component": "text",
+                    "editablenode": "",
+                    "name": "stypes",
+                    "title": "费用分类"
+                  },
+                  {
+                    "component": "text",
+                    "editablenode": "",
+                    "name": "sdates",
+                    "title": "开始日期"
+                  },
+                  {
+                    "component": "text",
+                    "editablenode": "",
+                    "name": "edates",
+                    "title": "结束日期"
+                  },
+                  {
+                    "component": "text",
+                    "datatype": "money",
+                    "editablenode": "",
+                    "name": "dmbtrs",
                     "title": "金额"
                   },
                   {
                     "component": "text",
+                    "datatype": "money",
                     "editablenode": "",
-                    "name": "okstar",
-                    "title": "科目"
+                    "name": "subsidys",
+                    "title": "补助"
                   },
                   {
-                    "component": "textarea",
+                    "component": "text",
+                    "datatype": "money",
                     "editablenode": "",
-                    "name": "ocontent",
-                    "title": "内容"
+                    "name": "ulfees",
+                    "title": "超限金额"
+                  },
+                  {
+                    "component": "text",
+                    "editablenode": "",
+                    "name": "trlnrs",
+                    "title": "出差申请号"
+                  }
+                ],
+                [
+                  {
+                    "component": "text",
+                    "editable": false,
+                    "name": "stypes",
+                    "title": "费用分类",
+                    "value": "市内交通"
+                  },
+                  {
+                    "component": "text",
+                    "editable": false,
+                    "name": "sdates",
+                    "title": "开始日期",
+                    "value": "2017-11-15"
+                  },
+                  {
+                    "component": "text",
+                    "editable": false,
+                    "name": "edates",
+                    "title": "结束日期",
+                    "value": "2017-11-15"
+                  },
+                  {
+                    "component": "text",
+                    "datatype": "money",
+                    "editable": false,
+                    "name": "dmbtrs",
+                    "title": "金额",
+                    "value": "1"
+                  },
+                  {
+                    "component": "text",
+                    "datatype": "money",
+                    "editable": false,
+                    "name": "subsidys",
+                    "title": "补助",
+                    "value": "0"
+                  },
+                  {
+                    "component": "text",
+                    "datatype": "money",
+                    "editable": false,
+                    "name": "ulfees",
+                    "title": "超限金额",
+                    "value": "0"
+                  },
+                  {
+                    "component": "text",
+                    "editable": false,
+                    "name": "trlnrs",
+                    "title": "出差申请号",
+                    "value": ""
                   }
                 ]
               ],
-              "titleIndex": 2
-            },
-            {
-              "component": "text",
-              "datatype": "money",
-              "editable": false,
-              "name": "otherdmbtr",
-              "title": "总计（小写）",
-              "value": "0"
-            },
-            {
-              "component": "text",
-              "datatype": "money2dx",
-              "dxname": "travelreimcap",
-              "editable": false,
-              "name": "otherdmbtr",
-              "title": "总计（大写）",
-              "value": "0"
-            },
-            {
-              "component": "textarea",
-              "editable": false,
-              "name": "otherremark",
-              "rows": "2",
-              "title": "个人超限额说明",
-              "value": ""
+              "component": "table",
+              "editable": false
             }
           ],
-          "title": "员工其他差旅费用"
-        },
-        {
-          "component": "panel",
-          "editable": false,
-          "panel_id": "cw",
-          "subComponents": [
-            {
-              "basePath": "fiviews",
-              "component": "table_form",
-              "editable": false,
-              "id": "fiviews_table_one",
-              "tableForms": [
-                [
-                  {
-                    "component": "text",
-                    "editablenode": "",
-                    "name": "excout",
-                    "title": "费用科目"
-                  },
-                  {
-                    "component": "text",
-                    "editablenode": "",
-                    "name": "subnum",
-                    "title": "科目编号"
-                  },
-                  {
-                    "component": "text",
-                    "datatype": "money",
-                    "editablenode": "",
-                    "name": "reimmoney",
-                    "title": "报销金额"
-                  },
-                  {
-                    "component": "text",
-                    "datatype": "money",
-                    "editablenode": "",
-                    "name": "debit",
-                    "title": "扣款金额"
-                  },
-                  {
-                    "component": "text",
-                    "datatype": "money",
-                    "editablenode": "",
-                    "name": "report",
-                    "title": "实付金额"
-                  },
-                  {
-                    "component": "textarea",
-                    "editablenode": "",
-                    "name": "fromrem",
-                    "title": "扣款说明"
-                  }
-                ],
-                [
-                  {
-                    "component": "text",
-                    "editable": false,
-                    "name": "excout",
-                    "title": "费用科目",
-                    "value": "差旅费-国内-交通费"
-                  },
-                  {
-                    "component": "text",
-                    "editable": false,
-                    "name": "subnum",
-                    "title": "科目编号",
-                    "value": "6602010019"
-                  },
-                  {
-                    "component": "text",
-                    "datatype": "money",
-                    "editable": false,
-                    "name": "reimmoney",
-                    "title": "报销金额",
-                    "value": "200"
-                  },
-                  {
-                    "component": "text",
-                    "datatype": "money",
-                    "editable": false,
-                    "name": "debit",
-                    "title": "扣款金额",
-                    "value": "0"
-                  },
-                  {
-                    "component": "text",
-                    "datatype": "money",
-                    "editable": false,
-                    "name": "report",
-                    "title": "实付金额",
-                    "value": "200"
-                  },
-                  {
-                    "component": "textarea",
-                    "editable": false,
-                    "name": "fromrem",
-                    "title": "扣款说明"
-                  }
-                ],
-                [
-                  {
-                    "component": "text",
-                    "editable": false,
-                    "name": "excout",
-                    "title": "费用科目",
-                    "value": "差旅费-国内-住宿费"
-                  },
-                  {
-                    "component": "text",
-                    "editable": false,
-                    "name": "subnum",
-                    "title": "科目编号",
-                    "value": "6602010015"
-                  },
-                  {
-                    "component": "text",
-                    "datatype": "money",
-                    "editable": false,
-                    "name": "reimmoney",
-                    "title": "报销金额",
-                    "value": "400"
-                  },
-                  {
-                    "component": "text",
-                    "datatype": "money",
-                    "editable": false,
-                    "name": "debit",
-                    "title": "扣款金额",
-                    "value": "0"
-                  },
-                  {
-                    "component": "text",
-                    "datatype": "money",
-                    "editable": false,
-                    "name": "report",
-                    "title": "实付金额",
-                    "value": "400"
-                  },
-                  {
-                    "component": "textarea",
-                    "editable": false,
-                    "name": "fromrem",
-                    "title": "扣款说明"
-                  }
-                ],
-                [
-                  {
-                    "component": "text",
-                    "editable": false,
-                    "name": "excout",
-                    "title": "费用科目",
-                    "value": "差旅费-国内-餐费补助"
-                  },
-                  {
-                    "component": "text",
-                    "editable": false,
-                    "name": "subnum",
-                    "title": "科目编号",
-                    "value": "6602010016"
-                  },
-                  {
-                    "component": "text",
-                    "datatype": "money",
-                    "editable": false,
-                    "name": "reimmoney",
-                    "title": "报销金额",
-                    "value": "300"
-                  },
-                  {
-                    "component": "text",
-                    "datatype": "money",
-                    "editable": false,
-                    "name": "debit",
-                    "title": "扣款金额",
-                    "value": "0"
-                  },
-                  {
-                    "component": "text",
-                    "datatype": "money",
-                    "editable": false,
-                    "name": "report",
-                    "title": "实付金额",
-                    "value": "300"
-                  },
-                  {
-                    "component": "textarea",
-                    "editable": false,
-                    "name": "fromrem",
-                    "title": "扣款说明"
-                  }
-                ]
-              ],
-              "titleIndex": 0
-            }
-          ],
-          "title": "财务审核"
+          "title": "汇总"
         }
       ],
       "title": "申请明细"
+    },
+    {
+      "component": "panel",
+      "editable": false,
+      "pageid": "fjxx",
+      "subComponents": [],
+      "title": "附件信息"
+    },
+    {
+      "component": "panel",
+      "editable": false,
+      "pageid": "spjl",
+      "subComponents": [],
+      "title": "审批记录"
     }
   ],
   "handleOnPC": false,
-  "id": "gmk_travelreim",
-  "key": "gmk_travelreim",
-  "nachn": "沈朝云",
-  "name": "新凤祥差旅报销申请",
+  "id": "af_feetfoodapp",
+  "key": "af_feetfoodapp",
+  "nachn": "孙毅夫",
+  "name": "凤祥食品员工费用报销",
   "pageDefaultIndex": 0,
   "result": "success",
   "selectPerson": {
     "beforPop": false,
     "selectAble": false
   },
-  "stext": "信息管理中心总经理",
-  "taskDefinitionKey": "usertask2",
-  "taskId": "12c6ee12-c9e5-11e7-a2a9-525400df3779"
+  "stext": "生产运营总监",
+  "taskDefinitionKey": "accoutmanger",
+  "taskId": "e85163a2-caa2-11e7-8ee2-525400df3779"
 }

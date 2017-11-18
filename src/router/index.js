@@ -87,6 +87,9 @@ const router = new Router({
 })
 
 router.beforeEach((to, from, next) => {
+  // if (!dd.version) {
+  //   next(false)
+  // }
   if (to.meta.ddConfig) { // 如果ddConfig为ture 则进行授权jsAPI
     setDDConfig(to)
   }

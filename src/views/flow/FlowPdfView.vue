@@ -9,6 +9,8 @@
   import ding from '@/lib/ding'
   import APILIST from '@/api/apiBase'
   import baseConfig from '@/api/baseConfig'
+  import api from 'api'
+  import whole from '@/lib/whole';
 
 //  var pdfjsLib = require('pdfjs-dist');
 //  var pdfjsWorker = require('pdfjs-dist/build/pdf.worker');
@@ -37,24 +39,44 @@
     methods: {
       openPdf(params) {
         let dd = window.dd;
-        let fujianUrl = baseConfig.baseURL + APILIST.openDingfile_url + '?docmentafrescoid=' + params.docmentafrescoid + '&docmentafresconame=123.docx&ispdf=' + params.ispdf;
+        let fujianUrl = APILIST.openDingfile_url + '?docmentafrescoid=' + params.docmentafrescoid + '&docmentafresconame=' + params.docmentafresconame + '&ispdf=' + params.ispdf;
+        api.getDocument(fujianUrl, function (res) {
+          console.log(res)
+          if (res.data && res.data.mediaId !== undefined && res.data.mediaId) {
+            dd.ready(function () {
+              dd.biz.cspace.saveFile({
+                corpId: ding.CORPID,
+                url: res.data.mediaId,
+                name: params.docmentafresconame,
+                onSuccess: function(data) {
+                  console.log(data)
+                  dd.biz.cspace.preview({
+                    corpId: ding.CORPID,
+                    spaceId: data.data[0].spaceId,
+                    fileId: data.data[0].fileId,
+                    fileName: data.data[0].fileName,
+                    fileSize: data.data[0].fileSize,
+                    fileType: 'xlsx',
+                    onSuccess: function() {
+                      // 无，直接在native显示文件详细信息
+                    },
+                    onFail: function(err) {
+                      whole.showTop('预览失败')
+                      // 无，直接在native页面显示具体的错误
+                    }
+                  });
+                },
+                onFail: function(err) {
+                  window.alert(JSON.stringify(err));
+                }
+              });
+            })
+          }
+        })
 //        fujianUrl = encodeURIComponent(fujianUrl)
         console.log(fujianUrl)
         console.log(ding.CORPID)
         console.log(params.docmentafresconame)
-        dd.ready(function () {
-          dd.biz.cspace.saveFile({
-            corpId: ding.CORPID,
-            url: 'http://scm.xiangguang.com/front/registe/manual',
-            name: params.docmentafresconame,
-            onSuccess: function(data) {
-              window.alert(JSON.stringify(data))
-            },
-            onFail: function(err) {
-              window.alert(JSON.stringify(err));
-            }
-          });
-        })
 //        let _that = this;
 //        let fujianUrl = baseConfig.baseURL + APILIST.openfile_url + '?docmentafrescoid=' + params.docmentafrescoid + '&docmentafresconame=' + params.docmentafresconame + '&ispdf=' + params.ispdf;
 //        console.log(fujianUrl)

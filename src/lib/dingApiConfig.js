@@ -31,7 +31,7 @@ const dingApiConfig = {
   'biz.chat.openSingleChat': false,
   'biz.chat.toConversation': false,
   'biz.cspace.saveFile': true,
-  'biz.cspace.preview': false,
+  'biz.cspace.preview': true,
   'biz.cspace.chooseSpaceDir': false,
   'biz.util.uploadAttachment': false,
   'biz.clipboardData.setData': false,

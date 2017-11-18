@@ -31,14 +31,12 @@ export function getFlowData(flowData) {
   data.EDITARR_ = [];
   if (flowData.forms) {
     for (let sub of flowData.forms) {
-      if (sub.showLinkage && sub.showLinkage.length > 0) {
-        ifHidden(sub)
-      }
+      // if (sub.showLinkage && sub.showLinkage.length > 0) {
+      //   ifHidden(sub)
+      // }
       if (sub.subComponents) {
         let subComp = sub.subComponents
         getSubComponents(subComp);
-        console.log('========')
-        console.log(subComp)
       } else {
         if (sub.name === 'pernr' && sub.component === 'hidden') {
           data.PERNR_ = sub.value
@@ -195,9 +193,9 @@ export function getFlowData(flowData) {
 
 function getSubComponents(subData) {
   for (let sub of subData) {
-    if (sub.showLinkage && sub.showLinkage.length > 0) {
-      ifHidden(sub)
-    }
+    // if (sub.showLinkage && sub.showLinkage.length > 0) {
+    //   ifHidden(sub)
+    // }
     if (sub.subComponents) {
       let subComp = sub.subComponents
       getSubComponents(subComp);
@@ -362,13 +360,12 @@ function ifHidden(sub) { // 判断含有showLinkage的子项 然后搜索showLin
     for (let sitem of subD) {
       let index = _.findLastIndex(sitem.subComponents, {name: id}) // 找到name是【id】在父类中的位置
       if (index !== -1) {
-        console.log(index)
         let subDVal = sitem.subComponents[index].value
-        let ifHidden = true;
+        let isHidden = true;
         if (val.indexOf(subDVal) >= 0) { // 是否包含， 包含的话不用隐藏
-          ifHidden = false
+          isHidden = false
         }
-        sub.hidden = ifHidden
+        sub.hidden = isHidden
       }
     }
   }
@@ -474,5 +471,6 @@ export function getFlowHistoryData(historyData) {
 }
 export default {
   getFlowData,
-  getFlowHistoryData
+  getFlowHistoryData,
+  ifHidden
 }

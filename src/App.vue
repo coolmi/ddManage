@@ -84,7 +84,7 @@
 
   html, body {
     width: 100%;
-    heigth: 80%
+    heigth: 100%
   }
 
   body {

@@ -26,7 +26,6 @@ axios.interceptors.request.use((config) => {
 
 axios.interceptors.response.use((res) => {
   whole.leave()
-  console.log(res)
   if (res.data.code) {
     if (res.data.code === '200') {
       res.data.code = true;
@@ -57,7 +56,7 @@ axios.interceptors.response.use((res) => {
   whole.leave()
   ding.alertInfo('网络异常，请刷新重试');
   console.log(JSON.stringify(error))
-  this.$raven('错误URL' + error.request.url + error)
+  // this.$raven('错误URL' + error.request.url + error)
   return Promise.reject(error);
 })
 export default axios;

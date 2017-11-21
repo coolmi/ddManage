@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <div v-for="(subC, index) in subforms" :key="index"  v-show="!subC.hidden">
+  <div class="lzl-cells vux-no-group-title">
+    <div v-for="(subC, index) in subforms" :key="index" v-show="!subC.hidden" class="lzl-cells-div">
       <template v-if="subC.subComponents">
         <template v-if="subC.panel_id !== ''">
           <flow-child-card
@@ -92,7 +92,6 @@
   import FlowListCard from 'comp/FlowListCard'
   import FlowChildCard from 'comp/FlowChildCard'
   import {CellFormPreview, XInput, Group, XButton, Cell, Divider, XTextarea} from 'vux'
-  import acell from 'comp/cell'
   import Vue from 'vue'
 
   export default {
@@ -135,8 +134,53 @@
       Group,
       Cell,
       Divider,
-      XTextarea,
-      acell
+      XTextarea
     }
   }
 </script>
+
+<style lang="less" scoped type="text/less">
+  .lzl-cells {
+    background-color: #FFFFFF;
+    line-height: 1.41176471;
+    font-size: 17px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .lzl-cells:after {
+    content: " ";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    height: 1px;
+    border-bottom: 1px solid #D9D9D9;
+    color: #D9D9D9;
+    -webkit-transform-origin: 0 100%;
+    transform-origin: 0 100%;
+    -webkit-transform: scaleY(0.5);
+    transform: scaleY(0.5);
+  }
+
+  /*.lzl-cells:before {*/
+    /*content: " ";*/
+    /*position: absolute;*/
+    /*left: 0;*/
+    /*top: 0;*/
+    /*right: 0;*/
+    /*height: 1px;*/
+    /*border-top: 1px solid #C7C7C7;*/
+    /*color: #C7C7C7;*/
+    /*transform-origin: 0 0;*/
+    /*transform: scaleY(0.5);*/
+  /*}*/
+
+  /*.lzl-cells {*/
+    /*&:first-child {*/
+      /*&:before {*/
+        /*display: none;*/
+      /*}*/
+    /*}*/
+  /*}*/
+</style>

@@ -109,6 +109,7 @@
 
 <style scoped lang="less" type="text/less">
   .footerButton {
+    padding-bottom: 10px;
     text-align: center;
   }
 </style>

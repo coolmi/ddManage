@@ -8,10 +8,10 @@
             <span>{{contentdata.name}}</span>
           </div>
           <!--<div class="flow_list_card_hd_right">-->
-            <!--<span>NO.{{contentdata.APPID_}}</span>-->
+          <!--<span>NO.{{contentdata.APPID_}}</span>-->
           <!--</div>-->
         </div>
-        <div slot="content" class="flow_list_card_content" v-if="contentdata.nachn">
+        <div slot="content" class="flow_list_card_content" v-if="contentdata.nachn" @click="openPerInfoPage">
           <div class="flow_list_card_content_a" @click="openPerInfoPage">
             <div class="flow_list_card_content_div">
               <div>Name.</div>
@@ -29,25 +29,54 @@
         </div>
         <div slot="footer">
           <div class="flow_list_card_ft_left">
-            <p @click="openHistory(flowHistory)"><span><img src="static/images/je.png" width="13" height="13" style="padding-top: 5px; padding-right: 2px"></span>{{(flowHistory.current_task ? flowHistory.current_task : '当前节点：审批中'), 20 | subTitle}}</p>
-            <p @click="openFjList"><span><img src="static/images/fj.png" width="12" height="12" style="padding-right: 2px; margin-top: 12px;"></span>{{flowFiles.length !== 0 ? '附件个数：' + flowFiles.length : '暂无附件'}}</p>
+            <div class="timeline" @click="openHistory(flowHistory)" v-if="cardHistoryData.length > 1">
+              <ul>
+                <li class="timeline-item">
+                  <div class="timeline-item-color timeline-item-head"><i
+                    class="timeline-item-checked weui-icon weui_icon_success_no_circle weui-icon-success-no-circle"></i>
+                  </div>
+                  <div class="timeline-item-tail" style=""></div>
+                  <div class="timeline-item-content">
+                    <p @click="openHistory(flowHistory)">上一环节：{{cardHistoryData[1].content, 20 | subTitle}}</p>
+                    <p class="recent">{{cardHistoryData[1].message, 20 | subTitle}}</p>
+                    <!--style="border-bottom: 1px dashed rebeccapurple"-->
+                  </div>
+                </li>
+                <li class="timeline-item">
+                  <div class="timeline-item-color timeline-item-head timeline-item-head-first"><i
+                    class="timeline-item-checked weui-icon weui_icon_success_no_circle weui-icon-success-no-circle"
+                    style="display: none;"></i></div>
+                  <div class="timeline-item-tail" style="display: none;"></div>
+                  <div class="timeline-item-content">
+                    <p @click="openHistory(flowHistory)">{{cardHistoryData[0].content, 20 | subTitle}}</p>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <p v-else-if="cardHistoryData.length = 1" @click="openHistory(flowHistory)"><span><img src="static/images/je.png" width="13" height="13"
+                                                            style="padding-top: 5px; padding-right: 2px"></span>{{(flowHistory.current_task
+              ? flowHistory.current_task : '当前节点：审批中'), 20 | subTitle}}</p>
+            <p @click="openFjList" v-if="!showLeftPop"><span><img src="static/images/fj.png" width="12" height="12"
+                                              style="padding-right: 2px; margin-top: 12px;"></span>{{flowFiles.length
+              !== 0 ? '附件个数：' + flowFiles.length : '暂无附件'}}</p>
+            <p @click="showLeftPop = false" v-else>隐藏附件</p>
           </div>
         </div>
         <!--<div slot="footer" @click="openHistory(flowHistory)">-->
-          <!--<div class="flow_list_card_ft_left">-->
-            <!--<p>{{(flowHistory.current_task ? flowHistory.current_task : '当前节点：审批中'), 15 | subTitle}}</p>-->
-          <!--</div>-->
+        <!--<div class="flow_list_card_ft_left">-->
+        <!--<p>{{(flowHistory.current_task ? flowHistory.current_task : '当前节点：审批中'), 15 | subTitle}}</p>-->
+        <!--</div>-->
         <!--</div>-->
       </flow-list-card>
       <!--</sticky>-->
       <!--附件列表-->
-      <div v-show="showLeftPop">
-        <div class="itemTitle" @click="showLeftPop = false">隐藏</div>
-        <flow-child-card VHidden @click.native="openFj(file)" v-for="(file, index) in flowFiles" :key="index"
-                         :title="(index + 1) + ': ' + file.filename">{{file.filename, 10 | subTitle}}
-        </flow-child-card>
-      </div>
-
+      <group>
+        <div v-show="showLeftPop">
+          <flow-child-card VHidden @click.native="openFj(file)" v-for="(file, index) in flowFiles" :key="index"
+                           :title="(index + 1) + ': ' + file.filename">{{file.filename, 10 | subTitle}}
+          </flow-child-card>
+        </div>
+      </group>
       <!--循环列表-->
       <flow-content :contentdata="contentdata"></flow-content>
     </div>
@@ -65,7 +94,7 @@
 <script>
   import FlowListCard from 'comp/FlowListCard'
   import FlowChildCard from 'comp/FlowChildCard'
-  import {TransferDom, Popup, Timeline, TimelineItem, Sticky} from 'vux'
+  import {TransferDom, Group, Cell, Popup, Timeline, TimelineItem, Sticky} from 'vux'
   import FlowButton from 'comp/FlowButton';
   import FlowContent from 'comp/FlowContent';
   import FlowHistoryContent from 'comp/FlowHistoryContent';
@@ -91,6 +120,8 @@
       FlowButton,
       FlowContent,
       FlowHistoryContent,
+      Group,
+      Cell,
       Sticky
     },
     data() {
@@ -104,6 +135,7 @@
         flowdata: {},
         contentdata: {},
         historyData: [],
+        cardHistoryData: [],
         flowFilesData: [],
         flowFiles: [],
         flowHistory: [],
@@ -166,6 +198,7 @@
       },
       // 获取流程信息
       getRouteHandleInfo(flowParams) {
+        console.log(flowParams)
         let _that = this;
         api.getHandleInfo(flowParams, function (res) {
           let data = res.data;
@@ -307,18 +340,20 @@
       openPerInfoPage() {
         let dd = window.dd;
         let _that = this;
-        dd.biz.util.open({
-          name: 'profile',
-          params: {
-            id: _that.userid,
-            corpId: ding.CORPID
-          },
-          onSuccess: function () {
-          },
-          onFail: function (err) {
-            console.log(err)
-          }
-        });
+        dd.ready(function () {
+          dd.biz.util.open({
+            name: 'profile',
+            params: {
+              id: _that.userid,
+              corpId: ding.CORPID
+            },
+            onSuccess: function () {
+            },
+            onFail: function (err) {
+              console.log(err)
+            }
+          });
+        })
       },
       // 根据pernr获取订单userid
       getDingUserInfo(pernr) {
@@ -341,6 +376,9 @@
         api.getHistory(params, function (res) {
           let data = res.data;
           _that.flowHistory = data;
+          let historyData = FDUtils.getFlowHistoryData(data)
+          console.log(historyData)
+          _that.cardHistoryData = historyData
         })
       },
       // 获取流程附件
@@ -402,6 +440,7 @@
 </script>
 
 <style scoped lang="less" type="text/less">
+  @import '../../styles/timeline.less';
   .text_span {
     text-align: center;
   }

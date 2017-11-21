@@ -115,9 +115,9 @@
     height: 1px;
     border-top: 1px solid #D9D9D9;
     color: #D9D9D9;
-    -webkit-transform-origin: 0 0;
+     -webkit-transform-origin: 0 0;
     transform-origin: 0 0;
-    -webkit-transform: scaleY(0.5);
+     -webkit-transform: scaleY(0.5);
     transform: scaleY(0.5);
   }
 
@@ -130,9 +130,9 @@
     height: 1px;
     border-bottom: 1px solid #D9D9D9;
     color: #D9D9D9;
-    -webkit-transform-origin: 0 100%;
+     -webkit-transform-origin: 0 100%;
     transform-origin: 0 100%;
-    -webkit-transform: scaleY(0.5);
+     -webkit-transform: scaleY(0.5);
     transform: scaleY(0.5);
   }
 
@@ -155,8 +155,8 @@
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
+     -webkit-box-align: center;
+     -ms-flex-align: center;
     align-items: center;
   }
 
@@ -219,7 +219,7 @@
   }
 
   .weui-cell_access {
-    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
     color: inherit;
   }
   .weui-cell_access .weui-cell__ft_xfx.vux-cell-arrow-down:after {
@@ -238,7 +238,7 @@
     border-width: 2px 2px 0 0;
     border-color: #c8c8cd;
     border-style: solid;
-    -webkit-transform: matrix(.71, .71, -.71, .71, 0, 0);
+     -webkit-transform: matrix(.71, .71, -.71, .71, 0, 0);
     transform: matrix(.71, .71, -.71, .71, 0, 0);
     position: relative;
     top: -2px;

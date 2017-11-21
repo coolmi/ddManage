@@ -6,9 +6,18 @@
           <x-textarea v-model="item.nvalue" :title="item.title"></x-textarea>
         </group>
       </template>
-      <template v-else-if="item.component === 'checkbox' || item.component === 'radio'">
+      <template v-else-if="item.component === 'checkbox'">
         <group :title="item.title">
           <checker v-model="item.nvalue" type="checkbox" default-item-class="checker-item"
+                   selected-item-class="checker-item-selected">
+            <checker-item :value="opt" v-for="(opt, index) in item.options" :key="index">{{opt.value}}</checker-item>
+            </checker-item>
+          </checker>
+        </group>
+      </template>
+      <template v-else-if="item.component === 'radio'">
+        <group :title="item.title">
+          <checker v-model="item.nvalue" default-item-class="checker-item"
                    selected-item-class="checker-item-selected">
             <checker-item :value="opt" v-for="(opt, index) in item.options" :key="index">{{opt.value}}</checker-item>
             </checker-item>
@@ -79,7 +88,7 @@
             if (o.value !== '') {
               let aa = {};
               aa.key = o.value;
-              aa.value = o.text;
+              aa.value = o.text || o.title;
               arr.push(aa)
             }
           }
@@ -91,7 +100,7 @@
             if (o.value !== '') {
               let aa = {};
               aa.key = o.value;
-              aa.value = o.title;
+              aa.value = o.title || o.text;
               arr.push(aa)
             }
           }

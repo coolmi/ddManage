@@ -2,9 +2,16 @@
   <div class="flow_content">
     <div v-for="item in contentdata.forms" :key="item.pageid">
       <!--&& item.pageid !== 'jbxx' && item.pageid !== 'sqxx' && item.pageid !== 'sqrxx'-->
-      <div class="itemTitle" v-if="item.title && item.pageid !== 'fjxx' && item.pageid !== 'spjl' && item.pageid !== 'jbxx'">{{item.title}}</div>
-      <flow-sub-content style="margin-top: 0" :subforms="item.subComponents"
-                        v-if="item.subComponents && item.pageid !== 'fjxx' && item.pageid !== 'spjl' && item.pageid !== 'jbxx'"></flow-sub-content>
+      <!--<div class="itemTitle" v-if="item.title && item.pageid !== 'fjxx' && item.pageid !== 'spjl' && item.pageid !== 'jbxx'">{{item.title}}</div>-->
+      <group gutter="2">
+        <cell class="itemTitle" v-if="item.title && item.pageid !== 'fjxx' && item.pageid !== 'spjl'"
+              :title="item.title" is-link :arrow-direction="item.showContent ? 'down' : 'left'"
+              @click.native="item.showContent = !item.showContent"></cell>
+        <!--{{item.showContent ? '隐藏': '展开'}}-->
+      </group>
+      <flow-sub-content v-show="item.showContent" :ref="item.pageid" style="margin-top: 0"
+                        :subforms="item.subComponents"
+                        v-if="item.subComponents && item.pageid !== 'fjxx' && item.pageid !== 'spjl'"></flow-sub-content>
     </div>
   </div>
 </template>
@@ -14,7 +21,7 @@
   import FlowSubContent from 'comp/FlowSubContent'
   import FlowEditSubContent from 'comp/FlowEditSubContent'
   import {XInput, Group, XButton, Cell, Divider, Popup, XTextarea} from 'vux'
-  import acell from 'comp/cell'
+  //  import acell from 'comp/cell'
 
   export default {
     name: 'FlowContent',
@@ -42,7 +49,7 @@
       Divider,
       FlowSubContent,
       FlowEditSubContent,
-      acell,
+//      acell,
       Popup,
       XTextarea
     },
@@ -53,6 +60,10 @@
     methods: {
       getEleByForms(forms) {
 //        console.log(forms)
+      },
+      showcell(pageid) {
+        console.log(this.$refs[pageid])
+        console.log(pageid)
       }
     }
   }

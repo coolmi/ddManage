@@ -260,7 +260,7 @@
                     title: '选择人员',
                     corpId: 'ding7d5c838d71be2f8535c2f4657eb6378f',
                     multiple: true,
-                    limitTips: '',
+                    limitTips: '请选择相关人员',
                     maxUsers: 10,
                     pickedUsers: pickedUsers,
                     appId: 126759727,

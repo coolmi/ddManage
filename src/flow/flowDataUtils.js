@@ -24,7 +24,8 @@ let data = {
   APPDA_: '',
   ID_: '',
   EDITARR_: [],
-  flowData: []
+  flowData: [],
+  showContent: false
 }
 export function getFlowData(flowData) {
   data.flowData = flowData.forms
@@ -34,6 +35,10 @@ export function getFlowData(flowData) {
       // if (sub.showLinkage && sub.showLinkage.length > 0) {
       //   ifHidden(sub)
       // }
+      sub.showContent = false;
+      if (sub.pageid === 'sqxxmx') {
+        sub.showContent = true;
+      }
       if (sub.subComponents) {
         let subComp = sub.subComponents
         getSubComponents(subComp);

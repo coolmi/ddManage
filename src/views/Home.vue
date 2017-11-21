@@ -117,13 +117,29 @@
       this.$navigation.on('back', (to, from) => {
         _that.doNext(_that.index)
         _that.selectedIndex = _that.index
+        _that.startPush(); // 启动刷新
       })
       this.getUserid();
-      this.setRight(); // 设置右上角按钮
+//      this.setRight(); // 设置右上角按钮
+      this.startPush(); // 启动刷新
     },
     methods: {
+      startPush() {
+        let dd = window.dd;
+        let _that = this;
+        dd.ready(function () {
+          dd.ui.pullToRefresh.enable({
+            onSuccess: function() {
+              _that.doNext(_that.index);
+            },
+            onFail: function() {
+            }
+          })
+        })
+      },
       getUserid() {
         let _that = this;
+//        _that.doNext(_that.flowType);
         dingUser.getRequestAuthCode(this.path).then((data) => {
           api.getLogin(data, function (res) {
             if (res.data.code) {
@@ -157,10 +173,11 @@
           })
         }
         this.flowType = flowIndex
+        ding.stopPush()
       },
       toFlowView(item, type) {
         let flowParams = flowGLU.getList(item, type);
-        this.$store.dispatch('saveFlowParams', flowParams);
+//        this.$store.dispatch('saveFlowParams', flowParams);
         if (type === 'db') {
           this.$router.push({path: '/flowHandle', query: {flowParams: JSON.stringify(flowParams)}})
         } else {

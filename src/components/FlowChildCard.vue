@@ -1,38 +1,38 @@
 <template>
-  <div>
-    <div
-      class="flow-child-card"
-      :class="{
+  <div
+    class="lzl-cell vux-cell-no-border-intent"
+    :class="{
       'vux-tap-active': isLink || !!link,
-      'flow-child-card_access': isLink || !!link,
+      'lzl-cell_access': isLink || !!link,
       'vux-cell-no-border-intent': !borderIntent,
       'vux-cell-disabled': disabled
     }"
-      @click="onClick">
-      <div class="flow-child-card__hd">
-        <slot name="icon"></slot>
-      </div>
-      <div class="vux-cell-bd" :class="{'vux-cell-primary': primary === 'title' && valueAlign !== 'left'}">
-        <p>
-          <label class="vux-label" style="text-align: left; margin-right: 0.2rem;" :class="[{ vuxLabelWidth: !VHidden }, { vuxLabelColor: VHidden }, labelClass]" v-if="title || hasTitleSlot">
-            <slot name="title">{{ title }}</slot>
-          </label>
-          <slot name="after-title"></slot>
-        </p>
-      </div>
-      <div class="flow-child-card__ft_xfx" v-show="!VHidden" :class="valueClass">
-        <slot name="value"></slot>
-        <slot>{{ value }}</slot>
-        <i class="weui-loading" v-if="isLoading"></i>
-      </div>
-      <slot name="child"></slot>
+    @click="onClick">
+    <div class="lzl-cell__hd">
+      <slot name="icon"></slot>
     </div>
+    <div class="vux-cell-bd" :class="{'vux-cell-primary': primary === 'title' && valueAlign !== 'left'}">
+      <p>
+        <label class="vux-label" style="text-align: left; margin-right: 0.2rem;"
+               :class="[{ vuxLabelWidth: !VHidden }, { vuxLabelColor: VHidden }, labelClass]"
+               v-if="title || hasTitleSlot">
+          <slot name="title">{{ title }}</slot>
+        </label>
+        <slot name="after-title"></slot>
+      </p>
+    </div>
+    <div class="lzl-cell__ft_xfx" :class="valueClass">
+      <slot name="value"></slot>
+      <slot>{{ value }}</slot>
+      <i class="weui-loading" v-if="isLoading"></i>
+    </div>
+    <slot name="child"></slot>
   </div>
 </template>
 
 <script>
   export default {
-    name: 'cell',
+    name: 'flowChildCard',
     props: {
       VHidden: {
         type: Boolean,
@@ -125,14 +125,8 @@
     color: @cell-placeholder-color;
   }
 
-  .flow-child-card {
-    margin: .5rem 1rem;
+  .lzl-cell{
     padding: 10px 15px;
-    border: 1px;
-    border-radius: .5rem;
-    overflow: hidden;
-    box-shadow: 1px 2px 1px #E0DFEC;
-    background-color: #ffffff;
     position: relative;
     display: -webkit-box;
     display: -ms-flexbox;
@@ -142,20 +136,23 @@
     align-items: center;
   }
 
-  .flow-child-card {
-    &:first-child{
-      &:before{
-        display: none;
-      }
-    }
-  }
-  .collapseCell .flow-child-card {
-    &:first-child{
-      &:before{
-        display: none;
-      }
-    }
-  }
+  /*.lzl-cell{*/
+    /*&:before {*/
+      /*content: " ";*/
+      /*position: absolute;*/
+      /*left: 0;*/
+      /*top: 0;*/
+      /*right: 0;*/
+      /*height: 1px;*/
+      /*border-top: 1px solid #D9D9D9;*/
+      /*color: #D9D9D9;*/
+      /*-webkit-transform-origin: 0 0;*/
+      /*transform-origin: 0 0;*/
+      /*-webkit-transform: scaleY(0.5);*/
+      /*transform: scaleY(0.5);*/
+      /*left: 15px;*/
+    /*}*/
+  /*}*/
 
   .vux-cell-primary {
     flex: 1;
@@ -165,54 +162,40 @@
     display: block;
     word-wrap: break-word;
     word-break: break-all;
+    font-size: 1rem;
   }
 
-  /*.flow-child-card :before {*/
-  /*content: " ";*/
-  /*position: absolute;*/
-  /*left: 0;*/
-  /*top: 0;*/
-  /*right: 0;*/
-  /*height: 1px;*/
-  /*border-top: 1px solid #D9D9D9;*/
-  /*color: #D9D9D9;*/
-  /*-webkit-transform-origin: 0 0;*/
-  /*transform-origin: 0 0;*/
-  /*-webkit-transform: scaleY(0.5);*/
-  /*transform: scaleY(0.5);*/
-  /*left: 15px;*/
-  /*}*/
-
-  .flow-child-card__ft_xfx {
+  .lzl-cell__ft_xfx {
     text-align: right;
     color: #999999;
+    font-size: 1rem;
   }
 
-  .flow-child-card__ft_xfx .weui-loading {
+  .lzl-cell__ft_xfx .weui-loading {
     display: block;
   }
 
-  .flow-child-card__ft_xfx.vux-cell-align-left {
+  .lzl-cell__ft_xfx.vux-cell-align-left {
     text-align: left;
   }
 
-  .flow-child-card.vux-cell-no-border-intent:before {
-    left: 0;
+  .lzl-cell.vux-cell-no-border-intent:before {
+    left: 15px;
   }
 
-  .flow-child-card_access {
+  .lzl-cell_access {
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
     color: inherit;
   }
-  .flow-child-card_access .flow-child-card__ft_xfx.vux-cell-arrow-down:after {
+  .lzl-cell_access .lzl-cell__ft_xfx.vux-cell-arrow-down:after {
     transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0) rotate(90deg);
   }
 
-  .flow-child-card_access .flow-child-card__ft_xfx.vux-cell-arrow-up:after {
+  .lzl-cell_access .lzl-cell__ft_xfx.vux-cell-arrow-up:after {
     transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0) rotate(-90deg);
   }
 
-  .flow-child-card_access .flow-child-card__ft_xfx:after {
+  .lzl-cell_access .lzl-cell__ft_xfx:after {
     content: " ";
     display: inline-block;
     height: 6px;
@@ -238,7 +221,7 @@
     .vux-label {
       color: #b2b2b2;
     }
-    &.flow-child-card_access .flow-child-card__ft_xfx:after {
+    &.lzl-cell_access .lzl-cell__ft_xfx:after {
       border-color: @cell-disabled-arrow-color;
     }
   }

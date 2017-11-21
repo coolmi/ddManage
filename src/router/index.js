@@ -1,5 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+// import api from 'api'
+// import whole from '@/lib/whole'
+// import dingUser from '@/lib/dingUser'
 import store from '@/store'
 import base from '@/api/baseConfig'
 import ding from '@/lib/ding'
@@ -76,7 +79,7 @@ const router = new Router({
       meta: {title: '预览', ddConfig: true}
     },
     {
-      path: '*',
+      path: '/error',
       component: require('@/views/error'),
       meta: {
         title: '错误',
@@ -87,20 +90,24 @@ const router = new Router({
 })
 
 router.beforeEach((to, from, next) => {
-  // if (!dd.version) {
-  //   next(false)
-  // }
-  if (to.meta.ddConfig) { // 如果ddConfig为ture 则进行授权jsAPI
-    setDDConfig(to)
-  }
-  if (!to.meta.pullToRefresh) {
-    dd.ui.pullToRefresh.disable()
-  }
-  typeof to.meta.title !== undefined && setDocumentTitle(to.meta.title) // 设置title
+// else if ((to.fullPath === '/flowHandle' || to.fullPath === '/flowQuery') && !getRequestAuthCode()) {
+//     next(false)
+//   }
+  if (dd.version === null && to.fullPath.indexOf('/cs') < 0) {
+    next(false)
+  } else {
+    if (to.meta.ddConfig) { // 如果ddConfig为ture 则进行授权jsAPI
+      setDDConfig(to)
+    }
+    if (!to.meta.pullToRefresh) {
+      dd.ui.pullToRefresh.disable()
+    }
+    typeof to.meta.title !== undefined && setDocumentTitle(to.meta.title) // 设置title
 
-  setLeftBtn(to) // 设置左侧按钮
-  setRightBtn(to) // 设置右侧按钮
-  next();
+    setLeftBtn(to) // 设置左侧按钮
+    setRightBtn(to) // 设置右侧按钮
+    next();
+  }
 });
 
 let setDDConfig = function (to) {
@@ -111,6 +118,22 @@ let setDDConfig = function (to) {
     ding.alertInfo(DEM.ddConfigInfoError);
   });
 }
+
+// let getRequestAuthCode = function () {
+//   let path = store.state.ddstate.ddConfigPath || base.baseURL
+//   let result = true
+//   dingUser.getRequestAuthCode(path).then((data) => {
+//     api.getLogin(data, function (res) {
+//       if (res.data.code) {
+//         result = true
+//       } else {
+//         whole.showTop('获取钉钉免登权限失败')
+//         result = false
+//       }
+//     })
+//   })
+//   return result;
+// }
 
 let setDocumentTitle = function (title) {
   let config = {

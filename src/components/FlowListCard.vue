@@ -83,6 +83,10 @@
     font-size: 13px;
   }
 
+  .flow_list_card_content_top {
+    border-top: 1px solid #CDCDCD;
+  }
+
   .flow_list_card_ft {
     display: flex;
     display: -webkit-flex;

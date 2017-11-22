@@ -59,7 +59,13 @@
             <p @click="openFjList" v-if="!showLeftPop"><span><img src="static/images/fj.png" width="12" height="12"
                                               style="padding-right: 2px; margin-top: 12px;"></span>{{flowFiles.length
               !== 0 ? '附件个数：' + flowFiles.length : '暂无附件'}}</p>
-            <p @click="showLeftPop = false" v-else>隐藏附件</p>
+            <p @click="showLeftPop = false" v-else >
+              <span>
+                <img src="static/images/fj.png" width="12" height="12"
+                         style="padding-right: 2px; margin-top: 12px;">
+              </span>
+              隐藏附件
+            </p>
           </div>
         </div>
         <!--<div slot="footer" @click="openHistory(flowHistory)">-->
@@ -73,7 +79,8 @@
       <group>
         <div v-show="showLeftPop">
           <flow-child-card VHidden @click.native="openFj(file)" v-for="(file, index) in flowFiles" :key="index"
-                           :title="(index + 1) + ': ' + file.filename">{{file.filename, 10 | subTitle}}
+                           :title="(index + 1) + ': ' + file.filename">
+            <!--{{file.filename, 10 | subTitle}}-->
           </flow-child-card>
         </div>
       </group>

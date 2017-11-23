@@ -283,7 +283,8 @@ export default {
   getKostal: function (postid, burks, cb) {
     axios.get('/authapi/ddtalkwf/getBukrsAndKostlByPostid?postid=' + postid + '&cdburks=' + burks)
       .then((res) => {
-        cb(res);
+        console.log(res.data.data);
+        cb(res.data.data);
       }).catch((error) => {
       return Promise.reject(error)
     })

@@ -25,8 +25,8 @@
   import {Box, XButton, PopupPicker, Group, Cell, FlexboxItem, Flexbox, Sticky} from 'vux'
   import {mapGetters} from 'vuex'
   import api from 'api'
-  import dataUtils from '../../filters/dataUtils'
-  import * as _ from 'underscore'
+  import dataUtils from '../../filters/dataUtils' // 类库
+  import * as _ from 'underscore' // js库
   import whole from '@/lib/whole'
 
   export default {
@@ -55,6 +55,9 @@
     watch: {
       positionList: function (val) {
         this.forms.department[0] = val[0].value
+      },
+      burksList: function (val) {
+        this.forms.burks[0] = val[0].value
       }
     },
     created() {
@@ -68,8 +71,8 @@
         let _that = this;
         api.getPosition(function (res) {
           if (res) {
-            _that.positionList = dataUtils.getListValue(res.positionlist)
-            _that.burksList = dataUtils.getListValue(res.bukrlist)
+            _that.positionList = dataUtils.getListValue(res.positionlist) // 转换可识别的样式
+            _that.burksList = dataUtils.getListValue(res.bukrlist) // 转换可识别的样式
           }
         })
       },

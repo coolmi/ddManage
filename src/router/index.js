@@ -24,6 +24,16 @@ const router = new Router({
       meta: {title: '测试'}
     },
     {
+      path: '/businessTrip',
+      component: require('@/views/businessTrip/BusinessTrip'),
+      meta: {title: '员工出差申请'}
+    },
+    {
+      path: '/AddBusinessTrip',
+      component: require('@/views/businessTrip/AddBusinessTrip'),
+      meta: {title: '添加出差申请明细'}
+    },
+    {
       path: '/reserve',
       component: require('@/views/reserve/Reserve'),
       meta: {title: '备用金申请'}
@@ -174,4 +184,3 @@ let setRightBtn = function (to) {
 };
 
 export default router;
-

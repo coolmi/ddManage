@@ -66,6 +66,11 @@
       }
       this.flowParams = param
       this.btype = this.$route.query.btype;
+      if (this.btype === 'tj' || this.btype === 'zb' || this.btype === 'jq') {
+        this.checkidea = '同意'
+      } else if (this.btype === 'th') {
+        this.checkidea = '拒绝'
+      }
       this.flag = this.$route.query.flag;
     },
     methods: {

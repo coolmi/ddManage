@@ -16,6 +16,7 @@
     "framework7": "^2.0.0-beta.7",
     "framework7-vue": "^0.9.3",
     "mint-ui": "^2.2.10",
+    "moment": "^2.19.2",
     "raven-js": "^3.18.1",
     "underscore": "^1.8.3",
     "vue": "^2.3.3",

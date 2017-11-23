@@ -56,6 +56,8 @@ let APILIST = {
   // 验证验证码
   validate_code_url: '/api/updatepass/password/validate-code',
   // 找回密码
-  reset_pass_url: '/api/updatepass/password/reset-pass'
+  reset_pass_url: '/api/updatepass/password/reset-pass',
+
+  getBukrsAndKostlByPostid_url: '/authapi/ddtalkwf/getBukrsAndKostlByPostid'
 }
 export default APILIST

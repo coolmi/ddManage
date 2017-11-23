@@ -2,8 +2,16 @@
   <div class="timeline">
     <timeline>
       <timeline-item v-for="(hd, index) in historyData" :key="index">
-        <card :header="{title: hd.content}" :footer="{title: hd.time}" :class="[index === 0 ? 'recent' : '']" class="card">
-          <p slot="content" class="card-padding" v-if="index !== 0">{{hd.message}}</p>
+        <card :class="[index === 0 ? 'recent' : '']" class="card" style="color: #4C4C4C">
+          <div slot="header" class="weui-panel__hd" style="color: #4C4C4C">
+            {{hd.content}}
+          </div>
+          <p slot="content" class="card-padding" style="color: #4C4C4C" v-if="index !== 0">{{hd.message}}</p>
+          <div class="weui-panel__ft" slot="footer" v-if="hd.time">
+            <a class="weui-cell weui-cell_access weui-cell_link" href="javascript:">
+              <div class="weui-cell__bd" style="font-size:.75rem; color: #A0A0A0">{{hd.time}}</div>
+            </a>
+          </div>
         </card>
       </timeline-item>
     </timeline>

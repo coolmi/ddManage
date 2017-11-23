@@ -280,8 +280,10 @@ export default {
         cb(obj);
       }));
   },
-  getKostal: function (postid, burks, cb) {
-    axios.get('/authapi/ddtalkwf/getBukrsAndKostlByPostid?postid=' + postid + '&cdburks=' + burks)
+  getKostal: function (params, cb) {
+    axios.get(APILIST.getBukrsAndKostlByPostid_url, {
+      params
+    })
       .then((res) => {
         cb(res);
       }).catch((error) => {

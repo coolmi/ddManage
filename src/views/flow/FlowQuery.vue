@@ -92,7 +92,7 @@
       <!--附件列表-->
       <group>
         <div v-show="showLeftPop">
-          <div class="itemTitle" @click="showLeftPop = false">隐藏</div>
+          <!--<div class="itemTitle" @click="showLeftPop = false">隐藏</div>-->
           <flow-child-card VHidden @click.native="openFj(file)" v-for="(file, index) in flowFiles" :key="index"
                            :title="file.filename">
             <!--{{file.filename, 10 | subTitle}}-->
@@ -112,7 +112,7 @@
     <!--</div>-->
 
     <div v-transfer-dom>
-      <popup v-model="showRightPop" position="right">
+      <popup v-model="showRightPop" position="right" width="76%">
         <flow-history-content :historyData="historyData"></flow-history-content>
       </popup>
     </div>
@@ -122,7 +122,7 @@
 <script>
   import FlowListCard from 'comp/FlowListCard'
   import FlowChildCard from 'comp/FlowChildCard'
-  import {TransferDom, Popup, Timeline, TimelineItem, Sticky} from 'vux'
+  import {TransferDom, Popup, Timeline, TimelineItem, Sticky, Group} from 'vux'
   import FlowButton from 'comp/FlowButton';
   import FlowContent from 'comp/FlowContent';
   import FlowHistoryContent from 'comp/FlowHistoryContent';
@@ -139,6 +139,7 @@
       TransferDom
     },
     components: {
+      Group,
       FlowListCard,
       FlowChildCard,
       Popup,

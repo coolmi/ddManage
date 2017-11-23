@@ -91,7 +91,7 @@
                  v-show="showButton"></flow-button>
 
     <div v-transfer-dom>
-      <popup v-model="showRightPop" position="right">
+      <popup v-model="showRightPop" position="right" width="76%">
         <flow-history-content :historyData="historyData"></flow-history-content>
       </popup>
     </div>

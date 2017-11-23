@@ -12,7 +12,7 @@
       </box>
     </sticky>
     <group title="备用金列表" v-if="formsData.length > 0">
-      <cell v-for="d in formsData" :key="d.uuid" :title="d.yjje" is-link @click.native="addReserve(d)"></cell>
+      <cell v-for="d in formsData" :key="d.uuid" :title="d.yjje" is-link @click.native="addReserve(d)">{{d}}</cell>
     </group>
     <flexbox class="footerButton">
       <flexbox-item class="vux-1px-r" @click.native="addReserve" style="color:#00B705">提交</flexbox-item>
@@ -80,7 +80,11 @@
         if (this.forms.department.length > 0 && this.forms.burks > 0) {
           let postid = this.forms.department[0];
           let bukrs = this.forms.burks[0];
-          api.getKostal(postid, bukrs, function (res) {
+          let params = {
+            postid: postid,
+            bukrs: bukrs
+          }
+          api.getKostal(params, function (res) {
             console.log(res)
           })
         } else {

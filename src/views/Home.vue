@@ -18,14 +18,17 @@
     <!--<swiper-item v-for="(item, index) in dblist" :key="index">-->
     <div class="tab-swiper vux-center" ref="list">
       <group gutter="0" label-width="18rem">
-        <!--待办-->
+        <!--待办 | getDateDiff-->
         <cell v-for="(item, index) in dbList" :key="index"
               v-if="(flowType === 0 || flowType === '0') && (item.ishidden === '0' || item.ISHIDDEN === 0) && dbList.length > 0"
-              :title="item.mytitle"
+              :title="item.mytitle ? (item.mytitle || item.MYTITLE) : ((item.START_USER_NAME || item.start_user_name) + '发起了' + (item.NAME_ || item.name_) + ',请办理!')"
               :inline-desc="item.START_TIME_ || item.start_time | getLastTimeStr"
               @click.native="toFlowView(item, 'db')">
-          <img slot="icon" width="20" class="cellImg"
-               src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAC4AAAAuCAMAAABgZ9sFAAAAVFBMVEXx8fHMzMzr6+vn5+fv7+/t7e3d3d2+vr7W1tbHx8eysrKdnZ3p6enk5OTR0dG7u7u3t7ejo6PY2Njh4eHf39/T09PExMSvr6+goKCqqqqnp6e4uLgcLY/OAAAAnklEQVRIx+3RSRLDIAxE0QYhAbGZPNu5/z0zrXHiqiz5W72FqhqtVuuXAl3iOV7iPV/iSsAqZa9BS7YOmMXnNNX4TWGxRMn3R6SxRNgy0bzXOW8EBO8SAClsPdB3psqlvG+Lw7ONXg/pTld52BjgSSkA3PV2OOemjIDcZQWgVvONw60q7sIpR38EnHPSMDQ4MjDjLPozhAkGrVbr/z0ANjAF4AcbXmYAAAAASUVORK5CYII=">
+          <img slot="icon" width="35" v-if="item.avatar" class="cellImg"
+               :src="item.avatar">
+          <div slot="icon" class="cellDiv" v-else>
+            {{item.START_USER_NAME || item.start_user_name | getName}}
+          </div>
         </cell>
       </group>
       <group gutter="0">
@@ -39,20 +42,26 @@
           <div slot="default" style="font-size: .8rem">
             {{item.TASKNAME_ || item.taskname_}}
           </div>
-          <img slot="icon" width="20" class="cellImg"
-               src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAC4AAAAuCAMAAABgZ9sFAAAAVFBMVEXx8fHMzMzr6+vn5+fv7+/t7e3d3d2+vr7W1tbHx8eysrKdnZ3p6enk5OTR0dG7u7u3t7ejo6PY2Njh4eHf39/T09PExMSvr6+goKCqqqqnp6e4uLgcLY/OAAAAnklEQVRIx+3RSRLDIAxE0QYhAbGZPNu5/z0zrXHiqiz5W72FqhqtVuuXAl3iOV7iPV/iSsAqZa9BS7YOmMXnNNX4TWGxRMn3R6SxRNgy0bzXOW8EBO8SAClsPdB3psqlvG+Lw7ONXg/pTld52BjgSSkA3PV2OOemjIDcZQWgVvONw60q7sIpR38EnHPSMDQ4MjDjLPozhAkGrVbr/z0ANjAF4AcbXmYAAAAASUVORK5CYII=">
+          <img slot="icon" width="35" v-if="sqzcurrentInfo.avatar" class="cellImg"
+               :src="sqzcurrentInfo.avatar">
+          <div slot="icon" class="cellDiv" v-else-if="sqzcurrentInfo.currentUsername">
+            {{sqzcurrentInfo.currentUsername | getName}}
+          </div>
         </cell>
       </group>
       <group gutter="0">
         <!--已办理-->
         <cell v-for="(item, index) in yblList" :key="index"
               v-if="flowType === 2 || flowType === '2'"
-              :title="item.START_USER_NAME || item.start_user_name, item.NAME_ || item.name_ | getTile"
+              :title="item.mytitle ? (item.mytitle || item.MYTITLE) : ((item.START_USER_NAME || item.start_user_name) + '发起了' + (item.NAME_ || item.name_) + ',请办理!')"
               :inline-desc="item.START_TIME_ || item.start_time_ | getLastTimeStr"
               style="font-size: 15px"
               @click.native="toFlowView(item, 'ybl')">
-          <img slot="icon" width="20" class="cellImg"
-               src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAC4AAAAuCAMAAABgZ9sFAAAAVFBMVEXx8fHMzMzr6+vn5+fv7+/t7e3d3d2+vr7W1tbHx8eysrKdnZ3p6enk5OTR0dG7u7u3t7ejo6PY2Njh4eHf39/T09PExMSvr6+goKCqqqqnp6e4uLgcLY/OAAAAnklEQVRIx+3RSRLDIAxE0QYhAbGZPNu5/z0zrXHiqiz5W72FqhqtVuuXAl3iOV7iPV/iSsAqZa9BS7YOmMXnNNX4TWGxRMn3R6SxRNgy0bzXOW8EBO8SAClsPdB3psqlvG+Lw7ONXg/pTld52BjgSSkA3PV2OOemjIDcZQWgVvONw60q7sIpR38EnHPSMDQ4MjDjLPozhAkGrVbr/z0ANjAF4AcbXmYAAAAASUVORK5CYII=">
+          <img slot="icon" width="35" v-if="item.avatar" class="cellImg"
+               :src="item.avatar">
+          <div slot="icon" class="cellDiv" v-else>
+            {{item.START_USER_NAME || item.start_user_name | getName}}
+          </div>
         </cell>
       </group>
       <group gutter="0">
@@ -63,8 +72,11 @@
               :inline-desc="item.START_TIME_ || item.start_time_ | getLastTimeStr"
               style="font-size: 15px"
               @click.native="toFlowView(item, 'yjs')">
-          <img slot="icon" width="20" class="cellImg"
-               src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAC4AAAAuCAMAAABgZ9sFAAAAVFBMVEXx8fHMzMzr6+vn5+fv7+/t7e3d3d2+vr7W1tbHx8eysrKdnZ3p6enk5OTR0dG7u7u3t7ejo6PY2Njh4eHf39/T09PExMSvr6+goKCqqqqnp6e4uLgcLY/OAAAAnklEQVRIx+3RSRLDIAxE0QYhAbGZPNu5/z0zrXHiqiz5W72FqhqtVuuXAl3iOV7iPV/iSsAqZa9BS7YOmMXnNNX4TWGxRMn3R6SxRNgy0bzXOW8EBO8SAClsPdB3psqlvG+Lw7ONXg/pTld52BjgSSkA3PV2OOemjIDcZQWgVvONw60q7sIpR38EnHPSMDQ4MjDjLPozhAkGrVbr/z0ANjAF4AcbXmYAAAAASUVORK5CYII=">
+          <img slot="icon" width="35" v-if="yjscurrentInfo.avatar" class="cellImg"
+               :src="yjscurrentInfo.avatar">
+          <div slot="icon" class="cellDiv" v-else-if="yjscurrentInfo.currentUsername">
+            {{yjscurrentInfo.currentUsername | getName}}
+          </div>
         </cell>
       </group>
     </div>
@@ -83,6 +95,7 @@
   import dingUser from '@/lib/dingUser'
   import {mapGetters} from 'vuex'
   import whole from '@/lib/whole'
+  let moment = require('moment');
 
   export default {
     components: {
@@ -104,7 +117,9 @@
         dbList: [],
         sqzList: [],
         yblList: [],
-        yjsList: []
+        yjsList: [],
+        sqzcurrentInfo: {},
+        yjscurrentInfo: {}
       }
     },
     computed: {
@@ -162,19 +177,23 @@
         let _that = this;
         if (flowIndex === 0 || flowIndex === '0') {
           flowRU.getDBList(function (res) {
-            _that.dbList = res.list
+            _that.dbList = res.page.list
           })
         } else if (flowIndex === 1 || flowIndex === '1') {
           flowRU.getSQZList(function (res) {
-            _that.sqzList = res.list
+            _that.sqzList = res.page.list
+            console.log(res)
+            _that.sqzcurrentInfo = res
+            console.log(_that.sqzcurrentInfo)
           })
         } else if (flowIndex === 2 || flowIndex === '2') {
           flowRU.getYBLList(function (res) {
-            _that.yblList = res.list
+            _that.yblList = res.page.list
           })
         } else if (flowIndex === 3 || flowIndex === '3') {
           flowRU.getYJSList(function (res) {
-            _that.yjsList = res.list
+            _that.yjsList = res.page.list
+            _that.yjscurrentInfo = res
           })
         }
         this.flowType = flowIndex
@@ -226,16 +245,64 @@
       }
     },
     filters: {
+      getName(data) {
+        return data.substr(data.length - 2)
+      },
       getTile(first, second, concat = '发起的') {
         return first + concat + second
+      },
+      getDateDiff (dateData) {
+        let result = dateData
+        let a = moment(dateData);
+        let date = new Date()
+        let fmt = 'yyyy-MM-dd'
+        var o = {
+          'M+': date.getMonth() + 1, // 月份
+          'd+': date.getDate(), // 日
+          'h+': date.getHours(), // 小时
+          'm+': date.getMinutes(), // 分
+          's+': date.getSeconds(), // 秒
+          'q+': Math.floor((date.getMonth() + 3) / 3), // 季度
+          'S': date.getMilliseconds() // 毫秒
+        };
+        if (/(y+)/.test(fmt)) {
+          fmt = fmt.replace(RegExp.$1, (date.getFullYear() + '').substr(4 - RegExp.$1.length));
+        }
+        for (var k in o) {
+          if (new RegExp('(' + k + ')').test(fmt)) {
+            fmt = fmt.replace(RegExp.$1, (RegExp.$1.length === 1) ? (o[k]) : (('00' + o[k]).substr(('' + o[k]).length)));
+          }
+        }
+        var b = moment(fmt);
+        let day = b.diff(a, 'days')
+        if (day === 0) {
+          result = '今天'
+        } else if (day === 1) {
+          result = '昨天'
+        } else if (day === 2) {
+          result = '前天'
+        }
+        return result
       }
     }
   }
 </script>
 
 <style lang="less" type="text/less">
+  .cellDiv {
+    width: 35px;
+    height: 35px;
+    line-height: 35px;
+    margin-right: 10px;
+    font-size: .8rem;
+    text-align: center;
+    border-radius: 50%;
+    color: #FFFFFF;
+    background-color: #986526;
+  }
   .cellImg {
     display: block;
-    margin-right: 15px;
+    margin-right: 10px;
+    border-radius: 50%;
   }
 </style>

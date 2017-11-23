@@ -162,13 +162,13 @@
     display: block;
     word-wrap: break-word;
     word-break: break-all;
-    font-size: 1rem;
+    font-size: .9rem;
+    color: #999999;
   }
 
   .lzl-cell__ft_xfx {
     text-align: right;
-    color: #999999;
-    font-size: 1rem;
+    font-size: .9rem;
   }
 
   .lzl-cell__ft_xfx .weui-loading {

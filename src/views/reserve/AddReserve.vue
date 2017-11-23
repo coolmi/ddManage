@@ -75,6 +75,7 @@
 <style scoped lang="less" type="text/less">
   @import '../../../node_modules/vux/src/styles/1px.less';
   .footerButton {
+    padding-bottom: 10px;
     text-align: center;
   }
 </style>

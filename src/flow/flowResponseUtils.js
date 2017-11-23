@@ -49,7 +49,7 @@ export function doResponse(data, cb) {
     return;
   }
   if (data.page) {
-    cb(data.page)
+    cb(data)
   }
 }
 

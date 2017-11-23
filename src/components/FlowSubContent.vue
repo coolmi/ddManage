@@ -23,7 +23,7 @@
             is-link
             :link="{path: '/flowDetails', query: {title: ntable.title, ctable: JSON.stringify(ntable.nchildtableForms)}}"
             value-align="left"
-            v-show="ntable.component !== 'hidden' && !ntable.hidden">
+            v-show="ntable.component !== 'hidden' && !ntable.hidden && !subC.editable">
           </flow-child-card>
         </div>
         <!--<cell v-for="(subTable, index) in subC.tableForms" :key="index" :border-intent="false" :title="subTable.title" value="123" v-show="subC.component !== 'hidden' && subC.component !== 'table_form'"></cell>-->
@@ -37,7 +37,7 @@
             is-link
             :link="{path: '/flowDetails', query: {title: ntable.title, ctable: JSON.stringify(ntable.nchildtableForms)}}"
             value-align="left"
-            v-show="ntable.component !== 'hidden' && !ntable.hidden">
+            v-show="ntable.component !== 'hidden' && !ntable.hidden && !subC.editable">
           </flow-child-card>
           <!--<acell-->
           <!--:title="ntable.title"-->
@@ -57,7 +57,7 @@
             :title="cn.title"
             :value="cn.nvalue || cn.value"
             value-align="left"
-            v-show="cn.component !== 'hidden' && !subC.hidden"
+            v-show="cn.component !== 'hidden' && !subC.hidden && !subC.editable"
           >
           </flow-child-card>
         </div>
@@ -66,7 +66,7 @@
         <flow-child-card
           :title="subC.title"
           value-align="left"
-          v-show="subC.component !== 'hidden' && !subC.hidden && subC.title && subC.editable === false"
+          v-show="subC.component !== 'hidden' && !subC.hidden && subC.title && subC.editable === false && !subC.editable"
         >
           <div slot="value">{{subC.nvalue || subC.value}}</div>
         </flow-child-card>
@@ -80,7 +80,7 @@
           :title="subC.title"
           :value="subC.nvalue || subC.value"
           value-align="left"
-          v-show="subC.component !== 'hidden' && !subC.hidden"
+          v-show="subC.component !== 'hidden' && !subC.hidden && !subC.editable"
         >
         </flow-child-card>
       </template>

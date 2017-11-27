@@ -4,12 +4,15 @@
       <timeline-item v-for="(hd, index) in historyData" :key="index">
         <card :class="[index === 0 ? 'recent' : '']" class="card" style="color: #4C4C4C">
           <div slot="header" class="weui-panel__hd" style="color: #4C4C4C">
-            {{hd.content}}
+            <p>{{hd.content}}</p>
+            <p v-if="hd.totalDuration" style="color: #4C4C4C">已耗时：{{hd.totalDuration}}</p>
           </div>
           <p slot="content" class="card-padding" style="color: #4C4C4C" v-if="index !== 0">{{hd.message}}</p>
           <div class="weui-panel__ft" slot="footer" v-if="hd.time">
             <a class="weui-cell weui-cell_access weui-cell_link" href="javascript:">
-              <div class="weui-cell__bd" style="font-size:.75rem; color: #A0A0A0">{{hd.time}}</div>
+              <div class="weui-cell__bd" style="font-size:.75rem; color: #A0A0A0">{{hd.time}}
+                <p style="font-size:.75rem; color: #4C4C4C" v-if="hd.duration">环节耗时：{{hd.duration}}</p>
+              </div>
             </a>
           </div>
         </card>

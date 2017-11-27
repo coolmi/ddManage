@@ -32,6 +32,9 @@
         default() {
           return {}
         }
+      },
+      zin: {
+        type: String
       }
     },
     data() {
@@ -61,16 +64,17 @@
         const flowParams = JSON.stringify(this.flowParams);
         const selectPerson = JSON.stringify(this.flowParams.selectPerson);
         const flag = this.flag;
+        const zin = this.zin;
         let editFlag = this.flowParams.EDITARR_; // 需要补填字段
         if (editFlag.length > 0 && btype === 'tj') {
           this.$router.push({
             path: '/flowEdit',
-            query: {btype: btype, flowParams: flowParams, selectPerson: selectPerson, flag: flag}
+            query: {btype: btype, flowParams: flowParams, selectPerson: selectPerson, flag: flag, zin: zin}
           })
         } else {
           this.$router.push({
             path: '/flowIdea',
-            query: {btype: btype, flowParams: flowParams, selectPerson: selectPerson, flag: flag}
+            query: {btype: btype, flowParams: flowParams, selectPerson: selectPerson, flag: flag, zin: zin}
           })
         }
 //        this.$emit('on-fb-click')

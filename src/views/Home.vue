@@ -1,10 +1,5 @@
 <template>
   <div>
-    <group>
-      <cell title="备用金" link="/reserve"></cell>
-      <cell title="出差" link="/travel"></cell>
-      <cell title="员工出差申请" link="/businessTrip"></cell>
-    </group>
     <div style="height:44px;">
       <sticky :check-sticky-support="false">
         <tab :line-width=2 v-model="index">
@@ -17,24 +12,23 @@
     <!--<swiper v-model="index" ref="swiper" :show-dots="false" :threshold="200" id="swiper">-->
     <!--<swiper-item v-for="(item, index) in dblist" :key="index">-->
     <div class="tab-swiper vux-center" ref="list">
-      <group gutter="0" label-width="18rem">
+      <group gutter="0" label-width="18rem" v-if="(flowType === 0 || flowType === '0')">
         <!--待办 | getDateDiff-->
         <cell v-for="(item, index) in dbList" :key="index"
-              v-if="(flowType === 0 || flowType === '0') && (item.ishidden === '0' || item.ISHIDDEN === 0) && dbList.length > 0"
+              v-if="(item.ishidden === '0' || item.ISHIDDEN === 0) && dbList.length > 0"
               :title="item.mytitle ? (item.mytitle || item.MYTITLE) : ((item.START_USER_NAME || item.start_user_name) + '发起了' + (item.NAME_ || item.name_) + ',请办理!')"
               :inline-desc="item.START_TIME_ || item.start_time | getLastTimeStr"
               @click.native="toFlowView(item, 'db')">
-          <img slot="icon" width="35" v-if="item.avatar" class="cellImg"
+          <img slot="icon" width="35" height="35" v-if="item.avatar" class="cellImg"
                :src="item.avatar">
           <div slot="icon" class="cellDiv" v-else>
             {{item.START_USER_NAME || item.start_user_name | getName}}
           </div>
         </cell>
       </group>
-      <group gutter="0">
+      <group gutter="0" v-if="flowType === 1 || flowType === '1'">
         <!--申请中-->
         <cell v-for="(item, index) in sqzList" :key="index"
-              v-if="flowType === 1 || flowType === '1'"
               :title="item.PROCDEFNAME_ || item.procdefname_"
               :inline-desc="item.START_TIME_ || item.start_time_ | getLastTimeStr"
               style="font-size: 15px"
@@ -42,42 +36,42 @@
           <div slot="default" style="font-size: .8rem">
             {{item.TASKNAME_ || item.taskname_}}
           </div>
-          <img slot="icon" width="35" v-if="sqzcurrentInfo.avatar" class="cellImg"
+          <img slot="icon" width="35" height="35" v-if="sqzcurrentInfo.avatar" class="cellImg"
                :src="sqzcurrentInfo.avatar">
           <div slot="icon" class="cellDiv" v-else-if="sqzcurrentInfo.currentUsername">
             {{sqzcurrentInfo.currentUsername | getName}}
           </div>
         </cell>
       </group>
-      <group gutter="0">
+      <group gutter="0" v-if="flowType === 2 || flowType === '2'">
         <!--已办理-->
         <cell v-for="(item, index) in yblList" :key="index"
-              v-if="flowType === 2 || flowType === '2'"
               :title="item.mytitle ? (item.mytitle || item.MYTITLE) : ((item.START_USER_NAME || item.start_user_name) + '发起了' + (item.NAME_ || item.name_) + ',请办理!')"
               :inline-desc="item.START_TIME_ || item.start_time_ | getLastTimeStr"
               style="font-size: 15px"
               @click.native="toFlowView(item, 'ybl')">
-          <img slot="icon" width="35" v-if="item.avatar" class="cellImg"
+          <img slot="icon" width="35" height="35" v-if="item.avatar" class="cellImg"
                :src="item.avatar">
           <div slot="icon" class="cellDiv" v-else>
             {{item.START_USER_NAME || item.start_user_name | getName}}
           </div>
         </cell>
+        <infinite-loading v-if="yblList.length > 0" @infinite="yblinfiniteHandler"></infinite-loading>
       </group>
-      <group gutter="0">
+      <group gutter="0" v-if="flowType === 3 || flowType === '3'">
         <!--已结束-->
         <cell v-for="(item, index) in yjsList" :key="index"
-              v-if="flowType === 3 || flowType === '3'"
               :title="item.PROCDEFNAME_ || item.procdefname_"
               :inline-desc="item.START_TIME_ || item.start_time_ | getLastTimeStr"
               style="font-size: 15px"
               @click.native="toFlowView(item, 'yjs')">
-          <img slot="icon" width="35" v-if="yjscurrentInfo.avatar" class="cellImg"
+          <img slot="icon" width="35" height="35" v-if="yjscurrentInfo.avatar" class="cellImg"
                :src="yjscurrentInfo.avatar">
           <div slot="icon" class="cellDiv" v-else-if="yjscurrentInfo.currentUsername">
             {{yjscurrentInfo.currentUsername | getName}}
           </div>
         </cell>
+        <infinite-loading v-if="yjsList.length > 0" @infinite="yjsinfiniteHandler"></infinite-loading>
       </group>
     </div>
     <!--</swiper-item>-->
@@ -87,6 +81,7 @@
 
 <script>
   import {Tab, TabItem, Sticky, Swiper, SwiperItem, Cell, Group} from 'vux'
+  import InfiniteLoading from 'vue-infinite-loading';
   import flowBN from '@/flow/flowButtonNames'
   import flowRU from '@/flow/flowResponseUtils'
   import flowGLU from '@/flow/flowGetListUtils'
@@ -95,6 +90,7 @@
   import dingUser from '@/lib/dingUser'
   import {mapGetters} from 'vuex'
   import whole from '@/lib/whole'
+
   let moment = require('moment');
 
   export default {
@@ -105,7 +101,8 @@
       Swiper,
       SwiperItem,
       Cell,
-      Group
+      Group,
+      InfiniteLoading
     },
     data() {
       return {
@@ -119,7 +116,10 @@
         yblList: [],
         yjsList: [],
         sqzcurrentInfo: {},
-        yjscurrentInfo: {}
+        yjscurrentInfo: {},
+        pageSize: 20,
+        pageNo: 1,
+        yjsPageNo: 1
       }
     },
     computed: {
@@ -135,6 +135,7 @@
     created() {
       let _that = this;
       this.$navigation.on('back', (to, from) => {
+        this.pageNo = 1;
         _that.doNext(_that.index)
         _that.selectedIndex = _that.index
         _that.startPush(); // 启动刷新
@@ -144,15 +145,40 @@
       this.startPush(); // 启动刷新
     },
     methods: {
+      yblinfiniteHandler($state) {
+        let _that = this;
+        _that.pageNo++
+        let params = {
+          pageNo: _that.pageNo,
+          pageSize: _that.pageSize
+        }
+        flowRU.getYBLList(params, function (res) {
+          _that.yblList = _that.yblList.concat(res.page.list)
+          $state.loaded();
+        })
+      },
+      yjsinfiniteHandler($state) {
+        let _that = this;
+        _that.yjsPageNo++
+        let params = {
+          pageNo: _that.yjsPageNo,
+          pageSize: _that.pageSize
+        }
+        flowRU.getYJSList(params, function (res) {
+          _that.yjsList = _that.yjsList.concat(res.page.list)
+          _that.yjscurrentInfo = res
+          $state.loaded();
+        })
+      },
       startPush() {
         let dd = window.dd;
         let _that = this;
         dd.ready(function () {
           dd.ui.pullToRefresh.enable({
-            onSuccess: function() {
+            onSuccess: function () {
               _that.doNext(_that.index);
             },
-            onFail: function() {
+            onFail: function () {
             }
           })
         })
@@ -182,16 +208,24 @@
         } else if (flowIndex === 1 || flowIndex === '1') {
           flowRU.getSQZList(function (res) {
             _that.sqzList = res.page.list
-            console.log(res)
             _that.sqzcurrentInfo = res
-            console.log(_that.sqzcurrentInfo)
           })
         } else if (flowIndex === 2 || flowIndex === '2') {
-          flowRU.getYBLList(function (res) {
+          _that.pageNo = 1;
+          let params = {
+            pageNo: _that.pageNo,
+            pageSize: _that.pageSize
+          }
+          flowRU.getYBLList(params, function (res) {
             _that.yblList = res.page.list
           })
         } else if (flowIndex === 3 || flowIndex === '3') {
-          flowRU.getYJSList(function (res) {
+          _that.pageNo = 1;
+          let params = {
+            pageNo: _that.pageNo,
+            pageSize: _that.pageSize
+          }
+          flowRU.getYJSList(params, function (res) {
             _that.yjsList = res.page.list
             _that.yjscurrentInfo = res
           })
@@ -203,7 +237,7 @@
         let flowParams = flowGLU.getList(item, type);
 //        this.$store.dispatch('saveFlowParams', flowParams);
         if (type === 'db') {
-          this.$router.push({path: '/flowHandle', query: {flowParams: JSON.stringify(flowParams)}})
+          this.$router.push({path: '/flowHandle', query: {abc: 1, flowParams: JSON.stringify(flowParams)}})
         } else {
           this.$router.push({path: '/flowQuery', query: {flowParams: JSON.stringify(flowParams)}})
         }
@@ -251,7 +285,7 @@
       getTile(first, second, concat = '发起的') {
         return first + concat + second
       },
-      getDateDiff (dateData) {
+      getDateDiff(dateData) {
         let result = dateData
         let a = moment(dateData);
         let date = new Date()
@@ -300,9 +334,37 @@
     color: #FFFFFF;
     background-color: #986526;
   }
+
   .cellImg {
     display: block;
     margin-right: 10px;
     border-radius: 50%;
+  }
+
+  .bottom-load-wrapper {
+    line-height: 50px;
+    text-align: center;
+  }
+
+  .icon-arrow {
+    transition: .2s;
+    transform: rotate(180deg);
+  }
+
+  .icon-loading {
+    transform: rotate(0deg);
+    animation-name: loading;
+    animation-duration: 3s;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+  }
+
+  @keyframes loading {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
   }
 </style>

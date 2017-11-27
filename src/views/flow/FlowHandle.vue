@@ -53,12 +53,15 @@
                 </li>
               </ul>
             </div>
-            <p v-else-if="cardHistoryData.length = 1" @click="openHistory(flowHistory)"><span><img src="static/images/je.png" width="13" height="13"
+            <p v-else-if="cardHistoryData.length = 1" @click="openHistory(flowHistory)" style="padding-bottom: 6px;"><span><img src="static/images/je.png" width="13" height="13"
                                                             style="padding-top: 5px; padding-right: 2px"></span>{{(flowHistory.current_task
               ? flowHistory.current_task : '当前节点：审批中'), 20 | subTitle}}</p>
+            <div v-if="cardHistoryData.length > 0"
+                 @click="openHistory(flowHistory)"
+                 style="text-align: center; padding:5px 0; margin-bottom: 5px; color: #A0A0A0; border: 1px dashed #ECECEC">点击查看详细审批记录 ></div>
             <p @click="openFjList" v-if="!showLeftPop"><span><img src="static/images/fj.png" width="12" height="12"
                                               style="padding-right: 2px; margin-top: 12px;"></span>{{flowFiles.length
-              !== 0 ? '附件个数：' + flowFiles.length : '暂无附件'}}</p>
+              !== 0 ? '附件个数：' + flowFiles.length : '无附件'}}</p>
             <p @click="showLeftPop = false" v-else >
               <span>
                 <img src="static/images/fj.png" width="12" height="12"
@@ -76,18 +79,18 @@
       </flow-list-card>
       <!--</sticky>-->
       <!--附件列表-->
-      <group>
-        <div v-show="showLeftPop">
-          <flow-child-card VHidden @click.native="openFj(file)" v-for="(file, index) in flowFiles" :key="index"
-                           :title="(index + 1) + ': ' + file.filename">
-            <!--{{file.filename, 10 | subTitle}}-->
-          </flow-child-card>
-        </div>
+      <group v-show="showLeftPop">
+          <cell VHidden @click.native="openFj(file)" v-for="(file, index) in flowFiles" :key="index"
+                :title="(index + 1) + ': ' + file.filename" is-link></cell>
+          <!--<flow-child-card VHidden @click.native="openFj(file)" v-for="(file, index) in flowFiles" :key="index"-->
+                           <!--:title="(index + 1) + ': ' + file.filename">-->
+            <!--&lt;!&ndash;{{file.filename, 10 | subTitle}}&ndash;&gt;-->
+          <!--</flow-child-card>-->
       </group>
       <!--循环列表-->
       <flow-content :contentdata="contentdata"></flow-content>
     </div>
-    <flow-button :buttonArr="buttonArr" :flowParams="flowParams" :handleInfos="handleInfos"
+    <flow-button :buttonArr="buttonArr" :zin="zin" :flowParams="flowParams" :handleInfos="handleInfos"
                  v-show="showButton"></flow-button>
 
     <div v-transfer-dom>
@@ -111,6 +114,7 @@
   import FSM from '@/flow/flowShowMsg'
   import FFEU from '@/flow/flowFilesEventUtils'
   import ding from '@/lib/ding'
+  import dingUser from '@/lib/dingUser'
   import api from 'api'
   import whole from '@/lib/whole'
 
@@ -146,22 +150,73 @@
         flowFilesData: [],
         flowFiles: [],
         flowHistory: [],
-        userid: ''
+        userid: '',
+        zin: ''
       };
     },
     beforeRouteEnter(to, from, next) {
-      if (!(from.path.indexOf('/flowIdea') >= 0) && !(from.path.indexOf('/flowDetails') >= 0) && !(from.path.indexOf('/flowEdit') >= 0) && !(from.path.indexOf('/flowPdf') >= 0)) { // 只有在列表进来的时候才会判断此流程是否有效，为了防止从flowIdea, flowDetails页面返回到此页的多余判断
-        whole.busy()
-        api.getHandleInfo(to.query.flowParams, function (res) {
-          whole.leave()
-          if (flowRU.doViewResponse(res.data)) {
-            next()
-          } else {
-            next(false)
-          }
+      var reg = new RegExp('(^|&)' + 'zin' + '=([^&]*)(&|$)');
+      var r = window.location.search.substr(1).match(reg);
+      if (r !== null) {
+        dingUser.getRequestAuthCode(window.location.href).then((data) => {
+          api.getLogin(data, function (res) {
+            if (res.data.code) {
+              if (!(from.path.indexOf('/flowIdea') >= 0) && !(from.path.indexOf('/flowDetails') >= 0) && !(from.path.indexOf('/flowEdit') >= 0) && !(from.path.indexOf('/flowPdf') >= 0)) { // 只有在列表进来的时候才会判断此流程是否有效，为了防止从flowIdea, flowDetails页面返回到此页的多余判断
+                whole.busy()
+                api.getHandleInfo(to.query.flowParams, function (res) {
+                  whole.leave()
+                  if (flowRU.doViewResponse(res.data)) {
+                    if (!res.data.flag) {
+                      let dd = window.dd
+                      dd.device.notification.confirm({
+                        message: '没有相应的任务,该任务可能已办理完,请到已办理列表中查看',
+                        title: '提示',
+                        buttonLabels: ['确定前往', '返回上层'],
+                        onSuccess: function(result) {
+                          if (result.buttonIndex === 0) {
+                            window.location.href = 'dingtalk://dingtalkclient/page/link?url=' + encodeURI('http://dingtalk.gmkholdings.com')
+                          } else if (result.buttonIndex === 1) {
+                            dd.biz.navigation.close({
+                              onSuccess: function(result) {
+                              },
+                              onFail: function(err) {}
+                            })
+                          }
+                        },
+                        onFail: function(err) {}
+                      });
+                    } else {
+                      next(vm => {
+                        vm._data.zin = 'zin'
+                      })
+                    }
+                  } else {
+                    next(false)
+                  }
+                })
+              } else {
+                next()
+              }
+            } else {
+              whole.showTop('获取钉钉免登权限失败')
+              next(false)
+            }
+          })
         })
       } else {
-        next()
+        if (!(from.path.indexOf('/flowIdea') >= 0) && !(from.path.indexOf('/flowDetails') >= 0) && !(from.path.indexOf('/flowEdit') >= 0) && !(from.path.indexOf('/flowPdf') >= 0)) { // 只有在列表进来的时候才会判断此流程是否有效，为了防止从flowIdea, flowDetails页面返回到此页的多余判断
+          whole.busy()
+          api.getHandleInfo(to.query.flowParams, function (res) {
+            whole.leave()
+            if (flowRU.doViewResponse(res.data)) {
+              next()
+            } else {
+              next(false)
+            }
+          })
+        } else {
+          next()
+        }
       }
     },
     created() {
@@ -205,7 +260,6 @@
       },
       // 获取流程信息
       getRouteHandleInfo(flowParams) {
-        console.log(flowParams)
         let _that = this;
         api.getHandleInfo(flowParams, function (res) {
           let data = res.data;
@@ -231,12 +285,6 @@
             if (flowdata.commentMustMsg) {
               _that.flowParams.commentMustMsg_ = flowdata.commentMustMsg || '此环节意见必填';
             }
-            // PC端审批
-            if (flowdata.handleOnPC) {
-              whole.showTop(FSM.handleOnPC)
-              _that.showButton = false;
-              return;
-            }
             api.getAuthor(flowParams, function (authorRes) {
               // 按钮处理
               let buttonData = authorRes.data;
@@ -251,6 +299,12 @@
             _that.getDingUserInfo(flowdata.PERNR_)
             _that.getHistory();
             _that.getFlowFiles();
+            // PC端审批
+            if (flowdata.handleOnPC) {
+              whole.showTop(FSM.handleOnPC)
+              _that.showButton = false;
+              return;
+            }
           } else if (!flowdata.result) {
             let errInfo = flowdata.error || flowdata.err;
             _that.alertInfoAndGoBack(errInfo)
@@ -384,7 +438,6 @@
           let data = res.data;
           _that.flowHistory = data;
           let historyData = FDUtils.getFlowHistoryData(data)
-          console.log(historyData)
           _that.cardHistoryData = historyData
         })
       },

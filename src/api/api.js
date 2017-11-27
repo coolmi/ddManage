@@ -89,8 +89,10 @@ export default {
    * 已办理列表
    * @param cb
    */
-  getYBLList: function (cb) {
-    axios.get(APILIST.ybllist_url)
+  getYBLList: function (params, cb) {
+    axios.get(APILIST.ybllist_url, {
+      params
+    })
       .then((res) => {
         cb(res);
       }).catch((error) => {
@@ -102,8 +104,10 @@ export default {
    * 已结束列表
    * @param cb
    */
-  getYJSList: function (cb) {
-    axios.get(APILIST.yjslist_url)
+  getYJSList: function (params, cb) {
+    axios.get(APILIST.yjslist_url, {
+      params
+    })
       .then((res) => {
         cb(res);
       }).catch((error) => {

@@ -88,18 +88,19 @@
   }
 
   .flow_list_card_ft {
-    display: flex;
-    display: -webkit-flex;
-    justify-content: space-between;
+    /*display: flex;*/
+    /*display: -webkit-flex;*/
+    /*justify-content: space-between;*/
   }
 
   .flow_list_card_ft_left {
-    flex: 1;
+    /*flex: 1;*/
+    width: 90%;
     text-align: left;
-    padding: 14px 15px 10px;
+    margin: 14px 5% 10px;
     color: #806DF7;
     font-size: 13px;
-    font-style: italic;
+    /*font-style: italic;*/
   }
 
   .flow_list_card_ft_right {

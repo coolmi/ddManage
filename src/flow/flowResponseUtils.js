@@ -22,8 +22,8 @@ export function getSQZList(cb) {
 }
 
 // 已办理
-export function getYBLList(cb) {
-  api.getYBLList(function (res) {
+export function getYBLList(params, cb) {
+  api.getYBLList(params, function (res) {
     doResponse(res.data, function (page) {
       cb(page)
     })
@@ -31,8 +31,8 @@ export function getYBLList(cb) {
 }
 
 // 已结束
-export function getYJSList(cb) {
-  api.getYJSList(function (res) {
+export function getYJSList(params, cb) {
+  api.getYJSList(params, function (res) {
     doResponse(res.data, function (page) {
       cb(page)
     })

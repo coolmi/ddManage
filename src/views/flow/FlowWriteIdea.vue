@@ -44,7 +44,8 @@
         userInfo: [],
         userName: '选择人员',
         userAvatar: '',
-        userEmplId: ''
+        userEmplId: '',
+        zin: ''
       }
     },
     watch: {
@@ -61,6 +62,7 @@
       this.setLeft();
 //      this.setRight();
       let param = this.$route.query.flowParams;
+      this.zin = this.$route.query.zin;
       if (typeof param === 'string') {
         param = JSON.parse(param);
       }
@@ -315,9 +317,20 @@
           }
 //          let showMessage = data.message || data.msg;
           whole.showTop('审批完成');
-          setTimeout(function () {
-            _that.$router.go(-2);
-          })
+          if (_that.zin !== '') {
+            setTimeout(function () {
+              let dd = window.dd
+              dd.biz.navigation.close({
+                onSuccess: function(result) {
+                },
+                onFail: function(err) {}
+              })
+            }, 2000)
+          } else {
+            setTimeout(function () {
+              _that.$router.go(-2);
+            })
+          }
         })
       },
       setRight() {

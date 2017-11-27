@@ -360,7 +360,8 @@ function ifHidden(sub) { // 判断含有showLinkage的子项 然后搜索showLin
     let id = item.id
     let val = item.values || item.value
     if (!id || !val) {
-      window.alert(123)
+      // window.alert(123)
+      console.log('获取不到' + id + '或者' + val)
     }
     for (let sitem of subD) {
       let index = _.findLastIndex(sitem.subComponents, {name: id}) // 找到name是【id】在父类中的位置
@@ -452,6 +453,7 @@ export function getFlowHistoryData(historyData) {
   if (historyData.current_task) {
     let dataParam = {}
     dataParam.content = historyData.current_task
+    dataParam.totalDuration = historyData.totalDuration || ''
     data.push(dataParam)
   }
   if (historyData.comments) {
@@ -469,6 +471,9 @@ export function getFlowHistoryData(historyData) {
       dataParam.content = `${positionname} - ${user} : ${typename}`
       dataParam.message = c.fullMessage
       dataParam.time = dateFormatter.fmtDate(c.time, 'yyyy-MM-dd hh:mm:ss')
+      if (historyData.durations) {
+        dataParam.duration = historyData['durations'][c.id]
+      }
       data.push(dataParam)
     }
   }

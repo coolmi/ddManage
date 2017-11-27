@@ -111,6 +111,7 @@
 
       this.btype = this.$route.query.btype;
       this.flag = this.$route.query.flag;
+      this.zin = this.$route.query.zin;
       this.selectPerson = this.$route.query.selectPerson;
     },
     methods: {
@@ -140,7 +141,7 @@
         let _that = this;
         this.$router.push({
           path: '/flowIdea',
-          query: {btype: this.btype, flowParams: _that.flowParams, selectPerson: _that.selectPerson, flag: _that.flag}
+          query: {btype: this.btype, flowParams: _that.flowParams, selectPerson: _that.selectPerson, flag: _that.flag, zin: _that.zin}
         })
       }
     }

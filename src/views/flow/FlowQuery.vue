@@ -28,7 +28,7 @@
           </div>
         </div>
         <div slot="footer">
-          <div class="flow_list_card_ft_left">
+          <div class="flow_list_card_ft_left" style="position: relative;">
             <!--<timeline>-->
             <!--<timeline-item v-for="(hd, index) in cardHistoryData" :key="index">-->
             <!--{{hd.content}}-->
@@ -58,13 +58,15 @@
                 </li>
               </ul>
             </div>
-            <p v-else-if="cardHistoryData.length = 1" @click="openHistory(flowHistory)"><span><img
+
+            <p v-else-if="cardHistoryData.length = 1" @click="openHistory(flowHistory)" style="padding-bottom: 6px;"><span><img
               src="static/images/je.png" width="13" height="13"
               style="padding-top: 5px; padding-right: 2px"></span>{{(flowHistory.current_task
               ? flowHistory.current_task : '当前节点：审批中'), 20 | subTitle}}</p>
+            <p v-if="cardHistoryData.length > 0" @click="openHistory(flowHistory)" style="text-align: center; padding: 5px 0; margin-bottom: 5px; color: #A0A0A0; border: 1px dashed #ECECEC">点击查看详细审批记录 ></p>
             <p @click="openFjList" v-if="!showLeftPop"><span><img src="static/images/fj.png" width="12" height="12"
                                                                   style="padding-right: 2px; margin-top: 12px;"></span>{{flowFiles.length
-              !== 0 ? '附件个数：' + flowFiles.length : '暂无附件'}}</p>
+              !== 0 ? '附件个数：' + flowFiles.length : '无附件'}}</p>
             <p @click="showLeftPop = false" v-else><span><img src="static/images/fj.png" width="12" height="12"
                                                               style="padding-right: 2px;"></span>隐藏附件</p>
           </div>
@@ -92,11 +94,13 @@
       <!--附件列表-->
       <group>
         <div v-show="showLeftPop">
+          <cell VHidden @click.native="openFj(file)" v-for="(file, index) in flowFiles" :key="index"
+                :title="(index + 1) + ': ' + file.filename" is-link></cell>
           <!--<div class="itemTitle" @click="showLeftPop = false">隐藏</div>-->
-          <flow-child-card VHidden @click.native="openFj(file)" v-for="(file, index) in flowFiles" :key="index"
-                           :title="file.filename">
-            <!--{{file.filename, 10 | subTitle}}-->
-          </flow-child-card>
+          <!--<flow-child-card VHidden @click.native="openFj(file)" v-for="(file, index) in flowFiles" :key="index"-->
+                           <!--:title="file.filename" is-link>-->
+            <!--&lt;!&ndash;{{file.filename, 10 | subTitle}}&ndash;&gt;-->
+          <!--</flow-child-card>-->
         </div>
       </group>
       <!--循环列表-->
@@ -122,7 +126,7 @@
 <script>
   import FlowListCard from 'comp/FlowListCard'
   import FlowChildCard from 'comp/FlowChildCard'
-  import {TransferDom, Popup, Timeline, TimelineItem, Sticky, Group} from 'vux'
+  import {TransferDom, Popup, Timeline, TimelineItem, Sticky, Group, Cell} from 'vux'
   import FlowButton from 'comp/FlowButton';
   import FlowContent from 'comp/FlowContent';
   import FlowHistoryContent from 'comp/FlowHistoryContent';
@@ -131,6 +135,7 @@
   import FSM from '@/flow/flowShowMsg'
   import FFEU from '@/flow/flowFilesEventUtils'
   import ding from '@/lib/ding'
+  import dingUser from '@/lib/dingUser'
   import api from 'api'
   import whole from '@/lib/whole'
 
@@ -148,7 +153,8 @@
       FlowButton,
       FlowContent,
       FlowHistoryContent,
-      Sticky
+      Sticky,
+      Cell
     },
     data() {
       return {
@@ -165,20 +171,46 @@
         cardHistoryData: [],
         flowFilesData: [],
         flowFiles: [],
-        flowHistory: []
+        flowHistory: [],
+        userid: ''
       };
     },
     beforeRouteEnter(to, from, next) {
-      if (!(from.path.indexOf('/flowIdea') >= 0) && !(from.path.indexOf('/flowDetails') >= 0)) { // 只有在列表进来的时候才会判断此流程是否有效，为了防止从flowIdea, flowDetails页面返回到此页的多余判断
-        api.getViewInfo(to.query.flowParams, function (res) {
-          if (flowRU.doViewResponse(res.data)) {
-            next()
-          } else {
-            next(false)
-          }
+      var reg = new RegExp('(^|&)' + 'zin' + '=([^&]*)(&|$)');
+      var r = window.location.search.substr(1).match(reg);
+      if (r !== null) {
+        dingUser.getRequestAuthCode(window.location.href).then((data) => {
+          api.getLogin(data, function (res) {
+            if (res.data.code) {
+              if (!(from.path.indexOf('/flowIdea') >= 0) && !(from.path.indexOf('/flowDetails') >= 0)) { // 只有在列表进来的时候才会判断此流程是否有效，为了防止从flowIdea, flowDetails页面返回到此页的多余判断
+                api.getViewInfo(to.query.flowParams, function (res) {
+                  if (flowRU.doViewResponse(res.data)) {
+                    next()
+                  } else {
+                    next(false)
+                  }
+                })
+              } else {
+                next()
+              }
+            } else {
+              whole.showTop('获取钉钉免登权限失败')
+              next(false)
+            }
+          })
         })
       } else {
-        next()
+        if (!(from.path.indexOf('/flowIdea') >= 0) && !(from.path.indexOf('/flowDetails') >= 0)) { // 只有在列表进来的时候才会判断此流程是否有效，为了防止从flowIdea, flowDetails页面返回到此页的多余判断
+          api.getViewInfo(to.query.flowParams, function (res) {
+            if (flowRU.doViewResponse(res.data)) {
+              next()
+            } else {
+              next(false)
+            }
+          })
+        } else {
+          next()
+        }
       }
     },
     created() {
@@ -224,6 +256,7 @@
             if (flowdata.commentMustMsg) {
               _that.flowParams.commentMustMsg_ = flowdata.commentMustMsg || '此环节意见必填';
             }
+            _that.getDingUserInfo(flowdata.PERNR_)
             _that.getHistory();
             _that.getFlowFiles();
           } else if (!flowdata.result) {
@@ -242,10 +275,11 @@
       },
       openPerInfoPage() {
         let dd = window.dd;
+        let _that = this;
         dd.biz.util.open({
           name: 'profile',
           params: {
-            id: '094211534726242584',
+            id: _that.userid,
             corpId: ding.CORPID
           },
           onSuccess: function () {
@@ -254,6 +288,14 @@
             console.log(err)
           }
         });
+      },
+      // 根据pernr获取订单userid
+      getDingUserInfo(pernr) {
+        let _that = this;
+        api.getDingUserInfo(pernr, function (res) {
+          const userid = res.data.userid
+          _that.userid = userid
+        })
       },
       getHistory() {
         let _that = this;

@@ -3,6 +3,7 @@ import Vuex from 'vuex';
 import loading from './modules/loading'
 import ddstate from './modules/ddstate'
 import reserve from './modules/reserve'
+import businessTrip from './modules/businessTrip'
 import travel from './modules/travel'
 import city from './modules/city'
 
@@ -15,6 +16,7 @@ export default new Vuex.Store({
       loading,
       ddstate,
       reserve,
+      businessTrip,
       travel,
       city
     },

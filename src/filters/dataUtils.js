@@ -75,4 +75,29 @@ function getListValue(data, type = 'popup') {
   return list
 }
 
-export default {filterData, money2dx, generateUUID, formatNumber, getListValue}
+// 转换为搜索数据格式
+function getListSearchValue(data, type = 'popup') {
+  let list = [];
+  if (type === 'popup') {
+    _.each(data, function (val) {
+      let item = {}
+      item.title = val.value
+      item.key = val.key
+      list.push(item)
+    })
+  }
+  return list
+}
+
+// vulue转换name
+function getDescValue(originalData, selecteddata) {
+  let fieldDesc = '';
+  originalData.map(function (item) {
+    if (item.value === selecteddata.toString()) {
+        fieldDesc = item.name
+    }
+  });
+  return fieldDesc;
+}
+
+export default {filterData, money2dx, generateUUID, formatNumber, getListValue, getListSearchValue, getDescValue}

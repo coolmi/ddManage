@@ -280,13 +280,30 @@ export default {
         cb(obj);
       }));
   },
+  // 员工出差申请
+  // 获取交通方式 + 获取出发/到达地点
+  getTrafficCitys: function (params1, params2, cb) {
+    axios.all([APISEND.getTrafficways(params1), APISEND.getCitysbyBukrs(params2)])
+      .then(axios.spread(function (...a) {
+        // 两个请求现在都执行完成
+        let aa = _.map(a, _.iteratee('data'));
+        let aaa = _.map(aa, _.iteratee('data'));
+        let obj = {};
+        _.map(aaa, function (item) {
+          Object.keys(item).forEach(key => {
+            obj[key] = item[key]
+          })
+        })
+        console.log(obj)
+        cb(obj);
+      }));
+  },
   getKostal: function (params, cb) {
     axios.get(APILIST.getBukrsAndKostlByPostid_url, {
       params
     })
       .then((res) => {
-        console.log(res.data.data);
-        cb(res.data.data);
+        cb(res.data);
       }).catch((error) => {
       return Promise.reject(error)
     })

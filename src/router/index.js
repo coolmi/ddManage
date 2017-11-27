@@ -31,7 +31,7 @@ const router = new Router({
     {
       path: '/AddBusinessTrip',
       component: require('@/views/businessTrip/AddBusinessTrip'),
-      meta: {title: '添加出差申请明细'}
+      meta: {title: '出差申请明细'}
     },
     {
       path: '/reserve',

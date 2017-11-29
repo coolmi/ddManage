@@ -26,6 +26,7 @@ module.exports = {
     'handle-callback-err' : 0,
     'space-before-function-paren' : 0,
     'key-spacing':["error", { "beforeColon": false }],
+    'camelcase': 0,
     // allow debugger during development
     'no-debugger': process.env.NODE_ENV === 'production' ? 2 : 0
   }

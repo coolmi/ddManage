@@ -267,7 +267,11 @@ export default {
       return Promise.reject(error)
     })
   },
-  // 发起
+  /**
+   * 获取岗位和费用承担公司
+   * @param  {Function} cb [返回数据]
+   * @return {[type]}      [description]
+   */
   getPosition: function (cb) {
     axios.all([APISEND.getPosition(), APISEND.getBurkList()])
       .then(axios.spread(function (...a) {
@@ -302,6 +306,24 @@ export default {
         cb(obj);
       }));
   },
+  /**
+   * 提交
+   * @param cb
+   */
+  getStartTravelWFURL: function (params, cb) {
+    axios.post(APISEND.startTravelWFURL, params)
+      .then((res) => {
+        cb(res);
+      }).catch((error) => {
+      return Promise.reject(error)
+    })
+  },
+  /**
+   * 获取费用归集成本中心
+   * @param  {[type]}   params [参数]
+   * @param  {Function} cb     [返回数据]
+   * @return {[type]}          [description]
+   */
   getKostal: function (params, cb) {
     axios.get(APILIST.getBukrsAndKostlByPostid_url, {
       params

@@ -13,6 +13,8 @@ const getReserveTypeURL = '/authapi/ddtalkwf/getFundTypeList'
 const getTrafficwaysURL = '/authapi/ddtalkwf/getTrafficways'
 // 获取出发/到达地点(bukrs | Get)
 const getCitysbyBukrsURL = '/authapi/ddtalkwf/getCitysbyBukrs'
+// 提交
+const startTravelWFURL = '/authapi/ddtalkwf/startTravelWF'
 
 const getPosition = function () {
   return axios.get(getPositionURL);
@@ -44,5 +46,6 @@ export default {
   getBurkList,
   getReserveType,
   getTrafficways,
-  getCitysbyBukrs
+  getCitysbyBukrs,
+  startTravelWFURL
 }

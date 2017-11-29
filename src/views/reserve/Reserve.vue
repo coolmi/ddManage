@@ -55,15 +55,12 @@
     watch: {
       positionList: function (val) {
         this.forms.department[0] = val[0].value
-      },
-      burksList: function (val) {
-        this.forms.burks[0] = val[0].value
       }
     },
     created() {
       let ifView = this.$route.query.ifView;
       this.ifView = ifView
-      this.setData() // 填写的时候回退保存值
+      // this.setData() // 填写的时候回退保存值
       this.getBaseData()
     },
     methods: {

@@ -2,14 +2,19 @@
  * Created by lzl on 17/2/14.
  */
 import base from '@/api/baseConfig'
+const localStorage = global.localStorage;
+const AUTH_DDCONFIG = 'auth.ddconfig';
+
 export default {
   state: {
-    ddConfig: null,
+    ddConfig: localStorage.getItem(AUTH_DDCONFIG) || null,
     ddConfigStatus: null,
     ddConfigCode: null,
     ddUserID: '',
     ddConfigPath: '' || base.baseURL,
-    ddAddress: ''
+    ddAddress: '',
+    loginStatus: false,
+    itemIndex: 1
   },
   actions: {
     dcSuccess({commit}, config) {
@@ -17,6 +22,12 @@ export default {
     },
     saveURL({commit}, url) {
       commit('SAVE_URL', url);
+    },
+    saveLoginStatus({commit}, status) {
+      commit('SAVE_LOGIN_STATUS', status);
+    },
+    saveItemIndex({commit}, index) {
+      commit('SAVE_ITEM_INDEX', index);
     },
     dcFail({commit}) {
       commit('DDCONFIG_FAIL');
@@ -35,6 +46,8 @@ export default {
     'DDCONFIG_SUCCESS'(state, config) {
       state.ddConfig = config
       state.ddConfigStatus = true
+      localStorage.removeItem(AUTH_DDCONFIG);
+      localStorage.setItem(AUTH_DDCONFIG, JSON.stringify(config));
     },
     'DDCONFIG_FAIL'(state) {
       state.ddConfig = null
@@ -51,6 +64,12 @@ export default {
     },
     'UPDATE_ADDRESS'(state, address) {
       state.ddAddress = address
+    },
+    'SAVE_LOGIN_STATUS'(state, status) {
+      state.loginStatus = status
+    },
+    'SAVE_ITEM_INDEX'(state, index) {
+      state.itemIndex = index
     }
   },
   getters: {
@@ -58,6 +77,8 @@ export default {
     getddConfigCode: state => state.ddConfigCode,
     getddConfigPath: state => state.ddConfigPath,
     getddUserID: state => state.ddUserID,
-    getddAddress: state => state.ddAddress
+    getddAddress: state => state.ddAddress,
+    getLoginStatus: state => state.loginStatus,
+    getItemIndex: state => state.itemIndex
   }
 }

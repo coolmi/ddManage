@@ -82,7 +82,6 @@
       changecity(val) {
         this.showCity = false;
         this.currentValue = val
-        console.log(this.currentValue)
         this.$emit('input', this.currentValue)
       }
     }

@@ -23,7 +23,11 @@ const NOREFRESH = [];
 
 const CORPID = 'ding7d5c838d71be2f8535c2f4657eb6378f';
 
-export function parseCorpId(url, param) {
+const AUTH_DDCONFIG = 'auth.ddconfig';
+
+const localStorage = global.localStorage;
+
+export function parseParam(url, param) {
   var searchIndex = url.indexOf('?');
   var searchParams = url.slice(searchIndex + 1).split('&');
   for (var i = 0; i < searchParams.length; i++) {
@@ -32,6 +36,11 @@ export function parseCorpId(url, param) {
       return items[1].trim();
     }
   }
+}
+
+export function getItemInLocation() {
+  let ddconfig = localStorage.getItem(AUTH_DDCONFIG);
+  return JSON.parse(ddconfig)
 }
 
 export function alertInfo(mes, title = '提示', btnName = '确定') {
@@ -142,7 +151,7 @@ export function jsApiOAuth(path) {
           type: 0,  // 选填。0表示微应用的jsapi,1表示服务窗的jsapi。不填默认为0。该参数从dingtalk.js的0.8.3版本开始支持
           jsApiList: jsApiList // 必填，需要使用的jsapi列表，注意：不要带dd。
         }
-        // store.dispatch('dcSuccess', ddConfig)
+        store.dispatch('dcSuccess', ddConfig)
         success(ddConfig);
       } else {
         store.dispatch('dcFail')
@@ -183,7 +192,8 @@ export function ddISReady(corpID) {
 export default {
   NOREFRESH,
   CORPID,
-  parseCorpId,
+  parseParam,
+  getItemInLocation,
   jsApiOAuth,
   ddISReady,
   alertInfo,

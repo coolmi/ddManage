@@ -1,42 +1,42 @@
 <template>
   <div>
-    <group title="基本信息" labelWidth="6.5rem" gutter="0" labelMarginRight="1rem">
-      <popup-picker v-if="!ifView" title="选择部门" :data="positionList" v-model="forms.department" :columns="3" show-name></popup-picker>
-      <popup-picker v-if="!ifView" title="费用承担公司" :data="burksList" v-model="forms.burks" :columns="3" show-name></popup-picker>
-      <popup-picker v-if="!ifView" :show.sync="showKostlPopupPicker" title="费用归集成本中心"
-                    :data="kostlList" v-model="forms.kostl" :columns="3" show-name  @on-show="changeBurks"></popup-picker>
-      <cell v-else title="选择部门"  :value="forms.department"></cell>
+    <group title="基本信息" label-width="7.5rem" value-align="left">
+      <v-search title="选择部门" :cdata="positionList" v-model="formsData.department"></v-search>
+      <v-search title="费用承担公司" :cdata="burksList" v-model="formsData.burks"></v-search>
+      <v-search title="费用归集成本中心" :cdata="burksList" v-model="formsData.kostl"></v-search>
+      <x-input title="附件数"></x-input>
+      <x-textarea title="说明"></x-textarea>
     </group>
-    <sticky :offset="50" v-if="!ifView">
+    <sticky :offset="50">
       <box gap="10px 10px">
-        <x-button plain type="primary" @click.native="addReserve()">添加备用金</x-button>
+        <x-button plain type="primary" @click.native="addPreim()">添加报销单</x-button>
       </box>
     </sticky>
     <group title="备用金列表" v-if="formsData.length > 0">
-      <cell v-for="d in formsData" :key="d.uuid" :title="d.yjje" is-link @click.native="addReserve(d)">{{d}}</cell>
+      <cell v-for="d in formsData" :key="d.uuid" :title="d.yjje" is-link @click.native="addPreim(d)">{{d}}</cell>
     </group>
     <flexbox class="footerButton">
-      <flexbox-item class="vux-1px-r" @click.native="addReserve" style="color:#00B705">提交</flexbox-item>
+      <flexbox-item class="vux-1px-r" @click.native="addPreim" style="color:#00B705">提交</flexbox-item>
       <flexbox-item @click.native="saveReserve" style="color:#FF8519">保存</flexbox-item>
     </flexbox>
   </div>
 </template>
 
 <script>
-  import {Box, XButton, PopupPicker, Group, Cell, FlexboxItem, Flexbox, Sticky} from 'vux'
+  import {Box, XButton, PopupPicker, XInput, XTextarea, Group, Cell, FlexboxItem, Flexbox, Sticky} from 'vux'
+  import vSearch from '@/components/searchChecker';
   import {mapGetters} from 'vuex'
   import api from 'api'
-  import dataUtils from '../../filters/dataUtils' // 类库
-  import * as _ from 'underscore' // js库
+  import dataUtils from '../../filters/dataUtils'
+  import * as _ from 'underscore'
   import whole from '@/lib/whole'
 
   export default {
     components: {
-      Box, XButton, PopupPicker, Group, Cell, FlexboxItem, Flexbox, Sticky
+      Box, XButton, PopupPicker, XInput, XTextarea, Group, Cell, FlexboxItem, Flexbox, Sticky, vSearch
     },
     data() {
       return {
-        ifView: false,
         showKostlPopupPicker: false,
         forms: {
           department: [],
@@ -63,9 +63,7 @@
 //      }
     },
     created() {
-      let ifView = this.$route.query.ifView;
-      this.ifView = ifView
-      // this.setData() // 填写的时候回退保存值
+      this.setData() // 填写的时候回退保存值
       this.getBaseData()
     },
     methods: {
@@ -73,8 +71,8 @@
         let _that = this;
         api.getPosition(function (res) {
           if (res) {
-            _that.positionList = dataUtils.getListValue(res.positionlist) // 转换可识别的样式
-            _that.burksList = dataUtils.getListValue(res.bukrlist) // 转换可识别的样式
+            _that.positionList = res.positionlist // 转换可识别的样式
+            _that.burksList = res.bukrlist // 转换可识别的样式
           }
         })
       },
@@ -99,12 +97,12 @@
           this.showKostlPopupPicker = false
         }
       },
-      addReserve(data = {}) {
+      addPreim(data = {}) {
         let info = {
           department: this.forms.department[0]
         }
-        this.$store.dispatch('addReserveInfo', info)
-        this.$router.push({path: '/addReserve', query: {formsData: JSON.stringify(data)}})
+        this.$store.dispatch('addPreimInfo', info)
+        this.$router.push({path: '/addPreim', query: {formsData: JSON.stringify(data)}})
       },
       setData() {
         let forms = this._data.forms;

@@ -67,7 +67,7 @@
                   });
                 },
                 onFail: function(err) {
-                  window.alert(JSON.stringify(err));
+//                  window.alert(JSON.stringify(err));
                 }
               });
             })

@@ -150,7 +150,7 @@
             dd.ready(function () {
               dd.biz.contact.complexPicker({
                 title: '选择人员并提交',
-                corpId: ding.CORPID,
+                corpId: ding.getItemInLocation().corpId || ding.CORPID,
                 multiple: true,
                 limitTips: '请选择要提交给的人员',
                 maxUsers: 1,

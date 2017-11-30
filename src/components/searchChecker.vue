@@ -18,7 +18,7 @@
         </p>
         <span class="vux-label-desc">{{desc}}</span>
       </div>
-      <div class="weui-cell__ft vux-cell-primary vux-cell-align-left" @click="checkSearch()" style="color: #151515">{{aaName !== '' ? aaName :
+      <div class="weui-cell__ft vux-cell-primary vux-cell-align-left" @click="checkSearch()" style="color: #151515">{{valueName !== '' ? valueName :
         currentName}}
       </div>
       <div v-show="showSearch">
@@ -62,6 +62,10 @@
       cdata: {
         type: Array,
         default: []
+      },
+      value: {
+        type: String,
+        default: ''
       }
     },
     data() {
@@ -70,14 +74,33 @@
         showlist: true,
         results: [],
         currentValue: '',
-        aaName: '',
         searchValue: '',
         checkerValue: ''
       }
     },
     computed: {
+      valueName: function () {
+        this.checkerValue = this.value
+        let index = _.findLastIndex(this.cdata, {
+          key: this.value
+        })
+        if (index >= 0) {
+          return this.cdata[index].value
+        } else {
+          return ''
+        }
+      },
       currentName: function () {
         return this.cdata.length === 0 ? '暂无数据' : '请选择'
+      }
+    },
+    watch: {
+      showSearch (val) {
+        if (val) {
+          this.$emit('on-show')
+        } else {
+          this.$emit('on-hide')
+        }
       }
     },
     components: {

@@ -12,7 +12,7 @@
   <div class="vux-cell-box">
     <div class="weui-cell vux-tap-active weui-cell_access vux-cell-align-left">
       <div class="weui-cell__hd"></div>
-      <div class="vux-cell-bd" @click="checkCity()">
+      <div class="vux-cell-bd">
         <p>
           <label class="vux-label" style="width: 6.5rem; margin-right: 1rem;">{{title}}</label>
         </p>

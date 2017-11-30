@@ -45,17 +45,13 @@
         userName: '选择人员',
         userAvatar: '',
         userEmplId: '',
-        zin: ''
+        zin: '',
+        fromPath: ''
       }
     },
     watch: {
       checkidea: function (val) {
-        this.idea = val
-      },
-      idea: function (val) {
-        if (val === '') {
-          this.checkidea = '';
-        }
+        this.idea = val === '同意' ? val : ''
       }
     },
     created() {
@@ -63,6 +59,7 @@
 //      this.setRight();
       let param = this.$route.query.flowParams;
       this.zin = this.$route.query.zin;
+      this.fromPath = this.$route.query.fromPath || '';
       if (typeof param === 'string') {
         param = JSON.parse(param);
       }
@@ -90,7 +87,7 @@
         dd.ready(function () {
           dd.biz.contact.complexPicker({
             title: '选择人员',
-            corpId: 'ding7d5c838d71be2f8535c2f4657eb6378f',
+            corpId: ding.getItemInLocation().corpId || ding.CORPID,
             multiple: true,
             limitTips: limitTips,
             maxUsers: num,
@@ -131,6 +128,7 @@
       commitFlow() {
         let dataStr = {};
         let _that = this;
+        let dd = window.dd;
         const flowParams = _that.flowParams
         let isjiaqian_ = flowParams.isjiaqian_;
         let commentMustable_ = flowParams.commentMustable_;
@@ -148,6 +146,41 @@
           dataStr.ctype = 'default';
           dataStr.isagree = true;
           dataStr.comment = _that.idea || '同意';
+          if (flowParams.selectPerson_.selectAble && flowParams.selectPerson_.beforPop) {
+            dd.ready(function () {
+              dd.biz.contact.complexPicker({
+                title: '选择人员并提交',
+                corpId: ding.getItemInLocation().corpId || ding.CORPID,
+                multiple: true,
+                limitTips: '请选择要提交给的人员',
+                maxUsers: 1,
+                appId: 126759727,
+                permissionType: 'GLOBAL',
+                responseUserOnly: false,
+                onSuccess: function (result) {
+                  if (result.users.length > 0) {
+                    let ddid = result.users[0].emplId
+                    let cparams = {
+                      ddid: [ddid]
+                    }
+                    api.getMPostidByDdid(cparams, function (res) {
+                      if (res.data.data && res.data.data.error !== undefined) {
+                        whole.showTop('无法获取此人的岗位，请联系HR人员');
+                        return;
+                      }
+                      let beAsigners = res.data.data.postids
+                      dataStr.v_S_userchoiceposition = beAsigners
+                      _that.goNextAssigne(dataStr, selectPerson_, isjiaqian_);
+                    });
+                  }
+                },
+                onFail: function (err) {
+                  console.log(err)
+                }
+              });
+            });
+            return
+          }
           if (isjiaqian_) {
             dataStr.ctype = 'signplushandle';
             dataStr.isagree = true;
@@ -261,28 +294,68 @@
             }
             let alertstr = data.msg || data.message;
             if (alertstr) {
-              if ((selectPerson_.selectAble && !selectPerson_.beforPop) && (isend !== 'true' || isend === true || isjiaqian_ === 'true' || isjiaqian_ === true)) {
-                dd.ready(function () {
-                  dd.biz.contact.complexPicker({
-                    title: '选择人员',
-                    corpId: 'ding7d5c838d71be2f8535c2f4657eb6378f',
-                    multiple: true,
-                    limitTips: '请选择相关人员',
-                    maxUsers: 10,
-                    pickedUsers: pickedUsers,
-                    appId: 126759727,
-                    permissionType: 'GLOBAL',
-                    responseUserOnly: false,
-                    onSuccess: function (result) {
-                      if (result.users.length > 0) {
-                        _that.userInfo = result.users;
-                      }
-                    },
-                    onFail: function (err) {
-                      console.log(err)
+              if ((selectPerson_.selectAble && !selectPerson_.beforPop) && _that.btype === 'tj' && (isend !== 'true' || isend === true || isjiaqian_)) {
+                let confirmConfig = {
+                  message: alertstr,
+                  title: '提示',
+                  buttonLabels: ['确定', '重新选人', '取消'],
+                  onSuccess: function (result) {
+                    if (result.buttonIndex === 0) {
+                      _that.toCommit(dataStr);
+                    } else if (result.buttonIndex === 1) {
+                      dd.ready(function () {
+                        dd.biz.contact.complexPicker({
+                          title: '选择人员',
+                          corpId: ding.getItemInLocation().corpId || ding.CORPID,
+                          multiple: true,
+                          limitTips: '请选择相关人员',
+                          maxUsers: 1,
+                          pickedUsers: pickedUsers,
+                          appId: 126759727,
+                          permissionType: 'GLOBAL',
+                          responseUserOnly: false,
+                          onSuccess: function (result) {
+                            if (result.users.length > 0) {
+                              let aaname = result.users[0].name
+                              let ddid = result.users[0].emplId
+                              let cparams = {
+                                ddid: [ddid]
+                              }
+                              api.getMPostidByDdid(cparams, function (res) {
+                                if (res.data.data && res.data.data.error !== undefined) {
+                                  whole.showTop('无法获取此人的岗位，请联系HR人员');
+                                  return;
+                                }
+                                let beAsigners = res.data.data.postids
+                                dataStr.v_S_userchoiceposition = beAsigners
+                                let aaconfirmConfig = {
+                                  message: '是否提交给' + aaname + '？',
+                                  title: '提示',
+                                  buttonLabels: ['确定', '取消'],
+                                  onSuccess: function (cresult) {
+                                    if (cresult.buttonIndex === 0) {
+                                      _that.toCommit(dataStr);
+                                    }
+                                  },
+                                  onFail: function (err) {
+                                    console.log(err)
+                                  }
+                                }
+                                ding.confirm(aaconfirmConfig)
+                              });
+                            }
+                          },
+                          onFail: function (err) {
+                            console.log(err)
+                          }
+                        });
+                      });
                     }
-                  });
-                });
+                  },
+                  onFail: function (err) {
+                  }
+                }
+                ding.confirm(confirmConfig)
               } else {
                 let confirmConfig = {
                   message: alertstr,
@@ -321,11 +394,16 @@
             setTimeout(function () {
               let dd = window.dd
               dd.biz.navigation.close({
-                onSuccess: function(result) {
+                onSuccess: function (result) {
                 },
-                onFail: function(err) {}
+                onFail: function (err) {
+                }
               })
             }, 2000)
+          } else if (_that.fromPath !== '') {
+            setTimeout(function () {
+              _that.$router.go(-3);
+            })
           } else {
             setTimeout(function () {
               _that.$router.go(-2);

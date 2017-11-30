@@ -2,6 +2,7 @@ import axios from './axiosConfig'
 import APILIST from './apiBase'
 import APISEND from './apiSend'
 import * as _ from 'underscore'
+import ding from '@/lib/ding';
 
 export default {
   /**
@@ -24,7 +25,8 @@ export default {
    * @param cb
    */
   getLogin: function (data, cb) {
-    axios.get('/dingding/es/login?code=' + data)
+    let dingtalkCode = ding.parseParam(window.location.href, 'dingtalk_code')
+    axios.get('/dingding/es/login?code=' + data + '&dingtalk_code=' + dingtalkCode)
       .then((res) => {
         cb(res);
       }).catch((error) => {
@@ -51,7 +53,8 @@ export default {
    * @param cb
    */
   getJsApiInfos: function (params, cb) {
-    axios.get('/api/ddtalk/miandeng/h5config?purl=' + params)
+    let dingtalkCode = ding.parseParam(window.location.href, 'dingtalk_code')
+    axios.get('/api/ddtalk/miandeng/h5config?purl=' + params + '&dingtalk_code=' + dingtalkCode)
       .then((res) => {
         cb(res);
       }).catch((error) => {
@@ -329,7 +332,7 @@ export default {
       params
     })
       .then((res) => {
-        cb(res.data);
+        cb(res);
       }).catch((error) => {
       return Promise.reject(error)
     })

@@ -81,14 +81,14 @@
     },
     created() {
       let flowIndex = this.$route.query.flowIndex || 0;
-      let _that = this;
-      this.$navigation.on('back', (to, from) => {
-        if (from.route.path === '/flowIdea') {
-          _that.getDBList(flowIndex); // 获取待办等
-          _that.setRight()
-          _that.startPush(); // 启动刷新
-        }
-      })
+//      let _that = this;
+//      this.$navigation.on('back', (to, from) => {
+//        if (from.route.path === '/flowIdea') {
+//          _that.getDBList(flowIndex); // 获取待办等
+//          _that.setRight()
+//          _that.startPush(); // 启动刷新
+//        }
+//      })
       this.getDBList(flowIndex); // 获取待办等
       this.setRight(); // 设置右上角按钮
       this.startPush(); // 启动刷新

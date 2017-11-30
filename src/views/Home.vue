@@ -124,7 +124,9 @@
     },
     computed: {
       ...mapGetters({
-        path: 'getddConfigPath'
+        path: 'getddConfigPath',
+        getLoginStatus: 'getLoginStatus',
+        itemIndex: 'getItemIndex'
       })
     },
     watch: {
@@ -133,16 +135,23 @@
       }
     },
     created() {
-      let _that = this;
-      this.$navigation.on('back', (to, from) => {
+//      let _that = this;
+//      this.$navigation.on('back', (to, from) => {
+//        this.pageNo = 1;
+//        _that.doNext(_that.index)
+//        _that.selectedIndex = _that.index
+//        _that.startPush(); // 启动刷新
+//      })
+      if (this.getLoginStatus) {
         this.pageNo = 1;
-        _that.doNext(_that.index)
-        _that.selectedIndex = _that.index
-        _that.startPush(); // 启动刷新
-      })
-      this.getUserid();
-      // this.setRight(); // 设置右上角按钮
-      this.startPush(); // 启动刷新
+        this.doNext(this.itemIndex)
+        this.selectedIndex = this.itemIndex
+        this.startPush(); // 启动刷新
+      } else {
+        this.getUserid();
+//      this.setRight(); // 设置右上角按钮
+        this.startPush(); // 启动刷新
+      }
     },
     methods: {
       yblinfiniteHandler($state) {
@@ -189,6 +198,7 @@
         dingUser.getRequestAuthCode(this.path).then((data) => {
           api.getLogin(data, function (res) {
             if (res.data.code) {
+              _that.$store.dispatch('saveLoginStatus', true)
               _that.doNext(_that.flowType);
             } else {
               whole.showTop('获取钉钉免登权限失败')
@@ -200,6 +210,7 @@
         this.selectedIndex = index;
       },
       doNext(flowIndex) {
+        this.$store.dispatch('saveItemIndex', flowIndex)
         let _that = this;
         if (flowIndex === 0 || flowIndex === '0') {
           flowRU.getDBList(function (res) {

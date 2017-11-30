@@ -41,6 +41,12 @@
         </group>
       </template>
 
+      <template v-else-if="item.component === 'person'">
+        <group :title="item.title">
+          <x-input :title="item.title" text-align="right" v-model="item.nvalue" @on-focus="checkPer(item)"></x-input>
+        </group>
+      </template>
+
       <template v-else-if="item.component === 'date1' || item.component === 'date'">
         <group :title="item.title">
           <datetime :title="item.title" v-model="item.nvalue"></datetime>
@@ -54,9 +60,11 @@
 </template>
 
 <script>
-  import {Checker, CheckerItem, XInput, Group, XButton, XTextarea, Box, Datetime, Selector} from 'vux'
+  import {Checker, CheckerItem, XInput, Group, XButton, XTextarea, Box, Datetime, Selector, Cell} from 'vux'
   import whole from '@/lib/whole'
   import * as _ from 'underscore'
+  import ding from '@/lib/ding'
+  import api from 'api'
 
   export default {
     components: {
@@ -68,20 +76,25 @@
       Group,
       XTextarea,
       Datetime,
-      Selector
+      Selector,
+      Cell
     },
     data() {
       return {
         flowParams: {}, // 流程信息
         btype: '',
         flag: '',
-        selectPerson: ''
+        selectPerson: '',
+        userInfo: []
       }
     },
     created() {
       let data = JSON.parse(this.$route.query.flowParams);
       for (let d of data.EDITARR_) {
-        d.nvalue = ''
+        if (d.forSelectPerson) {
+          d.component = 'person'
+        }
+        d.nvalue = d.value || ''
         if (d.component === 'checkbox' || d.component === 'radio') {
           let arr = []
           for (let o of d.options) {
@@ -115,6 +128,61 @@
       this.selectPerson = this.$route.query.selectPerson;
     },
     methods: {
+      // 选择人员
+      checkPer(item) {
+        let pickedUsers = [];
+        for (let u of this.userInfo) {
+          pickedUsers.push(u.emplId);
+        }
+        let _that = this;
+        let dd = window.dd;
+        let limitTips = '请选择相关人员'
+        dd.ready(function () {
+          dd.biz.contact.complexPicker({
+            title: '选择人员',
+            corpId: ding.CORPID,
+            multiple: true,
+            limitTips: limitTips,
+            maxUsers: 1,
+            pickedUsers: pickedUsers,
+            appId: 126759727,
+            permissionType: 'GLOBAL',
+            responseUserOnly: false,
+            onSuccess: function (result) {
+              if (result.users.length > 0) {
+                item.title = result.users[0].name
+                let params = {
+                  ddid: [result.users[0].emplId]
+                }
+                api.getMPostidByDdid(params, function (res) {
+                  if (res.data.data && res.data.data.error !== undefined) {
+                    whole.showTop('无法获取此人的岗位，请联系HR人员');
+                    return;
+                  }
+                  let beAsigners = res.data.data.postids
+                  item.nvalue = beAsigners
+                });
+              } else {
+                _that.userInfo = [];
+              }
+            },
+            onFail: function (err) {
+              if (err.errorMessage) {
+                whole.showTop('获取钉钉权限失败，请退回上一页面重新进入');
+              }
+            }
+          });
+        });
+        dd.error(function (err) {
+          /**
+           {
+              message:"错误信息",//message信息会展示出钉钉服务端生成签名使用的参数，请和您生成签名的参数作对比，找出错误的参数
+              errorCode:"错误码"
+           }
+           **/
+          console.log('dd ding error: ' + window.location.href + JSON.stringify(err));
+        });
+      },
       saveEditInfo() {
         let arr = [];
         for (let d of this.flowParams.EDITARR_) {
@@ -141,7 +209,7 @@
         let _that = this;
         this.$router.push({
           path: '/flowIdea',
-          query: {btype: this.btype, flowParams: _that.flowParams, selectPerson: _that.selectPerson, flag: _that.flag, zin: _that.zin}
+          query: {btype: this.btype, flowParams: _that.flowParams, selectPerson: _that.selectPerson, flag: _that.flag, zin: _that.zin, fromPath: 'edit'}
         })
       }
     }

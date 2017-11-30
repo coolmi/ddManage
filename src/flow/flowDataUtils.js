@@ -130,10 +130,14 @@ export function getFlowData(flowData) {
               } else {
                 title = getValueSwitchType(rows[lTitleIndex]);
               }
-              sub.tableForms[tableIndex].title = title;
-              sub.tableForms[tableIndex].showCollapse = false;
-              sub.tableForms[tableIndex].nvalue = getValueSwitchType(rows[rTitleIndex]);
-              sub.tableForms[tableIndex].nchildtableForms = rows
+              let aa = {};
+              aa.nchildtableForms = rows;
+              aa.title = title;
+              aa.nvalue = getValueSwitchType(rows[rTitleIndex]);
+              // sub.tableForms[tableIndex].title = title;
+              // sub.tableForms[tableIndex].showCollapse = false;
+              // sub.tableForms[tableIndex].nvalue = getValueSwitchType(rows[rTitleIndex]);
+              // sub.tableForms[tableIndex].nchildtableForms = rows
               sub.ntableForms.push(sub.tableForms[tableIndex])
             }
           } else if (subcomp === 'table') {
@@ -161,11 +165,15 @@ export function getFlowData(flowData) {
               } else {
                 title = getValueSwitchType(rows[lTitleIndex]);
               }
-              sub.cells[tableIndex].title = title;
-              sub.cells[tableIndex].showCollapse = false;
-              sub.cells[tableIndex].nvalue = getValueSwitchType(rows[rTitleIndex]);
-              sub.cells[tableIndex].nchildtableForms = rows
-              sub.ntableForms.push(sub.cells[tableIndex])
+              let aa = {};
+              aa.nchildtableForms = rows;
+              aa.title = title;
+              aa.nvalue = getValueSwitchType(rows[rTitleIndex]);
+              // sub.cells[tableIndex]['title'] = title;
+              // sub.cells[tableIndex].showCollapse = false;
+              // sub.cells[tableIndex].nvalue = getValueSwitchType(rows[rTitleIndex]);
+              // sub.cells[tableIndex].nchildtableForms = rows
+              sub.ntableForms.push(aa)
             }
           } else if (subcomp === 'table_ccmx') {
             sub.ntableForms = [];
@@ -182,7 +190,7 @@ export function getFlowData(flowData) {
           }
         }
       }
-      if (sub.editable) {
+      if (sub.editable && sub.component !== 'hidden') {
         data.EDITARR_.push(sub)
       }
     }
@@ -296,11 +304,15 @@ function getSubComponents(subData) {
             } else {
               title = getValueSwitchType(rows[lTitleIndex]);
             }
-            sub.tableForms[tableIndex].title = title;
-            sub.tableForms[tableIndex].showCollapse = false;
-            sub.tableForms[tableIndex].nvalue = getValueSwitchType(rows[rTitleIndex]);
-            sub.tableForms[tableIndex].nchildtableForms = rows
-            sub.ntableForms.push(sub.tableForms[tableIndex])
+            let aa = {};
+            aa.nchildtableForms = rows;
+            aa.title = title;
+            aa.nvalue = getValueSwitchType(rows[rTitleIndex]);
+            // sub.tableForms[tableIndex]['title'] = title;
+            // sub.tableForms[tableIndex].showCollapse = false;
+            // sub.tableForms[tableIndex].nvalue = getValueSwitchType(rows[rTitleIndex]);
+            // sub.tableForms[tableIndex].nchildtableForms = rows
+            sub.ntableForms.push(aa)
           }
         } else if (subcomp === 'table') {
           sub.ntableForms = [];
@@ -327,11 +339,15 @@ function getSubComponents(subData) {
             } else {
               title = getValueSwitchType(rows[lTitleIndex]);
             }
-            sub.cells[tableIndex].title = title;
-            sub.cells[tableIndex].showCollapse = false;
-            sub.cells[tableIndex].nvalue = getValueSwitchType(rows[rTitleIndex]);
-            sub.cells[tableIndex].nchildtableForms = rows
-            sub.ntableForms.push(sub.cells[tableIndex])
+            let aa = {};
+            aa.nchildtableForms = rows;
+            aa.title = title;
+            aa.nvalue = getValueSwitchType(rows[rTitleIndex]);
+            // sub.cells[tableIndex].title = title;
+            // sub.cells[tableIndex].showCollapse = false;
+            // sub.cells[tableIndex].nvalue = getValueSwitchType(rows[rTitleIndex]);
+            // sub.cells[tableIndex].nchildtableForms = rows
+            sub.ntableForms.push(aa)
           }
         } else if (subcomp === 'table_ccmx') {
           sub.ntableForms = [];
@@ -348,7 +364,7 @@ function getSubComponents(subData) {
         }
       }
     }
-    if (sub.editable) {
+    if (sub.editable && sub.component !== 'hidden') {
       data.EDITARR_.push(sub)
     }
   }

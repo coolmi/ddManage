@@ -54,6 +54,16 @@ const router = new Router({
       meta: {title: '添加明细'}
     },
     {
+      path: '/preim',
+      component: require('@/views/reimbur/PersonReim'),
+      meta: {title: '个人报销'}
+    },
+    {
+      path: '/addPreim',
+      component: require('@/views/reimbur/AddPersonReim'),
+      meta: {title: '添加报销明细'}
+    },
+    {
       path: '/db',
       component: require('@/views/flow/DbList'),
       meta: {title: '列表', pullToRefresh: true}
@@ -76,7 +86,7 @@ const router = new Router({
     {
       path: '/flowEdit',
       component: require('@/views/flow/flowEditContent'),
-      meta: {title: '填写'}
+      meta: {title: '填写', ddConfig: true}
     },
     {
       path: '/flowIdea',
@@ -114,8 +124,12 @@ router.beforeEach((to, from, next) => {
     }
     typeof to.meta.title !== undefined && setDocumentTitle(to.meta.title) // 设置title
 
-    setLeftBtn(to) // 设置左侧按钮
-    setRightBtn(to) // 设置右侧按钮
+    if (to.meta.leftBtn) {
+      setLeftBtn(to) // 设置左侧按钮
+    }
+    if (to.meta.rightBtn) {
+      setRightBtn(to) // 设置右侧按钮
+    }
     next();
   }
 });

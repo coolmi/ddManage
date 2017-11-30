@@ -38,6 +38,11 @@ export function openFj(file) {
 
 export function openPdforDown(params) {
   let dd = window.dd;
+  if (params.viewstatus === 0 || params.viewstatus === '0') {
+    params.ispdf = true
+  } else {
+    params.ispdf = false
+  }
   let fujianUrl = APILIST.openDingfile_url + '?docmentafrescoid=' + params.docmentafrescoid + '&docmentafresconame=' + params.docmentafresconame + '&ispdf=' + params.ispdf;
   api.getDocument(fujianUrl, function (res) {
     dd.ready(function () {
@@ -48,7 +53,6 @@ export function openPdforDown(params) {
           url: res.data.mediaId,
           name: params.docmentafresconame,
           onSuccess: function (data) {
-            console.log(data)
             let fname = data.data[0].fileName
             let index = fname.lastIndexOf('.');
             let type = fname.substr(index + 1, fname.length);
@@ -69,7 +73,7 @@ export function openPdforDown(params) {
             });
           },
           onFail: function (err) {
-            window.alert(JSON.stringify(err));
+            // window.alert(JSON.stringify(err));
           }
         });
       }

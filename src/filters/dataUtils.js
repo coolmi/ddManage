@@ -105,4 +105,34 @@ function getDescValue(originalData, selecteddata) {
   return fieldDesc;
 }
 
-export default {filterData, money2dx, generateUUID, formatNumber, getListValue, getListSearchValue, getDescValue}
+/**
+ * 获取汇总数据
+ * @param basedata 源数据
+ * @param baseType [{type: 'byj', field: 'byjsum'}]
+ */
+function getSummary(basedata = [], baseType = []) {
+  if (basedata.length < 0 || baseType.length < 0) {
+    console.log('源数据不完成');
+    return;
+  }
+  let result = []
+  let cc = _.chain(baseType).map(
+    function (aitem) {
+      return _.where(basedata, aitem)
+    }
+  ).value()
+  for (let citem of cc) {
+    for (let type of baseType) {
+      let obj = {}
+      let ff = _.compact(_.map(citem, _.iteratee(type.field)))
+      if (ff.length > 0) {
+        obj.type = type.type;
+        obj.child = ff
+        obj.sum = _.reduce(ff, function(memo, num) { return memo + num; }, 0);
+        result.push(obj)
+      }
+    }
+  }
+  return result
+}
+export default {filterData, money2dx, generateUUID, formatNumber, getListValue, getListSearchValue, getDescValue, getSummary}

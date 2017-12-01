@@ -5,7 +5,7 @@
       <flow-list-card> <!--@on-click-card="openPerInfoPage"-->
         <div slot="header" class="flow_list_card_hd flow_list_card_hd_bottom">
           <div class="flow_list_card_hd_left">
-            <span>{{flowParams.title || contentdata.name}}</span>
+            <span>{{flowParams.title || contentdata.name}}<span style="font-size: .85rem; padding: 0 6px">{{flowParams.khcontent}}</span></span>
           </div>
           <!--<div class="flow_list_card_hd_right">-->
           <!--<span>NO.{{contentdata.APPID_}}</span>-->
@@ -14,15 +14,15 @@
         <div slot="content" class="flow_list_card_content" v-if="contentdata.nachn" @click="openPerInfoPage">
           <div class="flow_list_card_content_a">
             <div class="flow_list_card_content_div">
-              <div>Name.</div>
+              <div>姓名</div>
               <div class="flow_list_card_content_li_span">{{contentdata.nachn}}</div>
             </div>
             <div class="flow_list_card_content_div" v-if="contentdata.stext">
-              <div>Post.</div>
+              <div>岗位</div>
               <div class="flow_list_card_content_li_span">{{contentdata.stext}}</div>
             </div>
             <div class="flow_list_card_content_div" v-if="contentdata.APPDA_">
-              <div>Date.</div>
+              <div>申请日期</div>
               <div class="flow_list_card_content_li_span">{{contentdata.APPDA_}}</div>
             </div>
           </div>

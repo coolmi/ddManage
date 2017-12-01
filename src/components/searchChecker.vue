@@ -145,6 +145,14 @@
       onCancel() {
         this.showlist = true
       }
+    },
+    filters: {
+      subTitle(str = '', len = 15) {
+        if (str.length > len) {
+          return str.substr(0, len) + '...'
+        }
+        return str
+      }
     }
   }
 

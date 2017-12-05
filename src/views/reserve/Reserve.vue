@@ -2,17 +2,17 @@
   <div>
     <group title="申请信息">
       <v-search title="选择岗位" :cdata="positionList" v-model="forms.postid"></v-search>
-      <v-search title="费用承担公司" :cdata="burkList" v-model="forms.m_comp"></v-search>
-      <v-search title="费用归集成本中心" :noticeDesc="noticeDesc" :cdata="kostlList" v-model="forms.m_cbzx" @on-show="changeBurks"></v-search>
-      <!-- <v-search title="费用所属事业部" :cdata="burkList" v-model="forms.m_comp"></v-search> -->
+      <v-search title="费用承担公司" :cdata="burkList" v-model="forms.cdbukrs"></v-search>
+      <v-search title="费用归集成本中心" :noticeDesc="noticeDesc" :cdata="kostlList" v-model="forms.cdkostls" @on-show="changeBurks"></v-search>
+      <v-search title="费用所属事业部" :noticeDesc="noticeDesc" :cdata="departments" v-model="forms.businessunitid" @on-show="changeDepart"></v-search>
     </group>
     <sticky>
       <box gap="10px 10px">
         <x-button plain type="primary" @click.native="addReserveOption()">添加备用金</x-button>
       </box>
     </sticky>
-    <group title="备用金汇总" v-if="formsData.length > 0">
-      <cell v-for="d in formsData" :key="d.uuid" :title="d.tp[0]" is-link @click.native="addReserveOption(d)">{{d}}</cell>
+    <group title="备用金汇总" v-if="formsData.length > 0" style="margin-bottom: 60px;">
+      <cell v-for="d in formsData" :key="d.uuid" :title="d.stype.toString()" is-link @click.native="addReserveOption(d)">{{d}}</cell>
     </group>
     <flexbox class="footerButton">
       <flexbox-item class="vux-1px-r" @click.native="addReserve(0)" style="color:#00B705">提交</flexbox-item>
@@ -27,7 +27,7 @@
 }
 </style>
 <script>
-import {Group, Sticky, Box, XButton, Cell, Flexbox, FlexboxItem} from 'vux';
+import {Group, Sticky, Box, XButton, Scroller, Cell, Flexbox, FlexboxItem} from 'vux';
 import vSearch from '@/components/searchChecker';
 import api from 'api';
 import whole from '@/lib/whole'
@@ -35,58 +35,33 @@ import {mapGetters} from 'vuex'
 import dataUtils from '../../filters/dataUtils' // 工具类
 
 export default {
-  // {"postid":"20042474",
-  // "phone":"",
-  // "proc_inst_id":"",
-  // "bukrs":"2011",
-  // "userid":"",
-  // "syspostname":"",
-  // "appid":"",
-  // "id":"",
-  // "akostl":" ",
-  // "username":" ",
-  // "bukrsAkostl":" ",
-  // "aktext":" ",
-  // "cdkostls":"20112010",
-  // "tello":"","sysdeptid":" ",
-  // "bukrs1":"",
-  // "pernr":"",
-  // "sysbusinessunitid":"",
-  // "gjahr":"",
-  // "cdbukrsname":"财务中心",
-  // "businessistrue":false,
-  // "sysbusinessunitname":"",
-  // "email":"",
-  // "bankl":"",
-  // "cdbukrs":"1085",
-  // "bankn":"",
-  // "cdkostlsname":"",
-  // "sysdeptname":""}
   components: {
-    Group, Sticky, Box, XButton, Cell, Flexbox, FlexboxItem, vSearch
+    Group, Sticky, Box, XButton, Scroller, Cell, Flexbox, FlexboxItem, vSearch
   },
   data () {
     return {
       forms: {
         postid: '',
-        m_comp: '',
-        m_cbzx: ''
+        cdbukrs: '',
+        cdkostls: '',
+        businessunitid: ''
       },
       positionList: [],
       burkList: [],
-      kostlList: []
+      kostlList: [],
+      departments: []
     }
   },
   computed: {
     ...mapGetters({
-      formsData: 'getReserveInfos',
+      formsData: 'getReserveFroms',
       formsInfos: 'getReserveInfos'
     }),
     noticeDesc() {
       let desc = '请选择'
       if (this.forms.postid === '') {
         desc = '请选择岗位'
-      } else if (this.forms.m_comp === '') {
+      } else if (this.forms.cdbukrs === '') {
         desc = '请选择费用承担公司'
       }
       return desc
@@ -95,8 +70,9 @@ export default {
   created() {
     this.getBaseData() // 请求部门和费用承担公司
     this.setData() // 填写的时候回退保存值
-    if (this.forms.postid !== '' && this.forms.m_comp !== '') {
-      this.changeBurks(this.forms.postid, this.forms.m_comp)
+    if (this.forms.postid !== '' && this.forms.cdbukrs !== '') {
+      this.changeBurks(this.forms.postid, this.forms.cdbukrs)
+      this.changeDepart(this.forms.postid, this.forms.cdbukrs)
     }
   },
   methods: {
@@ -112,13 +88,14 @@ export default {
     setData() {
       console.log(this.formsInfos);
       this.forms.postid = this.formsInfos.forms.postid;
-      this.forms.m_comp = this.formsInfos.forms.m_comp;
-      this.forms.m_cbzx = this.formsInfos.forms.m_cbzx;
+      this.forms.cdbukrs = this.formsInfos.forms.cdbukrs;
+      this.forms.cdkostls = this.formsInfos.forms.cdkostls;
+      this.forms.businessunitid = this.formsInfos.forms.businessunitid;
     },
     changeBurks(postid, bukrs) {
-      if (this.forms.postid !== '' && this.forms.m_comp !== '') {
+      if (this.forms.postid !== '' && this.forms.cdbukrs !== '') {
         postid = this.forms.postid;
-        bukrs = this.forms.m_comp;
+        bukrs = this.forms.cdbukrs;
         let params = {
           postid: postid,
           bukrs: bukrs
@@ -129,19 +106,25 @@ export default {
             _that.kostlList = res.data.data.kostlrulist
           }
         })
-        let params1 = {
+      }
+    },
+    changeDepart(postid, bukrs) {
+      if (this.forms.postid !== '' && this.forms.cdbukrs !== '') {
+        postid = this.forms.postid;
+        bukrs = this.forms.cdbukrs;
+        let params = {
           bukrs: bukrs
         }
-        api.getBusinessDepartment(params1, function (res) {
+        let _that = this;
+        api.getBusinessDepartment(params, function (res) {
           if (res) {
-            // _that.kostlList = res.data.data.kostlrulist
-            console.log(res);
+            _that.departments = res.data.data.departments
           }
         })
       }
     },
     addReserveOption (data = {}) {
-      if (this.forms.m_comp > 0) {
+      if (this.forms.cdbukrs > 0) {
         let info = {
           forms: this.forms
         }
@@ -149,7 +132,7 @@ export default {
 
         let formsDemo = {};
         formsDemo = {
-          bukrs: this.forms.m_comp,
+          bukrs: this.forms.cdbukrs,
           formsData: JSON.stringify(data)
         };
 
@@ -165,17 +148,21 @@ export default {
         whole.showTop('请选择岗位')
         return;
       }
-      if (this.forms.m_comp === '') {
+      if (this.forms.cdbukrs === '') {
         whole.showTop('请选择费用承担中心')
         return;
       }
-      if (this.forms.m_cbzx === '') {
+      if (this.forms.cdkostls === '') {
         whole.showTop('请选择费用归集成本中心')
         return;
       }
-      var syspostname = dataUtils.getDescValue(this.positionList, this.forms.postid);
-      var m_compnm = dataUtils.getDescValue(this.burkList, this.forms.m_comp);
-      var m_cbzxnm = dataUtils.getDescValue(this.kostlList, this.forms.m_cbzx);
+      if (this.forms.businessunitid === '') {
+        whole.showTop('费用所属事业部')
+        return;
+      }
+      var cdbukrsname = dataUtils.getDescValue(this.burkList, this.forms.cdbukrs);
+      var cdkostlsname = dataUtils.getDescValue(this.kostlList, this.forms.cdkostls);
+      var businessunitname = dataUtils.getDescValue(this.departments, this.forms.businessunitid);
 
       var demoArray = [];
       this.formsData.map(function (item) {
@@ -196,40 +183,45 @@ export default {
         depositApp: {
           appda: new Date().getTime(),
           postid: this.forms.postid,
-          syspostname: syspostname,
-          m_comp: this.forms.m_comp,
-          m_compnm: m_compnm,
-          m_cbzx: this.forms.m_cbzx,
-          m_cbzxnm: m_cbzxnm
+          cdbukrs: this.forms.cdbukrs,
+          cdbukrsname: cdbukrsname,
+          cdkostls: this.forms.cdkostls,
+          cdkostlsname: cdkostlsname,
+          businessunitid: this.forms.businessunitid,
+          businessunitname: businessunitname
         },
-        subs: demoArray
+        resegs: demoArray
       }
 
       console.log(parmas);
 
       if (flag === 0) {
-        console.log('提交');
-          // let _that = this;
-          // api.getStartTravelWFURL(parmas, function (res) {
-          //   if (res) {
-          //     if (res.status === 200) {
-          //       whole.showTop('提交成功');
-          //       _that.$router.go(-1)
-          //     }
-          //   }
-          // })
+          let _that = this;
+          api.getStartDepositWFURL(parmas, function (res) {
+            if (res) {
+              if (res.data.code) {
+                whole.showTop(res.data.message);
+                _that.$router.go(-1)
+              } else {
+                whole.showTop(res.data.message);
+                _that.$router.go(-1)
+              }
+            }
+          })
       } else if (flag === 1) {
-        console.log('保存');
-        // let _that = this;
-        // api.getSaveTravelURL(parmas, function (res) {
-        //   if (res) {
-        //     if (res.status === 200) {
-        //       whole.showTop('保存成功');
-        //       _that.$router.go(-1)
-        //     }
-        //   }
-        //   console.log(res);
-        // })
+        let _that = this;
+        api.getSaveDepositResegsURL(parmas, function (res) {
+          if (res) {
+            if (res.data.code) {
+              whole.showTop(res.data.message);
+              _that.$router.go(-1)
+            } else {
+              whole.showTop(res.data.message);
+              _that.$router.go(-1)
+            }
+          }
+          console.log(res);
+        })
       }
     }
   }

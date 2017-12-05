@@ -1,7 +1,7 @@
 <template>
   <div>
     <group v-if="draftList.length > 0">
-      <cell v-for="(item, appid) in draftList" :key="item.appid" :title="item.draftName" :inline-desc="item.appda" is-link @click.native="addBusinessTripOption(item)"></cell>
+      <cell v-for="(item, appid) in draftList" :key="item.appid" :title="item.draftName" :inline-desc="item.appda | dateFormat" is-link @click.native="addBusinessTripOption(item)"></cell>
     </group>
   </div>
 </template>

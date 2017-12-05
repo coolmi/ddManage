@@ -210,8 +210,11 @@ export default {
           let _that = this;
           api.getStartTravelWFURL(parmas, function (res) {
             if (res) {
-              if (res.status === 200) {
-                whole.showTop('提交成功');
+              if (res.data.code) {
+                whole.showTop(res.data.message);
+                _that.$router.go(-1)
+              } else {
+                whole.showTop(res.data.message);
                 _that.$router.go(-1)
               }
             }
@@ -220,9 +223,12 @@ export default {
         let _that = this;
         api.getSaveTravelURL(parmas, function (res) {
           if (res) {
-            if (res.status === 200) {
-              whole.showTop('保存成功');
-              _that.$router.go(-1)
+            if (res.data.code) {
+                whole.showTop(res.data.message);
+                _that.$router.go(-1)
+            } else {
+                whole.showTop(res.data.message);
+                _that.$router.go(-1)
             }
           }
           console.log(res);

@@ -399,6 +399,30 @@ export default {
       return Promise.reject(error)
     })
   },
+  /**
+   * 提交
+   * @param cb
+   */
+  getStartDepositWFURL: function (params, cb) {
+    axios.post(APISEND.startDepositWFURL, params)
+      .then((res) => {
+        cb(res);
+      }).catch((error) => {
+      return Promise.reject(error)
+    })
+  },
+  /**
+   * 保存
+   * @param cb
+   */
+  getSaveDepositResegsURL: function (params, cb) {
+    axios.post(APISEND.saveDepositResegsURL, params)
+      .then((res) => {
+        cb(res);
+      }).catch((error) => {
+      return Promise.reject(error)
+    })
+  },
   getDocument: function (url, cb) {
     axios.get(url).then((res) => {
       cb(res);

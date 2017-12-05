@@ -90,7 +90,7 @@ function getListSearchValue(data, type = 'popup') {
 }
 
 /**
- * 下拉列表vulue转换描述
+ * (V-Search)vulue转换描述
  * @param  {[type]} originalData [原始数据]
  * @param  {[type]} selecteddata [选择数据]
  * @return {[type]}              [description]
@@ -105,6 +105,12 @@ function getDescValue(originalData, selecteddata) {
   return fieldDesc;
 }
 
+/**
+ * (Pop-Picker)name转换描述
+ * @param  {[type]} originalData [原始数据]
+ * @param  {[type]} selecteddata [选择数据]
+ * @return {[type]}              [description]
+ */
 function getDescValueP(originalData, selecteddata) {
   let fieldDesc = '';
   originalData.map(function (item) {

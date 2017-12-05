@@ -5,3 +5,4 @@ import Vue from 'vue';
 
 Vue.filter('getLastTimeStr', require('./getLastTimeStr'));
 Vue.filter('subTitle', require('./subTitle'));
+Vue.filter('dateFormat', require('./dateFormat'));

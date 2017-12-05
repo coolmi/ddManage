@@ -3,8 +3,8 @@
     <group title="备用金录入">
       <popup-picker title="备用金类型" :data="fundTypeList" :columns="1" v-model="formsData.stype" show-name></popup-picker>
       <datetime v-model="formsData.edate" :start-date="systemDate" title="预计归还日期"></datetime>
-      <x-input title="预借金额" placeholder="请填写预借金额" :max=9 v-model="formsData.dmbtr"></x-input>
-      <cell v-show="udmbtr">{{udmbtr}}</cell>
+      <x-input title="预借金额" placeholder="请填写预借金额" :max=9 v-model="formsData.fwbas"></x-input>
+      <cell v-show="fwbas1">{{fwbas1}}</cell>
       <popup-picker title="币种" :data="waerslist" :columns="1" v-model="formsData.waers" show-name></popup-picker>
       <x-textarea title="申请事由" v-model="formsData.smemo" placeholder="请输入申请事由" :show-counter="false" :rows="3" autosize></x-textarea>
       <x-input title="隐藏" placeholder="隐藏" v-show="false" v-model="formsData.uuid"></x-input>
@@ -32,7 +32,7 @@ export default {
       stype: [],
       waers: [],
       edate: moment().format('YYYY-MM-DD'),
-      dmbtr: '',
+      fwbas: '',
       smemo: '',
       uuid: ''
     },
@@ -42,14 +42,20 @@ export default {
   }),
 
   computed: {
-    udmbtr: function () {
-      return dataUtils.money2dx(this.formsData.dmbtr)
+    fwbas1: function () {
+      return dataUtils.money2dx(this.formsData.fwbas)
     }
   },
 
   created() {
     let bukrs = this.$route.query.formsDemo.bukrs
-    this.formsData = JSON.parse(this.$route.query.formsDemo.formsData)
+    if (JSON.stringify(this.$route.query.formsDemo.formsData) === '"{}"') {
+    } else {
+      this.typeList = [{name: '去程', value: '去程'}, {name: '返程', value: '返程'}]
+      this.show = true
+      this.formsData = JSON.parse(this.$route.query.formsDemo.formsData)
+    }
+    console.log(this.formsData);
     this.getBaseData(bukrs) // 获取交通方式 + 获取出发/到达地点
   },
 
@@ -76,7 +82,7 @@ export default {
         whole.showTop('请选择预计归还日期')
         return;
       }
-      if (this.formsData.dmbtr === 0) {
+      if (this.formsData.fwbas === '') {
         whole.showTop('请输入预借金额')
         return;
       }
@@ -89,15 +95,15 @@ export default {
         stype: this.formsData.stype,
         edate: this.formsData.edate,
         waers: this.formsData.waers,
-        dmbtr: this.formsData.dmbtr,
+        fwbas: this.formsData.fwbas,
+        fwbas1: this.fwbas1,
         smemo: this.formsData.smemo,
         uuid: this.formsData.uuid
       }
-      console.log(formsData);
 
-      // this.$store.dispatch('addReserve', formsData)
-      // console.log('保存')
-      // this.$router.go(-1)
+      this.$store.dispatch('addReserve', formsData)
+      console.log('保存')
+      this.$router.go(-1)
     }
   }
 }

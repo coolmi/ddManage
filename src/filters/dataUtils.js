@@ -98,6 +98,16 @@ function getListSearchValue(data, type = 'popup') {
 function getDescValue(originalData, selecteddata) {
   let fieldDesc = '';
   originalData.map(function (item) {
+    if (item.key === selecteddata.toString()) {
+        fieldDesc = item.value
+    }
+  });
+  return fieldDesc;
+}
+
+function getDescValueP(originalData, selecteddata) {
+  let fieldDesc = '';
+  originalData.map(function (item) {
     if (item.value === selecteddata.toString()) {
         fieldDesc = item.name
     }
@@ -105,4 +115,4 @@ function getDescValue(originalData, selecteddata) {
   return fieldDesc;
 }
 
-export default {filterData, money2dx, generateUUID, formatNumber, getListValue, getListSearchValue, getDescValue}
+export default {filterData, money2dx, generateUUID, formatNumber, getListValue, getListSearchValue, getDescValue, getDescValueP}

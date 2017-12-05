@@ -149,7 +149,7 @@
         this.startPush(); // 启动刷新
       } else {
         this.getUserid();
-//      this.setRight(); // 设置右上角按钮
+        this.setRight(); // 设置右上角按钮
         this.startPush(); // 启动刷新
       }
     },

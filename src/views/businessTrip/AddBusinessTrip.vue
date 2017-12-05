@@ -1,9 +1,10 @@
 <template>
   <div>
     <group title="出差明细">
-      <popup-picker title="类型" :data="typeList" :columns="1" v-model="formsData.tp" show-name></popup-picker>
-      <datetime v-model="formsData.startda" :start-date="systemDate" title="出发日期" clear-text="清除" @on-clear="clearSDate"></datetime>
-      <datetime v-model="formsData.endda" :start-date="systemDate" title="到达日期" clear-text="清除" @on-clear="clearEDate"></datetime>
+      <cell v-if="show === true">去程</cell>
+      <popup-picker v-if="show === false" title="类型" :data="typeList" :columns="1" v-model="formsData.tp" show-name></popup-picker>
+      <datetime v-model="formsData.startda" :start-date="systemDate" title="出发日期"></datetime>
+      <datetime v-model="formsData.endda" :start-date="systemDate" title="到达日期"></datetime>
       <popup-picker title="出发地点" :data="tripPlace" :columns="1" v-model="formsData.splace" show-name></popup-picker>
       <popup-picker title="到达地点" :data="tripPlace" :columns="1" v-model="formsData.eplace" show-name></popup-picker>
       <popup-picker title="交通方式" :data="tripTraffic" :columns="1" v-model="formsData.transmodeId" show-name></popup-picker>
@@ -30,7 +31,7 @@ export default {
 
   data: () => ({
     formsData: {
-      tp: ['去程'],
+      tp: [],
       splace: [],
       eplace: [],
       transmodeId: [],
@@ -42,15 +43,26 @@ export default {
     systemDate: moment().format('YYYY-MM-DD'),
     tripPlace: [],
     tripTraffic: [],
-    typeList: [{name: '去程', value: '去程'}, {name: '返程', value: '返程'}]
+    typeList: [],
+    show: false
   }),
 
   created() {
     // this.setData() // 填写的时候回退保存值
     let bukrs = this.$route.query.formsDemo.bukrs
+    let flag = this.$route.query.formsDemo.flag
     let formsData = this.$route.query.formsDemo.formsData
     if (JSON.stringify(formsData) === '"{}"') {
+      if (flag === 0) {
+        this.typeList = [{name: '去程', value: '去程'}]
+        this.formsData.tp = ['去程']
+      } else {
+        this.typeList = [{name: '返程', value: '返程'}]
+        this.formsData.tp = ['返程']
+      }
     } else {
+      this.typeList = [{name: '去程', value: '去程'}, {name: '返程', value: '返程'}]
+      this.show = true
       this.formsData = JSON.parse(this.$route.query.formsDemo.formsData)
     }
     this.getBaseData(bukrs) // 获取交通方式 + 获取出发/到达地点
@@ -122,7 +134,7 @@ export default {
         whole.showTop('请填写工作内容')
         return;
       }
-      var transmode = dataUtils.getDescValue(this.tripTraffic, this.formsData.transmodeId)
+      var transmode = dataUtils.getDescValueP(this.tripTraffic, this.formsData.transmodeId)
 
       let formsData = {
         tp: this.formsData.tp,
@@ -139,14 +151,6 @@ export default {
       this.$store.dispatch('addBusinessTrip', formsData)
       console.log('保存')
       this.$router.go(-1)
-    },
-    clearSDate (value) {
-      this.startda = ''
-      console.log('clear startda ok')
-    },
-    clearEDate (value) {
-      this.endda = ''
-      console.log('clear endda ok')
     }
   }
 }

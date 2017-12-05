@@ -24,6 +24,11 @@ const router = new Router({
       meta: {title: '测试'}
     },
     {
+      path: '/saveList',
+      component: require('@/views/saveList'),
+      meta: {title: '申请保存列表'}
+    },
+    {
       path: '/businessTrip',
       component: require('@/views/businessTrip/BusinessTrip'),
       meta: {title: '员工出差申请'}

@@ -322,6 +322,34 @@ export default {
     })
   },
   /**
+   * 保存
+   * @param cb
+   */
+  getSaveTravelURL: function (params, cb) {
+    axios.post(APISEND.saveTravelURL, params)
+      .then((res) => {
+        cb(res);
+      }).catch((error) => {
+      return Promise.reject(error)
+    })
+  },
+  /**
+   * 获取申请保存列表
+   * @param  {[type]}   params [参数]
+   * @param  {Function} cb     [返回数据]
+   * @return {[type]}          [description]
+   */
+  getDraftListURL: function (params, cb) {
+    axios.get(APISEND.getDraftListURL, {
+      params
+    })
+      .then((res) => {
+        cb(res);
+      }).catch((error) => {
+      return Promise.reject(error)
+    })
+  },
+  /**
    * 获取费用归集成本中心
    * @param  {[type]}   params [参数]
    * @param  {Function} cb     [返回数据]
@@ -337,8 +365,10 @@ export default {
       return Promise.reject(error)
     })
   },
-  getBaseData: function (cb) {
-    axios.all([APISEND.getReserveType()])
+  // 备用金申请
+  // 获取备用金类型+币种列表
+  getReserveSubData: function (params, cb) {
+    axios.all([APISEND.getReserveType(), APISEND.getWaersListByBukrs(params)])
       .then(axios.spread(function (...a) {
         // 两个请求现在都执行完成
         let aa = _.map(a, _.iteratee('data'));
@@ -349,8 +379,25 @@ export default {
             obj[key] = item[key]
           })
         })
+        console.log(obj)
         cb(obj);
       }));
+  },
+  /**
+   * 获取费用所属事业部
+   * @param  {[type]}   params [参数]
+   * @param  {Function} cb     [返回数据]
+   * @return {[type]}          [description]
+   */
+  getBusinessDepartment: function (params, cb) {
+    axios.get(APISEND.getBusinessDepartmentURL, {
+      params
+    })
+      .then((res) => {
+        cb(res);
+      }).catch((error) => {
+      return Promise.reject(error)
+    })
   },
   getDocument: function (url, cb) {
     axios.get(url).then((res) => {

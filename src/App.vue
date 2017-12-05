@@ -56,7 +56,7 @@
           setTimeout(() => {
             store.dispatch('showTopMessage', false);
             this.showPopTop = false
-          }, 1000)
+          }, 1800)
         }
       },
       isLoading: function (val, oldVal) {

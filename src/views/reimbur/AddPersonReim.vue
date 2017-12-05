@@ -12,15 +12,15 @@
         <checker-item value="7">{{typeObj[7]}}</checker-item>
       </checker>
     </group>
-    <group v-if="checker === '1'" :title="typeObj[checker]">
+    <group v-show="checker === '1'" :title="typeObj[checker]">
       <v-search title="选择" :cdata="results" v-model="formsData.jtlx"></v-search>
     </group>
-    <group v-if="checker === '2'" :title="typeObj[checker]"></group>
-    <group v-if="checker === '3'" :title="typeObj[checker]"></group>
-    <group v-if="checker === '4'" :title="typeObj[checker]"></group>
-    <group v-if="checker === '5'" :title="typeObj[checker]"></group>
-    <group v-if="checker === '6'" :title="typeObj[checker]"></group>
-    <group v-if="checker === '7'" :title="typeObj[checker]"></group>
+    <group v-show="checker === '2'" :title="typeObj[checker]"></group>
+    <group v-show="checker === '3'" :title="typeObj[checker]"></group>
+    <group v-show="checker === '4'" :title="typeObj[checker]"></group>
+    <group v-show="checker === '5'" :title="typeObj[checker]"></group>
+    <group v-show="checker === '6'" :title="typeObj[checker]"></group>
+    <group v-show="checker === '7'" :title="typeObj[checker]"></group>
     <flexbox class="footerButton">
       <flexbox-item class="vux-1px-r" @click.native="addReserve" style="color:#00B705">继续添加</flexbox-item>
       <flexbox-item @click.native="saveReserve" style="color:#FF8519">保存</flexbox-item>
@@ -45,6 +45,7 @@
   import vSearch from '@/components/searchChecker';
   import dataUtils from '../../filters/dataUtils'
   import api from 'api'
+  import {mapGetters} from 'vuex'
 
   let typeObj = {
     '1': '市内交通',
@@ -80,6 +81,9 @@
       }
     },
     computed: {
+      ...mapGetters({
+        statePersonReimInfos: 'getPersonReimInfos'
+      }),
       dxyjje: function () {
         return dataUtils.money2dx(this.formsData.yjje)
       }
@@ -91,11 +95,13 @@
     },
     methods: {
       getBaseData() {
-        let _that = this;
-        api.getBaseData(function (res) {
+//        let _that = this;
+        let params = {
+          bukrs: this.statePersonReimInfos.bukrs
+        }
+        api.getPersonReimBaseData(params, function (res) {
           if (res) {
-            _that.reserveList = res.fundTypeList;
-            _that.bzList = res.fundTypeList;
+            console.log(res)
           }
         })
       },

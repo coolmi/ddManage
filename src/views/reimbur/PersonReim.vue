@@ -1,9 +1,9 @@
 <template>
   <div>
     <group title="基本信息" label-width="7.5rem" value-align="left">
-      <v-search title="选择部门" :cdata="positionList" v-model="formsData.department"></v-search>
-      <v-search title="费用承担公司" :cdata="burksList" v-model="formsData.burks"></v-search>
-      <v-search title="费用归集成本中心" :cdata="burksList" v-model="formsData.kostl"></v-search>
+      <v-search title="选择部门" :cdata="positionList" v-model="personReimInfos.department"></v-search>
+      <v-search title="费用承担公司" :cdata="bukrsList" v-model="personReimInfos.bukrs"></v-search>
+      <v-search title="费用归集成本中心" :noticeDesc="noticeDesc" :cdata="kostlList" v-model="personReimInfos.kostl" @on-show="changeBukrs"></v-search>
       <x-input title="附件数"></x-input>
       <x-textarea title="说明"></x-textarea>
     </group>
@@ -12,9 +12,6 @@
         <x-button plain type="primary" @click.native="addPreim()">添加报销单</x-button>
       </box>
     </sticky>
-    <group title="备用金列表" v-if="formsData.length > 0">
-      <cell v-for="d in formsData" :key="d.uuid" :title="d.yjje" is-link @click.native="addPreim(d)">{{d}}</cell>
-    </group>
     <flexbox class="footerButton">
       <flexbox-item class="vux-1px-r" @click.native="addPreim" style="color:#00B705">提交</flexbox-item>
       <flexbox-item @click.native="saveReserve" style="color:#FF8519">保存</flexbox-item>
@@ -25,11 +22,10 @@
 <script>
   import {Box, XButton, PopupPicker, XInput, XTextarea, Group, Cell, FlexboxItem, Flexbox, Sticky} from 'vux'
   import vSearch from '@/components/searchChecker';
-  import {mapGetters} from 'vuex'
+  import dataUtils from '@/filters/dataUtils'
   import api from 'api'
-  import dataUtils from '../../filters/dataUtils'
+  import {mapGetters} from 'vuex'
   import * as _ from 'underscore'
-  import whole from '@/lib/whole'
 
   export default {
     components: {
@@ -37,33 +33,33 @@
     },
     data() {
       return {
-        showKostlPopupPicker: false,
-        forms: {
-          department: [],
-          burks: [],
-          kostl: []
+        personReimInfos: {
+          department: '',
+          bukrs: '',
+          kostl: ''
         },
         positionList: [],
-        burksList: [],
+        bukrsList: [],
         kostlList: []
       }
     },
     computed: {
       ...mapGetters({
-        formsData: 'getReserveFroms',
-        infos: 'getReserveInfos'
-      })
-    },
-    watch: {
-      positionList: function (val) {
-        this.forms.department[0] = val[0].value
+        stateformsDatas: 'getPersonReimFroms',
+        statePersonReimInfos: 'getPersonReimInfos'
+      }),
+      noticeDesc() {
+        let desc = '请选择'
+        if (this.personReimInfos.department === '') {
+          desc = '请选择岗位'
+        } else if (this.personReimInfos.department === '') {
+          desc = '请选择公司'
+        }
+        return desc;
       }
-//      burksList: function (val) {
-//        this.forms.burks[0] = val[0].value
-//      }
     },
     created() {
-      this.setData() // 填写的时候回退保存值
+      this.personReimInfos = _.isEmpty(this.statePersonReimInfos) ? this.personReimInfos : this.statePersonReimInfos
       this.getBaseData()
     },
     methods: {
@@ -72,14 +68,14 @@
         api.getPosition(function (res) {
           if (res) {
             _that.positionList = res.positionlist // 转换可识别的样式
-            _that.burksList = res.bukrlist // 转换可识别的样式
+            _that.bukrsList = res.bukrlist // 转换可识别的样式
           }
         })
       },
-      changeBurks() {
-        if (this.forms.department.length > 0 && this.forms.burks > 0) {
-          let postid = this.forms.department[0];
-          let bukrs = this.forms.burks[0];
+      changeBukrs() {
+        let postid = this.personReimInfos.department;
+        let bukrs = this.personReimInfos.bukrs;
+        if (bukrs !== '' && postid !== '') {
           let params = {
             postid: postid,
             bukrs: bukrs
@@ -87,36 +83,19 @@
           let _that = this;
           api.getKostal(params, function (res) {
             if (res.data.code && res.data.data) {
-              _that.kostlList = dataUtils.getListValue(res.data.data.kostlrulist)
+              _that.kostlList = res.data.data.kostlrulist
             } else {
-              this.showKostlPopupPicker = false
+              _that.noticeDesc = '获取接口出错'
             }
           })
-        } else {
-          whole.showTop('请选择费用承担公司')
-          this.showKostlPopupPicker = false
         }
       },
-      addPreim(data = {}) {
-        let info = {
-          department: this.forms.department[0]
-        }
-        this.$store.dispatch('addPreimInfo', info)
-        this.$router.push({path: '/addPreim', query: {formsData: JSON.stringify(data)}})
-      },
-      setData() {
-        let forms = this._data.forms;
-        let _that = this;
-        Object.keys(forms).forEach(key => {
-          if (_.isArray(_that.forms[key])) {
-            _that.forms[key][0] = _that.infos[key]
-          } else {
-            _that.forms[key] = _that.infos[key]
-          }
-        })
+      addPreim() {
+        this.$store.dispatch('addPersonReimInfo', this.personReimInfos)
+        this.$router.push({path: '/addPreim'})
       },
       saveReserve() {
-        console.log(this.forms)
+        console.log(dataUtils.getSummary())
       }
     }
   }

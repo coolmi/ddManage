@@ -165,6 +165,27 @@
                 whole.busy()
                 api.getHandleInfo(to.query.flowParams, function (res) {
                   whole.leave()
+                  if (res.data && (typeof res.data === 'string') && res.data.indexOf('<!DOCTYPE html>') >= 0) {
+                    let dd = window.dd
+                    dd.device.notification.confirm({
+                      message: '没有相应的任务,该任务可能已办理完,请到已办理列表中查看',
+                      title: '提示',
+                      buttonLabels: ['确定前往', '返回上层'],
+                      onSuccess: function(result) {
+                        if (result.buttonIndex === 0) {
+                          window.location.href = 'dingtalk://dingtalkclient/page/link?url=' + encodeURI('http://dingtalk.gmkholdings.com')
+                        } else if (result.buttonIndex === 1) {
+                          dd.biz.navigation.close({
+                            onSuccess: function(result) {
+                            },
+                            onFail: function(err) {}
+                          })
+                        }
+                      },
+                      onFail: function(err) {}
+                    });
+                    return
+                  }
                   if (flowRU.doViewResponse(res.data)) {
                     if (!res.data.flag) {
                       let dd = window.dd

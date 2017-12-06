@@ -1,5 +1,10 @@
 <template>
   <div>
+    <group>
+      <cell title="个人费用报销" link="/preim"></cell>
+      <cell title="出差" link="/businessTrip"></cell>
+      <cell title="备用金" link="/reserve"></cell>
+    </group>
     <div style="height:44px;">
       <sticky :check-sticky-support="false">
         <tab :line-width=2 v-model="index">

@@ -49,6 +49,7 @@ export default {
         m_cbzx: ''
       },
       beup: '0',
+      appid: '',
       reason: '',
       positionList: [],
       burkList: [],
@@ -71,6 +72,10 @@ export default {
     }
   },
   created() {
+    let saveParams = this.$route.query.saveParams;
+    if (saveParams !== undefined) {
+      this.draftData(saveParams)
+    }
     this.getBaseData() // 请求部门和费用承担公司
     this.setData() // 填写的时候回退保存值
     if (this.forms.postid !== '' && this.forms.m_comp !== '') {
@@ -78,6 +83,42 @@ export default {
     }
   },
   methods: {
+    draftData(saveParams) {
+      let params = {
+        appid: saveParams.appid,
+        draftType: saveParams.draftType
+      }
+      let _that = this;
+      // var demoArray = [];
+      api.getDraftDataByIdURL(params, function (res) {
+        if (res) {
+          let draftlistData = res.data.data.draftlist;
+          console.log(draftlistData);
+          _that.forms.postid = draftlistData.travel.postid;
+          _that.forms.m_comp = draftlistData.travel.m_comp;
+          _that.forms.m_cbzx = draftlistData.travel.m_cbzx;
+          _that.beup = draftlistData.travel.beup;
+          _that.reason = draftlistData.travel.reason;
+          _that.appid = draftlistData.travel.id;
+          draftlistData.subs.map(function (item) {
+            // console.log(item);
+            // let demo = {};
+            // for (var v in item) {
+            //   if (item['startda']) {
+            //     demo['startda'] = item['startda']
+            //   } else {
+            //     demo[v] = item[v]
+            //   }
+            // }
+            // demoArray.push(demo)
+            // console.log(demoArray);
+
+            _that.$store.dispatch('addBusinessTrip', item)
+          });
+          _that.changeBurks(_that.forms.postid, _that.forms.m_comp)
+        }
+      })
+    },
     getBaseData() {
       let _that = this;
       api.getPosition(function (res) {
@@ -95,7 +136,6 @@ export default {
       this.reason = this.formsInfos.reason;
     },
     changeBurks(postid, bukrs) {
-      if (this.forms.postid !== '' && this.forms.m_comp !== '') {
         postid = this.forms.postid;
         bukrs = this.forms.m_comp;
         let params = {
@@ -108,7 +148,6 @@ export default {
             _that.kostlList = res.data.data.kostlrulist
           }
         })
-      }
     },
     addBusinessTripOption (data = {}) {
       if (this.forms.m_comp > 0) {
@@ -173,13 +212,13 @@ export default {
       var m_compnm = dataUtils.getDescValue(this.burkList, this.forms.m_comp);
       var m_cbzxnm = dataUtils.getDescValue(this.kostlList, this.forms.m_cbzx);
 
+      console.log(this.formsData);
       var demoArray = [];
       this.formsData.map(function (item) {
         let demo = {};
         for (var v in item) {
-          if (item[v] instanceof Array) {
-            demo[v] = item[v].toString()
-          } else if (item[v].match(/^[1-9]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/)) {
+          console.log(item[v]);
+          if (item[v].match(/^[1-9]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/)) {
             demo[v] = new Date(item[v].replace(/-/g, '/')).getTime()
           } else {
             demo[v] = item[v]
@@ -191,6 +230,7 @@ export default {
       let parmas = {
         travel: {
           appda: new Date().getTime(),
+          id: this.appid,
           postid: this.forms.postid,
           syspostname: syspostname,
           m_comp: this.forms.m_comp,
@@ -203,37 +243,39 @@ export default {
         subs: demoArray
       }
 
-      if (parmas.subs.length < 2) {
-        whole.showTop('请完善出差申请明细');
-        return;
-      } else if (flag === 0) {
-          let _that = this;
-          api.getStartTravelWFURL(parmas, function (res) {
-            if (res) {
-              if (res.data.code) {
-                whole.showTop(res.data.message);
-                _that.$router.go(-1)
-              } else {
-                whole.showTop(res.data.message);
-                _that.$router.go(-1)
-              }
-            }
-          })
-      } else if (flag === 1) {
-        let _that = this;
-        api.getSaveTravelURL(parmas, function (res) {
-          if (res) {
-            if (res.data.code) {
-                whole.showTop(res.data.message);
-                _that.$router.go(-1)
-            } else {
-                whole.showTop(res.data.message);
-                _that.$router.go(-1)
-            }
-          }
-          console.log(res);
-        })
-      }
+      console.log(parmas);
+
+      // if (parmas.subs.length < 2) {
+      //   whole.showTop('请完善出差申请明细');
+      //   return;
+      // } else if (flag === 0) {
+      //     let _that = this;
+      //     api.getStartTravelWFURL(parmas, function (res) {
+      //       if (res) {
+      //         if (res.data.code) {
+      //           whole.showTop(res.data.message);
+      //           _that.$router.go(-2)
+      //         } else {
+      //           whole.showTop(res.data.message);
+      //           _that.$router.go(-2)
+      //         }
+      //       }
+      //     })
+      // } else if (flag === 1) {
+      //   let _that = this;
+      //   api.getSaveTravelURL(parmas, function (res) {
+      //     if (res) {
+      //       if (res.data.code) {
+      //           whole.showTop(res.data.message);
+      //           _that.$router.go(-1)
+      //       } else {
+      //           whole.showTop(res.data.message);
+      //           _that.$router.go(-1)
+      //       }
+      //     }
+      //     console.log(res);
+      //   })
+      // }
     }
   }
 }

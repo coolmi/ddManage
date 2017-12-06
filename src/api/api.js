@@ -350,6 +350,22 @@ export default {
     })
   },
   /**
+   * 查看申请保存详情
+   * @param  {[type]}   params [参数]
+   * @param  {Function} cb     [返回数据]
+   * @return {[type]}          [description]
+   */
+  getDraftDataByIdURL: function (params, cb) {
+    axios.get(APISEND.getDraftDataByIdURL, {
+      params
+    })
+      .then((res) => {
+        cb(res);
+      }).catch((error) => {
+      return Promise.reject(error)
+    })
+  },
+  /**
    * 获取费用归集成本中心
    * @param  {[type]}   params [参数]
    * @param  {Function} cb     [返回数据]

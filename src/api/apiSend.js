@@ -27,6 +27,8 @@ const startTravelWFURL = '/authapi/ddtalkwf/startTravelWF'
 const saveTravelURL = '/authapi/ddtalkwf/saveTravel'
 // 获取申请保存列表（draftType: depositApp 备用金申请/ travel 出差申请 / reimburse: 费用报销申请）
 const getDraftListURL = '/authapi/ddtalkwf/getDraftList'
+// 查看申请保存详情（draftType, appid | Get）
+const getDraftDataByIdURL = '/authapi/ddtalkwf/getDraftDataById'
 
 const getPosition = function () {
   return axios.get(getPositionURL);
@@ -73,5 +75,6 @@ export default {
   getCitysbyBukrs,
   startTravelWFURL,
   saveTravelURL,
-  getDraftListURL
+  getDraftListURL,
+  getDraftDataByIdURL
 }

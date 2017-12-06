@@ -1,13 +1,17 @@
 <template>
   <div>
     <group title="出差明细">
-      <cell v-if="show === true">去程</cell>
-      <popup-picker v-if="show === false" title="类型" :data="typeList" :columns="1" v-model="formsData.tp" show-name></popup-picker>
+      <cell title="类型" v-if="show === true">去程</cell>
+      <!-- <popup-picker v-if="show === false" title="类型" :data="typeList" :columns="1" v-model="formsData.tp" show-name></popup-picker> -->
+      <v-search v-if="show === false" title="类型" :cdata="typeList" v-model="formsData.tp"></v-search>
       <datetime v-model="formsData.startda" :start-date="systemDate" title="出发日期"></datetime>
       <datetime v-model="formsData.endda" :start-date="systemDate" title="到达日期"></datetime>
-      <popup-picker title="出发地点" :data="tripPlace" :columns="1" v-model="formsData.splace" show-name></popup-picker>
-      <popup-picker title="到达地点" :data="tripPlace" :columns="1" v-model="formsData.eplace" show-name></popup-picker>
-      <popup-picker title="交通方式" :data="tripTraffic" :columns="1" v-model="formsData.transmodeId" show-name></popup-picker>
+      <!-- <popup-picker title="出发地点" :data="tripPlace" :columns="1" v-model="formsData.splace" show-name></popup-picker> -->
+      <v-search title="出发地点" :cdata="tripPlace" v-model="formsData.splace"></v-search>
+      <!-- <popup-picker title="到达地点" :data="tripPlace" :columns="1" v-model="formsData.eplace" show-name></popup-picker> -->
+      <v-search title="到达地点" :cdata="tripPlace" v-model="formsData.eplace"></v-search>
+      <!-- <popup-picker title="交通方式" :data="tripTraffic" :columns="1" v-model="formsData.transmodeId" show-name></popup-picker> -->
+      <v-search title="交通方式" :cdata="tripTraffic" v-model="formsData.transmodeId"></v-search>
       <x-textarea title="工作内容" v-model="formsData.workc" placeholder="请输入工作内容" :show-counter="false" :rows="3" autosize></x-textarea>
       <x-input title="隐藏" placeholder="隐藏" v-show="false" v-model="formsData.uuid"></x-input>
     </group>
@@ -17,7 +21,8 @@
   </div>
 </template>
 <script>
-import {Group, PopupPicker, XSwitch, XTextarea, XInput, Sticky, Box, XButton, Datetime, FlexboxItem, Flexbox} from 'vux'
+import {Group, PopupPicker, Cell, XSwitch, XTextarea, XInput, Sticky, Box, XButton, Datetime, FlexboxItem, Flexbox} from 'vux'
+import vSearch from '@/components/searchChecker';
 import api from 'api' // 接口
 import dataUtils from '../../filters/dataUtils' // 工具类
 import whole from '@/lib/whole' // 封装组件库
@@ -26,15 +31,15 @@ import moment from 'moment' // 时间类
 export default {
 
   components: {
-    Group, PopupPicker, XSwitch, XTextarea, XInput, Sticky, Box, XButton, Datetime, FlexboxItem, Flexbox
+    Group, PopupPicker, Cell, XSwitch, XTextarea, XInput, Sticky, Box, XButton, Datetime, FlexboxItem, Flexbox, vSearch
   },
 
   data: () => ({
     formsData: {
-      tp: [],
-      splace: [],
-      eplace: [],
-      transmodeId: [],
+      tp: '',
+      splace: '',
+      eplace: '',
+      transmodeId: '',
       startda: moment().format('YYYY-MM-DD'),
       endda: moment().format('YYYY-MM-DD'),
       workc: '',
@@ -54,14 +59,14 @@ export default {
     let formsData = this.$route.query.formsDemo.formsData
     if (JSON.stringify(formsData) === '"{}"') {
       if (flag === 0) {
-        this.typeList = [{name: '去程', value: '去程'}]
-        this.formsData.tp = ['去程']
+        this.typeList = [{key: '去程', value: '去程'}]
+        this.formsData.tp = '去程'
       } else {
-        this.typeList = [{name: '返程', value: '返程'}]
-        this.formsData.tp = ['返程']
+        this.typeList = [{key: '返程', value: '返程'}]
+        this.formsData.tp = '返程'
       }
     } else {
-      this.typeList = [{name: '去程', value: '去程'}, {name: '返程', value: '返程'}]
+      this.typeList = [{key: '去程', value: '去程'}, {key: '返程', value: '返程'}]
       this.show = true
       this.formsData = JSON.parse(this.$route.query.formsDemo.formsData)
     }
@@ -76,32 +81,15 @@ export default {
       };
       api.getTrafficCitys(params, params, function (res) {
         if (res) {
-          _that.tripPlace = dataUtils.getListValue(res.cityList) // 交通方式
-          _that.tripTraffic = dataUtils.getListValue(res.waerslist) // 交通方式
+          // _that.tripPlace = dataUtils.getListValue(res.cityList) // 地点
+          _that.tripPlace = res.cityList // 地点
+          // _that.tripTraffic = dataUtils.getListValue(res.waerslist) // 交通方式
+          _that.tripTraffic = res.waerslist // 交通方式
         }
       })
     },
-    // changeBurks() {
-    // if (this.forms.department.length > 0 && this.forms.burks > 0) {
-    //   let postid = this.forms.department[0];
-    //   let bukrs = this.forms.burks[0];
-    //   let params = {
-    //     postid: postid,
-    //     bukrs: bukrs
-    //   }
-    //   let _that = this;
-    //   api.getKostal(params, function (res) {
-    //     if (res) {
-    //       _that.kostlList = dataUtils.getListValue(res.kostlrulist) // 转换可识别的样式
-    //     }
-    //   })
-    //   } else {
-    //     whole.showTop('请选择费用承担公司')
-    //     return false
-    //   }
-    // },
     saveReserve () {
-      if (this.formsData.tp.length === 0) {
+      if (this.formsData.tp === '') {
         whole.showTop('请选择类型')
         return;
       }
@@ -118,23 +106,23 @@ export default {
           return;
         }
       }
-      if (this.formsData.splace.length === 0) {
+      if (this.formsData.splace === '') {
         whole.showTop('请选择出发地点')
         return;
       }
-      if (this.formsData.eplace.length === 0) {
+      if (this.formsData.eplace === '') {
         whole.showTop('请选择到达地点')
         return;
       }
-      if (this.formsData.transmodeId.length === 0) {
+      if (this.formsData.transmodeId === '') {
         whole.showTop('请选择交通方式')
         return;
       }
-      if (this.formsData.workc.length === 0) {
+      if (this.formsData.workc === '') {
         whole.showTop('请填写工作内容')
         return;
       }
-      var transmode = dataUtils.getDescValueP(this.tripTraffic, this.formsData.transmodeId)
+      var transmode = dataUtils.getDescValue(this.tripTraffic, this.formsData.transmodeId)
 
       let formsData = {
         tp: this.formsData.tp,

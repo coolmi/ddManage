@@ -30,6 +30,9 @@ const getDraftListURL = '/authapi/ddtalkwf/getDraftList'
 // 查看申请保存详情（draftType, appid | Get）
 const getDraftDataByIdURL = '/authapi/ddtalkwf/getDraftDataById'
 
+// 员工费用报销-交通类型
+const getPersonReimTrafficTypeURL = '/authapi/ddtalkwf/getTrafficType'
+
 const getPosition = function () {
   return axios.get(getPositionURL);
 }
@@ -40,6 +43,7 @@ const getBurkList = function () {
 const getReserveType = function () {
   return axios.get(getReserveTypeURL);
 }
+const getTrafficways = function (params = {}) {
 const getWaersListByBukrs = function (params) {
   return axios.get(getWaersListByBukrsURL, {
     params
@@ -51,8 +55,13 @@ const getTrafficways = function (params) {
     params
   });
 }
-const getCitysbyBukrs = function (params) {
+const getCitysbyBukrs = function (params = {}) {
   return axios.get(getCitysbyBukrsURL, {
+    params
+  });
+}
+const getPersonReimTrafficType = function (params = {}) {
+  return axios.get(getPersonReimTrafficTypeURL, {
     params
   });
 }
@@ -67,12 +76,15 @@ export default {
   getBurkListURL,
   getTrafficwaysURL,
   getCitysbyBukrsURL,
+  getPersonReimTrafficTypeURL,
   getPosition,
   getBurkList,
   getReserveType,
   getWaersListByBukrs,
   getTrafficways,
   getCitysbyBukrs,
+  startTravelWFURL,
+  getPersonReimTrafficType,
   startTravelWFURL,
   saveTravelURL,
   getDraftListURL,

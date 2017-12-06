@@ -6,6 +6,7 @@ import reserve from './modules/reserve'
 import businessTrip from './modules/businessTrip'
 import travel from './modules/travel'
 import city from './modules/city'
+import personReim from './modules/personReim'
 
 Vue.use(Vuex);
 
@@ -18,7 +19,8 @@ export default new Vuex.Store({
       reserve,
       businessTrip,
       travel,
-      city
+      city,
+      personReim
     },
     strict: debug
 });

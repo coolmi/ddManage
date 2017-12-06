@@ -53,12 +53,12 @@
       <template v-else-if="subC.component === 'table'">
         <div v-for="(ntable, index) in  subC.ntableForms" :key="index">
           <flow-child-card
-            v-for="(cn, index) in ntable" :key="index"
-            :title="cn.title"
-            :value="cn.nvalue || cn.value"
+            :title="ntable.title"
+            :value="ntable.nvalue"
+            is-link
+            :link="{path: '/flowDetails', query: {title: ntable.title, ctable: JSON.stringify(ntable.nchildtableForms)}}"
             value-align="left"
-            v-show="cn.component !== 'hidden' && !subC.hidden"
-          > <!--&& !subC.editable-->
+            v-show="ntable.component !== 'hidden' && !ntable.hidden"> <!--&& !subC.editable-->
           </flow-child-card>
         </div>
       </template>

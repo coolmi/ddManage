@@ -445,5 +445,24 @@ export default {
     }).catch((error) => {
       return Promise.reject(error)
     })
+  },
+  /**
+   * 个人报销基本数据
+   * @param cb
+   */
+  getPersonReimBaseData: function (params, cb) {
+    axios.all([APISEND.getPersonReimTrafficType(params), APISEND.getTrafficways(params)])
+      .then(axios.spread(function (...a) {
+        // 两个请求现在都执行完成
+        let aa = _.map(a, _.iteratee('data'));
+        let aaa = _.map(aa, _.iteratee('data'));
+        let obj = {};
+        _.map(aaa, function (item) {
+          Object.keys(item).forEach(key => {
+            obj[key] = item[key]
+          })
+        })
+        cb(obj);
+      }));
   }
 }

@@ -51,26 +51,22 @@ export default {
         }
         api.getDraftListURL(params, function (res) {
           if (res) {
-            var demoArray = [];
-            res.data.data.draftlist.map(function (item) {
-              let demo = {};
-              for (var v in item) {
-                if (item[v] === 'travel') {
-                  demo[v] = '员工出差申请'
-                } else {
-                  demo[v] = item[v]
-                }
-              }
-              demoArray.push(demo)
-            })
-            console.log(demoArray);
+            console.log(res.data.data.draftlist);
             _that.draftList = res.data.data.draftlist
           }
         })
         ding.stopPush()
       },
     addBusinessTripOption(data) {
-      console.log(data);
+      let saveParams = {
+        appid: data.appid,
+        draftType: data.draftType
+      };
+      if (data.draftType === 'travel') {
+        this.$router.push({path: '/BusinessTrip', query: {saveParams: saveParams}})
+      } else if (data.draftType === 'depositApp') {
+        this.$router.push({path: '/Reserve', query: {saveParams: saveParams}})
+      }
     }
   }
 }

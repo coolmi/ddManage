@@ -46,6 +46,7 @@ export default {
         cdkostls: '',
         businessunitid: ''
       },
+      id: '',
       positionList: [],
       burkList: [],
       kostlList: [],
@@ -68,6 +69,10 @@ export default {
     }
   },
   created() {
+    let saveParams = this.$route.query.saveParams;
+    if (saveParams !== undefined) {
+      this.draftData(saveParams)
+    }
     this.getBaseData() // 请求部门和费用承担公司
     this.setData() // 填写的时候回退保存值
     if (this.forms.postid !== '' && this.forms.cdbukrs !== '') {
@@ -76,6 +81,28 @@ export default {
     }
   },
   methods: {
+    draftData(saveParams) {
+      let params = {
+        appid: saveParams.appid,
+        draftType: saveParams.draftType
+      }
+      let _that = this;
+      api.getDraftDataByIdURL(params, function (res) {
+        if (res) {
+          let draftlistData = res.data.data.draftlist;
+          _that.forms.postid = draftlistData.depositApp.postid;
+          _that.forms.cdbukrs = draftlistData.depositApp.cdbukrs;
+          _that.forms.cdkostls = draftlistData.depositApp.cdkostls;
+          _that.forms.businessunitid = draftlistData.depositApp.businessunitid;
+          _that.id = draftlistData.depositApp.id;
+          draftlistData.resegs.map(function (item) {
+            _that.$store.dispatch('addReserve', item)
+          });
+          _that.changeBurks(_that.forms.postid, _that.forms.cdbukrs)
+          _that.changeDepart(_that.forms.postid, _that.forms.cdbukrs)
+        }
+      })
+    },
     getBaseData() {
       let _that = this;
       api.getPosition(function (res) {
@@ -181,6 +208,7 @@ export default {
 
       let parmas = {
         depositApp: {
+          id: this.id,
           appda: new Date().getTime(),
           postid: this.forms.postid,
           cdbukrs: this.forms.cdbukrs,

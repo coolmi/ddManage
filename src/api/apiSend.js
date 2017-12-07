@@ -27,6 +27,8 @@ const startTravelWFURL = '/authapi/ddtalkwf/startTravelWF'
 const saveTravelURL = '/authapi/ddtalkwf/saveTravel'
 // 获取申请保存列表（draftType: depositApp 备用金申请/ travel 出差申请 / reimburse: 费用报销申请）
 const getDraftListURL = '/authapi/ddtalkwf/getDraftList'
+// 查看申请保存详情（draftType, appid | Get）
+const getDraftDataByIdURL = '/authapi/ddtalkwf/getDraftDataById'
 
 // 员工费用报销-交通类型
 const getPersonReimTrafficTypeURL = '/authapi/ddtalkwf/getTrafficType'
@@ -41,7 +43,6 @@ const getBurkList = function () {
 const getReserveType = function () {
   return axios.get(getReserveTypeURL);
 }
-const getTrafficways = function (params = {}) {
 const getWaersListByBukrs = function (params) {
   return axios.get(getWaersListByBukrsURL, {
     params
@@ -81,9 +82,9 @@ export default {
   getWaersListByBukrs,
   getTrafficways,
   getCitysbyBukrs,
-  startTravelWFURL,
   getPersonReimTrafficType,
   startTravelWFURL,
   saveTravelURL,
-  getDraftListURL
+  getDraftListURL,
+  getDraftDataByIdURL
 }

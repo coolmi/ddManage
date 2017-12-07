@@ -1,11 +1,13 @@
 <template>
   <div>
     <group title="备用金录入">
-      <popup-picker title="备用金类型" :data="fundTypeList" :columns="1" v-model="formsData.stype" show-name></popup-picker>
+      <!-- <popup-picker title="备用金类型" :data="fundTypeList" :columns="1" v-model="formsData.stype" show-name></popup-picker> -->
+      <v-search title="备用金类型" :cdata="fundTypeList" v-model="formsData.stype"></v-search>
       <datetime v-model="formsData.edate" :start-date="systemDate" title="预计归还日期"></datetime>
       <x-input title="预借金额" placeholder="请填写预借金额" :max=9 v-model="formsData.fwbas"></x-input>
       <cell v-show="fwbas1">{{fwbas1}}</cell>
-      <popup-picker title="币种" :data="waerslist" :columns="1" v-model="formsData.waers" show-name></popup-picker>
+      <!-- <popup-picker title="币种" :data="waerslist" :columns="1" v-model="formsData.waers" show-name></popup-picker> -->
+      <v-search title="币种" :cdata="waerslist" v-model="formsData.waers"></v-search>
       <x-textarea title="申请事由" v-model="formsData.smemo" placeholder="请输入申请事由" :show-counter="false" :rows="3" autosize></x-textarea>
       <x-input title="隐藏" placeholder="隐藏" v-show="false" v-model="formsData.uuid"></x-input>
     </group>
@@ -16,6 +18,7 @@
 </template>
 <script>
 import {Group, PopupPicker, XTextarea, XInput, Cell, XButton, Datetime, FlexboxItem, Flexbox} from 'vux'
+import vSearch from '@/components/searchChecker';
 import api from 'api' // 接口
 import dataUtils from '../../filters/dataUtils' // 工具类
 import whole from '@/lib/whole' // 封装组件库
@@ -24,13 +27,13 @@ import moment from 'moment' // 时间类
 export default {
 
   components: {
-    Group, PopupPicker, XTextarea, XInput, Cell, XButton, Datetime, FlexboxItem, Flexbox
+    Group, PopupPicker, XTextarea, XInput, Cell, XButton, Datetime, FlexboxItem, Flexbox, vSearch
   },
 
   data: () => ({
     formsData: {
-      stype: [],
-      waers: [],
+      stype: '',
+      waers: '',
       edate: moment().format('YYYY-MM-DD'),
       fwbas: '',
       smemo: '',
@@ -68,13 +71,15 @@ export default {
       api.getReserveSubData(params, function (res) {
         if (res) {
           console.log(res);
-          _that.waerslist = dataUtils.getListValue(res.waerslist) // 币种类型
-          _that.fundTypeList = dataUtils.getListValue(res.fundTypeList) // 备用金类型
+          // _that.waerslist = dataUtils.getListValue(res.waerslist) // 币种类型
+          _that.waerslist = res.waerslist // 币种类型
+          // _that.fundTypeList = dataUtils.getListValue(res.fundTypeList) // 备用金类型
+          _that.fundTypeList = res.fundTypeList // 备用金类型
         }
       })
     },
     saveReserve () {
-      if (this.formsData.stype.length === 0) {
+      if (this.formsData.stype === '') {
         whole.showTop('请选择备用金类型')
         return;
       }
@@ -86,7 +91,7 @@ export default {
         whole.showTop('请输入预借金额')
         return;
       }
-      if (this.formsData.waers.length === 0) {
+      if (this.formsData.waers === '') {
         whole.showTop('请选择币种')
         return;
       }

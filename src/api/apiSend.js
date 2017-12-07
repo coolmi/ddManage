@@ -64,7 +64,6 @@ const getPersonReimTrafficType = function (params = {}) {
     params
   });
 }
-
 export default {
   getPositionURL,
   getBusinessDepartmentURL,

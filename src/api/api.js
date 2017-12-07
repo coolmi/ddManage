@@ -453,16 +453,97 @@ export default {
   getPersonReimBaseData: function (params, cb) {
     axios.all([APISEND.getPersonReimTrafficType(params), APISEND.getTrafficways(params)])
       .then(axios.spread(function (...a) {
-        // 两个请求现在都执行完成
-        let aa = _.map(a, _.iteratee('data'));
-        let aaa = _.map(aa, _.iteratee('data'));
-        let obj = {};
-        _.map(aaa, function (item) {
-          Object.keys(item).forEach(key => {
-            obj[key] = item[key]
-          })
-        })
-        cb(obj);
-      }));
-  }
+      // 两个请求现在都执行完成
+      let aa = _.map(a, _.iteratee('data'));
+      let aaa = _.map(aa, _.iteratee('data'));
+      let obj = {};
+      _.map(aaa, function (item) {
+        Object.keys(item).forEach(key => {
+          obj[key] = item[key]
+        }
+        )
+      })
+      cb(obj);
+    }
+    ))
+    ;
+  },
+  getTravelList: function (cb) {
+    axios.get(APILIST.travellist_url)
+      .then((res) => {
+      cb(res);
+  }).catch((error) => {
+      return Promise.reject(error)
+    })
+  },
+  /**
+   * 获取交通方式
+   * @param  {[brucks]}   params [参数]
+   * @param  {Function} cb     [返回数据]
+   * @return {[type]}          [description]
+   */
+  /* getTrfficWays: function (data, cb) {
+    axios.get(APILIST.getTrfficWays_url, {
+      data
+    })
+      .then((res) => {
+      cb(res);
+  }).catch((error) => {
+      return Promise.reject(error)
+    })
+  }, */
+  /**
+   * 获取交通类型
+   * @param  {[brucks]}   params [参数]
+   * @param  {Function} cb     [返回数据]
+   * @return {[type]}          [description]
+   */
+  getTrfficType: function (cb) {
+    axios.get(APILIST.getTrfficType_url)
+      .then((res) => {
+      cb(res);
+  }).catch((error) => {
+      return Promise.reject(error)
+    })
+  },
+  /*
+  * 员工报销获取费用承担公司(获取项目类型、费用承担公司、专项内部订单号)
+  * */
+  getProtypeInfo: function (params, cb) {
+    axios.get(APILIST.getBukrlist_url, {
+      params
+    })
+      .then((res) => {
+      cb(res);
+  }).catch((error) => {
+      return Promise.reject(error)
+    })
+  },
+  /*
+  * 获取报销币种
+  * */
+  getFundTypeList: function (params, cb) {
+    axios.get(APISEND.getReserveType(), {
+      params
+    })
+      .then((res) => {
+      cb(res);
+  }).catch((error) => {
+      return Promise.reject(error)
+    })
+  },
+  /*
+   * 根据公司和大类获取交通方式交通类型
+   * */
+  getSubMenuList: function (params, cb) {
+  axios.get(APILIST.getSubMenuList_url, {
+    params
+  })
+    .then((res) => {
+    cb(res);
+}).catch((error) => {
+    return Promise.reject(error)
+  })
+}
+
 }

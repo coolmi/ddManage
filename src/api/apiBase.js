@@ -62,8 +62,12 @@ let APILIST = {
   // 获取出差订单号
   travellist_url: '/authapi/ddtalkwf/getTravelList',
   // 获取交通方式
-  getTrfficWays_url: '/authapi/ddtalkwf/getTrfficWays',
+  // getTrfficWays_url: '/authapi/ddtalkwf/getTrafficWays',
   // 获取交通类型
-  getTrfficType_url: '/authapi/ddtalkwf/getTrfficType'
+  getTrfficType_url: '/authapi/ddtalkwf/getTrafficType',
+  // 员工报销获取费用承担公司(获取项目类型、费用承担公司、专项内部订单号)
+  getBukrlist_url: '/authapi/ddtalkwf/getBukrlist',
+  // 根据公司 大类获取交通方式 类型
+  getSubMenuList_url: '/authapi/ddtalkwf/getSubMenuList'
 }
 export default APILIST

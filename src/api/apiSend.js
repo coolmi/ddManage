@@ -43,7 +43,6 @@ const getBurkList = function () {
 const getReserveType = function () {
   return axios.get(getReserveTypeURL);
 }
-const getTrafficways = function (params = {}) {
 const getWaersListByBukrs = function (params) {
   return axios.get(getWaersListByBukrsURL, {
     params
@@ -83,7 +82,6 @@ export default {
   getWaersListByBukrs,
   getTrafficways,
   getCitysbyBukrs,
-  startTravelWFURL,
   getPersonReimTrafficType,
   startTravelWFURL,
   saveTravelURL,

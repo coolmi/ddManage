@@ -89,11 +89,6 @@ const router = new Router({
       meta: {title: '明细'}
     },
     {
-      path: '/flowDetailss',
-      component: require('@/views/flow/flowDetailss'),
-      meta: {title: '明细'}
-    },
-    {
       path: '/flowEdit',
       component: require('@/views/flow/flowEditContent'),
       meta: {title: '填写', ddConfig: true}

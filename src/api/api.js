@@ -4,6 +4,7 @@ import APISEND from './apiSend'
 import * as _ from 'underscore'
 import ding from '@/lib/ding';
 
+const AUTH_DINGTALKCODE = 'auth.dingtalkcode';
 export default {
   /**
    * 获取登录 -- Debug模式用
@@ -25,7 +26,7 @@ export default {
    * @param cb
    */
   getLogin: function (data, cb) {
-    let dingtalkCode = ding.parseParam(window.location.href, 'dingtalk_code')
+    let dingtalkCode = ding.parseParam(window.location.href, 'dingtalk_code') || ding.getLocation(AUTH_DINGTALKCODE)
     axios.get('/dingding/es/login?code=' + data + '&dingtalk_code=' + dingtalkCode)
       .then((res) => {
         cb(res);
@@ -53,7 +54,7 @@ export default {
    * @param cb
    */
   getJsApiInfos: function (params, cb) {
-    let dingtalkCode = ding.parseParam(window.location.href, 'dingtalk_code')
+    let dingtalkCode = ding.parseParam(window.location.href, 'dingtalk_code') || ding.getLocation(AUTH_DINGTALKCODE)
     axios.get('/api/ddtalk/miandeng/h5config?purl=' + params + '&dingtalk_code=' + dingtalkCode)
       .then((res) => {
         cb(res);

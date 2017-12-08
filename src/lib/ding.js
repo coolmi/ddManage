@@ -43,6 +43,10 @@ export function getItemInLocation() {
   return JSON.parse(ddconfig)
 }
 
+export function getLocation(key) {
+  return localStorage.getItem(key);
+}
+
 export function alertInfo(mes, title = '提示', btnName = '确定') {
   dd.ready(function () {
     dd.device.notification.alert({
@@ -194,6 +198,7 @@ export default {
   CORPID,
   parseParam,
   getItemInLocation,
+  getLocation,
   jsApiOAuth,
   ddISReady,
   alertInfo,

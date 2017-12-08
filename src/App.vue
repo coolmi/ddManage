@@ -1,6 +1,8 @@
 <template>
   <div id="app">
-    <router-view></router-view>
+    <navigation>
+      <router-view></router-view>
+    </navigation>
     <div v-show="showLoad">
       <div class="mask_transparent"></div>
       <div class="sk-cube-grid">

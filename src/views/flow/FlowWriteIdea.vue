@@ -11,7 +11,7 @@
       </cell>
     </group>
     <box gap="10px 10px">
-      <x-button plain type="primary" @click.native="commitFlow">提交</x-button>
+      <x-button plain type="primary" @click.native="commitFlow" :disabled="disButton">提交</x-button>
     </box>
     <box gap="10px 10px">
       <x-button type="warn" v-if="userEmplId" @click.native="cancelUser">取消选择</x-button>
@@ -46,7 +46,8 @@
         userAvatar: '',
         userEmplId: '',
         zin: '',
-        fromPath: ''
+        fromPath: '',
+        disButton: false
       }
     },
     watch: {
@@ -126,6 +127,7 @@
       },
       // 提交流程
       commitFlow() {
+        this.disButton = true;
         let dataStr = {};
         let _that = this;
         let dd = window.dd;
@@ -179,6 +181,7 @@
                 }
               });
             });
+            _that.disButton = false;
             return
           }
           if (isjiaqian_) {
@@ -187,11 +190,13 @@
             // 被加签时的提交
             if (_that.idea === '') {
               whole.showTop('意见不能为空')
+              _that.disButton = false;
               return;
             }
           }
           if (commentMustable_ && _that.idea === '') {
             whole.showTop(commentMustMsg_)
+            _that.disButton = false;
             return;
           }
           _that.goNextAssigne(dataStr, selectPerson_, isjiaqian_);
@@ -199,6 +204,7 @@
           dataStr.taskId = flowParams.TASK_ID_;
           if (_that.idea === '') {
             whole.showTop('退回时意见不能为空');
+            _that.disButton = false;
             return;
           }
           dataStr.ctype = 'adujst';
@@ -209,10 +215,12 @@
           dataStr.taskid = flowParams.TASK_ID_;
           if (_that.idea === '') {
             whole.showTop('请填写意见');
+            _that.disButton = false;
             return;
           }
           if (_that.userInfo.length <= 0) {
             whole.showTop('请选择人员');
+            _that.disButton = false;
             return;
           }
           dataStr.signplusmsg = _that.idea;
@@ -221,6 +229,7 @@
           dataStr.taskid = flowParams.TASK_ID_;
           if (_that.userInfo.length <= 0) {
             whole.showTop('请选择人员');
+            _that.disButton = false;
             return;
           }
           dataStr.delegatemsg = _that.idea || '同意';
@@ -239,6 +248,7 @@
           params.ddid = aa;
         }
         api.getMPostidByDdid(params, function (res) {
+          _that.disButton = false;
           if (res.data.data && res.data.data.error !== undefined) {
             whole.showTop('无法获取此人的岗位，请联系HR人员');
             return;
@@ -269,11 +279,13 @@
             })
           }
         })
+        _that.disButton = false;
       },
       // 下一步
       goNextAssigne(dataStr, selectPerson_, isjiaqian_) {
         let _that = this;
         api.goNextAssigne(dataStr, function (res) {
+          _that.disButton = false;
           let dd = window.dd
           let pickedUsers = [];
           if (_that.userInfo) {
@@ -376,9 +388,11 @@
             }
           }
         })
+        _that.disButton = false;
       },
       // 提交
       toCommit(dataStr) {
+        this.disButton = false;
         let _that = this;
         dataStr.taskId = dataStr.taskid || dataStr.taskId
         api.toCommite(dataStr, function (res) {

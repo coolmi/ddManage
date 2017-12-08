@@ -1,10 +1,5 @@
 <template>
   <div>
-    <group>
-      <cell title="个人费用报销" link="/preim"></cell>
-      <cell title="出差" link="/businessTrip"></cell>
-      <cell title="备用金" link="/reserve"></cell>
-    </group>
     <div style="height:44px;">
       <sticky :check-sticky-support="false">
         <tab :line-width=2 v-model="index">
@@ -17,7 +12,7 @@
     <!--<swiper v-model="index" ref="swiper" :show-dots="false" :threshold="200" id="swiper">-->
     <!--<swiper-item v-for="(item, index) in dblist" :key="index">-->
     <div class="tab-swiper vux-center" ref="list">
-      <group gutter="0" label-width="18rem" v-if="(flowType === 0 || flowType === '0')">
+      <group gutter="0" label-width="18rem" v-if="(flowType === 0 || flowType === '0') && dbList.length > 0">
         <!--待办 | getDateDiff-->
         <cell v-for="(item, index) in dbList" :key="index"
               v-if="(item.ishidden === '0' || item.ISHIDDEN === 0) && dbList.length > 0"
@@ -31,7 +26,10 @@
           </div>
         </cell>
       </group>
-      <group gutter="0" v-if="flowType === 1 || flowType === '1'">
+      <div v-if="(flowType === 0 || flowType === '0') && ifdb === 1" class="emptyDiv">
+        <img src="/static/images/zwsj.png">
+      </div>
+      <group gutter="0" v-if="flowType === 1 || flowType === '1' && sqzList.length > 0">
         <!--申请中-->
         <cell v-for="(item, index) in sqzList" :key="index"
               :title="item.PROCDEFNAME_ || item.procdefname_"
@@ -48,7 +46,10 @@
           </div>
         </cell>
       </group>
-      <group gutter="0" v-if="flowType === 2 || flowType === '2'">
+      <div v-if="(flowType === 1 || flowType === '1') && ifsqz === 1" class="emptyDiv">
+        <img src="/static/images/zwsj.png">
+      </div>
+      <group gutter="0" v-if="flowType === 2 || flowType === '2' && yblList.length > 0">
         <!--已办理-->
         <cell v-for="(item, index) in yblList" :key="index"
               :title="item.mytitle ? (item.mytitle || item.MYTITLE) : ((item.START_USER_NAME || item.start_user_name) + '发起了' + (item.NAME_ || item.name_) + ',请办理!')"
@@ -63,6 +64,9 @@
         </cell>
         <infinite-loading v-if="yblList.length > 0" @infinite="yblinfiniteHandler"></infinite-loading>
       </group>
+      <div v-if="(flowType === 2 || flowType === '2') && ifybl === 1" class="emptyDiv">
+        <img src="/static/images/zwsj.png">
+      </div>
       <group gutter="0" v-if="flowType === 3 || flowType === '3'">
         <!--已结束-->
         <cell v-for="(item, index) in yjsList" :key="index"
@@ -78,6 +82,9 @@
         </cell>
         <infinite-loading v-if="yjsList.length > 0" @infinite="yjsinfiniteHandler"></infinite-loading>
       </group>
+      <div v-if="(flowType === 3 || flowType === '3') && ifyjs === 1" class="emptyDiv">
+        <img src="/static/images/zwsj.png">
+      </div>
     </div>
     <!--</swiper-item>-->
     <!--</swiper>-->
@@ -117,9 +124,13 @@
         index: 0,
         flowType: 0, // 其实就是index的值
         dbList: [],
+        ifdb: 0,
         sqzList: [],
+        ifsqz: 0,
         yblList: [],
+        ifybl: 0,
         yjsList: [],
+        ifyjs: 0,
         sqzcurrentInfo: {},
         yjscurrentInfo: {},
         pageSize: 20,
@@ -140,13 +151,13 @@
       }
     },
     created() {
-//      let _that = this;
-//      this.$navigation.on('back', (to, from) => {
-//        this.pageNo = 1;
-//        _that.doNext(_that.index)
-//        _that.selectedIndex = _that.index
-//        _that.startPush(); // 启动刷新
-//      })
+      let _that = this;
+      this.$navigation.on('back', (to, from) => {
+        _that.pageNo = 1;
+        _that.doNext(_that.index)
+        _that.selectedIndex = _that.index
+        _that.startPush(); // 启动刷新
+      })
       if (this.getLoginStatus) {
         this.pageNo = 1;
         this.doNext(this.itemIndex)
@@ -219,10 +230,16 @@
         let _that = this;
         if (flowIndex === 0 || flowIndex === '0') {
           flowRU.getDBList(function (res) {
+            if (res.page.count === 0) {
+              _that.ifdb = 1
+            }
             _that.dbList = res.page.list
           })
         } else if (flowIndex === 1 || flowIndex === '1') {
           flowRU.getSQZList(function (res) {
+            if (res.page.count === 0) {
+              _that.ifsqz = 1
+            }
             _that.sqzList = res.page.list
             _that.sqzcurrentInfo = res
           })
@@ -233,6 +250,9 @@
             pageSize: _that.pageSize
           }
           flowRU.getYBLList(params, function (res) {
+            if (res.page.count === 0) {
+              _that.ifybl = 1
+            }
             _that.yblList = res.page.list
           })
         } else if (flowIndex === 3 || flowIndex === '3') {
@@ -242,6 +262,9 @@
             pageSize: _that.pageSize
           }
           flowRU.getYJSList(params, function (res) {
+            if (res.page.count === 0) {
+              _that.ifyjs = 1
+            }
             _that.yjsList = res.page.list
             _that.yjscurrentInfo = res
           })
@@ -382,5 +405,21 @@
     to {
       transform: rotate(360deg);
     }
+  }
+
+  .emptyDiv {
+    width:100%;
+    height:500px;
+    line-height:500px;
+    overflow:hidden;
+    position:relative;
+    text-align:center;
+    margin:auto
+  }
+
+  .emptyDiv img {
+    position:static;
+    top:-50%;left:-50%;
+    vertical-align:middle
   }
 </style>

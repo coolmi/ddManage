@@ -240,6 +240,10 @@
         let _that = this;
         api.getViewInfo(flowParams, function (res) {
           let data = res.data;
+          if (typeof data === 'string') {
+            // eslint-disable-next-line
+            data = eval('(' + data + ')');
+          }
           let flowdata = FDUtils.getFlowData(data); // 流程数据再处理
           _that.flowParams.ID_ = flowdata.ID_ // 按钮事件中用
           _that.flowParams.APPID_ = flowdata.APPID_ // 按钮事件中用

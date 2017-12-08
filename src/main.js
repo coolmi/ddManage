@@ -6,6 +6,7 @@ import router from './router'
 import store from './store';
 import {sync} from 'vuex-router-sync'
 import MintUI from 'mint-ui'
+// import Navigation from 'vue-navigation'
 // import vueScrollBehavior from 'vue-scroll-behavior'
 import Raven from 'raven-js';
 import RavenVue from 'raven-js/plugins/vue';
@@ -17,9 +18,17 @@ Raven
   .install();
 
 Vue.use(RavenConfig) // 监控
-//
+
+import Navigation from '@/nav'
+// use plugin
+Vue.use(Navigation, {router})
+
+// import vueScrollBehavior from '@/scroller'
+// Vue.use(vueScrollBehavior, {router: router})
+
 // Vue.use(vueScrollBehavior, {router: router}) // router ScrollBehavior
 
+// Vue.use(Navigation, {router, store}) // 后退不刷新
 // Vue.use(Navigation, {router, store, moduleName: 'navigation', keyName: 'VNK'})
 
 Vue.use(MintUI);
@@ -28,6 +37,7 @@ import 'mint-ui/lib/style.min.css'
 // Vue.use(CloseDialogsPlugin, router)
 
 store.dispatch('saveURL', location.href)
+store.dispatch('saveDingTalkCode')
 initVue();
 
 Vue.config.productionTip = false

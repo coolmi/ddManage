@@ -2,8 +2,10 @@
  * Created by lzl on 17/2/14.
  */
 import base from '@/api/baseConfig'
+import ding from '@/lib/ding'
 const localStorage = global.localStorage;
 const AUTH_DDCONFIG = 'auth.ddconfig';
+const AUTH_DINGTALKCODE = 'auth.dingtalkcode';
 
 export default {
   state: {
@@ -14,11 +16,16 @@ export default {
     ddConfigPath: '' || base.baseURL,
     ddAddress: '',
     loginStatus: false,
-    itemIndex: 1
+    itemIndex: 1,
+    dingtalk_code: localStorage.getItem(AUTH_DINGTALKCODE) || null
   },
   actions: {
     dcSuccess({commit}, config) {
       commit('DDCONFIG_SUCCESS', config);
+    },
+    saveDingTalkCode({commit}) {
+      let code = ding.parseParam(window.location.href, 'dingtalk_code') || ''
+      commit('SAVE_DINGTALK_CODE', code);
     },
     saveURL({commit}, url) {
       commit('SAVE_URL', url);
@@ -70,6 +77,11 @@ export default {
     },
     'SAVE_ITEM_INDEX'(state, index) {
       state.itemIndex = index
+    },
+    'SAVE_DINGTALK_CODE'(state, code) {
+      state.dingtalk_code = code
+      localStorage.removeItem(AUTH_DINGTALKCODE);
+      localStorage.setItem(AUTH_DINGTALKCODE, code);
     }
   },
   getters: {
@@ -79,6 +91,7 @@ export default {
     getddUserID: state => state.ddUserID,
     getddAddress: state => state.ddAddress,
     getLoginStatus: state => state.loginStatus,
-    getItemIndex: state => state.itemIndex
+    getItemIndex: state => state.itemIndex,
+    getDingTalkCode: state => state.dingtalk_code
   }
 }

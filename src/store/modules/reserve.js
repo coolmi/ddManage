@@ -11,6 +11,9 @@ export default {
     },
     addReserve({commit}, data) {
       commit('ADD_RESERVE', data);
+    },
+    clearReserve({commit}) {
+      commit('CLEAR_RESERVE');
     }
   },
 
@@ -21,6 +24,9 @@ export default {
     'ADD_RESERVE'(state, data) {
       let froms = dataUtils.filterData(state.forms, data)
       state.forms = froms
+    },
+    'CLEAR_RESERVE'(state) {
+      state.forms = []
     }
   },
   getters: {

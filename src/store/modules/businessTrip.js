@@ -11,6 +11,9 @@ export default {
     },
     addBusinessTrip({commit}, data) {
       commit('ADD_BUSINESSTRIP', data);
+    },
+    clearBusinessTrip({commit}) {
+      commit('CLEAR_BUSINESSTRIP');
     }
   },
 
@@ -21,6 +24,9 @@ export default {
     'ADD_BUSINESSTRIP'(state, data) {
       let froms = dataUtils.filterData(state.forms, data)
       state.forms = froms
+    },
+    'CLEAR_BUSINESSTRIP'(state) {
+      state.forms = []
     }
   },
   getters: {

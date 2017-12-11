@@ -58,8 +58,8 @@ export default {
   },
   computed: {
     ...mapGetters({
-      formsData: 'getBusinessTripForms',
-      formsInfos: 'getBusinessTripInfos'
+      formsData: 'getBusinessTripForms'
+      // formsInfos: 'getBusinessTripInfos'
     }),
     noticeDesc() {
       let desc = '请选择'
@@ -72,12 +72,26 @@ export default {
     }
   },
   created() {
+    console.log(this.formsData);
+    let dd = window.dd;
+    let _that = this;
+    dd.biz.navigation.setLeft({
+      control: true, // 是否控制点击事件，true 控制，false 不控制， 默认false
+      text: '', // 控制显示文本，空字符串表示显示默认文本
+      onSuccess: function(result) {
+        _that.$store.dispatch('clearBusinessTrip')
+        _that.$router.go(-1)
+      },
+      onFail: function(err) {
+        console.log(err);
+      }
+    });
     let saveParams = this.$route.query.saveParams;
     if (saveParams !== undefined) {
       this.draftData(saveParams)
     }
     this.getBaseData() // 请求部门和费用承担公司
-    this.setData() // 填写的时候回退保存值
+    // this.setData() // 填写的时候回退保存值
     if (this.forms.postid !== '' && this.forms.m_comp !== '') {
       this.changeBurks(this.forms.postid, this.forms.m_comp)
     }
@@ -128,13 +142,13 @@ export default {
         }
       })
     },
-    setData() {
-      this.forms.postid = this.formsInfos.forms.postid;
-      this.forms.m_comp = this.formsInfos.forms.m_comp;
-      this.forms.m_cbzx = this.formsInfos.forms.m_cbzx;
-      this.beup = this.formsInfos.beup;
-      this.reason = this.formsInfos.reason;
-    },
+    // setData() {
+    //   this.forms.postid = this.formsInfos.forms.postid;
+    //   this.forms.m_comp = this.formsInfos.forms.m_comp;
+    //   this.forms.m_cbzx = this.formsInfos.forms.m_cbzx;
+    //   this.beup = this.formsInfos.beup;
+    //   this.reason = this.formsInfos.reason;
+    // },
     changeBurks(postid, bukrs) {
         postid = this.forms.postid;
         bukrs = this.forms.m_comp;
@@ -217,8 +231,11 @@ export default {
       this.formsData.map(function (item) {
         let demo = {};
         for (var v in item) {
-          console.log(item[v]);
-          if (item[v].match(/^[1-9]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/)) {
+          if (v === 'id') {
+            demo['id'] = item['id']
+          } else if (v === 'mainkey') {
+            demo['mainkey'] = item['mainkey']
+          } else if (item[v].match(/^[1-9]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/)) {
             demo[v] = new Date(item[v].replace(/-/g, '/')).getTime()
           } else {
             demo[v] = item[v]
@@ -245,37 +262,41 @@ export default {
 
       console.log(parmas);
 
-      // if (parmas.subs.length < 2) {
-      //   whole.showTop('请完善出差申请明细');
-      //   return;
-      // } else if (flag === 0) {
-      //     let _that = this;
-      //     api.getStartTravelWFURL(parmas, function (res) {
-      //       if (res) {
-      //         if (res.data.code) {
-      //           whole.showTop(res.data.message);
-      //           _that.$router.go(-2)
-      //         } else {
-      //           whole.showTop(res.data.message);
-      //           _that.$router.go(-2)
-      //         }
-      //       }
-      //     })
-      // } else if (flag === 1) {
-      //   let _that = this;
-      //   api.getSaveTravelURL(parmas, function (res) {
-      //     if (res) {
-      //       if (res.data.code) {
-      //           whole.showTop(res.data.message);
-      //           _that.$router.go(-1)
-      //       } else {
-      //           whole.showTop(res.data.message);
-      //           _that.$router.go(-1)
-      //       }
-      //     }
-      //     console.log(res);
-      //   })
-      // }
+      if (parmas.subs.length < 2) {
+        whole.showTop('请完善出差申请明细');
+        return;
+      } else if (flag === 0) {
+          let _that = this;
+          api.getStartTravelWFURL(parmas, function (res) {
+            if (res) {
+              if (res.data.code) {
+                whole.showTop(res.data.message);
+                _that.$store.dispatch('clearBusinessTrip')
+                _that.$router.go(-1)
+              } else {
+                whole.showTop(res.data.message);
+                _that.$store.dispatch('clearBusinessTrip')
+                _that.$router.go(-1)
+              }
+            }
+          })
+      } else if (flag === 1) {
+        let _that = this;
+        api.getSaveTravelURL(parmas, function (res) {
+          if (res) {
+            if (res.data.code) {
+                whole.showTop(res.data.message);
+                _that.$store.dispatch('clearBusinessTrip')
+                _that.$router.go(-1)
+            } else {
+                whole.showTop(res.data.message);
+                _that.$store.dispatch('clearBusinessTrip')
+                _that.$router.go(-1)
+            }
+          }
+          console.log(res);
+        })
+      }
     }
   }
 }

@@ -55,8 +55,8 @@ export default {
   },
   computed: {
     ...mapGetters({
-      formsData: 'getReserveFroms',
-      formsInfos: 'getReserveInfos'
+      formsData: 'getReserveFroms'
+      // formsInfos: 'getReserveInfos'
     }),
     noticeDesc() {
       let desc = '请选择'
@@ -69,12 +69,27 @@ export default {
     }
   },
   created() {
+    console.log(this.formsData);
+    let dd = window.dd;
+    let _that = this;
+    dd.biz.navigation.setLeft({
+      control: true, // 是否控制点击事件，true 控制，false 不控制， 默认false
+      text: '', // 控制显示文本，空字符串表示显示默认文本
+      onSuccess: function(result) {
+        console.log('成功');
+        _that.$store.dispatch('clearReserve')
+        _that.$router.go(-1)
+      },
+      onFail: function(err) {
+        console.log(err);
+      }
+    });
     let saveParams = this.$route.query.saveParams;
     if (saveParams !== undefined) {
       this.draftData(saveParams)
     }
     this.getBaseData() // 请求部门和费用承担公司
-    this.setData() // 填写的时候回退保存值
+    // this.setData() // 填写的时候回退保存值
     if (this.forms.postid !== '' && this.forms.cdbukrs !== '') {
       this.changeBurks(this.forms.postid, this.forms.cdbukrs)
       this.changeDepart(this.forms.postid, this.forms.cdbukrs)
@@ -195,7 +210,13 @@ export default {
       this.formsData.map(function (item) {
         let demo = {};
         for (var v in item) {
-          if (item[v] instanceof Array) {
+          if (v === 'buzei') {
+            demo['buzei'] = item['buzei']
+          } else if (v === 'dmbtr') {
+            demo['dmbtr'] = item['dmbtr']
+          } else if (v === 'fwbas') {
+            demo['dmbtr'] = item['fwbas']
+          } else if (item[v] instanceof Array) {
             demo[v] = item[v].toString()
           } else if (item[v].match(/^[1-9]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/)) {
             demo[v] = new Date(item[v].replace(/-/g, '/')).getTime()
@@ -229,9 +250,11 @@ export default {
             if (res) {
               if (res.data.code) {
                 whole.showTop(res.data.message);
+                _that.$store.dispatch('clearReserve')
                 _that.$router.go(-1)
               } else {
                 whole.showTop(res.data.message);
+                _that.$store.dispatch('clearReserve')
                 _that.$router.go(-1)
               }
             }
@@ -242,9 +265,11 @@ export default {
           if (res) {
             if (res.data.code) {
               whole.showTop(res.data.message);
+              _that.$store.dispatch('clearReserve')
               _that.$router.go(-1)
             } else {
               whole.showTop(res.data.message);
+              _that.$store.dispatch('clearReserve')
               _that.$router.go(-1)
             }
           }

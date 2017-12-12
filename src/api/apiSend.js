@@ -11,6 +11,8 @@ const getBusinessDepartmentURL = '/authapi/ddtalkwf/getBusinessDepartment'
 const getReserveTypeURL = '/authapi/ddtalkwf/getFundTypeList'
 // 获取币种列表(bukrs, appda | Get)
 const getWaersListByBukrsURL = '/authapi/ddtalkwf/getWaersListByBukrs'
+// 提交验证接口
+const nextassigneeDepositWFURL = 'authapi/ddtalkwf/nextassigneeDepositWF'
 // 提交
 const startDepositWFURL = '/authapi/ddtalkwf/startDepositWF'
 // 保存
@@ -21,6 +23,8 @@ const saveDepositResegsURL = 'authapi/ddtalkwf/saveDepositResegs'
 const getTrafficwaysURL = '/authapi/ddtalkwf/getTrafficways'
 // 获取出发/到达地点(bukrs | Get)
 const getCitysbyBukrsURL = '/authapi/ddtalkwf/getCitysbyBukrs'
+// 提交验证接口
+const nextassigneeTravelWFURL = 'authapi/ddtalkwf/nextassigneeTravelWF'
 // 提交
 const startTravelWFURL = '/authapi/ddtalkwf/startTravelWF'
 // 保存
@@ -69,11 +73,13 @@ export default {
   getBusinessDepartmentURL,
   getReserveTypeURL,
   getWaersListByBukrsURL,
+  nextassigneeDepositWFURL,
   startDepositWFURL,
   saveDepositResegsURL,
   getBurkListURL,
   getTrafficwaysURL,
   getCitysbyBukrsURL,
+  nextassigneeTravelWFURL,
   getPersonReimTrafficTypeURL,
   getPosition,
   getBurkList,

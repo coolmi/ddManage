@@ -18,6 +18,15 @@
       <flexbox-item class="vux-1px-r" @click.native="addReserve(0)" style="color:#00B705">提交</flexbox-item>
       <flexbox-item @click.native="addReserve(1)" style="color:#FF8519">保存</flexbox-item>
     </flexbox>
+    <div v-transfer-dom>
+        <confirm
+        v-model="showCon"
+        :close-on-confirm="true"
+        title="提示"
+        @on-confirm="onConfirm">
+          <p style="text-align:center;">{{message}}</p>
+        </confirm>
+      </div>
   </div>
 </template>
 <style scoped lang="less" type="text/less">
@@ -27,7 +36,7 @@
 }
 </style>
 <script>
-import {Group, Sticky, Box, XButton, Scroller, Cell, Flexbox, FlexboxItem} from 'vux';
+import {Group, Sticky, Box, XButton, Scroller, Cell, Flexbox, FlexboxItem, Confirm, TransferDomDirective as TransferDom} from 'vux';
 import vSearch from '@/components/searchChecker';
 import api from 'api';
 import whole from '@/lib/whole'
@@ -35,8 +44,11 @@ import {mapGetters} from 'vuex'
 import dataUtils from '../../filters/dataUtils' // 工具类
 
 export default {
+  directives: {
+    TransferDom
+  },
   components: {
-    Group, Sticky, Box, XButton, Scroller, Cell, Flexbox, FlexboxItem, vSearch
+    Group, Sticky, Box, XButton, Scroller, Cell, Flexbox, FlexboxItem, vSearch, Confirm
   },
   data () {
     return {
@@ -46,11 +58,14 @@ export default {
         cdkostls: '',
         businessunitid: ''
       },
+      showCon: false,
+      message: '',
       id: '',
       positionList: [],
       burkList: [],
       kostlList: [],
-      departments: []
+      departments: [],
+      parmasOption: {}
     }
   },
   computed: {
@@ -70,23 +85,13 @@ export default {
   },
   created() {
     console.log(this.formsData);
-    let dd = window.dd;
-    let _that = this;
-    dd.biz.navigation.setLeft({
-      control: true, // 是否控制点击事件，true 控制，false 不控制， 默认false
-      text: '', // 控制显示文本，空字符串表示显示默认文本
-      onSuccess: function(result) {
-        console.log('成功');
-        _that.$store.dispatch('clearReserve')
-        _that.$router.go(-1)
-      },
-      onFail: function(err) {
-        console.log(err);
-      }
-    });
     let saveParams = this.$route.query.saveParams;
     if (saveParams !== undefined) {
       this.draftData(saveParams)
+    }
+    let flag = this.$route.query.flag;
+    if (flag === 'save') {
+      this.$store.dispatch('clearReserve')
     }
     this.getBaseData() // 请求部门和费用承担公司
     // this.setData() // 填写的时候回退保存值
@@ -242,16 +247,22 @@ export default {
         resegs: demoArray
       }
 
+      this.parmasOption = parmas;
+
       console.log(parmas);
 
       if (flag === 0) {
           let _that = this;
-          api.getStartDepositWFURL(parmas, function (res) {
+          api.getNextassigneeDepositWFURL(parmas, function (res) {
             if (res) {
               if (res.data.code) {
-                whole.showTop(res.data.message);
-                _that.$store.dispatch('clearReserve')
-                _that.$router.go(-1)
+                if (res.data.message) {
+                  _that.message = res.data.message;
+                  _that.showCon = true;
+                } else if (res.data.error) {
+                  _that.showCon = false;
+                  whole.showTop(res.data.error);
+                }
               } else {
                 whole.showTop(res.data.message);
                 _that.$store.dispatch('clearReserve')
@@ -276,6 +287,23 @@ export default {
           console.log(res);
         })
       }
+    },
+    onConfirm () {
+      let _that = this;
+      console.log(_that.parmasOption);
+      api.getStartDepositWFURL(_that.parmasOption, function (res) {
+        if (res) {
+          if (res.data.code) {
+            whole.showTop(res.data.message);
+            _that.$store.dispatch('clearReserve')
+            _that.$router.go(-1)
+          } else {
+            whole.showTop(res.data.message);
+            _that.$store.dispatch('clearReserve')
+            _that.$router.go(-1)
+          }
+        }
+      })
     }
   }
 }

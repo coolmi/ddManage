@@ -311,6 +311,18 @@ export default {
       }));
   },
   /**
+   * 提交验证
+   * @param cb
+   */
+  getNextassigneeTravelWFURL: function (params, cb) {
+    axios.post(APISEND.nextassigneeTravelWFURL, params)
+      .then((res) => {
+        cb(res);
+      }).catch((error) => {
+      return Promise.reject(error)
+    })
+  },
+  /**
    * 提交
    * @param cb
    */
@@ -410,6 +422,18 @@ export default {
     axios.get(APISEND.getBusinessDepartmentURL, {
       params
     })
+      .then((res) => {
+        cb(res);
+      }).catch((error) => {
+      return Promise.reject(error)
+    })
+  },
+  /**
+   * 提交验证
+   * @param cb
+   */
+  getNextassigneeDepositWFURL: function (params, cb) {
+    axios.post(APISEND.nextassigneeDepositWFURL, params)
       .then((res) => {
         cb(res);
       }).catch((error) => {

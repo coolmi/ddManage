@@ -92,8 +92,10 @@ export default {
     let flag = this.$route.query.flag;
     if (flag === 'save') {
       this.$store.dispatch('clearReserve')
+      console.log('save');
+      this.validateUserData();
     }
-    this.getBaseData() // 请求部门和费用承担公司
+    // this.getBaseData() // 请求部门和费用承担公司
     // this.setData() // 填写的时候回退保存值
     if (this.forms.postid !== '' && this.forms.cdbukrs !== '') {
       this.changeBurks(this.forms.postid, this.forms.cdbukrs)
@@ -101,6 +103,22 @@ export default {
     }
   },
   methods: {
+    validateUserData() {
+      let params = {
+        vfiled: 'lifnr'
+      }
+      let _that = this;
+      api.getvalidateUserBaseInfoURL(params, function (res) {
+        if (res) {
+          if (res.data.passFlag) {
+            _that.getBaseData() // 请求部门和费用承担公司
+          } else {
+            whole.showTop(res.data.message);
+            _that.$router.go(-1)
+          }
+        }
+      })
+    },
     draftData(saveParams) {
       let params = {
         appid: saveParams.appid,

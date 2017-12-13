@@ -292,6 +292,20 @@ export default {
         cb(obj);
       }));
   },
+  /**
+   * 验证是否获取到用户基本信息
+   * @param cb
+   */
+  getvalidateUserBaseInfoURL: function (params, cb) {
+    axios.get(APISEND.validateUserBaseInfoURL, {
+      params
+    })
+      .then((res) => {
+        cb(res);
+      }).catch((error) => {
+      return Promise.reject(error)
+    })
+  },
   // 员工出差申请
   // 获取交通方式 + 获取出发/到达地点
   getTrafficCitys: function (params1, params2, cb) {

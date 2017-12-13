@@ -3,6 +3,11 @@ import axios from './axiosConfig'
 const getPositionURL = '/authapi/ddtalkwf/getPostion'
 // 获取费用承担公司
 const getBurkListURL = '/authapi/ddtalkwf/getBukrlist'
+/**
+ * 验证是否获取到用户基本信息
+ * @type vfiled ：需要验证的字段，多个用逗号隔开（lifnr："财务编号",pernr,"员工编号",postid,"岗位编号",sysbusinessunitid,"事业部编号",sysdeptid,"部门编号",userid,"itcode",zzdbxjb,"报销级别"）
+ */
+const validateUserBaseInfoURL = '/authapi/ddtalkwf/validateUserBaseInfo'
 
 // 备用金
 // 获取费用所属事业部(bukrs, appda | Get)
@@ -77,6 +82,7 @@ export default {
   startDepositWFURL,
   saveDepositResegsURL,
   getBurkListURL,
+  validateUserBaseInfoURL,
   getTrafficwaysURL,
   getCitysbyBukrsURL,
   nextassigneeTravelWFURL,

@@ -18,8 +18,12 @@
         </p>
         <span class="vux-label-desc">{{desc}}</span>
       </div>
-      <div class="weui-cell__ft vux-cell-primary vux-cell-align-left" @click="checkSearch()" style="color: #151515" v-if="valueName">{{valueName}}</div>
-      <div class="weui-cell__ft vux-cell-primary vux-cell-align-left" @click="checkSearch()" v-else-if="currentName">{{currentName, 10 | subTitle}}</div>
+      <div class="weui-cell__ft vux-cell-primary vux-cell-align-left" @click="checkSearch()" style="color: #151515"
+           v-if="valueName">{{valueName}}
+      </div>
+      <div class="weui-cell__ft vux-cell-primary vux-cell-align-left" @click="checkSearch()" v-else-if="currentName">
+        {{currentName, 10 | subTitle}}
+      </div>
       <div v-show="showSearch">
         <transition :name="showSearch?'slide':'slide_back'">
           <section style="z-index:12100">
@@ -32,11 +36,15 @@
               @on-focus="onFocus"
               @on-cancel="onCancel">
               <div slot="default" style="padding: 10px">点击选择</div>
-              <p slot="left" @click="showSearch = false" style="margin-right: 5px; margin-top: 3px; pading: 18px; border: 1px solid #38ADFF; border-radius: 20%">关闭</p>
+              <p slot="left" @click="showSearch = false"
+                 style="margin-right: 5px; margin-top: 3px; pading: 18px; border: 1px solid #38ADFF; border-radius: 20%">
+                关闭</p>
             </search>
             <scroller lock-x v-show="showlist" height="-70">
-              <span v-show="cdata.length <= 0">{{noticeDesc}}</span>
-              <radio :options="cdata" v-model="checkerValue" @on-change="radioChange"></radio>
+              <div style="height: 100%">
+                <span v-show="cdata.length <= 0">{{noticeDesc}}</span>
+                <radio :options="cdata" v-model="checkerValue" @on-change="radioChange"></radio>
+              </div>
             </scroller>
           </section>
         </transition>
@@ -99,7 +107,7 @@
       }
     },
     watch: {
-      showSearch (val) {
+      showSearch(val) {
         if (val) {
           this.$emit('on-show')
         } else {

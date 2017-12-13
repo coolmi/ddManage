@@ -14,7 +14,7 @@
         <x-button plain type="primary" @click.native="addBusinessTripOption()">添加出差申请明细</x-button>
       </box>
     </sticky>
-    <group title="出差申请明细列表" v-if="formsData.length > 0">
+    <group title="出差申请明细列表" v-if="formsData.length > 0" style="margin-bottom: 60px;">
       <cell v-for="d in formsData" :key="d.uuid" :title="d.tp[0]" is-link @click.native="addBusinessTripOption(d)">{{d}}</cell>
     </group>
     <flexbox class="footerButton">

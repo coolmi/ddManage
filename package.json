@@ -25,6 +25,7 @@
     "vue-pdf": "^1.2.4",
     "vue-router": "^2.6.0",
     "vue-scroll-behavior": "^0.1.6",
+    "vuedraggable": "^2.15.0",
     "vuex": "^2.3.1",
     "vuex-router-sync": "^4.2.0",
     "vux": "^2.5.12",

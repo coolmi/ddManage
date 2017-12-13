@@ -110,6 +110,11 @@ const router = new Router({
         title: '错误',
         ddConfig: true
       }
+    },
+    {
+      path: '/draggable',
+      component: require('@/views/draggable/draggable'),
+      meta: {title: '拖拽'}
     }
   ]
 })

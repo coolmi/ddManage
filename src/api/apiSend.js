@@ -16,22 +16,34 @@ const getBusinessDepartmentURL = '/authapi/ddtalkwf/getBusinessDepartment'
 const getReserveTypeURL = '/authapi/ddtalkwf/getFundTypeList'
 // 获取币种列表(bukrs, appda | Get)
 const getWaersListByBukrsURL = '/authapi/ddtalkwf/getWaersListByBukrs'
+// 根据公司 大类获取交通方式 类型
+// const getSubMenuListURL = '/authapi/ddtalkwf/getSubMenuList'
 // 提交验证接口
 const nextassigneeDepositWFURL = 'authapi/ddtalkwf/nextassigneeDepositWF'
 // 提交
 const startDepositWFURL = '/authapi/ddtalkwf/startDepositWF'
 // 保存
 const saveDepositResegsURL = 'authapi/ddtalkwf/saveDepositResegs'
+// 获取项目编号通用
+const getColdconamListURL = 'authapi/ddtalkwf/getColnrList'
+// 获取项目编号专项
+const getColdconamzListURL = 'authapi/ddtalkwf/getColnrListz'
+// 长途交通金额校验
+const getOverproofLtradURL = 'authapi/ddtalkwf/getOverproofLtrad'
 
 // 员工出差申请
 // 获取交通方式(bukrs, appda | Get)
 const getTrafficwaysURL = '/authapi/ddtalkwf/getTrafficways'
 // 获取出发/到达地点(bukrs | Get)
 const getCitysbyBukrsURL = '/authapi/ddtalkwf/getCitysbyBukrs'
+// 根据公司 大类获取交通方式 类型
+const getSubMenuListURL = '/authapi/ddtalkwf/getSubMenuList'
 // 提交验证接口
 const nextassigneeTravelWFURL = 'authapi/ddtalkwf/nextassigneeTravelWF'
 // 提交
 const startTravelWFURL = '/authapi/ddtalkwf/startTravelWF'
+// 税率
+const getTaxCodeListURL = '/authapi/ddtalkwf/getTaxCodeList'
 // 保存
 const saveTravelURL = '/authapi/ddtalkwf/saveTravel'
 // 获取申请保存列表（draftType: depositApp 备用金申请/ travel 出差申请 / reimburse: 费用报销申请）
@@ -68,6 +80,31 @@ const getCitysbyBukrs = function (params = {}) {
     params
   });
 }
+const getTaxCodeList = function (params = {}) {
+  return axios.get(getTaxCodeListURL, {
+    params
+  });
+}
+const getSubMenuList = function (params = {}) {
+  return axios.get(getSubMenuListURL, {
+    params
+  });
+}
+const getColdconamList = function (params = {}) {
+  return axios.get(getColdconamListURL, {
+    params
+  });
+}
+const getOverproofLtrad = function (params = {}) {
+  return axios.get(getOverproofLtradURL, {
+    params
+  });
+}
+const getColdconamzList = function (params = {}) {
+  return axios.get(getColdconamzListURL, {
+    params
+  });
+}
 const getPersonReimTrafficType = function (params = {}) {
   return axios.get(getPersonReimTrafficTypeURL, {
     params
@@ -81,6 +118,12 @@ export default {
   nextassigneeDepositWFURL,
   startDepositWFURL,
   saveDepositResegsURL,
+  getColdconamListURL,
+  getColdconamList,
+  getOverproofLtrad,
+  getOverproofLtradURL,
+  getColdconamzListURL,
+  getColdconamzList,
   getBurkListURL,
   validateUserBaseInfoURL,
   getTrafficwaysURL,
@@ -93,8 +136,11 @@ export default {
   getWaersListByBukrs,
   getTrafficways,
   getCitysbyBukrs,
+  getSubMenuList,
   getPersonReimTrafficType,
   startTravelWFURL,
+  getTaxCodeList,
+  getTaxCodeListURL,
   saveTravelURL,
   getDraftListURL,
   getDraftDataByIdURL

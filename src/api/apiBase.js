@@ -68,6 +68,8 @@ let APILIST = {
   // 员工报销获取费用承担公司(获取项目类型、费用承担公司、专项内部订单号)
   getBukrlist_url: '/authapi/ddtalkwf/getBukrlist',
   // 根据公司 大类获取交通方式 类型
-  getSubMenuList_url: '/authapi/ddtalkwf/getSubMenuList'
+  getSubMenuList_url: '/authapi/ddtalkwf/getSubMenuList',
+  // 根据费用承担公司获取报销币种
+  getWaersListByBukrs_url: '/authapi/ddtalkwf/getWaersListByBukrs'
 }
 export default APILIST

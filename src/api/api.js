@@ -487,22 +487,60 @@ export default {
   },
   /**
    * 个人报销基本数据
-   * @param cb
+   * @param cb   , APISEND.getTaxCodeList(typaram)
    */
-  getPersonReimBaseData: function (params, cb) {
-    axios.all([APISEND.getPersonReimTrafficType(params), APISEND.getTrafficways(params)])
+  getPersonReimBaseData: function (fsparam, lxparam, typaram, cb) {
+    axios.all([APISEND.getSubMenuList(fsparam), APISEND.getSubMenuList(lxparam), APISEND.getCitysbyBukrs(typaram), APISEND.getWaersListByBukrs(typaram)])
       .then(axios.spread(function (...a) {
       // 两个请求现在都执行完成
       let aa = _.map(a, _.iteratee('data'));
       let aaa = _.map(aa, _.iteratee('data'));
-      let obj = {};
-      _.map(aaa, function (item) {
-        Object.keys(item).forEach(key => {
-          obj[key] = item[key]
-        }
-        )
-      })
-      cb(obj);
+      cb(aaa);
+    }
+    ))
+    ;
+  },
+  // 获取项目编号通用
+  getColdconamList: function (params, cb) {
+    axios.all([APISEND.getColdconamList(params)])
+      .then(axios.spread(function (...a) {
+      // 两个请求现在都执行完成
+      let aa = _.map(a, _.iteratee('data'));
+      let aaa = _.map(aa, _.iteratee('data'));
+      cb(aaa);
+    }
+    ))
+    ;
+  },
+  // 长途交通金额超标验证
+  getOverproofLtrad: function (params, cb) {
+    axios.all([APISEND.getOverproofLtrad(params)])
+      .then(axios.spread(function (...a) {
+      // 两个请求现在都执行完成
+      let aa = _.map(a, _.iteratee('data'));
+      let aaa = _.map(aa, _.iteratee('data'));
+      cb(aaa);
+    }
+    ))
+    ;
+  },
+  // 获取项目编号专项
+  getColdconamzList: function (params, cb) {
+    axios.get(APISEND.getColdconamzList(params))
+      .then((res) => {
+      cb(res);
+  }).catch((error) => {
+      return Promise.reject(error)
+    })
+  },
+  // 办公费用类型 币种  码率
+  getOfficePersonReimBaseData: function (fsparam, typaram, cb) {
+    axios.all([APISEND.getSubMenuList(fsparam), APISEND.getWaersListByBukrs(typaram), APISEND.getTaxCodeList(typaram), APISEND.getCitysbyBukrs(typaram)])
+      .then(axios.spread(function (...a) {
+      // 两个请求现在都执行完成
+      let aa = _.map(a, _.iteratee('data'));
+      let aaa = _.map(aa, _.iteratee('data'));
+      cb(aaa);
     }
     ))
     ;
@@ -537,8 +575,10 @@ export default {
    * @param  {Function} cb     [返回数据]
    * @return {[type]}          [description]
    */
-  getTrfficType: function (cb) {
-    axios.get(APILIST.getTrfficType_url)
+  getTrfficType: function (params, cb) {
+    axios.get(APILIST.getTrfficType_url, {
+      params
+    })
       .then((res) => {
       cb(res);
   }).catch((error) => {
@@ -570,19 +610,5 @@ export default {
   }).catch((error) => {
       return Promise.reject(error)
     })
-  },
-  /*
-   * 根据公司和大类获取交通方式交通类型
-   * */
-  getSubMenuList: function (params, cb) {
-  axios.get(APILIST.getSubMenuList_url, {
-    params
-  })
-    .then((res) => {
-    cb(res);
-}).catch((error) => {
-    return Promise.reject(error)
-  })
-}
-
+  }
 }

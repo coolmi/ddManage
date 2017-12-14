@@ -715,6 +715,22 @@ export default {
       return Promise.reject(error)
     })
   },
+  /**
+   * 获取员工费用报销--通讯费--获取超标准金额
+   * @param  {[brucks]}   params [参数]
+   * @param  {Function} cb     [返回数据]
+   * @return {[type]}          [description]
+   */
+  getOverproofTelnet: function (params, cb) {
+    axios.get(APISEND.getOverproofTelnetURL, {
+      params
+    })
+      .then((res) => {
+        cb(res);
+      }).catch((error) => {
+      return Promise.reject(error)
+    })
+  },
   /*
   * 员工报销获取费用承担公司(获取项目类型、费用承担公司、专项内部订单号)
   * */

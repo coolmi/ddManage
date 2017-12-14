@@ -29,7 +29,7 @@
         <x-input title="汇率" v-if="currencyFlag === '1'" type="number" v-model="formsData1.kursf"></x-input>
         <x-input title="金额" read v-model="amount" @on-blur="changeAmount"></x-input>
         <cell v-if="cbFlag === '1'"><font color="#FF0000">超额{{Excessive}}</font></cell>
-        <x-input title="项目号" readonly v-model="formsData1.conam"></x-input>
+        <x-input title="项目号" readonly v-model="formsData1.colnr"></x-input>
         <x-input title="超标事由" v-if="cbFlag === '1'" v-model="formsData1.ulrea"></x-input>
         <x-input title="说明"  v-model="formsData1.smemoltrad"></x-input>
         <x-input title="隐藏" placeholder="隐藏" v-show="false" v-model="formsData1.uuid"></x-input>
@@ -105,29 +105,32 @@
         <x-input title="隐藏" placeholder="隐藏" v-show="false" v-model="formsData6.uuid"></x-input>
       </group>
       <group v-if="checker === '7'" :title="typeObj[checker]">
-        <v-search title="通讯类型" :cdata="txlxList" v-model="formsData7.txlx"></v-search>
-        <v-search title="月份" :cdata="yfList" v-model="formsData7.yf"></v-search>
-        <v-search title="币种" :cdata="currencyList" v-model="formsData7.bz" @on-hide="getProtypeInfo"></v-search>
-        <x-input title="原币金额" v-if="currencyFlag === '1'" placeholder="请填写原币金额" :max=9 v-model="formsData7.ybje"></x-input>
-        <x-input title="汇率" v-if="currencyFlag === '1'" type="number" v-model="formsData7.hl"></x-input>
-        <x-input title="金额"  read placeholder="请填写住宿金额" :max=9 v-model="amount7"></x-input>
-        <x-input title="项目号" readonly v-model="formsData7.itemNo"></x-input>
+        <v-search title="通讯类型" :cdata="txlxList" v-model="formsData7.stypee"></v-search>
+        <v-search title="月份" :cdata="yfList" v-model="formsData7.sdatee"></v-search>
+        <v-search title="币种" :cdata="currencyList" v-model="formsData7.waerse" @on-hide="getProtypeInfo"></v-search>
+        <x-input title="原币金额" v-if="currencyFlag === '1'" placeholder="请填写原币金额" :max=9 v-model="formsData7.wrbtre"></x-input>
+        <cell v-show="originalCurrency7" v-if="currencyFlag === '1'">{{originalCurrency7}}</cell>
+        <x-input title="汇率" v-if="currencyFlag === '1'" type="number" v-model="formsData7.kursfe"></x-input>
+        <x-input title="金额"  read placeholder="请填写住宿金额" :max=9 v-model="amount7" @on-blur="feeAmount" ></x-input>
+        <cell v-if="cbFlag === '1'"><font color="#FF0000">超额{{Excessive}}</font></cell>
+        <x-input title="项目号" readonly v-model="formsData7.colnre"></x-input>
         <x-input title="隐藏" placeholder="隐藏" v-show="false" v-model="formsData7.uuid"></x-input>
       </group>
       <group v-if="checker === '8'" :title="typeObj[checker]">
-        <v-search title="礼品费类型" :cdata="lplxList" v-model="formsData8.txlx"></v-search>
-        <datetime v-model="formsData8.rzdate" :start-date="systemDate" title="发生日期"></datetime>
-        <v-search title="币种" :cdata="currencyList" v-model="formsData8.bz" @on-hide="getProtypeInfo"></v-search>
-        <x-input title="原币金额" v-if="currencyFlag === '1'" placeholder="请填写原币金额" :max=9 v-model="formsData8.ybje"></x-input>
-        <x-input title="汇率" v-if="currencyFlag === '1'" type="number" v-model="formsData8.hl"></x-input>
+        <v-search title="礼品费类型" :cdata="lplxList" v-model="formsData8.stypeg"></v-search>
+        <datetime v-model="formsData8.sdateg" :start-date="systemDate" title="发生日期"></datetime>
+        <v-search title="币种" :cdata="currencyList" v-model="formsData8.waersg" @on-hide="getProtypeInfo"></v-search>
+        <x-input title="原币金额" v-if="currencyFlag === '1'" placeholder="请填写原币金额" :max=9 v-model="formsData8.wrbtrg"></x-input>
+        <cell v-show="originalCurrency8" v-if="currencyFlag === '1'">{{originalCurrency8}}</cell>
+        <x-input title="汇率" v-if="currencyFlag === '1'" type="number" v-model="formsData8.kursfg"></x-input>
         <x-input title="金额"  read placeholder="请填写住宿金额" :max=9 v-model="amount8"></x-input>
-        <x-input title="项目号" readonly v-model="formsData8.itemNo"></x-input>
-        <x-textarea title="事由" v-model="formsData8.zsyy"></x-textarea>
+        <x-input title="项目号" readonly v-model="formsData8.colnrg"></x-input>
+        <x-textarea title="事由" v-model="formsData8.ulreag"></x-textarea>
         <x-input title="隐藏" placeholder="隐藏" v-show="false" v-model="formsData8.uuid"></x-input>
       </group>
       <group v-if="checker === '9'" :title="typeObj[checker]">
-        <x-input title="电子发票号"  v-model="formsData9.invoiceNumber"></x-input>
-        <x-input title="链接"  v-model="formsData9.invoiceLink"></x-input>
+        <x-input title="电子发票号"  v-model="formsData9.electronicnum"></x-input>
+        <x-input title="链接"  v-model="formsData9.linkv"></x-input>
         <x-input title="隐藏" placeholder="隐藏" v-show="false" v-model="formsData9.uuid"></x-input>
       </group>
       <group v-if="checker === '10'" :title="typeObj[checker]"></group>
@@ -269,22 +272,31 @@
           zslx: ''
         },
         formsData7: {
-          reason: '',
-          itemNo: '',
-          currency: '',
-          originalCurrency: '',
-          rate: ''
+          stypee: '',
+          sdatee: moment().format('YYYY-MM-DD'),
+          waerse: '',
+          wrbtre: '',
+          kursfe: '',
+          colnre: '',
+          uuid: ''
+//          feeAmount: ''
         },
         formsData8: {
-          invoiceNumber: '',
-          invoiceLink: ''
+          stypeg: '',
+          sdateg: moment().format('YYYY-MM-DD'),
+          waersg: '',
+          wrbtrg: '',
+          kursfg: '',
+          dmbtrg: '',
+          colnrg: '',
+          smemg: '',
+          uuid: '',
+          ulreag: ''
         },
         formsData9: {
-          reason: '',
-          itemNo: '',
-          currency: '',
-          originalCurrency: '',
-          rate: ''
+          linkv: '',
+          electronicnum: '',
+          uuid: ''
         },
         itemNoList: [],
         personList: [],
@@ -407,16 +419,16 @@
       return this.formsData6.originalCurrency * this.formsData6.rate.substr(0, 6)
     },
     originalCurrency7: function () {
-      return dataUtils.money2dx(this.formsData7.originalCurrency)
+      return dataUtils.money2dx(this.formsData7.wrbtre)
     },
     amount7: function () {
-      return this.formsData7.originalCurrency * this.formsData7.rate.substr(0, 6)
+      return this.formsData7.wrbtre * this.formsData7.kursfe.substr(0, 6)
     },
     originalCurrency8: function () {
-      return dataUtils.money2dx(this.formsData8.originalCurrency)
+      return dataUtils.money2dx(this.formsData8.wrbtrg)
     },
     amount8: function () {
-      return this.formsData8.originalCurrency * this.formsData8.rate.substr(0, 6)
+      return this.formsData8.wrbtrg * this.formsData8.kursfg.substr(0, 6)
     }
   },
   watch: {
@@ -773,43 +785,48 @@
         }
       }
       if (this.checker === '7') {
-        this.formsData7.rate = ''
-        if (this.formsData7.currency === 'CNY') {
+        this.cbFlag = '0'
+        this.formsData7.kursfe = ''
+        if (this.formsData7.waerse === 'CNY') {
           this.currencyFlag = '0'
-          this.formsData7.rate = '1'
+          this.formsData7.kursfe = '1'
         }
-        if (this.formsData7.currency !== 'CNY') {
+        if (this.formsData7.waerse !== 'CNY') {
           this.currencyFlag = '1'
           this.read = 'readonly'
+        }
+        let params = {
+          mtype_class: this.mtype,
+          mtype: this.formsData7.mtype,
+          bukrs: this.burks,
+          abroadis: this.currencyFlag,
+          kostl: this.kostl,
+          postid: this.postid
+        }
+        let _that = this;
+        if (this.protype === '通用项目') {
+          api.getColdconamList(params, function (res) {
+            _that.formsData1.colnr = res[0].kstar + '-' + res[0].kstarval
+          })
+        }
+        if (this.protype === '专项项目') {
+          api.getColdconamzList(params, function (res) {
+            _that.formsData1.colnr = res[0].kstar + '-' + res[0].kstarval
+          })
         }
       }
       if (this.checker === '8') {
-        this.formsData8.rate = ''
-        if (this.formsData8.currency === 'CNY') {
+        this.cbFlag = '0'
+        this.formsData8.kursfg = ''
+        if (this.formsData8.waersg === 'CNY') {
           this.currencyFlag = '0'
-          this.formsData8.rate = '1'
+          this.formsData8.kursfg = '1'
         }
-        if (this.formsData8.currency !== 'CNY') {
+        if (this.formsData8.waersg !== 'CNY') {
           this.currencyFlag = '1'
           this.read = 'readonly'
         }
       }
-     /*  if (this.formsData2.currency === 'CNY') {
-        this.currencyFlag = '0'
-        this.formsData1.rate = '1'
-      }
-      if (this.formsData2.currency !== 'CNY') {
-        this.currencyFlag = '1'
-        this.read = 'readonly'
-      }
-      if (this.formsData3.currency === 'CNY') {
-        this.currencyFlag = '0'
-        this.formsData1.rate = '1'
-      }
-      if (this.formsData3.currency !== 'CNY') {
-        this.currencyFlag = '1'
-        this.read = 'readonly'
-      } */
     },
     // 校验金额是否超标
     changeAmount(value) {
@@ -828,6 +845,19 @@
           _that.cbFlag = '1'
         }
       })
+    },
+    feeAmount(value) {
+/*      let params = {
+        mtype_class: this.mtype_class,
+        mtype: this.mtype,
+        bukrs: this.burks,
+        money: value,
+        postid: this.postid
+      }
+      let _that = this
+      api.getOverproofTelnet(params, function (res) {
+        if (res[0] !== '') {}
+      }) */
     },
     saveReserve() {
     //  var transmode = dataUtils.getDescValue(this.tripTraffic, this.formsData.transmodeId)
@@ -1001,6 +1031,107 @@
           smemoo: this.formsData3.smemoo,
           // dmbtr: this.amount,
           uuid: this.formsData3.uuid
+        }
+        console.log(formsData)
+        this.$store.dispatch('addPersonReim', formsData)
+        console.log('保存')
+        this.$router.go(-1)
+      }
+      if (this.checker === '7') {
+        if (this.formsData7.stypee === '') {
+          whole.showTop('请选择通讯类型')
+          return;
+        }
+        if (this.formsData7.sdatee === '') {
+          whole.showTop('请选择月份')
+          return;
+        }
+        if (this.formsData7.waerse !== 'CNY') {
+          if (this.formsData7.wrbtre === '') {
+            whole.showTop('请选填写原币金额')
+            return;
+          }
+          if (this.formsData7.kursfe === '') {
+            whole.showTop('请选填写汇率')
+            return;
+          }
+        }
+        alert(JSON.stringify(this.checker))
+        let formsData = {
+          stypee: this.formsData7.stypee,
+          sdatee: this.formsData7.sdatee,
+          waerse: this.formsData7.waerse,
+          wrbtre: this.formsData7.wrbtre,
+          kursfe: this.formsData7.kursfe,
+          colnre: this.formsData7.colnre,
+          uuid: this.formsData7.uuid
+        }
+        console.log(formsData)
+        alert(JSON.stringify(formsData))
+        this.$store.dispatch('addPersonReim', formsData)
+        console.log('保存')
+        this.$router.go(-1)
+      }
+      if (this.checker === '8') {
+        if (this.formsData8.stypeg === '') {
+          whole.showTop('请选择礼品费用类型')
+          return;
+        }
+        if (this.formsData8.sdateg.length === 0) {
+          whole.showTop('请选择日期')
+          return;
+        }
+
+        if (this.formsData8.waersg !== 'CNY') {
+          if (this.formsData8.wrbtrg === '') {
+            whole.showTop('请选填写原币金额')
+            return;
+          }
+          if (this.formsData8.kursfg === '') {
+            whole.showTop('请选填写汇率')
+            return;
+          }
+        }
+        if (this.formsData8.waersg === '') {
+          whole.showTop('请选择币种')
+          return;
+        }
+        if (this.formsData8.ulreag === '') {
+          whole.showTop('请填写事由')
+          return;
+        }
+        alert(JSON.stringify(this.checker))
+        let formsData = {
+          stypeg: this.formsData8.stypeg,
+          sdateg: this.formsData8.sdateg,
+          waersg: this.formsData8.waersg,
+          wrbtrg: this.formsData8.wrbtrg,
+          kursfg: this.formsData8.kursfg,
+          dmbtrg: this.formsData8.dmbtrg,
+          colnrg: this.formsData8.colnrg,
+          ulreag: this.formsData8.ulreag,
+          smemg: this.formsData8.smemg,
+          uuid: this.formsData8.uuid
+        }
+        console.log(formsData)
+        this.$store.dispatch('addPersonReim', formsData)
+        console.log('保存')
+        this.$router.go(-1)
+      }
+      if (this.checker === '9') {
+        if (this.formsData9.electronicnum === '') {
+          whole.showTop('请填写电子发票号')
+          return;
+        }
+        if (this.formsData9.linkv === '') {
+          whole.showTop('请填写链接')
+          return;
+        }
+        alert(JSON.stringify(this.checker))
+        let formsData = {
+          electronicnum: this.formsData9.electronicnum,
+          linkv: this.formsData9.linkv,
+          uuid: this.formsData9.uuid
         }
         console.log(formsData)
         this.$store.dispatch('addPersonReim', formsData)

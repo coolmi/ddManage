@@ -24,6 +24,10 @@ const nextAssignNewLeaveBackURL = '/authapi/newleaveback/nextAssignNewLeaveBack'
 const newLeaveBackListURL = '/authapi/newleaveback/backList'
 const newLeaveInfoByIdURL = '/authapi/newleaveback/getNewLeaveInfoById'
 
+// 报销
+// 员工费用报销--通讯费--获取超标准金额
+const getOverproofTelnetURL = '/authapi/ddtalkwf/getOverproofTelnet'
+
 // 备用金
 // 获取费用所属事业部(bukrs, appda | Get)
 const getBusinessDepartmentURL = '/authapi/ddtalkwf/getBusinessDepartment'
@@ -172,5 +176,6 @@ export default {
   startOverTimeURL,
   nextAssignOverTimeURL,
   newLeaveInfoByIdURL,
-  newLeaveBackListURL
+  newLeaveBackListURL,
+  getOverproofTelnetURL
 }

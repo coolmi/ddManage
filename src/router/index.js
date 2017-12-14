@@ -29,6 +29,11 @@ const router = new Router({
       meta: {title: '申请保存列表'}
     },
     {
+      path: '/newLeave',
+      component: require('@/views/newleave/NewLeave'),
+      meta: {title: '员工休假申请'}
+    },
+    {
       path: '/businessTrip',
       component: require('@/views/businessTrip/BusinessTrip'),
       meta: {title: '员工出差申请'}

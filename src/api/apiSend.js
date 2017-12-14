@@ -8,6 +8,21 @@ const getBurkListURL = '/authapi/ddtalkwf/getBukrlist'
  * @type vfiled ：需要验证的字段，多个用逗号隔开（lifnr："财务编号",pernr,"员工编号",postid,"岗位编号",sysbusinessunitid,"事业部编号",sysdeptid,"部门编号",userid,"itcode",zzdbxjb,"报销级别"）
  */
 const validateUserBaseInfoURL = '/authapi/ddtalkwf/validateUserBaseInfo'
+// 获取休假类型
+const leaveTypeListURL = '/authapi/newleave/getLeaveTypeList'
+const xjtsURL = '/authapi/newleave/getXjts'
+const kqbcURL = '/authapi/newleave/getKqbc'
+const saveNewLeaveURL = '/authapi/newleave/saveNewLeave'
+const startNewLeaveURL = '/authapi/newleave/startNewLeave'
+const nextAssignNewLeaveURL = '/authapi/newleave/nextAssignNewLeave'
+const saveOverTimeURL = '/authapi/overtime/saveOverTime'
+const startOverTimeURL = '/authapi/overtime/startOverTime'
+const nextAssignOverTimeURL = '/authapi/overtime/nextAssignOverTime'
+const saveNewLeaveBackURL = '/authapi/newleaveback/saveNewLeaveBack'
+const startNewLeaveBackURL = '/authapi/newleaveback/startNewLeaveBack'
+const nextAssignNewLeaveBackURL = '/authapi/newleaveback/nextAssignNewLeaveBack'
+const newLeaveBackListURL = '/authapi/newleaveback/backList'
+const newLeaveInfoByIdURL = '/authapi/newleaveback/getNewLeaveInfoById'
 
 // 备用金
 // 获取费用所属事业部(bukrs, appda | Get)
@@ -143,5 +158,19 @@ export default {
   getTaxCodeListURL,
   saveTravelURL,
   getDraftListURL,
-  getDraftDataByIdURL
+  getDraftDataByIdURL,
+  leaveTypeListURL,
+  xjtsURL,
+  kqbcURL,
+  saveNewLeaveBackURL,
+  startNewLeaveBackURL,
+  nextAssignNewLeaveBackURL,
+  saveNewLeaveURL,
+  startNewLeaveURL,
+  nextAssignNewLeaveURL,
+  saveOverTimeURL,
+  startOverTimeURL,
+  nextAssignOverTimeURL,
+  newLeaveInfoByIdURL,
+  newLeaveBackListURL
 }

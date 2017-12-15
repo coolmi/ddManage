@@ -1,7 +1,7 @@
 <template>
   <div>
     <group title="基本信息" label-width="7.5rem" value-align="left">
-      <v-search title="报销类型" :cdata="rbsTypeList" v-model="forms.rbstype"></v-search>
+      <v-search title="报销类型" :cdata="rbsTypeList" v-model="forms.rbstype" @on-hide="changerbstype"></v-search>
       <v-search title="选择岗位" :cdata="positionList" v-model="forms.postid" @on-hide="getProtypeInfo"></v-search>
       <x-input title="项目类型" v-model="forms.protype"></x-input>
       <!--<v-search title="项目类型" :cdata="protypeList" v-model="forms.protype"></v-search>-->
@@ -9,8 +9,8 @@
       <v-search title="费用归集成本中心"v-if="protype === '0'"  :cdata="kostlList" v-model="forms.kostl" @on-show="changeBurks"></v-search>
       <x-input title="专项内部订单号" v-if="protype === '1'"  v-model="forms.aufnr"></x-input>
       <x-input title="附件数" v-model="forms.attach"></x-input>
+      <v-search title="出差申请单号" v-if="show === '0'" :cdata="travelList" v-model="forms.travel" ></v-search>
       <x-textarea title="说明" v-model="forms.instruction" :rows="1"></x-textarea>
-      <!--<v-search title="出差申请单号" v-if="show === '0'" :cdata="travelList" v-model="forms.travel" ></v-search>-->
     </group>
     <sticky :offset="50">
       <box gap="10px 10px">
@@ -21,8 +21,10 @@
       <cell v-for="d in formsData" :key="d.uuid" :title="d.yjje" is-link @click.native="addPreim(d)">{{d}}</cell>
     </group>
     <flexbox class="footerButton">
-      <flexbox-item class="vux-1px-r" @click.native="addPreim" style="color:#00B705">提交</flexbox-item>
-      <flexbox-item @click.native="saveReserve" style="color:#FF8519">保存</flexbox-item>
+      <flexbox-item class="vux-1px-r" @click.native="addReserve(0)" style="color:#00B705">提交</flexbox-item>
+      <flexbox-item @click.native="addReserve(1)" style="color:#FF8519">保存</flexbox-item>
+      <!--<flexbox-item class="vux-1px-r" @click.native="addPreim" style="color:#00B705">提交</flexbox-item>
+      <flexbox-item @click.native="saveReserve" style="color:#FF8519">保存</flexbox-item>-->
     </flexbox>
   </div>
 </template>
@@ -67,7 +69,7 @@
         ],
         burksList: [],
         kostlList: [],
-       // travelList: [],
+        travelList: [],
         protype: '',
         show: '1',
         protypeList: [
@@ -84,32 +86,37 @@
     },
     computed: {
       ...mapGetters({
-        formsData: 'getReserveFroms',
+        formsData: 'getPersonReimFroms',
         infos: 'getReserveInfos'
       })
     },
     watch: {
-      positionList: function (val) {
-        this.forms.department[0] = val[0].value
-      }
+     // positionList: function (val) {
+     //   this.forms.department[0] = val[0].value
+    //  }
 //      burksList: function (val) {
 //        this.forms.burks[0] = val[0].value
 //      }
     },
 
     created() {
-      this.setData() // 填写的时候回退保存值
+      console.log(this.formsData)
+    alert(JSON.stringify(this.formsData))
+    //  this.setData() // 填写的时候回退保存值
       this.getBaseData()
-    /* let _that = this
-       if (this.show === '0') {
-        api.getTravelList(function (res) {
-          if (res.data.code) {
-            _that.travelList = res.data.data.travelList
-          }
-        })
-      } */
     },
     methods: {
+      changerbstype() {
+        let _that = this
+        if (this.forms.rbstype === '0') {
+          api.getTravelList(function (res) {
+            if (res.data.code) {
+              _that.travelList = res.data.data.travelList
+              _that.show = '0'
+            }
+          })
+        }
+      },
       getProtypeInfo() {
         let _that = this
         let data = {
@@ -163,7 +170,7 @@
         let info = {
           forms: this.forms
         }
-        this.$store.dispatch('addPreimInfo', info)
+      //  this.$store.dispatch('addPreimInfo', info)
         this.$router.push({path: '/addPreim', query: {formsData: info}})
       },
       setData() {

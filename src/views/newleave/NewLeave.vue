@@ -1,0 +1,263 @@
+<template>
+  <div>
+    <group title="申请信息">
+      <!--<x-input v-model="forms.userid" title="itcode" v-show="false"></x-input>-->
+      <!--<x-input v-model="forms.pernr" title="员工编号" v-show="false"></x-input>-->
+      <!--<x-input v-model="forms.username" title="姓名" v-show="false"></x-input>-->
+      <!--<x-input v-model="forms.postid" title="岗位" v-show="false"></x-input>-->
+      <!--<x-input v-model="forms.syspostname" title="岗位名称" v-show="false"></x-input>-->
+      <!--<x-input v-model="forms.sysdeptid" title="部门编号" v-show="false"></x-input>-->
+      <!--<x-input v-model="forms.sysdeptname" title="部门名称" v-show="false"></x-input>-->
+      <!--<x-input v-model="forms.sysbusinessunitid" title="事业部编号" v-show="false"></x-input>-->
+      <!--<x-input v-model="forms.sysbusinessunitname" title="事业部名称" v-show="false"></x-input>-->
+      <x-input v-model="forms.holidaytypename" title="休假类型名称" v-show="false"></x-input>
+
+      <!--<v-search title="选择岗位" :cdata="positionList" v-model="forms.postid"></v-search>-->
+      <v-search title="选择休假类型" :cdata="leavetypelist" v-model="forms.holidaytype"></v-search>
+      <v-search title="选择病假类型" :cdata="bjlxList" v-show="holidaytype==='B01'" v-model="forms.bjlx"></v-search>
+      <datetime v-model="forms.sdate" format="YYYY-MM-DD" title="开始日期"></datetime>
+      <datetime v-model="forms.timea" format="HH:mm" title="开始时间" v-show="isshowsj"></datetime>
+      <v-search title="开始日班次" :cdata="bcaList" v-show="isshowbc" v-model="forms.dutya"></v-search>
+
+      <datetime v-model="forms.edate" format="YYYY-MM-DD" title="结束日期"></datetime>
+      <v-search title="结束日班次" :cdata="bcbList" v-show="isshowbc" v-model="forms.dutyb"></v-search>
+      <datetime v-model="forms.timeb" format="HH:mm" title="结束时间" v-show="isshowsj"></datetime>
+
+      <!--<x-input :readonly="true" v-model="forms.thisdays" title="休假天数"></x-input>-->
+      <cell title="休假天数" v-show="thisdays">{{forms.thisdays}}</cell>
+      <cell title="自然天数" v-show="thisdays">{{forms.comdays}}</cell>
+      <cell title="剩余额度(时)" v-show="thisdays">{{forms.surplus}}</cell>
+      <x-textarea title="请假原因" v-model="readks" placeholder="" :show-counter="false" :rows="3" autosize></x-textarea>
+      <x-input title="存休类型" v-show="false" v-model="forms.suebreak"></x-input>
+      <x-input title="存休类型" v-show="false" v-model="forms.effecta"></x-input>
+      <x-input title="存休类型" v-show="false" v-model="forms.effectb"></x-input>
+      <x-input title="存休类型" v-show="false" v-model="forms.enjoy"></x-input>
+      <x-input title="存调休天数" v-show="false" v-model="forms.ctxts"></x-input>
+      <x-input title="存调休小时数" v-show="false" v-model="forms.ctxxss"></x-input>
+      <x-input title="存调休年假天数" v-show="false" v-model="forms.ctxnjts"></x-input>
+      <x-input title="年累计事假天数" v-show="false" v-model="forms.ljsjtsy"></x-input>
+      <x-input title="月累计事假天数" v-show="false" v-model="forms.ljsjtsm"></x-input>
+      <x-input title="已用" v-show="false" v-model="forms.hasuse"></x-input>
+    </group>
+    <flexbox class="footerButton">
+      <flexbox-item class="vux-1px-r" @click.native="addReserve(0)" style="color:#00B705">提交</flexbox-item>
+      <!--<flexbox-item @click.native="addReserve(1)" style="color:#FF8519">保存</flexbox-item>-->
+    </flexbox>
+    <div v-transfer-dom>
+      <confirm
+        v-model="showCon"
+        :close-on-confirm="true"
+        title="提示"
+        @on-confirm="onConfirm">
+        <p style="text-align:center;">{{message}}</p>
+      </confirm>
+    </div>
+  </div>
+</template>
+<style scoped lang="less" type="text/less">
+.footerButton {
+  padding-bottom: 10px;
+  text-align: center;
+}
+</style>
+<script>
+import {Group, XSwitch, XTextarea, Sticky, Box, XButton, Cell, Flexbox, FlexboxItem, Datetime, XInput, Confirm, TransferDomDirective as TransferDom} from 'vux';
+import vSearch from '@/components/searchChecker';
+import api from 'api';
+import whole from '@/lib/whole'
+import dataUtils from '../../filters/dataUtils' // 工具类
+
+export default {
+  directives: {
+    TransferDom
+  },
+  components: {
+    Group, XSwitch, XTextarea, Sticky, Box, XButton, Cell, Flexbox, FlexboxItem, vSearch, Datetime, XInput, Confirm
+  },
+  data () {
+    return {
+      showCon: false,
+      forms: {
+        // postid: '',
+        sdate: '',
+        edate: '',
+        timea: '',
+        timeb: '',
+        thisdays: '',
+        comdays: '0',
+        readks: '',
+        bjlx: '短期病假',
+        thishours: '',
+        surplus: '',
+        suebreak: '',
+        effecta: '',
+        effectb: '',
+        enjoy: '',
+        ctxts: '',
+        ctxxss: '',
+        ctxnjts: '',
+        ljsjtsy: '',
+        ljsjtsm: '',
+        hasuse: '',
+        dutya: 'all',
+        dutyb: 'all',
+        message: '',
+        holidaytypename: '',
+        parmasOption: {}
+      },
+      // positionList: [],
+      leavetypelist: [],
+      bjlxList: [{'key': '长期病假', 'value': '长期病假'}, {'key': '短期病假', 'value': '短期病假'}],
+      bcaList: [{'key': 'lower', 'value': '下午'}, {'key': 'all', 'value': '全天'}],
+      bcbList: [{'key': 'upper', 'value': '上午'}, {'key': 'all', 'value': '全天'}]
+    }
+  },
+  computed: {
+    thisdays: function () {
+      let _that = this;
+      if (this.forms.sdate !== '' && this.forms.edate !== '') {
+        let params = {
+          mainModel: this.forms
+        }
+        // api.getXjtsURL(params, function (res) {
+        //   if (res) {
+        //     console.log(res.data.data.thisdays)
+        //   }
+        // })
+        api.getKqbcURL(params, function (res) {
+          if (res) {
+            _that.forms.thisdays = res.data.data.thisdays
+            _that.forms.comdays = res.data.data.comdays
+            _that.forms.thishours = res.thishours
+            _that.forms.surplus = res.data.data.yuedays
+            _that.forms.suebreak = res.data.data.ltypek
+            _that.forms.effecta = res.data.data.effs
+            _that.forms.effectb = res.data.data.effe
+            _that.forms.enjoy = res.data.data.vacdays
+            _that.forms.ctxts = res.data.data.ctxts
+            _that.forms.ctxxss = res.data.data.ctxxss
+            _that.forms.ctxnjts = res.data.data.ctxnjts
+            _that.forms.ljsjtsy = res.data.data.ljsjtsy
+            _that.forms.ljsjtsm = res.data.data.ljsjtsm
+            _that.forms.hasuse = res.data.data.usedays
+          }
+        })
+        return true
+      }
+    },
+    isshowbc: function () {
+      if (this.forms.holidaytype !== 'A02' && this.forms.holidaytype !== 'A12') {
+        return true
+      } else {
+        return false
+      }
+    },
+    isshowsj: function () {
+      if (this.forms.holidaytype === 'A02' || this.forms.holidaytype === 'A12') {
+        return true
+      } else {
+        return false
+      }
+    }
+  },
+  created() {
+    this.getBaseData() // 请求岗位和休假类型
+    this.setData() // 填写的时候回退保存值
+  },
+  methods: {
+    getBaseData() {
+      let _that = this;
+      api.getLeaveTypeListURL(function (res) {
+        if (res) {
+          _that.leavetypelist = res.data.data.leavetypeList
+        }
+      })
+    },
+    setData() {
+      // this.forms.postid = this.formsInfos.forms.postid;
+      this.forms.sdate = this.forms.sdate;
+      this.forms.edate = this.forms.edate;
+    },
+    addReserve(flag) {
+      // if (this.forms.postid === '') {
+      //   whole.showTop('请选择岗位')
+      //   return;
+      // }
+      if (this.forms.sdate === '') {
+        whole.showTop('请选择休假开始日期')
+        return;
+      }
+      if (this.forms.edate === '') {
+        whole.showTop('请选择休假结束日期')
+        return;
+      }
+      var holidaytypename = dataUtils.getDescValue(this.leavetypelist, this.forms.holidaytype);
+      this.holidaytypename = holidaytypename
+      let parmas = {
+        mainModel: this.forms
+      }
+      this.parmasOption = parmas;
+      console.log(parmas)
+
+      if (flag === 0) {
+          let _that = this;
+        // api.getStartNewLeaveURL(parmas, function (res) {
+        //   if (res) {
+        //     console.log(res)
+        //     if (res.status === 200) {
+        //       whole.showTop('提交成功');
+        //       // _that.$router.go(-1)
+        //     }
+        //   }
+        // })
+        api.getNextAssignNewLeaveURL(parmas, function (res) {
+          if (res) {
+            console.log(res)
+            if (res.data.code) {
+              if (res.data.message) {
+                _that.message = res.data.message;
+                _that.showCon = true;
+              } else if (res.data.error) {
+                _that.showCon = false;
+                whole.showTop(res.data.error);
+              }
+            } else {
+              whole.showTop(res.data.message);
+              _that.$router.go(-1)
+            }
+          }
+        })
+      } else if (flag === 1) {
+        let _that = this;
+        api.getSaveNewLeaveURL(parmas, function (res) {
+          if (res) {
+            if (res.data.code) {
+              whole.showTop(res.data.message);
+              _that.$router.go(-1)
+            } else {
+              whole.showTop(res.data.message);
+              _that.$router.go(-1)
+            }
+          }
+          console.log(res);
+        })
+      }
+    },
+    onConfirm () {
+      let _that = this;
+      console.log(_that.parmasOption);
+      api.getStartNewLeaveURL(_that.parmasOption, function (res) {
+        if (res) {
+          if (res.data.code) {
+            whole.showTop(res.data.message);
+            _that.$router.go(-1)
+          } else {
+            whole.showTop(res.data.message);
+            _that.$router.go(-1)
+          }
+        }
+      })
+    }
+  }
+}
+</script>

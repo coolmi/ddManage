@@ -455,6 +455,48 @@ export default {
     })
   },
   /**
+   * 获取休假类型
+   * @param  {[type]}   params [参数]
+   * @param  {Function} cb     [返回数据]
+   * @return {[type]}          [description]
+   */
+  getLeaveTypeListURL: function (cb) {
+    axios.get(APISEND.leaveTypeListURL)
+      .then((res) => {
+        cb(res);
+      }).catch((error) => {
+      return Promise.reject(error)
+    })
+  },
+  /**
+   * 获取休假天数
+   * @param  {[type]}   params [参数]
+   * @param  {Function} cb     [返回数据]
+   * @return {[type]}          [description]
+   */
+  getXjtsURL: function (params, cb) {
+    axios.post(APISEND.xjtsURL, params)
+      .then((res) => {
+        cb(res);
+      }).catch((error) => {
+      return Promise.reject(error)
+    })
+  },
+  /**
+   * 获取休假天数
+   * @param  {[type]}   params [参数]
+   * @param  {Function} cb     [返回数据]
+   * @return {[type]}          [description]
+   */
+  getKqbcURL: function (params, cb) {
+    axios.post(APISEND.kqbcURL, params)
+      .then((res) => {
+        cb(res);
+      }).catch((error) => {
+      return Promise.reject(error)
+    })
+  },
+  /**
    * 提交
    * @param cb
    */
@@ -482,6 +524,94 @@ export default {
     axios.get(url).then((res) => {
       cb(res);
     }).catch((error) => {
+      return Promise.reject(error)
+    })
+  },
+  /**
+   * 预判
+   * @param cb
+   */
+  getNextAssignNewLeaveURL: function (params, cb) {
+    axios.post(APISEND.nextAssignNewLeaveURL, params)
+      .then((res) => {
+        cb(res);
+      }).catch((error) => {
+      return Promise.reject(error)
+    })
+  },
+  /**
+   * 提交
+   * @param cb
+   */
+  getStartNewLeaveURL: function (params, cb) {
+    axios.post(APISEND.startNewLeaveURL, params)
+      .then((res) => {
+        cb(res);
+      }).catch((error) => {
+      return Promise.reject(error)
+    })
+  },
+  /**
+   * 保存
+   * @param cb
+   */
+  getSaveNewLeaveURL: function (params, cb) {
+    axios.post(APISEND.saveNewLeaveURL, params)
+      .then((res) => {
+        cb(res);
+      }).catch((error) => {
+      return Promise.reject(error)
+    })
+  },
+  /**
+   * 预判
+   * @param cb
+   */
+  getNextAssignOverTimeURL: function (params, cb) {
+    axios.post(APISEND.nextAssignOverTimeURL, params)
+      .then((res) => {
+        cb(res);
+      }).catch((error) => {
+      return Promise.reject(error)
+    })
+  },
+  /**
+   * 提交
+   * @param cb
+   */
+  getStartOverTimeURL: function (params, cb) {
+    axios.post(APISEND.startOverTimeURL, params)
+      .then((res) => {
+        cb(res);
+      }).catch((error) => {
+      return Promise.reject(error)
+    })
+  },
+  /**
+   * 保存
+   * @param cb
+   */
+  getSaveOverTimeURL: function (params, cb) {
+    axios.post(APISEND.saveOverTimeURL, params)
+      .then((res) => {
+        cb(res);
+      }).catch((error) => {
+      return Promise.reject(error)
+    })
+  },
+  getNewLeaveBackListURL: function (params, cb) {
+    axios.post(APISEND.newLeaveBackListURL, params)
+      .then((res) => {
+        cb(res);
+      }).catch((error) => {
+      return Promise.reject(error)
+    })
+  },
+  getNewLeaveInfoByIdURL: function (params, cb) {
+    axios.post(APISEND.newLeaveInfoByIdURL, params)
+      .then((res) => {
+        cb(res);
+      }).catch((error) => {
       return Promise.reject(error)
     })
   },
@@ -582,6 +712,22 @@ export default {
       .then((res) => {
       cb(res);
   }).catch((error) => {
+      return Promise.reject(error)
+    })
+  },
+  /**
+   * 获取员工费用报销--通讯费--获取超标准金额
+   * @param  {[brucks]}   params [参数]
+   * @param  {Function} cb     [返回数据]
+   * @return {[type]}          [description]
+   */
+  getOverproofTelnet: function (params, cb) {
+    axios.get(APISEND.getOverproofTelnetURL, {
+      params
+    })
+      .then((res) => {
+        cb(res);
+      }).catch((error) => {
       return Promise.reject(error)
     })
   },

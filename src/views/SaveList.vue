@@ -21,8 +21,11 @@ export default {
     }
   },
   created() {
-    // this.draftList = [{'appda': 1510848000000, 'appid': 8551, 'draftName': '员工出差申请', 'draftType': 'travel'},
-    // {'appda': 1510848000000, 'appid': 8550, 'draftName': '员工出差申请', 'draftType': 'travel'}]
+    let _that = this;
+    this.$navigation.on('back', (to, from) => {
+      _that.doNext();
+      _that.startPush(); // 启动刷新
+    })
     this.doNext();
     this.startPush(); // 启动刷新
   },

@@ -15,7 +15,7 @@
       </box>
     </sticky>
     <group title="出差申请明细列表" v-if="formsData.length > 0" style="margin-bottom: 60px;">
-      <cell v-for="d in formsData" :key="d.uuid" :title="d.tp[0]" is-link @click.native="addBusinessTripOption(d)"></cell>
+      <cell v-for="d in formsData" :key="d.uuid" :title="d.tp" is-link @click.native="addBusinessTripOption(d)"></cell>
     </group>
     <flexbox class="footerButton">
       <flexbox-item class="vux-1px-r" @click.native="addReserve(0)" style="color:#00B705">提交</flexbox-item>

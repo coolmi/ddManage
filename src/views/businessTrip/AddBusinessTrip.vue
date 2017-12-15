@@ -4,8 +4,10 @@
       <cell title="类型" v-if="show === true">去程</cell>
       <!-- <popup-picker v-if="show === false" title="类型" :data="typeList" :columns="1" v-model="formsData.tp" show-name></popup-picker> -->
       <v-search v-if="show === false" title="类型" :cdata="typeList" v-model="formsData.tp"></v-search>
-      <datetime v-model="formsData.startda" :start-date="systemDate" title="出发日期"></datetime>
-      <datetime v-model="formsData.endda" :start-date="systemDate" title="到达日期"></datetime>
+      <!-- <datetime v-model="formsData.startda" :start-date="systemDate" title="出发日期"></datetime> -->
+      <calendar v-model="formsData.startda" title="出发日期" disable-past></calendar>
+      <!-- <datetime v-model="formsData.endda" :start-date="systemDate" title="到达日期"></datetime> -->
+      <calendar v-model="formsData.endda" title="到达日期" disable-past></calendar>
       <!-- <popup-picker title="出发地点" :data="tripPlace" :columns="1" v-model="formsData.splace" show-name></popup-picker> -->
       <v-search title="出发地点" :cdata="tripPlace" v-model="formsData.splace"></v-search>
       <!-- <popup-picker title="到达地点" :data="tripPlace" :columns="1" v-model="formsData.eplace" show-name></popup-picker> -->
@@ -21,7 +23,7 @@
   </div>
 </template>
 <script>
-import {Group, PopupPicker, Cell, XSwitch, XTextarea, XInput, Sticky, Box, XButton, Datetime, FlexboxItem, Flexbox} from 'vux'
+import {Group, PopupPicker, Cell, XSwitch, XTextarea, XInput, Sticky, Box, XButton, Datetime, FlexboxItem, Flexbox, Calendar} from 'vux'
 import vSearch from '@/components/searchChecker';
 import api from 'api' // 接口
 import dataUtils from '../../filters/dataUtils' // 工具类
@@ -31,7 +33,7 @@ import moment from 'moment' // 时间类
 export default {
 
   components: {
-    Group, PopupPicker, Cell, XSwitch, XTextarea, XInput, Sticky, Box, XButton, Datetime, FlexboxItem, Flexbox, vSearch
+    Group, PopupPicker, Cell, XSwitch, XTextarea, XInput, Sticky, Box, XButton, Datetime, FlexboxItem, Flexbox, vSearch, Calendar
   },
 
   data: () => ({
@@ -135,6 +137,8 @@ export default {
         transmode: transmode,
         uuid: this.formsData.uuid
       }
+
+      console.log(formsData);
 
       this.$store.dispatch('addBusinessTrip', formsData)
       console.log('保存')

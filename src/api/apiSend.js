@@ -49,7 +49,14 @@ const getColdconamListURL = 'authapi/ddtalkwf/getColnrList'
 const getColdconamzListURL = 'authapi/ddtalkwf/getColnrListz'
 // 长途交通金额校验
 const getOverproofLtradURL = 'authapi/ddtalkwf/getOverproofLtrad'
-
+// 长途交通金额校验
+const getOverproofCitytradURL = 'authapi/ddtalkwf/getOverproofCitytrad'
+// 住宿机餐补金额校验
+const getMealAllwanceURL = 'authapi/ddtalkwf/getMealAllowance'
+// 住宿机餐补金额校验超额
+const getOverproofHotelURL = 'authapi/ddtalkwf/getOverproofHotel'
+// 餐补差额校验
+const getOverproofMealFeeURL = 'authapi/ddtalkwf/getOverproofMealFee'
 // 员工出差申请
 // 获取交通方式(bukrs, appda | Get)
 const getTrafficwaysURL = '/authapi/ddtalkwf/getTrafficways'
@@ -104,6 +111,11 @@ const getTaxCodeList = function (params = {}) {
     params
   });
 }
+const getOverproofTelnet = function (params = {}) {
+  return axios.get(getOverproofTelnetURL, {
+    params
+  });
+}
 const getSubMenuList = function (params = {}) {
   return axios.get(getSubMenuListURL, {
     params
@@ -119,6 +131,27 @@ const getOverproofLtrad = function (params = {}) {
     params
   });
 }
+const getOverproofCitytrad = function (params = {}) {
+  return axios.get(getOverproofCitytradURL, {
+    params
+  });
+}
+const getMealAllwance = function (params = {}) {
+  return axios.get(getMealAllwanceURL, {
+    params
+  });
+}
+const getOverproofHotel = function (params = {}) {
+  return axios.get(getOverproofHotelURL, {
+    params
+  });
+}
+const getOverproofMealFee = function (params = {}) {
+  return axios.get(getOverproofMealFeeURL, {
+    params
+  });
+}
+
 const getColdconamzList = function (params = {}) {
   return axios.get(getColdconamzListURL, {
     params
@@ -139,6 +172,13 @@ export default {
   saveDepositResegsURL,
   getColdconamListURL,
   getColdconamList,
+  getOverproofCitytrad,
+  getMealAllwance,
+  getOverproofHotel,
+  getOverproofHotelURL,
+  getOverproofMealFee,
+  getOverproofMealFeeURL,
+  getMealAllwanceURL,
   getOverproofLtrad,
   getOverproofLtradURL,
   getColdconamzListURL,
@@ -160,6 +200,8 @@ export default {
   startTravelWFURL,
   getTaxCodeList,
   getTaxCodeListURL,
+  getOverproofTelnet,
+  getOverproofTelnetURL,
   saveTravelURL,
   getDraftListURL,
   getDraftDataByIdURL,
@@ -176,6 +218,5 @@ export default {
   startOverTimeURL,
   nextAssignOverTimeURL,
   newLeaveInfoByIdURL,
-  newLeaveBackListURL,
-  getOverproofTelnetURL
+  newLeaveBackListURL
 }

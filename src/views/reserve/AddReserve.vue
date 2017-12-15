@@ -3,7 +3,8 @@
     <group title="备用金录入">
       <!-- <popup-picker title="备用金类型" :data="fundTypeList" :columns="1" v-model="formsData.stype" show-name></popup-picker> -->
       <v-search title="备用金类型" :cdata="fundTypeList" v-model="formsData.stype"></v-search>
-      <datetime v-model="formsData.edate" :start-date="systemDate" title="预计归还日期"></datetime>
+      <!-- <datetime v-model="formsData.edate" :start-date="systemDate" title="预计归还日期"></datetime> -->
+      <calendar v-model="formsData.edate" title="预计归还日期" disable-past></calendar>
       <x-input title="预借金额" placeholder="请填写预借金额" :max=9 v-model="formsData.fwbas"></x-input>
       <cell v-show="fwbas1">{{fwbas1}}</cell>
       <!-- <popup-picker title="币种" :data="waerslist" :columns="1" v-model="formsData.waers" show-name></popup-picker> -->
@@ -17,7 +18,7 @@
   </div>
 </template>
 <script>
-import {Group, PopupPicker, XTextarea, XInput, Cell, XButton, Datetime, FlexboxItem, Flexbox} from 'vux'
+import {Group, PopupPicker, XTextarea, XInput, Cell, XButton, Datetime, FlexboxItem, Flexbox, Calendar} from 'vux'
 import vSearch from '@/components/searchChecker';
 import api from 'api' // 接口
 import dataUtils from '../../filters/dataUtils' // 工具类
@@ -27,7 +28,7 @@ import moment from 'moment' // 时间类
 export default {
 
   components: {
-    Group, PopupPicker, XTextarea, XInput, Cell, XButton, Datetime, FlexboxItem, Flexbox, vSearch
+    Group, PopupPicker, XTextarea, XInput, Cell, XButton, Datetime, FlexboxItem, Flexbox, vSearch, Calendar
   },
 
   data: () => ({

@@ -4,7 +4,6 @@
       <v-search title="报销类型" :cdata="rbsTypeList" v-model="forms.rbstype" @on-hide="changerbstype"></v-search>
       <v-search title="选择岗位" :cdata="positionList" v-model="forms.postid" @on-hide="getProtypeInfo"></v-search>
       <x-input title="项目类型" v-model="forms.protype"></x-input>
-      <!--<v-search title="项目类型" :cdata="protypeList" v-model="forms.protype"></v-search>-->
       <v-search title="费用承担公司" :cdata="burksList" v-model="forms.burks"></v-search>
       <v-search title="费用归集成本中心"v-if="protype === '0'"  :cdata="kostlList" v-model="forms.kostl" @on-show="changeBurks"></v-search>
       <x-input title="专项内部订单号" v-if="protype === '1'"  v-model="forms.aufnr"></x-input>
@@ -86,8 +85,8 @@
     },
     computed: {
       ...mapGetters({
-        formsData: 'getPersonReimFroms',
-        infos: 'getReserveInfos'
+        formsData: 'getPersonReimFroms'
+       // infos: 'getReserveInfos'
       })
     },
     watch: {
@@ -100,8 +99,10 @@
     },
 
     created() {
+    this.$navigation.on('back', (to, from) => {
       console.log(this.formsData)
-    alert(JSON.stringify(this.formsData))
+    })
+      console.log(this.formsData)
     //  this.setData() // 填写的时候回退保存值
       this.getBaseData()
     },

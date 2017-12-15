@@ -654,6 +654,42 @@ export default {
     ))
     ;
   },
+  // 城市交通金额超标验证
+  getOverproofCitytrad: function (params, cb) {
+    axios.all([APISEND.getOverproofCitytrad(params)])
+      .then(axios.spread(function (...a) {
+      // 两个请求现在都执行完成
+      let aa = _.map(a, _.iteratee('data'));
+      let aaa = _.map(aa, _.iteratee('data'));
+      cb(aaa);
+    }
+    ))
+    ;
+  },
+  // 住宿机餐补金额超标验证
+  getMealAllwance: function (params, cb) {
+    axios.all([APISEND.getMealAllwance(params), APISEND.getOverproofHotel(params)])
+      .then(axios.spread(function (...a) {
+      // 两个请求现在都执行完成
+      let aa = _.map(a, _.iteratee('data'));
+      let aaa = _.map(aa, _.iteratee('data'));
+      cb(aaa);
+    }
+    ))
+    ;
+  },
+  // 餐补超额校验
+  getOverproofMealFee: function (params, cb) {
+    axios.all([APISEND.getOverproofMealFee(params)])
+      .then(axios.spread(function (...a) {
+      // 两个请求现在都执行完成
+      let aa = _.map(a, _.iteratee('data'));
+      let aaa = _.map(aa, _.iteratee('data'));
+      cb(aaa);
+    }
+    ))
+    ;
+  },
   // 获取项目编号专项
   getColdconamzList: function (params, cb) {
     axios.get(APISEND.getColdconamzList(params))
@@ -662,6 +698,34 @@ export default {
   }).catch((error) => {
       return Promise.reject(error)
     })
+  },
+  // 获取税码
+  getTaxCodeList: function (sparams, cb) {
+    axios.all([APISEND.getTaxCodeList(sparams)])
+      .then(axios.spread(function (...a) {
+      let aa = _.map(a, _.iteratee('data'));
+      let aaa = _.map(aa, _.iteratee('data'));
+      cb(aaa);
+    }
+    ))
+    ;
+  },
+  /**
+   * 获取员工费用报销--通讯费--获取超标准金额
+   * @param  {[brucks]}   params [参数]
+   * @param  {Function} cb     [返回数据]
+   * @return {[type]}          [description]
+   */
+  getOverproofTelnet: function (params, cb) {
+    axios.all([APISEND.getOverproofTelnet(params)])
+      .then(axios.spread(function (...a) {
+      // 两个请求现在都执行完成
+      let aa = _.map(a, _.iteratee('data'));
+      let aaa = _.map(aa, _.iteratee('data'));
+      cb(aaa);
+    }
+    ))
+    ;
   },
   // 办公费用类型 币种  码率
   getOfficePersonReimBaseData: function (fsparam, typaram, cb) {
@@ -712,22 +776,6 @@ export default {
       .then((res) => {
       cb(res);
   }).catch((error) => {
-      return Promise.reject(error)
-    })
-  },
-  /**
-   * 获取员工费用报销--通讯费--获取超标准金额
-   * @param  {[brucks]}   params [参数]
-   * @param  {Function} cb     [返回数据]
-   * @return {[type]}          [description]
-   */
-  getOverproofTelnet: function (params, cb) {
-    axios.get(APISEND.getOverproofTelnetURL, {
-      params
-    })
-      .then((res) => {
-        cb(res);
-      }).catch((error) => {
       return Promise.reject(error)
     })
   },

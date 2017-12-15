@@ -109,7 +109,7 @@
   import ding from '@/lib/ding'
   import dingUser from '@/lib/dingUser'
   import {mapGetters} from 'vuex'
-  import whole from '@/lib/whole'
+//  import whole from '@/lib/whole'
 
   let moment = require('moment');
 
@@ -159,6 +159,10 @@
       }
     },
     created() {
+//      let lzlindex = ding.parseParam(window.location.href, 'lzlindex') || ''
+//      if (lzlindex !== '') {
+//        this.selectedIndex = 2
+//      }
       let _that = this;
       this.$navigation.on('back', (to, from) => {
         _that.pageNo = 1;
@@ -218,17 +222,17 @@
       },
       getUserid() {
         let _that = this;
-//        _that.doNext(_that.flowType);
-        dingUser.getRequestAuthCode(this.path).then((data) => {
-          api.getLogin(data, function (res) {
-            if (res.data.code) {
-              _that.$store.dispatch('saveLoginStatus', true)
-              _that.doNext(_that.flowType);
-            } else {
-              whole.showTop('获取钉钉免登权限失败')
-            }
-          })
-        })
+        _that.doNext(_that.flowType);
+//        dingUser.getRequestAuthCode(this.path).then((data) => {
+//          api.getLogin(data, function (res) {
+//            if (res.data.code) {
+//              _that.$store.dispatch('saveLoginStatus', true)
+//              _that.doNext(_that.flowType);
+//            } else {
+//              whole.showTop('获取钉钉免登权限失败')
+//            }
+//          })
+//        })
       },
       tabItemClick(item, index) {
         this.selectedIndex = index;

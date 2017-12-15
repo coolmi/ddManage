@@ -55,7 +55,6 @@ axios.interceptors.response.use((res) => {
 }, (error) => {
   whole.leave()
   whole.showTop('网络异常，请刷新重试');
-  // ding.alertInfo('网络异常，请刷新重试');
   console.log(JSON.stringify(error))
   // this.$raven('错误URL' + error.request.url + error)
   return Promise.reject(error);

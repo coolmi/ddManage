@@ -170,10 +170,11 @@
                     dd.device.notification.confirm({
                       message: '没有相应的任务,该任务可能已办理完,请到已办理列表中查看',
                       title: '提示',
-                      buttonLabels: ['确定前往', '返回上层'],
+                      buttonLabels: ['待办列表'], // , '返回上层'
                       onSuccess: function(result) {
                         if (result.buttonIndex === 0) {
-                          window.location.href = 'dingtalk://dingtalkclient/page/link?url=' + encodeURI('http://dingtalk.gmkholdings.com')
+                          let dingtalkCode = ding.parseParam(window.location.href, 'dingtalk_code')
+                          window.location.href = 'dingtalk://dingtalkclient/page/link?url=' + encodeURI('http://dingtalk.gmkholdings.com?dingtalk_code=' + dingtalkCode + '&lzlindex=1')
                         } else if (result.buttonIndex === 1) {
                           dd.biz.navigation.close({
                             onSuccess: function(result) {
@@ -192,10 +193,11 @@
                       dd.device.notification.confirm({
                         message: '没有相应的任务,该任务可能已办理完,请到已办理列表中查看',
                         title: '提示',
-                        buttonLabels: ['确定前往', '返回上层'],
+                        buttonLabels: ['待办列表'],
                         onSuccess: function(result) {
                           if (result.buttonIndex === 0) {
-                            window.location.href = 'dingtalk://dingtalkclient/page/link?url=' + encodeURI('http://dingtalk.gmkholdings.com')
+                            let dingtalkCode = ding.parseParam(window.location.href, 'dingtalk_code')
+                            window.location.href = 'dingtalk://dingtalkclient/page/link?url=' + encodeURI('http://dingtalk.gmkholdings.com?dingtalk_code=' + dingtalkCode + '&lzlindex=1')
                           } else if (result.buttonIndex === 1) {
                             dd.biz.navigation.close({
                               onSuccess: function(result) {

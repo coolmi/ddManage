@@ -119,7 +119,7 @@ const router = new Router({
     {
       path: '/draggable',
       component: require('@/views/draggable/draggable'),
-      meta: {title: '拖拽'}
+      meta: {title: '首页'}
     }
   ]
 })

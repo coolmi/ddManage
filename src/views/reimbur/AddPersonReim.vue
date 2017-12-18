@@ -851,7 +851,6 @@
       let _that = this;
       if (this.protype === '通用项目') {
         api.getColdconamList(params, function (res) {
-          alert(JSON.stringify(res))
           if (res[0].kstar) {
             if (_that.checker === '1') {
               if (res[0].childcolnr) {
@@ -862,7 +861,6 @@
                 _that.formsData1.kstar = res[0].kstar
               }
               _that.colnrList = res[0].colnrList
-              alert(JSON.stringify(_that.colnrList))
             }
             if (_that.checker === '2') {
               if (res[0].childcolnr) {

@@ -26,7 +26,7 @@ export default {
       state.personReimForms = froms
     },
     'CLEAR_PERSON_REIM'(state) {
-      state.forms = []
+      state.personReimForms = []
     }
   },
   getters: {

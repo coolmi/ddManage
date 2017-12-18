@@ -4,8 +4,8 @@
       <v-search title="报销类型" :cdata="rbsTypeList" v-model="forms.rbstype" @on-hide="changerbstype"></v-search>
       <v-search title="选择岗位" :cdata="positionList" v-model="forms.postid" @on-hide="getProtypeInfo"></v-search>
       <x-input title="项目类型" v-model="forms.protype"></x-input>
-      <v-search title="费用承担公司" :cdata="burksList" v-model="forms.burks"></v-search>
-      <v-search title="费用归集成本中心"v-if="protype === '0'"  :cdata="kostlList" v-model="forms.kostl" @on-show="changeBurks"></v-search>
+      <v-search title="费用承担公司" :cdata="burksList" v-model="forms.burks" @on-hide="changeBurks"></v-search>
+      <v-search title="费用归集成本中心"v-if="protype === '0'"  :cdata="kostlList" v-model="forms.kostl" ></v-search>
       <x-input title="专项内部订单号" v-if="protype === '1'"  v-model="forms.aufnr"></x-input>
     <!--  <x-input title="附件数" v-model="forms.attach"></x-input>-->
       <v-search title="出差申请单号" v-if="show === '0'" :cdata="travelList" v-model="forms.atrlnr" ></v-search>
@@ -16,14 +16,12 @@
         <x-button plain type="primary" @click.native="addPreim()">添加报销单</x-button>
       </box>
     </sticky>
-    <group title="员工报销申请列表" v-if="formsData.length > 0">
-      <cell v-for="d in formsData" :key="d.uuid" :title="d.yjje" is-link @click.native="addPreim(d)">{{d}}</cell>
+    <group title="员工报销申请列表" v-if="formsData.length > 0" style="margin-bottom: 60px;">
+      <cell v-for="d in formsDataArray" :key="d.type" :title="d.type" is-link @click.native="addPreim(d)"></cell>
     </group>
     <flexbox class="footerButton">
       <flexbox-item class="vux-1px-r" @click.native="addReserve(0)" style="color:#00B705">提交</flexbox-item>
       <flexbox-item @click.native="addReserve(1)" style="color:#FF8519">保存</flexbox-item>
-      <!--<flexbox-item class="vux-1px-r" @click.native="addPreim" style="color:#00B705">提交</flexbox-item>
-      <flexbox-item @click.native="saveReserve" style="color:#FF8519">保存</flexbox-item>-->
     </flexbox>
     <div v-transfer-dom>
       <confirm
@@ -38,7 +36,7 @@
 </template>
 
 <script>
-  import {Box, XButton, PopupPicker, XInput, XTextarea, Group, Cell, FlexboxItem, Flexbox, Sticky, Confirm} from 'vux'
+  import {Box, XButton, PopupPicker, XInput, XTextarea, Group, Cell, FlexboxItem, Flexbox, Sticky, Confirm, TransferDomDirective as TransferDom} from 'vux'
   import vSearch from '@/components/searchChecker';
   import api from 'api'
   import {mapGetters} from 'vuex'
@@ -47,6 +45,9 @@
   import dataUtils from '../../filters/dataUtils' // 工具类
 
   export default {
+    directives: {
+      TransferDom
+    },
     components: {
       Box, XButton, PopupPicker, XInput, XTextarea, Group, Cell, FlexboxItem, Flexbox, Sticky, vSearch, Confirm
     },
@@ -54,6 +55,7 @@
       return {
         showCon: false,
         showKostlPopupPicker: false,
+        message: '',
         forms: {
           rbstype: '',
           postid: '',
@@ -80,19 +82,10 @@
         burksList: [],
         kostlList: [],
         dataArray: [],
+        formsDataArray: [],
         travelList: [],
         protype: '',
-        show: '1',
-        protypeList: [
-          {
-            value: '通用',
-            key: '0'
-          },
-          {
-            value: '专项',
-            key: '1'
-          }
-        ]
+        show: '1'
       }
     },
     computed: {
@@ -112,9 +105,10 @@
 
     created() {
     this.$navigation.on('back', (to, from) => {
+    this.formsDataArray.push(this.formsData[0])
+   // alert(JSON.stringify(this.formsDataArray))
     var data = dataUtils.getFormData(this.formsData);
     this.dataArray.push(data)
-    console.log(this.dataArray)
     })
     //  this.setData() // 填写的时候回退保存值
       this.getBaseData()
@@ -129,6 +123,9 @@
               _that.show = '0'
             }
           })
+        }
+        if (this.forms.rbstype === '1') {
+          _that.show = '1'
         }
       },
       getProtypeInfo() {
@@ -171,6 +168,9 @@
           api.getKostal(params, function (res) {
             if (res.data.code && res.data.data) {
               _that.kostlList = res.data.data.kostlrulist
+              if (_that.kostlList.length === 1) {
+                _that.forms.kostl = _that.kostlList[0].key
+              }
             } else {
               this.showKostlPopupPicker = false
             }
@@ -181,6 +181,7 @@
         }
       },
       addPreim(data = {}) {
+       // alert(JSON.stringify(data))
         if (this.forms.rbstype === '') {
           whole.showTop('请选择报销类型')
           return;
@@ -193,8 +194,12 @@
           whole.showTop('请选择项目类型')
           return;
         }
-        if (this.forms.protype === '0') {
-          if (this.forms.burks === '') {
+        if (this.forms.burks === '') {
+          whole.showTop('请选择项费用承担公司')
+          return;
+        }
+        if (this.forms.protype === '通用项目') {
+          if (this.forms.kostl === '') {
             whole.showTop('请选择费用归集成本中心')
             return;
           }
@@ -206,7 +211,8 @@
           }
         }
         let info = {
-          forms: this.forms
+          forms: this.forms,
+          formsData: JSON.stringify(data)
         }
       //  this.$store.dispatch('addPreimInfo', info)
         this.$router.push({path: '/addPreim', query: {formsData: info}})
@@ -245,16 +251,6 @@
           whole.showTop('请选择项目类型')
           return;
         }
-        /* let feeApp = {
-          notravle: this.forms.rbstype,
-          protype: this.forms.protype,
-          postid: this.forms.postid,
-          cdbukrs: this.forms.burks,
-          cdkostls: this.forms.kostl,
-          aufnr: this.forms.aufnr,
-          smemo: this.forms.instruction
-        }
-        this.dataArray.push(feeApp) */
         var cdburksname = dataUtils.getDescValue(this.burksList, this.forms.burks);
         var cdkostlname = dataUtils.getDescValue(this.kostlList, this.forms.kostl);
         var cdpostidname = dataUtils.getDescValue(this.positionList, this.forms.postid);
@@ -341,9 +337,8 @@
            data: this.dataArray
         }
         this.parmasOption = parmas;
-        console.log(parmas)
         let _that = this
-       // if (flag === '0') {
+        if (flag === 0) {
         api.getnextassigneeFeeAppURL(parmas, function (res) {
           if (res) {
             if (res.data.code) {
@@ -361,22 +356,22 @@
             }
           }
         })
-       // }
-       /* if (flag === '1') {
+        }
+        if (flag === 1) {
           api.saveFeeAppURL(parmas, function (res) {
-            alert(JSON.stringify(res))
             if (res) {
               if (res.data.code) {
                  whole.showTop(res.data.message);
+                _that.$store.dispatch('clearPersonReim')
+                _that.$router.go(-1)
               } else {
                 whole.showTop(res.data.message);
-                _that.$store.dispatch('clearBusinessTrip')
+                _that.$store.dispatch('clearPersonReim')
                 _that.$router.go(-1)
               }
             }
-            console.log(res);
           })
-        } */
+        }
       },
       onConfirm () {
         let _that = this
@@ -392,11 +387,7 @@
               _that.$router.go(-1)
             }
           }
-          console.log(res);
         })
-      },
-      saveReserve() {
-        console.log(this.forms)
       }
     }
   }

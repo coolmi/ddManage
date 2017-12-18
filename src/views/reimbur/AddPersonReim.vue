@@ -151,7 +151,7 @@
 
     </div>
     <flexbox class="footerButton">
-      <flexbox-item class="vux-1px-r" @click.native="saveReserve(0)" style="color:#00B705">继续添加</flexbox-item>
+     <!-- <flexbox-item class="vux-1px-r" @click.native="saveReserve(0)" style="color:#00B705">继续添加</flexbox-item>-->
       <flexbox-item @click.native="saveReserve(1)" style="color:#FF8519">保存</flexbox-item>
     </flexbox>
   </div>
@@ -210,6 +210,7 @@
     },
     data() {
       return {
+        formsData: {},
         formsData1: {
           stype: '',
           mtype: '',
@@ -217,7 +218,7 @@
           edate: moment().format('YYYY-MM-DD'),
           saddr: '',
           eaddr: '',
-          waers: '',
+          waers: 'CNY',
           wrbtr: '',
           kursf: '',
           colnr: '',
@@ -238,7 +239,7 @@
           sdatec: moment().format('YYYY-MM-DD'),
           saddrc: '',
           eaddrc: '',
-          waersc: '',
+          waersc: 'CNY',
           wrbtrc: '',
           kursfc: '',
           colnrc: '',
@@ -257,7 +258,7 @@
           sdateo: moment().format('YYYY-MM-DD'),
           wrbtro: '',
           kursfo: '',
-          waerso: '',
+          waerso: 'CNY',
           colnro: '',
           purcho: '',
           smemoo: '',
@@ -272,7 +273,7 @@
           stypem: '',
           colnrm: '',
           sdatem: moment().format('YYYY-MM-DD'),
-          waersm: '',
+          waersm: 'CNY',
           wrbtrm: '',
           kursfm: '',
           smemom: '',
@@ -289,7 +290,7 @@
           sdateh: moment().format('YYYY-MM-DD'),
           edateh: moment().format('YYYY-MM-DD'),
           saddrh: '',
-          waersh: '',
+          waersh: 'CNY',
           wrbtrh: '',
           kursfh: '',
           colnrh: '',
@@ -308,7 +309,7 @@
         formsData6: {
           stypet: '',
           traint: '',
-          waerst: '',
+          waerst: 'CNY',
           wrbtrt: '',
           kursft: '',
           purcht: '',
@@ -325,7 +326,7 @@
         formsData7: {
           stypee: '',
           sdatee: moment().format('YYYY-MM-DD'),
-          waerse: '',
+          waerse: 'CNY',
           wrbtre: '',
           kursfe: '',
           colnre: '',
@@ -340,7 +341,7 @@
         formsData8: {
           stypeg: '',
           sdateg: moment().format('YYYY-MM-DD'),
-          waersg: '',
+          waersg: 'CNY',
           wrbtrg: '',
           kursfg: '',
           dmbtrg: '',
@@ -390,10 +391,11 @@
         postid: '',
         cbFlag: '0',
         cbceFlag: '0',
-        ulfee: '',
-        ulfeec: '',
-        ulfeeh: '',
-        ulfeee: '',
+        aufnr: '',
+        ulfee: 0,
+        ulfeec: 0,
+        ulfeeh: 0,
+        ulfeee: 0,
         ExcessiveCb: '',
         purchoList: '',
         pFlag: '0',
@@ -540,13 +542,55 @@
     }
   },
   created() {
-    // let formsData = JSON.stringify(this.$route.query.formsData.forms.burks)
+    let _that = this
+    let formsData = this.$route.query.formsData.formsData
     this.show = this.$route.query.formsData.forms.rbstype
     this.burks = this.$route.query.formsData.forms.burks
     this.rspType = this.$route.query.formsData.forms.rbstype
     this.kostl = this.$route.query.formsData.forms.kostl
     this.protype = this.$route.query.formsData.forms.protype
     this.postid = this.$route.query.formsData.forms.postid
+    this.aufnr = this.$route.query.formsData.forms.aufnr
+    if (JSON.stringify(formsData) !== '"{}"') {
+        _that.formsData = JSON.parse(formsData)
+      if (_that.formsData.type === '长途交通') {
+        _that.formsData1 = _that.formsData
+        _that.checker = '1'
+      }
+      if (_that.formsData.type === '市内交通') {
+        _that.formsData2 = _that.formsData
+        _that.checker = '2'
+      }
+      if (_that.formsData.type === '办公费用') {
+        _that.formsData3 = _that.formsData
+        _that.checker = '3'
+      }
+      if (_that.formsData.type === '餐费') {
+        _that.formsData4 = _that.formsData
+        _that.checker = '4'
+      }
+      if (_that.formsData.type === '住宿及餐补') {
+        _that.formsData5 = _that.formsData
+        _that.checker = '5'
+      }
+      if (_that.formsData.type === '培训费') {
+        _that.formsData6 = _that.formsData
+        _that.checker = '6'
+      }
+      if (_that.formsData.type === '通讯费') {
+        _that.formsData7 = _that.formsData
+        _that.checker = '7'
+      }
+      if (_that.formsData.type === '礼品费') {
+        _that.formsData8 = _that.formsData
+        _that.checker = '8'
+      }
+      if (_that.formsData.type === '电子发票') {
+        _that.formsData9 = _that.formsData
+        _that.checker = '9'
+      }
+      _that.getItemNoInfo()
+    }
     this.getBaseData()
   },
   methods: {
@@ -861,6 +905,9 @@
                 _that.formsData1.kstar = res[0].kstar
               }
               _that.colnrList = res[0].colnrList
+              if (_that.colnrList.length === 1) {
+                _that.formsData1.colnr = _that.colnrList[0].key
+              }
             }
             if (_that.checker === '2') {
               if (res[0].childcolnr) {
@@ -871,6 +918,9 @@
                 _that.formsData2.kstarc = res[0].kstar
               }
               _that.colnrList = res[0].colnrList
+              if (_that.colnrList.length === 1) {
+                _that.formsData2.colnrc = _that.colnrList[0].key
+              }
             }
             if (_that.checker === '3') {
               if (res[0].childcolnr) {
@@ -881,6 +931,9 @@
                 _that.formsData3.kstaro = res[0].kstar
               }
               _that.colnrList = res[0].colnrList
+              if (_that.colnrList.length === 1) {
+                _that.formsData3.colnro = _that.colnrList[0].key
+              }
             }
             if (_that.checker === '4') {
               _that.colnrList = res[0].colnrList
@@ -890,6 +943,9 @@
               }
               if (res[0].kstar) {
                 _that.formsData4.kstarm = res[0].kstar
+              }
+              if (_that.colnrList.length === 1) {
+                _that.formsData4.colnrm = _that.colnrList[0].key
               }
             }
             if (_that.checker === '5') {
@@ -901,6 +957,9 @@
                 _that.formsData5.kstarh = res[0].kstar
               }
               _that.colnrList = res[0].colnrList
+              if (_that.colnrList.length === 1) {
+                _that.formsData5.colnrh = _that.colnrList[0].key
+              }
             }
             if (_that.checker === '6') {
               if (res[0].childcolnr) {
@@ -911,6 +970,9 @@
                 _that.formsData6.kstart = res[0].kstar
               }
               _that.colnrList = res[0].colnrList
+              if (_that.colnrList.length === 1) {
+                _that.formsData6.colnrt = _that.colnrList[0].key
+              }
             }
             if (_that.checker === '7') {
               if (res[0].childcolnr) {
@@ -921,6 +983,9 @@
                 _that.formsData7.kstare = res[0].kstar
               }
               _that.colnrList = res[0].colnrList
+              if (_that.colnrList.length === 1) {
+                _that.formsData7.colnre = _that.colnrList[0].key
+              }
             }
             if (_that.checker === '8') {
               if (res[0].childcolnr) {
@@ -931,6 +996,9 @@
                 _that.formsData8.kstarg = res[0].kstar
               }
               _that.colnrList = res[0].colnrList
+              if (_that.colnrList.length === 1) {
+                _that.formsData8.colnrg = _that.colnrList[0].key
+              }
             }
           }
         })
@@ -947,6 +1015,9 @@
                 _that.formsData1.kstar = res[0].kstar
               }
               _that.colnrList = res[0].colnrList
+              if (_that.colnrList.length === 1) {
+                _that.formsData1.colnr = _that.colnrList[0].key
+              }
             }
             if (_that.checker === '2') {
               if (res[0].childcolnr) {
@@ -957,6 +1028,9 @@
                 _that.formsData2.kstarc = res[0].kstar
               }
               _that.colnrList = res[0].colnrList
+              if (_that.colnrList.length === 1) {
+                _that.formsData2.colnrc = _that.colnrList[0].key
+              }
             }
             if (_that.checker === '3') {
               if (res[0].childcolnr) {
@@ -967,6 +1041,9 @@
                 _that.formsData3.kstaro = res[0].kstar
               }
               _that.colnrList = res[0].colnrList
+              if (_that.colnrList.length === 1) {
+                _that.formsData3.colnro = _that.colnrList[0].key
+              }
             }
             if (_that.checker === '4') {
               _that.colnrList = res[0].colnrList
@@ -976,6 +1053,9 @@
               }
               if (res[0].kstar) {
                 _that.formsData4.kstarm = res[0].kstar
+              }
+              if (_that.colnrList.length === 1) {
+                _that.formsData4.colnrm = _that.colnrList[0].key
               }
             }
             if (_that.checker === '5') {
@@ -987,6 +1067,9 @@
                 _that.formsData5.kstarh = res[0].kstar
               }
               _that.colnrList = res[0].colnrList
+              if (_that.colnrList.length === 1) {
+                _that.formsData5.colnrh = _that.colnrList[0].key
+              }
             }
             if (_that.checker === '6') {
               if (res[0].childcolnr) {
@@ -997,6 +1080,9 @@
                 _that.formsData6.kstart = res[0].kstar
               }
               _that.colnrList = res[0].colnrList
+              if (_that.colnrList.length === 1) {
+                _that.formsData6.colnrt = _that.colnrList[0].key
+              }
             }
             if (_that.checker === '7') {
               if (res[0].childcolnr) {
@@ -1007,6 +1093,9 @@
                 _that.formsData7.kstare = res[0].kstar
               }
               _that.colnrList = res[0].colnrList
+              if (_that.colnrList.length === 1) {
+                _that.formsData7.colnre = _that.colnrList[0].key
+              }
             }
             if (_that.checker === '8') {
               if (res[0].childcolnr) {
@@ -1017,6 +1106,9 @@
                 _that.formsData8.kstarg = res[0].kstar
               }
               _that.colnrList = res[0].colnrList
+              if (_that.colnrList.length === 1) {
+                _that.formsData8.colnrg = _that.colnrList[0].key
+              }
             }
           }
         })
@@ -1239,7 +1331,7 @@
         })
       }
     },
-    saveReserve(flag) {
+    saveReserve() {
     //  var transmode = dataUtils.getDescValue(this.tripTraffic, this.formsData.transmodeId)
       if (this.checker === '1') {
         if (this.formsData1.stype === '') {
@@ -1300,7 +1392,7 @@
         }
         var conam = dataUtils.getDescValue(this.colnrList, this.formsData1.colnr);
         let formsData = {
-          type: '1',
+          type: '长途交通',
           stype: this.formsData1.stype,
           mtype: this.formsData1.mtype,
           sdate: this.formsData1.sdate,
@@ -1317,7 +1409,7 @@
           dmbtr: this.amount,
          // uuid: this.formsData1.uuid,
             buzei: '',
-            aufnrl: '',
+            aufnrl: this.aufnr,
             appid: '',
             abroadis: this.show,
             colnr: this.formsData1.colnr,
@@ -1337,7 +1429,7 @@
        // console.log(ltrad)
         this.$store.dispatch('addPersonReim', formsData)
         console.log('保存')
-        this.$router.go(-1)
+      //  this.$router.go(-1)
       }
       if (this.checker === '2') {
         if (this.formsData1.stypec === '') {
@@ -1389,7 +1481,7 @@
         }
         var conamc = dataUtils.getDescValue(this.colnrList, this.formsData2.colnrc);
         let formsData = {
-          type: '2',
+          type: '市内交通',
           stypec: this.formsData2.stypec,
           mtypec: this.formsData2.mtypec,
           sdatec: this.formsData2.sdatec,
@@ -1410,7 +1502,7 @@
           smemoc: '',
           abroadisc: this.show,
           trlnrc: '',
-          aufnrc: '',
+          aufnrc: this.aufnr,
           kstarc: this.formsData2.kstarc,
           budgetyearc: '',
           kunamec: '',
@@ -1422,7 +1514,7 @@
         }
         this.$store.dispatch('addPersonReim', formsData)
         console.log('保存')
-        this.$router.go(-1)
+      //  this.$router.go(-1)
       }
       if (this.checker === '3') {
         if (this.formsData3.stypeo === '') {
@@ -1453,7 +1545,7 @@
         }
         var conamo = dataUtils.getDescValue(this.colnrList, this.formsData3.colnro);
         let formsData = {
-          type: '3',
+          type: '办公费用',
           stypeo: this.formsData3.stypeo,
           sdateo: this.formsData3.sdateo,
           purcho: this.formsData3.purcho,
@@ -1465,7 +1557,7 @@
           colnro: this.formsData3.colnro,
           dmbtro: this.amount3,
           uuid: this.formsData3.uuid,
-          aufnro: '',
+          aufnro: this.aufnr,
           appid: '',
           trlnro: '',
           ulfeeo: 0,
@@ -1484,7 +1576,7 @@
        // console.log(officecost)
         this.$store.dispatch('addPersonReim', formsData)
         console.log('保存')
-        this.$router.go(-1)
+       // this.$router.go(-1)
       }
       if (this.checker === '4') {
         if (this.formsData4.stypem === '') {
@@ -1519,7 +1611,7 @@
         }
         var conamm = dataUtils.getDescValue(this.colnrList, this.formsData4.colnrm);
         let formsData = {
-          type: '4',
+          type: '餐费',
           stypem: this.formsData4.stypem,
           sdatem: this.formsData4.sdatem,
           waersm: this.formsData4.waersm,
@@ -1532,7 +1624,7 @@
           uuid: this.formsData4.uuid,
           childconamm: this.formsData4.childconamm,
           eaterym: '',
-          aufnrm: '',
+          aufnrm: this.aufnr,
           saddrm: '',
           kstarm: this.formsData4.kstarm,
           appid: '',
@@ -1550,7 +1642,7 @@
        // console.log(mealfee)
         this.$store.dispatch('addPersonReim', formsData)
         console.log('保存')
-        this.$router.go(-1)
+       // this.$router.go(-1)
       }
       if (this.checker === '5') {
         if (this.formsData5.stypeh === '') {
@@ -1600,7 +1692,7 @@
         }
         var conamh = dataUtils.getDescValue(this.colnrList, this.formsData5.colnrh);
         let formsData = {
-          type: '5',
+          type: '住宿及餐补',
           stypeh: this.formsData5.stypeh,
           sdateh: this.formsData5.sdateh,
           edateh: this.formsData5.edateh,
@@ -1614,7 +1706,7 @@
           ulreah: this.formsData5.ulreah,
           dmbtrh: this.amount5,
           uuid: this.formsData5.uuid,
-          aufnrh: '',
+          aufnrh: this.aufnr,
           subsidyh: this.subsidyh,
           mulfeeh: this.ExcessiveCb,
           appid: '',
@@ -1641,7 +1733,7 @@
        // console.log(hotelexpense)
         this.$store.dispatch('addPersonReim', formsData)
         console.log('保存')
-        this.$router.go(-1)
+      //  this.$router.go(-1)
       }
       if (this.checker === '6') {
         if (this.formsData6.stypet === '') {
@@ -1675,7 +1767,7 @@
         }
         var conamt = dataUtils.getDescValue(this.colnrList, this.formsData6.colnrt);
         let formsData = {
-          type: '6',
+          type: '培训费',
           stypet: this.formsData6.stypet,
           traint: this.formsData6.traint,
           waerst: this.formsData6.waerst,
@@ -1691,7 +1783,7 @@
           appid: '',
           purchductiont: 0,
           kstart: this.formsData6.kstart,
-          aufnrt: '',
+          aufnrt: this.aufnr,
           ulfeet: 0,
           abroadist: this.show,
           ulreat: '',
@@ -1704,7 +1796,7 @@
        // console.log(train)
         this.$store.dispatch('addPersonReim', formsData)
         console.log('保存')
-        this.$router.go(-1)
+      //  this.$router.go(-1)
       }
       if (this.checker === '7') {
         if (this.formsData7.stypee === '') {
@@ -1730,7 +1822,7 @@
         }
         var coname = dataUtils.getDescValue(this.colnrList, this.formsData7.colnre);
         let formsData = {
-          type: '7',
+          type: '通讯费',
           stypee: this.formsData7.stypee,
           sdatee: this.formsData7.sdatee,
           waerse: this.formsData7.waerse,
@@ -1744,7 +1836,7 @@
           childconame: this.formsData7.childconame,
           abroadise: this.show,
           kstare: this.formsData7.kstare,
-          aufnre: '',
+          aufnre: this.aufnr,
           agreee: this.flag,
           budgetyeare: '',
           ulfeee: this.ulfeee,
@@ -1752,10 +1844,9 @@
           budgetmonthe: '',
           coname: coname
         }
-        console.log(formsData)
         this.$store.dispatch('addPersonReim', formsData)
         console.log('保存')
-        this.$router.go(-1)
+      //  this.$router.go(-1)
       }
       if (this.checker === '8') {
         if (this.formsData8.stypeg === '') {
@@ -1790,7 +1881,7 @@
         }
         var conamg = dataUtils.getDescValue(this.colnrList, this.formsData8.colnrg);
         let formsData = {
-          type: '8',
+          type: '礼品费',
           stypeg: this.formsData8.stypeg,
           sdateg: this.formsData8.sdateg,
           waersg: this.formsData8.waersg,
@@ -1801,7 +1892,7 @@
           smemg: this.formsData8.smemg,
           dmbtrg: this.amount8,
           uuid: this.formsData8.uuid,
-          aufnrg: '',
+          aufnrg: this.aufnr,
           appid: '',
           childcolnrg: this.formsData8.childcolnrg,
           childconamg: this.formsData8.childconamg,
@@ -1816,10 +1907,9 @@
           kunameg: '',
           budgetmonthg: ''
         }
-        console.log(formsData)
         this.$store.dispatch('addPersonReim', formsData)
         console.log('保存')
-        this.$router.go(-1)
+      //  this.$router.go(-1)
       }
       if (this.checker === '9') {
         if (this.formsData9.electronicnum === '') {
@@ -1831,16 +1921,16 @@
           return;
         }
         let formsData = {
-          type: '9',
+          type: '电子发票',
           electronicnum: this.formsData9.electronicnum,
           linkv: this.formsData9.linkv,
           uuid: this.formsData9.uuid
         }
-        console.log(formsData)
         this.$store.dispatch('addPersonReim', formsData)
-        this.$router.go(-1)
+       // this.$router.go(-1)
         console.log('保存')
       }
+        this.$router.go(-1)
     }
   }
   }

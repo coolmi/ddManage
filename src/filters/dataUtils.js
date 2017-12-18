@@ -155,15 +155,15 @@ function getSummary(basedata = [], baseType = []) {
 }
 
 const formobj = {
-  '1': 'ltrad',
-  '2': 'citytrad',
-  '3': 'officecost',
-  '4': 'mealfee',
-  '5': 'hotelexpense',
-  '6': 'train',
-  '7': 'telnet',
-  '8': 'giftfee',
-  '9': 'electronic'
+  '长途交通': 'ltrad',
+  '市内交通': 'citytrad',
+  '办公费用': 'officecost',
+  '餐费': 'mealfee',
+  '住宿及餐补': 'hotelexpense',
+  '培训费': 'train',
+  '通讯费': 'telnet',
+  '礼品费': 'giftfee',
+  '电子发票': 'electronic'
 }
 
 function getFormData(data) {

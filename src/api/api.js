@@ -704,13 +704,16 @@ export default {
   },
   // 获取项目编号专项
   getColdconamzList: function (params, cb) {
-    axios.get(APISEND.getColdconamzList(params))
-      .then((res) => {
-      cb(res);
-  }).catch((error) => {
-      return Promise.reject(error)
-    })
-  },
+  axios.all([APISEND.getColdconamzList(params)])
+  .then(axios.spread(function (...a) {
+  // 两个请求现在都执行完成
+  let aa = _.map(a, _.iteratee('data'));
+  let aaa = _.map(aa, _.iteratee('data'));
+  cb(aaa);
+}
+))
+;
+},
   // 获取税码
   getTaxCodeList: function (sparams, cb) {
     axios.all([APISEND.getTaxCodeList(sparams)])

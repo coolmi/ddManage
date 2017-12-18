@@ -5,6 +5,7 @@
       <v-search title="费用承担公司" :cdata="burkList" v-model="forms.cdbukrs"></v-search>
       <v-search title="费用归集成本中心" :noticeDesc="noticeDesc" :cdata="kostlList" v-model="forms.cdkostls" @on-show="changeBurks"></v-search>
       <v-search title="费用所属事业部" :noticeDesc="noticeDesc" :cdata="departments" v-model="forms.businessunitid" @on-show="changeDepart"></v-search>
+      <cell v-show="byjsum" v-if="formsData.length > 0" title="汇总">{{byjsum[0].sum}}</cell>
     </group>
     <sticky>
       <box gap="10px 10px">
@@ -81,6 +82,10 @@ export default {
         desc = '请选择费用承担公司'
       }
       return desc
+    },
+    byjsum: function () {
+      let baseType = [{type: 'byj', field: 'fwbas'}];
+      return dataUtils.getSummary(this.formsData, baseType)
     }
   },
   created() {

@@ -144,9 +144,9 @@ function getSummary(basedata = [], baseType = []) {
       if (ff.length > 0) {
         obj.type = type.type;
         obj.child = ff
-        obj.sum = _.reduce(ff, function (memo, num) {
-          return memo + num;
-        }, 0);
+        obj.sum = ff.reduce(function (memo, num) {
+          return parseInt(memo) + parseInt(num);
+        });
         result.push(obj)
       }
     }

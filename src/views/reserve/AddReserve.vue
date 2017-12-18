@@ -104,7 +104,9 @@ export default {
         fwbas: this.formsData.fwbas,
         fwbas1: this.fwbas1,
         smemo: this.formsData.smemo,
-        uuid: this.formsData.uuid
+        uuid: this.formsData.uuid,
+        type: 'byj',
+        field: 'fwbas'
       }
 
       this.$store.dispatch('addReserve', formsData)

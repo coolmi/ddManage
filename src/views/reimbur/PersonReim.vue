@@ -198,6 +198,8 @@
             whole.showTop('请选择费用归集成本中心')
             return;
           }
+        }
+        if (this.forms.rbstype === '0') {
           if (this.forms.atrlnr === '') {
             whole.showTop('请选择出差申请号')
             return;

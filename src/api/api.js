@@ -337,6 +337,18 @@ export default {
     })
   },
   /**
+   * 报销申请提交验证
+   * @param cb
+   */
+  getnextassigneeFeeAppURL: function (params, cb) {
+    axios.post(APISEND.getnextassigneeFeeAppURL, params)
+      .then((res) => {
+      cb(res);
+  }).catch((error) => {
+      return Promise.reject(error)
+    })
+  },
+  /**
    * 提交
    * @param cb
    */
@@ -804,5 +816,30 @@ export default {
   }).catch((error) => {
       return Promise.reject(error)
     })
+  },
+  /**
+   * 报销申请提交
+   * @param cb
+   */
+  startFeeAppURL: function (params, cb) {
+    axios.post(APISEND.startFeeAppURL, params)
+      .then((res) => {
+      cb(res);
+  }).catch((error) => {
+      return Promise.reject(error)
+    })
+  },
+  /**
+   * 报销申请保存
+   * @param cb
+   */
+  saveFeeAppURL: function (params, cb) {
+    axios.post(APISEND.saveFeeAppURL, params)
+      .then((res) => {
+      cb(res);
+  }).catch((error) => {
+      return Promise.reject(error)
+    })
   }
+
 }

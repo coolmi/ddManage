@@ -66,12 +66,18 @@ const getCitysbyBukrsURL = '/authapi/ddtalkwf/getCitysbyBukrs'
 const getSubMenuListURL = '/authapi/ddtalkwf/getSubMenuList'
 // 提交验证接口
 const nextassigneeTravelWFURL = 'authapi/ddtalkwf/nextassigneeTravelWF'
+// 提交验证接口---报销申请
+const getnextassigneeFeeAppURL = 'authapi/ddtalkwf/nextassigneeFeeApp'
 // 提交
 const startTravelWFURL = '/authapi/ddtalkwf/startTravelWF'
 // 税率
 const getTaxCodeListURL = '/authapi/ddtalkwf/getTaxCodeList'
 // 保存
 const saveTravelURL = '/authapi/ddtalkwf/saveTravel'
+// 费用报销提交
+const startFeeAppURL = '/authapi/ddtalkwf/startFeeApp'
+// 费用报销保存
+const saveFeeAppURL = '/authapi/ddtalkwf/saveFeeApp'
 // 获取申请保存列表（draftType: depositApp 备用金申请/ travel 出差申请 / reimburse: 费用报销申请）
 const getDraftListURL = '/authapi/ddtalkwf/getDraftList'
 // 查看申请保存详情（draftType, appid | Get）
@@ -188,6 +194,7 @@ export default {
   getTrafficwaysURL,
   getCitysbyBukrsURL,
   nextassigneeTravelWFURL,
+  getnextassigneeFeeAppURL,
   getPersonReimTrafficTypeURL,
   getPosition,
   getBurkList,
@@ -203,6 +210,8 @@ export default {
   getOverproofTelnet,
   getOverproofTelnetURL,
   saveTravelURL,
+  startFeeAppURL,
+  saveFeeAppURL,
   getDraftListURL,
   getDraftDataByIdURL,
   leaveTypeListURL,

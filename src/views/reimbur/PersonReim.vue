@@ -7,8 +7,8 @@
       <v-search title="费用承担公司" :cdata="burksList" v-model="forms.burks"></v-search>
       <v-search title="费用归集成本中心"v-if="protype === '0'"  :cdata="kostlList" v-model="forms.kostl" @on-show="changeBurks"></v-search>
       <x-input title="专项内部订单号" v-if="protype === '1'"  v-model="forms.aufnr"></x-input>
-      <x-input title="附件数" v-model="forms.attach"></x-input>
-      <v-search title="出差申请单号" v-if="show === '0'" :cdata="travelList" v-model="forms.travel" ></v-search>
+    <!--  <x-input title="附件数" v-model="forms.attach"></x-input>-->
+      <v-search title="出差申请单号" v-if="show === '0'" :cdata="travelList" v-model="forms.atrlnr" ></v-search>
       <x-textarea title="说明" v-model="forms.instruction" :rows="1"></x-textarea>
     </group>
     <sticky :offset="50">
@@ -25,24 +25,34 @@
       <!--<flexbox-item class="vux-1px-r" @click.native="addPreim" style="color:#00B705">提交</flexbox-item>
       <flexbox-item @click.native="saveReserve" style="color:#FF8519">保存</flexbox-item>-->
     </flexbox>
+    <div v-transfer-dom>
+      <confirm
+        v-model="showCon"
+        :close-on-confirm="true"
+        title="提示"
+        @on-confirm="onConfirm">
+        <p style="text-align:center;">{{message}}</p>
+      </confirm>
+    </div>
   </div>
 </template>
 
 <script>
-  import {Box, XButton, PopupPicker, XInput, XTextarea, Group, Cell, FlexboxItem, Flexbox, Sticky} from 'vux'
+  import {Box, XButton, PopupPicker, XInput, XTextarea, Group, Cell, FlexboxItem, Flexbox, Sticky, Confirm} from 'vux'
   import vSearch from '@/components/searchChecker';
   import api from 'api'
   import {mapGetters} from 'vuex'
   import * as _ from 'underscore'
   import whole from '@/lib/whole'
-  // import dataUtils from '../../filters/dataUtils' // 工具类
+  import dataUtils from '../../filters/dataUtils' // 工具类
 
   export default {
     components: {
-      Box, XButton, PopupPicker, XInput, XTextarea, Group, Cell, FlexboxItem, Flexbox, Sticky, vSearch
+      Box, XButton, PopupPicker, XInput, XTextarea, Group, Cell, FlexboxItem, Flexbox, Sticky, vSearch, Confirm
     },
     data() {
       return {
+        showCon: false,
         showKostlPopupPicker: false,
         forms: {
           rbstype: '',
@@ -50,7 +60,7 @@
           burks: '',
           kostl: '',
           protype: '',
-          travel: '',
+          atrlnr: '',
           attach: '',
           instruction: '',
           aufnr: ''
@@ -66,8 +76,10 @@
             key: '1'
           }
         ],
+        parmasOption: {},
         burksList: [],
         kostlList: [],
+        dataArray: [],
         travelList: [],
         protype: '',
         show: '1',
@@ -100,9 +112,10 @@
 
     created() {
     this.$navigation.on('back', (to, from) => {
-      console.log(this.formsData)
+    var data = dataUtils.getFormData(this.formsData);
+    this.dataArray.push(data)
+    console.log(this.dataArray)
     })
-      console.log(this.formsData)
     //  this.setData() // 填写的时候回退保存值
       this.getBaseData()
     },
@@ -168,6 +181,24 @@
         }
       },
       addPreim(data = {}) {
+        if (this.forms.rbstype === '') {
+          whole.showTop('请选择报销类型')
+          return;
+        }
+        if (this.forms.postid === '') {
+          whole.showTop('请选择岗位')
+          return;
+        }
+        if (this.forms.protype === '') {
+          whole.showTop('请选择项目类型')
+          return;
+        }
+        if (this.forms.protype === '0') {
+          if (this.forms.burks === '') {
+            whole.showTop('请选择费用归集成本中心')
+            return;
+          }
+        }
         let info = {
           forms: this.forms
         }
@@ -183,6 +214,175 @@
           } else {
             _that.forms[key] = _that.infos[key]
           }
+        })
+      },
+      addReserve(flag) {
+        if (this.forms.rbstype === '') {
+          whole.showTop('请选择报销类型')
+          return;
+        }
+        if (this.forms.postid === '') {
+          whole.showTop('请选择岗位')
+          return;
+        }
+        if (this.forms.protype === '') {
+          whole.showTop('请选择项目类型')
+          return;
+        }
+        if (this.forms.protype === '0') {
+          if (this.forms.burks === '') {
+            whole.showTop('请选择费用归集成本中心')
+            return;
+          }
+        }
+        /* let feeApp = {
+          notravle: this.forms.rbstype,
+          protype: this.forms.protype,
+          postid: this.forms.postid,
+          cdbukrs: this.forms.burks,
+          cdkostls: this.forms.kostl,
+          aufnr: this.forms.aufnr,
+          smemo: this.forms.instruction
+        }
+        this.dataArray.push(feeApp) */
+        var cdburksname = dataUtils.getDescValue(this.burksList, this.forms.burks);
+        var cdkostlname = dataUtils.getDescValue(this.kostlList, this.forms.kostl);
+        var cdpostidname = dataUtils.getDescValue(this.positionList, this.forms.postid);
+        if (this.forms.protype === '通用项目') {
+          this.forms.protype = '0'
+        }
+        if (this.forms.protype === '专项项目') {
+          this.forms.protype = '1'
+        }
+        let parmas = {
+          feeApp: {
+            proc_inst_id: '',
+            gener: '',
+            repLLeaderGeneral: false,
+            bukrs: '',
+            userid: '',
+            syspostname: cdpostidname,
+            appid: '',
+            travleid: '',
+            username: '',
+            kostl: '',
+            bukrsAkostl: '',
+            reservconent: '',
+            sysdeptid: '',
+            appda: new Date().getTime(),
+            pernr: '',
+            outmonthstandard: '',
+            sd: '',
+            credentialinfor: '',
+            mindappda: '',
+            cdbukrsname: cdburksname,
+            businessistrue: false,
+            inoutbuget: '',
+            reserve: 0,
+            sysdeptname: '',
+            ltype: '',
+            sate: '',
+            zdgz: '',
+            twodepartrespon: false,
+            excess: false,
+            ed: '',
+            id: '',
+            excedstand: false,
+            pztxt: '',
+            standard: false,
+            sysbusinessunitid: '',
+            sysbusinessunitname: '',
+            cdkostlsname: cdkostlname,
+            numpg: 1,
+            notravle: this.forms.rbstype,
+            protype: this.forms.protype,
+            postid: this.forms.postid,
+            cdbukrs: this.forms.burks,
+            cdkostls: this.forms.kostl,
+            aufnr: this.forms.aufnr,
+            atrlnr: this.forms.atrlnr,
+            smemo: this.forms.instruction
+          },
+          afUser: {
+            sumfwbasf_valz: '',
+            telpr: '',
+            telnr: '',
+            bukrs: '',
+            userid: '',
+            appid: '',
+            userd: '',
+            sumcdmbtrf_valz: 0,
+            sumdmbtrf_valz: 0,
+            akostl: '',
+            pfach: '',
+            bukrsAkostl: '',
+            aktext: '',
+            gtelpr: '',
+            zzdbxjb: '',
+            pernr: '',
+            upostid: '',
+            orgeh: '',
+            upostname: '',
+            ename: '',
+            lifnr: '',
+            businessunitname: '',
+            pernr1: ''
+          },
+           data: this.dataArray
+        }
+        this.parmasOption = parmas;
+        console.log(parmas)
+        let _that = this
+       // if (flag === '0') {
+        api.getnextassigneeFeeAppURL(parmas, function (res) {
+          if (res) {
+            if (res.data.code) {
+              if (res.data.message) {
+                _that.message = res.data.message;
+                _that.showCon = true;
+              } else if (res.data.error) {
+                _that.showCon = false;
+                whole.showTop(res.data.error);
+              }
+            } else {
+              whole.showTop(res.data.message);
+              _that.$store.dispatch('clearPersonReim')
+              _that.$router.go(-1)
+            }
+          }
+        })
+       // }
+       /* if (flag === '1') {
+          api.saveFeeAppURL(parmas, function (res) {
+            alert(JSON.stringify(res))
+            if (res) {
+              if (res.data.code) {
+                 whole.showTop(res.data.message);
+              } else {
+                whole.showTop(res.data.message);
+                _that.$store.dispatch('clearBusinessTrip')
+                _that.$router.go(-1)
+              }
+            }
+            console.log(res);
+          })
+        } */
+      },
+      onConfirm () {
+        let _that = this
+        api.startFeeAppURL(this.parmasOption, function (res) {
+          if (res) {
+            if (res.data.code) {
+              whole.showTop(res.data.message);
+              _that.$store.dispatch('clearPersonReim')
+              _that.$router.go(-1)
+            } else {
+              whole.showTop(res.data.message);
+              _that.$store.dispatch('clearPersonReim')
+              _that.$router.go(-1)
+            }
+          }
+          console.log(res);
         })
       },
       saveReserve() {

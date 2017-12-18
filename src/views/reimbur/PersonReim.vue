@@ -9,7 +9,7 @@
       <x-input title="专项内部订单号" v-if="protype === '1'"  v-model="forms.aufnr"></x-input>
     <!--  <x-input title="附件数" v-model="forms.attach"></x-input>-->
       <v-search title="出差申请单号" v-if="show === '0'" :cdata="travelList" v-model="forms.atrlnr" ></v-search>
-      <x-textarea title="说明" v-model="forms.instruction" :rows="1"></x-textarea>
+      <x-textarea title="说明" v-model="forms.instruction" ></x-textarea>
     </group>
     <sticky :offset="50">
       <box gap="10px 10px">
@@ -17,7 +17,7 @@
       </box>
     </sticky>
     <group title="员工报销申请列表" v-if="formsData.length > 0" style="margin-bottom: 60px;">
-      <cell v-for="d in formsDataArray" :key="d.type" :title="d.type" is-link @click.native="addPreim(d)"></cell>
+      <cell v-for="d in formsData" :key="d.type" :title="d.type" is-link @click.native="addPreim(d)"></cell>
     </group>
     <flexbox class="footerButton">
       <flexbox-item class="vux-1px-r" @click.native="addReserve(0)" style="color:#00B705">提交</flexbox-item>
@@ -105,8 +105,6 @@
 
     created() {
     this.$navigation.on('back', (to, from) => {
-    this.formsDataArray.push(this.formsData[0])
-   // alert(JSON.stringify(this.formsDataArray))
     var data = dataUtils.getFormData(this.formsData);
     this.dataArray.push(data)
     })
@@ -181,7 +179,6 @@
         }
       },
       addPreim(data = {}) {
-       // alert(JSON.stringify(data))
         if (this.forms.rbstype === '') {
           whole.showTop('请选择报销类型')
           return;
@@ -214,7 +211,6 @@
           forms: this.forms,
           formsData: JSON.stringify(data)
         }
-      //  this.$store.dispatch('addPreimInfo', info)
         this.$router.push({path: '/addPreim', query: {formsData: info}})
       },
       setData() {

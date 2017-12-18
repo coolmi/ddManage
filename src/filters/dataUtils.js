@@ -2,6 +2,8 @@ import * as _ from 'underscore'
 import whole from '@/lib/whole'
 
 const filterData = function (data = [], dataItem) {
+  console.log(data)
+  console.log(dataItem)
   if (!dataItem.uuid) {
     dataItem.uuid = generateUUID()
   }

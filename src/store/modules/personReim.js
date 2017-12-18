@@ -22,7 +22,7 @@ export default {
       state.personReimInfos = info
     },
     'ADD_PERSON_REIM'(state, data) {
-      let froms = dataUtils.filterData(state.forms, data)
+      let froms = dataUtils.filterData(state.personReimForms, data)
       state.personReimForms = froms
     },
     'CLEAR_PERSON_REIM'(state) {

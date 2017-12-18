@@ -32,7 +32,7 @@
         <cell v-if="cbFlag === '1'"><font color="#FF0000">超额{{ulfee}}</font></cell>
         <v-search title="项目号" :cdata="colnrList" v-model="formsData1.colnr"></v-search>
         <x-input title="超标事由" v-if="cbFlag === '1'" v-model="formsData1.ulrea"></x-input>
-        <x-input title="说明"  v-model="formsData1.smemoltrad"></x-input>
+        <x-textarea title="说明"  v-model="formsData1.smemoltrad"></x-textarea>
         <x-input title="隐藏" placeholder="隐藏" v-show="false" v-model="formsData1.uuid"></x-input>
       </group>
       <group v-if="checker === '2'" :title="typeObj[checker]">
@@ -40,6 +40,8 @@
           <v-search title="交通方式" :cdata="trafficWaysList" v-model="formsData2.stypec"></v-search>
           <v-search title="交通类型" :cdata="trafficTypeList" v-model="formsData2.mtypec" @on-hide="getItemNoInfo"></v-search>
           <datetime v-model="formsData2.sdatec" :start-date="systemDate" title="出发日期"></datetime>
+          <v-search title="出发地" :cdata="tripPlace" :columns="1" v-model="formsData2.saddrc" show-name></v-search>
+          <v-search title="到达地" :cdata="tripPlace" :columns="1" v-model="formsData2.eaddrc" show-name></v-search>
           <v-search title="币种" :cdata="currencyList" v-model="formsData2.waersc" @on-hide="getProtypeInfo"></v-search>
           <x-input title="原币金额" v-if="currencyFlag === '1'" type="number" v-model="formsData2.wrbtrc"></x-input>
           <cell v-show="originalCurrency2" v-if="currencyFlag === '1'">{{originalCurrency2}}</cell>
@@ -47,11 +49,9 @@
           <x-input title="金额"  v-if="currencyFlag === '1'" readonly v-model="amount2" @on-blur="changeAmountC"></x-input>
           <x-input title="金额" v-if="currencyFlag === '0'" type="number" v-model="formsData2.dmbtrc" @on-blur="changeAmountC"></x-input>
           <cell v-if="cbFlag === '1'"><font color="#FF0000">超额{{ulfeec}}</font></cell>
-          <v-search title="出发地" :cdata="tripPlace" :columns="1" v-model="formsData2.saddrc" show-name></v-search>
-          <v-search title="到达地" :cdata="tripPlace" :columns="1" v-model="formsData2.eaddrc" show-name></v-search>
           <v-search title="项目号" :cdata="colnrList" v-model="formsData2.colnrc"></v-search>
           <x-input title="超标事由" v-if="cbFlag === '1'"  v-model="formsData2.ulreac"></x-input>
-          <x-input title="说明"  v-model="formsData2.smemoc"></x-input>
+          <x-textarea title="说明"  v-model="formsData2.smemoc"></x-textarea>
           <x-input title="隐藏" placeholder="隐藏" v-show="false" v-model="formsData2.uuid"></x-input>
         </div>
       </group>
@@ -66,7 +66,7 @@
         <x-input title="总金额" v-if="currencyFlag === '0'" type="number" v-model="formsData3.dmbtro"></x-input>
         <v-search title="税码" v-if="pFlag === '1' && currencyFlag === '0'" :cdata="purchoList" v-model="formsData3.purcho" ></v-search>
         <v-search title="项目号" :cdata="colnrList" v-model="formsData3.colnro"></v-search>
-        <x-input title="事由" v-model="formsData3.smemoo"></x-input>
+        <x-textarea title="事由" v-model="formsData3.smemoo"></x-textarea>
         <x-input title="隐藏" placeholder="隐藏" v-show="false" v-model="formsData3.uuid"></x-input>
       </group>
       <group v-if="checker === '4'" :title="typeObj[checker]">
@@ -80,7 +80,7 @@
         <x-input title="总金额" v-if="currencyFlag === '0'" type="number" v-model="formsData4.dmbtrm"></x-input>
         <v-search title="项目号" :cdata="colnrList" v-model="formsData4.colnrm"></v-search>
         <!--<x-input title="项目号" readonly v-model="formsData4.colnrm"></x-input>-->
-        <x-input title="用餐原因" v-model="formsData4.smemom"></x-input>
+        <x-textarea title="用餐原因" v-model="formsData4.smemom"></x-textarea>
         <x-input title="隐藏" placeholder="隐藏" v-show="false" v-model="formsData4.uuid"></x-input>
       </group>
       <group v-if="checker === '5'" :title="typeObj[checker]">
@@ -336,7 +336,6 @@
           kstare: '',
           dmbtre: '',
           uuid: ''
-//          feeAmount: ''
         },
         formsData8: {
           stypeg: '',
@@ -374,7 +373,6 @@
         typeObj: typeObj,
         show: '1',
         flag: '0',
-        // overseas: '0',
         checker: '1',
         mtype_class: '',
         mtype: '',
@@ -589,7 +587,7 @@
         _that.formsData9 = _that.formsData
         _that.checker = '9'
       }
-      _that.getItemNoInfo()
+      this.getItemNoInfo()
     }
     this.getBaseData()
   },
@@ -641,7 +639,6 @@
           this.currencyFlag = '0'
           this.cbFlag = '0'
         }
-       // this.formsData2.kursfc = '1'
         this.mtype_class = '40'
         this.mtype = this.show === '0' ? '23' : '24'
         let fsparam = {
@@ -676,8 +673,6 @@
           this.currencyFlag = '0'
           this.cbFlag = '0'
         }
-       // this.currencyFlag = '0'
-       // this.formsData3.kursfo = '1'
         this.mtype_class = '25'
         let fsparam = {
           bukrs: this.burks,
@@ -705,8 +700,6 @@
           this.currencyFlag = '0'
           this.cbFlag = '0'
         }
-       // this.currencyFlag = '0'
-       // this.formsData4.kursfm = '1'
         this.mtype = this.show === '0' ? '26' : '27'
         let fsparam = {
           bukrs: this.burks,
@@ -734,8 +727,6 @@
           this.currencyFlag = '0'
           this.cbFlag = '0'
         }
-       // this.currencyFlag = '0'
-       // this.formsData5.kursfh = '1'
         this.mtype = this.show === '0' ? '28' : '29'
         let fsparam = {
           bukrs: this.burks,
@@ -764,8 +755,6 @@
           this.currencyFlag = '0'
           this.cbFlag = '0'
         }
-      //  this.currencyFlag = '0'
-      //  this.formsData6.kursft = '1'
         this.mtype_class = '30'
 
         let fsparam = {
@@ -793,8 +782,6 @@
           this.currencyFlag = '0'
           this.cbFlag = '0'
         }
-       // this.currencyFlag = '0'
-       // this.formsData7.rate = '1'
         this.mtype_class = '31'
         let fsparam = {
           bukrs: this.burks,
@@ -1383,10 +1370,14 @@
             return;
           }
         }
-        /* if (this.formsData1.dmbtr === '') {
-          whole.showTop('请填写总金额')
+        if (this.formsData1.colnr === '') {
+          whole.showTop('请选择项目号')
           return;
-        } */
+        }
+        if (this.formsData1.smemoltrad === '') {
+          whole.showTop('请填写说明')
+          return;
+        }
         if (this.currencyFlag === '0') {
           this.formsData1.wrbtr = this.formsData1.dmbtr
         }
@@ -1472,6 +1463,14 @@
             return;
           }
         }
+        if (this.formsData2.colnrc === '') {
+          whole.showTop('请选择项目号')
+          return;
+        }
+        if (this.formsData2.smemoc === '') {
+          whole.showTop('请填写说明')
+          return;
+        }
         /* if (this.formsData2.dmbtrc === '') {
           whole.showTop('请填写总金额')
           return;
@@ -1540,6 +1539,10 @@
           whole.showTop('请选择币种')
           return;
         }
+        if (this.formsData3.colnro === '') {
+          whole.showTop('请选择项目号')
+          return;
+        }
         if (this.currencyFlag === '0') {
           this.formsData3.wrbtro = this.formsData3.dmbtro
         }
@@ -1573,10 +1576,8 @@
           kstaro: this.formsData3.kstaro,
           childcolnro: this.formsData3.childcolnro
         }
-       // console.log(officecost)
         this.$store.dispatch('addPersonReim', formsData)
         console.log('保存')
-       // this.$router.go(-1)
       }
       if (this.checker === '4') {
         if (this.formsData4.stypem === '') {
@@ -1600,6 +1601,10 @@
         }
         if (this.formsData4.waersm === '') {
           whole.showTop('请选择币种')
+          return;
+        }
+        if (this.formsData4.colnrm === '') {
+          whole.showTop('请选择项目号')
           return;
         }
         /* if (this.formsData1.dmbtr === '') {
@@ -1639,10 +1644,8 @@
           kunamem: '',
           childcolnrm: this.formsData4.childcolnrm
         }
-       // console.log(mealfee)
         this.$store.dispatch('addPersonReim', formsData)
         console.log('保存')
-       // this.$router.go(-1)
       }
       if (this.checker === '5') {
         if (this.formsData5.stypeh === '') {
@@ -1682,6 +1685,14 @@
             whole.showTop('请选填写超标事由')
             return;
           }
+        }
+        if (this.formsData5.colnrh === '') {
+          whole.showTop('请选择项目号')
+          return;
+        }
+        if (this.formsData5.smemoh === '') {
+          whole.showTop('请填写住宿原因')
+          return;
         }
         /* if (this.formsData1.dmbtr === '') {
          whole.showTop('请填写总金额')
@@ -1730,7 +1741,6 @@
           toadress: '',
           budgetmonthh: ''
         }
-       // console.log(hotelexpense)
         this.$store.dispatch('addPersonReim', formsData)
         console.log('保存')
       //  this.$router.go(-1)
@@ -1756,6 +1766,10 @@
         }
         if (this.formsData6.waerst === '') {
           whole.showTop('请选择币种')
+          return;
+        }
+        if (this.formsData6.colnrt === '') {
+          whole.showTop('请选择项目号')
           return;
         }
         /* if (this.formsData1.dmbtr === '') {
@@ -1817,6 +1831,10 @@
             return;
           }
         }
+        if (this.formsData7.colnre === '') {
+          whole.showTop('请选择项目号')
+          return;
+        }
         if (this.currencyFlag === '0') {
           this.formsData7.wrbtre = this.formsData7.dmbtre
         }
@@ -1876,6 +1894,10 @@
           whole.showTop('请填写事由')
           return;
         }
+        if (this.formsData8.colnrg === '') {
+          whole.showTop('请选择项目号')
+          return;
+        }
         if (this.currencyFlag === '0') {
           this.formsData8.wrbtrg = this.formsData8.dmbtrg
         }
@@ -1927,7 +1949,6 @@
           uuid: this.formsData9.uuid
         }
         this.$store.dispatch('addPersonReim', formsData)
-       // this.$router.go(-1)
         console.log('保存')
       }
         this.$router.go(-1)

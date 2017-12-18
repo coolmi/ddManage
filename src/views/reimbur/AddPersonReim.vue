@@ -91,8 +91,8 @@
         <v-search title="币种" :cdata="currencyList" v-model="formsData5.waersh" @on-hide="getProtypeInfo"></v-search>
         <x-input title="原币金额" v-if="currencyFlag === '1'" placeholder="请填写原币金额" :max=9 v-model="formsData5.wrbtrh"></x-input>
         <x-input title="汇率" v-if="currencyFlag === '1'" type="number" v-model="formsData5.kursfh"></x-input>
-        <x-input title="住宿金额"  v-if="currencyFlag === '1'" readonly v-model="amount5" ></x-input>
-        <x-input title="住宿金额" v-if="currencyFlag === '0'" type="number" v-model="formsData5.dmbtrh"  @on-blur="changeAmountZ"></x-input>
+        <x-input title="总金额"  v-if="currencyFlag === '1'" readonly v-model="amount5" ></x-input>
+        <x-input title="总金额" v-if="currencyFlag === '0'" type="number" v-model="formsData5.dmbtrh"  @on-blur="changeAmountZ"></x-input>
         <cell v-if="cbFlag === '1'"><font color="#FF0000">超额{{ulfeeh}}</font></cell>
         <v-search title="项目号" :cdata="colnrList" v-model="formsData5.colnrh"></v-search>
         <x-input title="餐补"  v-model="formsData5.mealsuph" @on-blur="changeAmountCE"></x-input>
@@ -123,8 +123,8 @@
         <x-input title="原币金额" v-if="currencyFlag === '1'" placeholder="请填写原币金额" :max=9 v-model="formsData7.wrbtre"></x-input>
         <cell v-show="originalCurrency7" v-if="currencyFlag === '1'">{{originalCurrency7}}</cell>
         <x-input title="汇率" v-if="currencyFlag === '1'" type="number" v-model="formsData7.kursfe"></x-input>
-        <x-input title="住宿金额"  v-if="currencyFlag === '1'" readonly v-model="amount7" ></x-input>
-        <x-input title="住宿金额" v-if="currencyFlag === '0'" type="number" v-model="formsData7.dmbtre" @on-blur="feeAmount"></x-input>
+        <x-input title="总金额"  v-if="currencyFlag === '1'" readonly v-model="amount7" ></x-input>
+        <x-input title="总金额" v-if="currencyFlag === '0'" type="number" v-model="formsData7.dmbtre" @on-blur="feeAmount"></x-input>
         <cell v-if="cbFlag === '1'"><font color="#FF0000">超额{{ulfeee}}</font></cell>
         <v-search title="项目号" :cdata="colnrList" v-model="formsData7.colnre"></v-search>
         <x-input title="隐藏" placeholder="隐藏" v-show="false" v-model="formsData7.uuid"></x-input>
@@ -136,8 +136,8 @@
         <x-input title="原币金额" v-if="currencyFlag === '1'" placeholder="请填写原币金额" :max=9 v-model="formsData8.wrbtrg"></x-input>
         <cell v-show="originalCurrency8" v-if="currencyFlag === '1'">{{originalCurrency8}}</cell>
         <x-input title="汇率" v-if="currencyFlag === '1'" type="number" v-model="formsData8.kursfg"></x-input>
-        <x-input title="住宿金额"  v-if="currencyFlag === '1'" readonly v-model="amount8" ></x-input>
-        <x-input title="住宿金额" v-if="currencyFlag === '0'" type="number" v-model="formsData8.dmbtrg"></x-input>
+        <x-input title="总金额"  v-if="currencyFlag === '1'" readonly v-model="amount8" ></x-input>
+        <x-input title="总金额" v-if="currencyFlag === '0'" type="number" v-model="formsData8.dmbtrg"></x-input>
         <v-search title="项目号" :cdata="colnrList" v-model="formsData8.colnrg"></v-search>
         <x-textarea title="事由" v-model="formsData8.ulreag"></x-textarea>
         <x-input title="隐藏" placeholder="隐藏" v-show="false" v-model="formsData8.uuid"></x-input>

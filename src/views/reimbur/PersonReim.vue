@@ -198,6 +198,10 @@
             whole.showTop('请选择费用归集成本中心')
             return;
           }
+          if (this.forms.atrlnr === '') {
+            whole.showTop('请选择出差申请号')
+            return;
+          }
         }
         let info = {
           forms: this.forms
@@ -234,6 +238,10 @@
             whole.showTop('请选择费用归集成本中心')
             return;
           }
+        }
+        if (this.forms.protype === '') {
+          whole.showTop('请选择项目类型')
+          return;
         }
         /* let feeApp = {
           notravle: this.forms.rbstype,

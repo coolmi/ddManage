@@ -18,7 +18,7 @@
       </group>
       <group v-if="checker === '1'" :title="typeObj[checker]">
         <v-search title="交通方式" :cdata="trafficWaysList" v-model="formsData1.stype"></v-search>
-        <v-search title="交通类型" :cdata="trafficTypeList" v-model="formsData1.mtype" @on-hide="getItemNoInfo"></v-search>
+        <v-search title="交通类型" :cdata="trafficTypeList" v-model="formsData1.mtype" @on-hide="getitemnoInfo()"></v-search>
         <datetime v-model="formsData1.sdate" :start-date="systemDate" title="出发日期"></datetime>
         <datetime v-model="formsData1.edate" :start-date="systemDate" title="到达日期"></datetime>
         <v-search title="出发地" :cdata="tripPlace" :columns="1" v-model="formsData1.saddr" show-name></v-search>
@@ -38,7 +38,7 @@
       <group v-if="checker === '2'" :title="typeObj[checker]">
         <div>
           <v-search title="交通方式" :cdata="trafficWaysList" v-model="formsData2.stypec"></v-search>
-          <v-search title="交通类型" :cdata="trafficTypeList" v-model="formsData2.mtypec" @on-hide="getItemNoInfo"></v-search>
+          <v-search title="交通类型" :cdata="trafficTypeList" v-model="formsData2.mtypec" @on-hide="getitemnoInfo()"></v-search>
           <datetime v-model="formsData2.sdatec" :start-date="systemDate" title="出发日期"></datetime>
           <v-search title="出发地" :cdata="tripPlace" :columns="1" v-model="formsData2.saddrc" show-name></v-search>
           <v-search title="到达地" :cdata="tripPlace" :columns="1" v-model="formsData2.eaddrc" show-name></v-search>
@@ -56,7 +56,7 @@
         </div>
       </group>
       <group v-if="checker === '3'" :title="typeObj[checker]">
-        <v-search title="办公费用类型" :cdata="OffTypeList" v-model="formsData3.stypeo" @on-hide="getItemNoInfo"></v-search>
+        <v-search title="办公费用类型" :cdata="OffTypeList" v-model="formsData3.stypeo" @on-hide="getitemnoInfo()"></v-search>
         <datetime v-model="formsData3.sdateo" :start-date="systemDate" title="日期"></datetime>
         <v-search title="币种" :cdata="currencyList" v-model="formsData3.waerso" @on-hide="getProtypeInfo"></v-search>
         <x-input title="原币金额" v-if="currencyFlag === '1'" type="number" v-model="formsData3.wrbtro"></x-input>
@@ -70,7 +70,7 @@
         <x-input title="隐藏" placeholder="隐藏" v-show="false" v-model="formsData3.uuid"></x-input>
       </group>
       <group v-if="checker === '4'" :title="typeObj[checker]">
-        <v-search title="餐费类型" :cdata="mealsList" v-model="formsData4.stypem" @on-hide="getItemNoInfo"></v-search>
+        <v-search title="餐费类型" :cdata="mealsList" v-model="formsData4.stypem" @on-hide="getitemnoInfo()"></v-search>
         <datetime v-model="formsData4.sdatem" :start-date="systemDate" title="日期"></datetime>
         <v-search title="币种" :cdata="currencyList" v-model="formsData4.waersm" @on-hide="getProtypeInfo"></v-search>
         <x-input title="原币金额" v-if="currencyFlag === '1'" type="number" v-model="formsData4.wrbtrm"></x-input>
@@ -84,7 +84,7 @@
         <x-input title="隐藏" placeholder="隐藏" v-show="false" v-model="formsData4.uuid"></x-input>
       </group>
       <group v-if="checker === '5'" :title="typeObj[checker]">
-        <v-search title="住宿类型" :cdata="zslxList" v-model="formsData5.stypeh" @on-hide="getItemNoInfo"></v-search>
+        <v-search title="住宿类型" :cdata="zslxList" v-model="formsData5.stypeh" @on-hide="getitemnoInfo()"></v-search>
         <v-search title="酒店地点" :cdata="tripPlace" v-model="formsData5.saddrh"></v-search>
         <datetime v-model="formsData5.sdateh" :start-date="systemDate" title="入住日期"></datetime>
         <datetime v-model="formsData5.edateh" :start-date="systemDate" title="退房日期"></datetime>
@@ -103,7 +103,7 @@
         <x-input title="隐藏" placeholder="隐藏" v-show="false" v-model="formsData5.uuid"></x-input>
       </group>
       <group v-if="checker === '6'" :title="typeObj[checker]">
-        <v-search title="培训类型" :cdata="pxlxList" v-model="formsData6.stypet" @on-hide="getItemNoInfo"></v-search>
+        <v-search title="培训类型" :cdata="pxlxList" v-model="formsData6.stypet" @on-hide="getitemnoInfo()"></v-search>
         <x-input title="书籍/课程名称"  v-model="formsData6.traint"></x-input>
         <v-search title="币种" :cdata="currencyList" v-model="formsData6.waerst" @on-hide="getProtypeInfo"></v-search>
         <x-input title="原币金额" v-if="currencyFlag === '1'" placeholder="请填写原币金额" :max=9 v-model="formsData6.wrbtrt"></x-input>
@@ -117,7 +117,7 @@
         <x-input title="隐藏" placeholder="隐藏" v-show="false" v-model="formsData6.uuid"></x-input>
       </group>
       <group v-if="checker === '7'" :title="typeObj[checker]">
-        <v-search title="通讯类型" :cdata="txlxList" v-model="formsData7.stypee" @on-hide="getItemNoInfo"></v-search>
+        <v-search title="通讯类型" :cdata="txlxList" v-model="formsData7.stypee" @on-hide="getitemnoInfo()"></v-search>
         <v-search title="月份" :cdata="yfList" v-model="formsData7.sdatee"></v-search>
         <v-search title="币种" :cdata="currencyList" v-model="formsData7.waerse" @on-hide="getProtypeInfo"></v-search>
         <x-input title="原币金额" v-if="currencyFlag === '1'" placeholder="请填写原币金额" :max=9 v-model="formsData7.wrbtre"></x-input>
@@ -130,7 +130,7 @@
         <x-input title="隐藏" placeholder="隐藏" v-show="false" v-model="formsData7.uuid"></x-input>
       </group>
       <group v-if="checker === '8'" :title="typeObj[checker]">
-        <v-search title="礼品费类型" :cdata="lplxList" v-model="formsData8.stypeg" @on-hide="getItemNoInfo"></v-search>
+        <v-search title="礼品费类型" :cdata="lplxList" v-model="formsData8.stypeg" @on-hide="getitemnoInfo()"></v-search>
         <datetime v-model="formsData8.sdateg" :start-date="systemDate" title="发生日期"></datetime>
         <v-search title="币种" :cdata="currencyList" v-model="formsData8.waersg" @on-hide="getProtypeInfo"></v-search>
         <x-input title="原币金额" v-if="currencyFlag === '1'" placeholder="请填写原币金额" :max=9 v-model="formsData8.wrbtrg"></x-input>
@@ -541,6 +541,8 @@
   },
   created() {
     let _that = this
+    let mtypeClass = ''
+    let mtype = ''
     let formsData = this.$route.query.formsData.formsData
     this.show = this.$route.query.formsData.forms.rbstype
     this.burks = this.$route.query.formsData.forms.burks
@@ -587,7 +589,214 @@
         _that.formsData9 = _that.formsData
         _that.checker = '9'
       }
-      this.getItemNoInfo()
+      if (this.checker === '1') {
+        mtypeClass = this.mtype
+        mtype = this.formsData1.mtype
+      }
+      if (this.checker === '2') {
+        mtypeClass = this.mtype
+        mtype = this.formsData2.mtypec
+      }
+      if (this.checker === '3') {
+        mtypeClass = this.mtype_class
+        mtype = this.formsData3.stypeo
+      }
+      if (this.checker === '4') {
+        mtypeClass = this.mtype
+        mtype = this.formsData4.stypem
+      }
+      if (this.checker === '5') {
+        mtypeClass = this.mtype
+        mtype = this.formsData5.stypeh
+      }
+      if (this.checker === '6') {
+        mtypeClass = this.mtype_class
+        mtype = this.formsData6.stypet
+      }
+      if (this.checker === '7') {
+        mtypeClass = this.mtype_class
+        mtype = this.formsData7.stypee
+      }
+      if (this.checker === '8') {
+        mtypeClass = this.mtype_class
+        mtype = this.formsData8.stypeg
+      }
+      let params = {
+        mtype_class: mtypeClass,
+        mtype: mtype,
+        bukrs: this.burks,
+        abroadis: this.currencyFlag,
+        kostl: this.kostl,
+        postid: this.postid
+      }
+      if (this.protype === '通用项目') {
+        api.getColdconamList(params, function (res) {
+            if (_that.checker === '1') {
+              if (res[0].childcolnr) {
+                _that.formsData1.childcolnr = res[0].childcolnr
+                _that.formsData1.childconam = res[0].childconam
+              }
+              if (res[0].kstar) {
+                _that.formsData1.kstar = res[0].kstar
+              }
+              _that.colnrList = res[0].colnrList
+            }
+            if (_that.checker === '2') {
+              if (res[0].childcolnr) {
+                _that.formsData2.childcolnrc = res[0].childcolnr
+                _that.formsData2.childconamc = res[0].childconam
+              }
+              if (res[0].kstar) {
+                _that.formsData2.kstarc = res[0].kstar
+              }
+              _that.colnrList = res[0].colnrList
+            }
+            if (_that.checker === '3') {
+              if (res[0].childcolnr) {
+                _that.formsData3.childcolnro = res[0].childcolnr
+                _that.formsData3.childconamo = res[0].childconam
+              }
+              if (res[0].kstar) {
+                _that.formsData3.kstaro = res[0].kstar
+              }
+              _that.colnrList = res[0].colnrList
+            }
+            if (_that.checker === '4') {
+              _that.colnrList = res[0].colnrList
+              if (res[0].childcolnr) {
+                _that.formsData4.childcolnrm = res[0].childcolnr
+                _that.formsData4.childconamm = res[0].childconam
+              }
+              if (res[0].kstar) {
+                _that.formsData4.kstarm = res[0].kstar
+              }
+            }
+            if (_that.checker === '5') {
+              if (res[0].childcolnr) {
+                _that.formsData5.childcolnrh = res[0].childcolnr
+                _that.formsData5.childconamh = res[0].childconam
+              }
+              if (res[0].kstar) {
+                _that.formsData5.kstarh = res[0].kstar
+              }
+              _that.colnrList = res[0].colnrList
+            }
+            if (_that.checker === '6') {
+              if (res[0].childcolnr) {
+                _that.formsData6.childcolnrt = res[0].childcolnr
+                _that.formsData6.childconamt = res[0].childconam
+              }
+              if (res[0].kstar) {
+                _that.formsData6.kstart = res[0].kstar
+              }
+              _that.colnrList = res[0].colnrList
+            }
+            if (_that.checker === '7') {
+              if (res[0].childcolnr) {
+                _that.formsData7.childcolnre = res[0].childcolnr
+                _that.formsData7.childconame = res[0].childconam
+              }
+              if (res[0].kstar) {
+                _that.formsData7.kstare = res[0].kstar
+              }
+              _that.colnrList = res[0].colnrList
+            }
+            if (_that.checker === '8') {
+              if (res[0].childcolnr) {
+                _that.formsData8.childcolnrg = res[0].childcolnr
+                _that.formsData8.childconamg = res[0].childconam
+              }
+              if (res[0].kstar) {
+                _that.formsData8.kstarg = res[0].kstar
+              }
+              _that.colnrList = res[0].colnrList
+            }
+        })
+      }
+      if (this.protype === '专项项目') {
+        api.getColdconamzList(params, function (res) {
+            if (_that.checker === '1') {
+              if (res[0].childcolnr) {
+                _that.formsData1.childcolnr = res[0].childcolnr
+                _that.formsData1.childconam = res[0].childconam
+              }
+              if (res[0].kstar) {
+                _that.formsData1.kstar = res[0].kstar
+              }
+              _that.colnrList = res[0].colnrList
+            }
+            if (_that.checker === '2') {
+              if (res[0].childcolnr) {
+                _that.formsData2.childcolnrc = res[0].childcolnr
+                _that.formsData2.childconamc = res[0].childconam
+              }
+              if (res[0].kstar) {
+                _that.formsData2.kstarc = res[0].kstar
+              }
+              _that.colnrList = res[0].colnrList
+            }
+            if (_that.checker === '3') {
+              if (res[0].childcolnr) {
+                _that.formsData3.childcolnro = res[0].childcolnr
+                _that.formsData3.childconamo = res[0].childconam
+              }
+              if (res[0].kstar) {
+                _that.formsData3.kstaro = res[0].kstar
+              }
+              _that.colnrList = res[0].colnrList
+            }
+            if (_that.checker === '4') {
+              _that.colnrList = res[0].colnrList
+              if (res[0].childcolnr) {
+                _that.formsData4.childcolnrm = res[0].childcolnr
+                _that.formsData4.childconamm = res[0].childconam
+              }
+              if (res[0].kstar) {
+                _that.formsData4.kstarm = res[0].kstar
+              }
+            }
+            if (_that.checker === '5') {
+              if (res[0].childcolnr) {
+                _that.formsData5.childcolnrh = res[0].childcolnr
+                _that.formsData5.childconamh = res[0].childconam
+              }
+              if (res[0].kstar) {
+                _that.formsData5.kstarh = res[0].kstar
+              }
+              _that.colnrList = res[0].colnrList
+            }
+            if (_that.checker === '6') {
+              if (res[0].childcolnr) {
+                _that.formsData6.childcolnrt = res[0].childcolnr
+                _that.formsData6.childconamt = res[0].childconam
+              }
+              if (res[0].kstar) {
+                _that.formsData6.kstart = res[0].kstar
+              }
+              _that.colnrList = res[0].colnrList
+            }
+            if (_that.checker === '7') {
+              if (res[0].childcolnr) {
+                _that.formsData7.childcolnre = res[0].childcolnr
+                _that.formsData7.childconame = res[0].childconam
+              }
+              if (res[0].kstar) {
+                _that.formsData7.kstare = res[0].kstar
+              }
+              _that.colnrList = res[0].colnrList
+            }
+            if (_that.checker === '8') {
+              if (res[0].childcolnr) {
+                _that.formsData8.childcolnrg = res[0].childcolnr
+                _that.formsData8.childconamg = res[0].childconam
+              }
+              if (res[0].kstar) {
+                _that.formsData8.kstarg = res[0].kstar
+              }
+              _that.colnrList = res[0].colnrList
+            }
+        })
+      }
     }
     this.getBaseData()
   },
@@ -836,7 +1045,7 @@
       })
     },
     // 获取项目号
-    getItemNoInfo() {
+    getitemnoInfo() {
       let mtypeClass = ''
       let mtype = ''
       if (this.checker === '1') {
@@ -1398,7 +1607,7 @@
           ulrea: this.formsData1.ulrea,
           smemoltrad: this.formsData1.smemoltrad,
           dmbtr: this.amount,
-         // uuid: this.formsData1.uuid,
+          uuid: this.formsData1.uuid,
             buzei: '',
             aufnrl: this.aufnr,
             appid: '',
@@ -1493,12 +1702,11 @@
           ulreac: this.formsData2.ulreac,
           smemc: this.formsData2.smemoc,
           dmbtrc: this.amount2,
-         // uuid: this.formsData2.uuid,
+          uuid: this.formsData2.uuid,
           childconamc: this.formsData2.childconamc,
           appid: '',
           colnrc: this.formsData2.colnrc,
           childcolnrc: this.formsData2.childcolnrc,
-          smemoc: '',
           abroadisc: this.show,
           trlnrc: '',
           aufnrc: this.aufnr,

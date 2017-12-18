@@ -5,7 +5,7 @@
       <v-search title="费用承担公司" :cdata="burkList" v-model="forms.cdbukrs"></v-search>
       <v-search title="费用归集成本中心" :noticeDesc="noticeDesc" :cdata="kostlList" v-model="forms.cdkostls" @on-show="changeBurks"></v-search>
       <v-search title="费用所属事业部" :noticeDesc="noticeDesc" :cdata="departments" v-model="forms.businessunitid" @on-show="changeDepart"></v-search>
-      <cell v-show="byjsum" v-if="formsData.length > 0" title="汇总">{{byjsum[0].sum}}</cell>
+      <cell v-if="formsData.length > 0" title="汇总">{{byjsum[0].sum}}</cell>
     </group>
     <sticky>
       <box gap="10px 10px">
@@ -13,7 +13,7 @@
       </box>
     </sticky>
     <group title="备用金汇总" v-if="formsData.length > 0" style="margin-bottom: 60px;">
-      <cell v-for="d in formsData" :key="d.uuid" :title="d.stype.toString()" is-link @click.native="addReserveOption(d)"></cell>
+      <cell v-for="d in formsData" :key="d.uuid" :title="d.stype.toString()" is-link @click.native="addReserveOption(d)">{{d.fwbas}}</cell>
     </group>
     <flexbox class="footerButton">
       <flexbox-item class="vux-1px-r" @click.native="addReserve(0)" style="color:#00B705">提交</flexbox-item>
@@ -139,6 +139,8 @@ export default {
           _that.forms.businessunitid = draftlistData.depositApp.businessunitid;
           _that.id = draftlistData.depositApp.id;
           draftlistData.resegs.map(function (item) {
+            item.type = 'byj'
+            item.field = 'fwbas'
             _that.$store.dispatch('addReserve', item)
           });
           _that.changeBurks(_that.forms.postid, _that.forms.cdbukrs)
@@ -243,7 +245,7 @@ export default {
           } else if (v === 'dmbtr') {
             demo['dmbtr'] = item['dmbtr']
           } else if (v === 'fwbas') {
-            demo['dmbtr'] = item['fwbas']
+            demo['fwbas'] = item['fwbas']
           } else if (item[v] instanceof Array) {
             demo[v] = item[v].toString()
           } else if (item[v].match(/^[1-9]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/)) {

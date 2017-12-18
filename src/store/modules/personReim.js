@@ -11,6 +11,9 @@ export default {
     },
     addPersonReim({commit}, data) {
       commit('ADD_PERSON_REIM', data);
+    },
+    clearPersonReim({commit}) {
+      commit('CLEAR_PERSON_REIM');
     }
   },
 
@@ -21,6 +24,9 @@ export default {
     'ADD_PERSON_REIM'(state, data) {
       let froms = dataUtils.filterData(state.forms, data)
       state.personReimForms = froms
+    },
+    'CLEAR_PERSON_REIM'(state) {
+      state.forms = []
     }
   },
   getters: {

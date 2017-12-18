@@ -1,13 +1,5 @@
 <template>
   <div>
-    <group>
-      <cell title="休假" link="/newLeave"></cell>
-      <cell title="员工出差申请" :link="{path:'/businessTrip', query: {flag: 'save'}}"></cell>
-      <cell title="备用金" :link="{path:'/reserve', query: {flag: 'save'}}"></cell>
-      <cell title="申请保存列表" link="/saveList"></cell>
-      <cell title="个人费用报销" link="/preim"></cell>
-    </group>
-
     <div style="height:44px;">
       <sticky :check-sticky-support="false">
         <tab :line-width=2 v-model="index">
@@ -173,7 +165,7 @@
         this.startPush(); // 启动刷新
       } else {
         this.getUserid();
-        this.setRight(); // 设置右上角按钮
+//        this.setRight(); // 设置右上角按钮
         this.startPush(); // 启动刷新
       }
     },

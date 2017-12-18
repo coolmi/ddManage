@@ -40,6 +40,7 @@
 <script>
   import draggable from 'vuedraggable'
   import api from 'api'
+  import ding from '@/lib/ding'
   import dingUser from '@/lib/dingUser'
   import {mapGetters} from 'vuex'
   import whole from '@/lib/whole'
@@ -53,40 +54,46 @@
           {
             id: 1,
             name: '审批',
-            url: ('static/logo.png'),
-            link: '/home'
+            url: ('static/images/sp.png'),
+            link: '/home',
+            type: 'bd'
           }
         ],
         list3: [
           {
             id: 2,
             name: '会议室',
-            url: ('static/logo.png'),
-            link: ''
+            url: ('static/images/hys.png'),
+            link: 'http://10.5.1.253:10086',
+            type: 'wl'
           },
           {
             id: 3,
-            name: '出差申请',
-            url: ('static/logo.png'),
-            link: ''
+            name: '出差',
+            url: ('static/images/cc.png'),
+            link: '/businessTrip',
+            type: 'bd'
           },
           {
             id: 4,
-            name: '备用金申请',
-            url: ('static/logo.png'),
-            link: ''
+            name: '备用金',
+            url: ('static/images/byj.png'),
+            link: '/reserve',
+            type: 'bd'
           },
           {
             id: 5,
-            name: '报销申请',
-            url: ('static/logo.png'),
-            link: '/preim'
+            name: '报销',
+            url: ('static/images/bx.png'),
+            link: '/preim',
+            type: 'bd'
           },
           {
             id: 6,
-            name: '人事申请',
+            name: '人事',
             url: ('static/logo.png'),
-            link: ''
+            link: '',
+            type: 'bd'
           }
         ],
         flag: '',
@@ -111,6 +118,7 @@
     },
     created() {
       this.getUserid();
+      this.setRight(); // 设置右上角按钮
     },
     methods: {
       getUserid() {
@@ -126,10 +134,50 @@
           })
         })
       },
+      setRight() {
+        let dd = window.dd
+        let _that = this;
+        let rightBtn = {
+          text: '切换用户',
+          show: true, // 控制按钮显示， true 显示， false 隐藏， 默认true
+          control: true, // 是否控制点击事件，true 控制，false 不控制， 默认false
+          showIcon: true, // 是否显示icon，true 显示， false 不显示，默认true； 注：具体UI以客户端为准
+          onSuccess: function (result) {
+            api.getLogout(function () {
+              dd.device.notification.prompt({
+                message: '输入itcode',
+                title: '提示',
+                buttonLabels: ['确定', '取消'],
+                onSuccess: function (result) {
+                  if (result.buttonIndex === 0) {
+                    dingUser.getRequestAuthCode(_that.path).then((data) => {
+                      api.getDebugLogin(data, result.value, function (res) {
+                        if (res.data.code) {
+                          _that.showPage = 1;
+                        } else {
+                          _that.showPage = 2;
+                        }
+                      })
+                    })
+                  }
+                },
+                onFail: function (err) {
+                }
+              });
+            })
+          }
+        }
+        ding.setRight(rightBtn)
+      },
       clickLink(element) {
-        let dingtalkCode = 'APPSERVER'
-        let path = element.link !== '' ? element.link : ''
-        window.location.href = 'dingtalk://dingtalkclient/page/link?url=' + encodeURI(baseConfig.baseURL + path + '?dingtalk_code=' + dingtalkCode)
+        if (element.type === 'bd') {
+          let dingtalkCode = 'APPSERVER'
+          let path = element.link !== '' ? element.link : ''
+          window.location.href = 'dingtalk://dingtalkclient/page/link?url=' + encodeURI(baseConfig.baseURL + path + '?dingtalk_code=' + dingtalkCode)
+        } else if (element.type === 'wl') {
+          let path = element.link
+          window.location.href = 'dingtalk://dingtalkclient/page/link?url=' + encodeURI(path)
+        }
       },
       dragg() {
         this.editState = !this.editState

@@ -11,6 +11,9 @@ import MintUI from 'mint-ui'
 import Raven from 'raven-js';
 import RavenVue from 'raven-js/plugins/vue';
 import RavenConfig from '@/lib/RavenConfig'
+import api from 'api'
+import dingUser from '@/lib/dingUser'
+import whole from '@/lib/whole'
 
 Raven
   .config('http://c8e1476543fe4622a4711c079dcd144b@192.168.5.195:9000/3')
@@ -38,7 +41,16 @@ import 'mint-ui/lib/style.min.css'
 
 store.dispatch('saveURL', location.href)
 store.dispatch('saveDingTalkCode')
-initVue();
+
+dingUser.getRequestAuthCode(location.href).then((data) => {
+  api.getLogin(data, function (res) {
+    if (res.data.code) {
+      initVue();
+    } else {
+      whole.showTop('获取钉钉免登权限失败')
+    }
+  })
+})
 
 Vue.config.productionTip = false
 

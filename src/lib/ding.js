@@ -44,7 +44,7 @@ export function getItemInLocation() {
 }
 
 export function getLocation(key) {
-  return localStorage.getItem(key);
+  return localStorage.getItem(key) || 'APPSERVER';
 }
 
 export function alertInfo(mes, title = '提示', btnName = '确定') {

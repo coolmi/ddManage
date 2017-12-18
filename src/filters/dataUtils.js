@@ -99,7 +99,7 @@ function getDescValue(originalData, selecteddata) {
   let fieldDesc = '';
   originalData.map(function (item) {
     if (item.key === selecteddata.toString()) {
-        fieldDesc = item.value
+      fieldDesc = item.value
     }
   });
   return fieldDesc;
@@ -115,7 +115,7 @@ function getDescValueP(originalData, selecteddata) {
   let fieldDesc = '';
   originalData.map(function (item) {
     if (item.value === selecteddata.toString()) {
-        fieldDesc = item.name
+      fieldDesc = item.name
     }
   });
   return fieldDesc;
@@ -144,11 +144,48 @@ function getSummary(basedata = [], baseType = []) {
       if (ff.length > 0) {
         obj.type = type.type;
         obj.child = ff
-        obj.sum = _.reduce(ff, function(memo, num) { return memo + num; }, 0);
+        obj.sum = _.reduce(ff, function (memo, num) {
+          return memo + num;
+        }, 0);
         result.push(obj)
       }
     }
   }
   return result
 }
-export default {filterData, money2dx, generateUUID, formatNumber, getListValue, getListSearchValue, getDescValue, getDescValueP, getSummary}
+
+const formobj = {
+  '1': 'ltrad',
+  '2': 'citytrad',
+  '3': 'officecost',
+  '4': 'mealfee',
+  '5': 'hotelexpense',
+  '6': 'train',
+  '7': 'telnet',
+  '8': 'giftfee',
+  '9': 'electronic'
+}
+
+function getFormData(data) {
+  let result = {}
+  Object.keys(formobj).forEach(key => {
+    let a = _.where(data, {type: key});
+    if (a.length > 0) {
+      result[formobj[key]] = a;
+    }
+  })
+  return result
+}
+
+export default {
+  filterData,
+  money2dx,
+  generateUUID,
+  formatNumber,
+  getListValue,
+  getListSearchValue,
+  getDescValue,
+  getDescValueP,
+  getSummary,
+  getFormData
+}

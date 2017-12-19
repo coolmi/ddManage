@@ -29,8 +29,10 @@ export default {
   created() {
     let _that = this;
     this.$navigation.on('back', (to, from) => {
-      _that.doNext();
-      _that.startPush(); // 启动刷新
+      if (to.route.path === '/saveList') {
+        _that.doNext();
+        _that.startPush(); // 启动刷新
+      }
     })
     this.doNext();
     this.startPush(); // 启动刷新

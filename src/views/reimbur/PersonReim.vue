@@ -40,7 +40,7 @@
   import vSearch from '@/components/searchChecker';
   import api from 'api'
   import {mapGetters} from 'vuex'
-  import * as _ from 'underscore'
+ // import * as _ from 'underscore'
   import whole from '@/lib/whole'
   import dataUtils from '../../filters/dataUtils' // 工具类
 
@@ -142,9 +142,9 @@
           }
         })
       },
-      changeRbs() {
+     /* changeRbs() {
         this.show = this.forms.rbstype[0]
-      },
+      }, */
       getBaseData() {
         let _that = this;
         api.getPosition(function (res) {
@@ -213,7 +213,7 @@
         }
         this.$router.push({path: '/addPreim', query: {formsData: info}})
       },
-      setData() {
+     /* setData() {
         let forms = this._data.forms;
         let _that = this;
         Object.keys(forms).forEach(key => {
@@ -223,7 +223,7 @@
             _that.forms[key] = _that.infos[key]
           }
         })
-      },
+      }, */
       addReserve(flag) {
         if (this.dataArray.length > 0) {
           if (this.forms.rbstype === '') {

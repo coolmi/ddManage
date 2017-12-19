@@ -13,7 +13,7 @@
           <checker-item value="7">{{typeObj[7]}}</checker-item>
           <checker-item value="8">{{typeObj[8]}}</checker-item>
           <checker-item value="9">{{typeObj[9]}}</checker-item>
-          <checker-item value="10">{{typeObj[10]}}</checker-item>
+         <!-- <checker-item value="10">{{typeObj[10]}}</checker-item>-->
         </checker>
       </group>
       <group v-if="checker === '1'" :title="typeObj[checker]">
@@ -60,7 +60,7 @@
         <datetime v-model="formsData3.sdateo" :start-date="systemDate" title="日期"></datetime>
         <v-search title="币种" :cdata="currencyList" v-model="formsData3.waerso" @on-hide="getProtypeInfo"></v-search>
         <x-input title="原币金额" v-if="currencyFlag === '1'" type="number" v-model="formsData3.wrbtro"></x-input>
-        <cell v-show="originalCurrency3">{{originalCurrency3}}</cell>
+        <cell v-show="originalCurrency3" v-if="currencyFlag === '1'">{{originalCurrency3}}</cell>
         <x-input title="汇率"  v-if="currencyFlag === '1'" type="number" v-model="formsData3.kursfo"></x-input>
         <x-input title="总金额"  v-if="currencyFlag === '1'" readonly v-model="amount3" ></x-input>
         <x-input title="总金额" v-if="currencyFlag === '0'" type="number" v-model="formsData3.dmbtro"></x-input>
@@ -74,7 +74,7 @@
         <datetime v-model="formsData4.sdatem" :start-date="systemDate" title="日期"></datetime>
         <v-search title="币种" :cdata="currencyList" v-model="formsData4.waersm" @on-hide="getProtypeInfo"></v-search>
         <x-input title="原币金额" v-if="currencyFlag === '1'" type="number" v-model="formsData4.wrbtrm"></x-input>
-        <cell v-show="originalCurrency4">{{originalCurrency4}}</cell>
+        <cell v-show="originalCurrency4" v-if="currencyFlag === '1'">{{originalCurrency4}}</cell>
         <x-input title="汇率" v-if="currencyFlag === '1'" type="number" v-model="formsData4.kursfm"></x-input>
         <x-input title="总金额"  v-if="currencyFlag === '1'" readonly v-model="amount4" ></x-input>
         <x-input title="总金额" v-if="currencyFlag === '0'" type="number" v-model="formsData4.dmbtrm"></x-input>
@@ -89,16 +89,17 @@
         <datetime v-model="formsData5.sdateh" :start-date="systemDate" title="入住日期"></datetime>
         <datetime v-model="formsData5.edateh" :start-date="systemDate" title="退房日期"></datetime>
         <v-search title="币种" :cdata="currencyList" v-model="formsData5.waersh" @on-hide="getProtypeInfo"></v-search>
-        <x-input title="原币金额" v-if="currencyFlag === '1'" placeholder="请填写原币金额" :max=9 v-model="formsData5.wrbtrh"></x-input>
+        <x-input title="原币金额" v-if="currencyFlag === '1'" type="number" placeholder="请填写原币金额" :max=9 v-model="formsData5.wrbtrh"></x-input>
+        <cell v-show="originalCurrency5" v-if="currencyFlag === '1'">{{originalCurrency5}}</cell>
         <x-input title="汇率" v-if="currencyFlag === '1'" type="number" v-model="formsData5.kursfh"></x-input>
         <v-search title="税码" v-if="pFlag === '1' && currencyFlag === '0'" :cdata="purchoList" v-model="formsData5.purchh" ></v-search>
         <x-input title="总金额"  v-if="currencyFlag === '1'" readonly v-model="amount5" ></x-input>
         <x-input title="总金额" v-if="currencyFlag === '0'" type="number" v-model="formsData5.dmbtrh"  @on-blur="changeAmountZ"></x-input>
         <cell v-if="cbFlag === '1'"><font color="#FF0000">超额{{ulfeeh}}</font></cell>
         <v-search title="项目号" :cdata="colnrList" v-model="formsData5.colnrh"></v-search>
-        <x-input title="餐补"  v-model="formsData5.mealsuph" @on-blur="changeAmountCE"></x-input>
+        <x-input title="餐补" v-if="show === '0'" v-model="formsData5.mealsuph" @on-blur="changeAmountCE"></x-input>
         <cell v-if="cbceFlag === '1'"><font color="#FF0000">超额{{ExcessiveCb}}</font></cell>
-        <x-input title="扣除餐补"  v-if="currencyFlag === '0'" readonly v-model="formsData5.demealh"></x-input>
+        <x-input title="扣除餐补"  v-if="currencyFlag === '0' && show === '0'" readonly v-model="formsData5.demealh"></x-input>
         <x-textarea title="住宿原因" v-model="formsData5.smemoh"></x-textarea>
         <x-textarea title="超额原因" v-if="cbFlag === '1'" v-model="formsData5.ulreah"></x-textarea>
         <x-input title="隐藏" placeholder="隐藏" v-show="false" v-model="formsData5.uuid"></x-input>
@@ -107,7 +108,8 @@
         <v-search title="培训类型" :cdata="pxlxList" v-model="formsData6.stypet" @on-hide="getitemnoInfo()"></v-search>
         <x-input title="书籍/课程名称"  v-model="formsData6.traint"></x-input>
         <v-search title="币种" :cdata="currencyList" v-model="formsData6.waerst" @on-hide="getProtypeInfo"></v-search>
-        <x-input title="原币金额" v-if="currencyFlag === '1'" placeholder="请填写原币金额" :max=9 v-model="formsData6.wrbtrt"></x-input>
+        <x-input title="原币金额" v-if="currencyFlag === '1'" type="number" placeholder="请填写原币金额" :max=9 v-model="formsData6.wrbtrt"></x-input>
+        <cell v-show="originalCurrency6" v-if="currencyFlag === '1'">{{originalCurrency6}}</cell>
         <x-input title="汇率" v-if="currencyFlag === '1'" type="number" v-model="formsData6.kursft"></x-input>
         <x-input title="金额"  v-if="currencyFlag === '1'" readonly v-model="amount6" ></x-input>
         <x-input title="金额" v-if="currencyFlag === '0'" type="number" v-model="formsData6.dmbtrt"></x-input>
@@ -121,7 +123,7 @@
         <v-search title="通讯类型" :cdata="txlxList" v-model="formsData7.stypee" @on-hide="getitemnoInfo()"></v-search>
         <v-search title="月份" :cdata="yfList" v-model="formsData7.sdatee"></v-search>
         <v-search title="币种" :cdata="currencyList" v-model="formsData7.waerse" @on-hide="getProtypeInfo"></v-search>
-        <x-input title="原币金额" v-if="currencyFlag === '1'" placeholder="请填写原币金额" :max=9 v-model="formsData7.wrbtre"></x-input>
+        <x-input title="原币金额" v-if="currencyFlag === '1'" type="number" placeholder="请填写原币金额" :max=9 v-model="formsData7.wrbtre"></x-input>
         <cell v-show="originalCurrency7" v-if="currencyFlag === '1'">{{originalCurrency7}}</cell>
         <x-input title="汇率" v-if="currencyFlag === '1'" type="number" v-model="formsData7.kursfe"></x-input>
         <x-input title="总金额"  v-if="currencyFlag === '1'" readonly v-model="amount7" ></x-input>
@@ -134,7 +136,7 @@
         <v-search title="礼品费类型" :cdata="lplxList" v-model="formsData8.stypeg" @on-hide="getitemnoInfo()"></v-search>
         <datetime v-model="formsData8.sdateg" :start-date="systemDate" title="发生日期"></datetime>
         <v-search title="币种" :cdata="currencyList" v-model="formsData8.waersg" @on-hide="getProtypeInfo"></v-search>
-        <x-input title="原币金额" v-if="currencyFlag === '1'" placeholder="请填写原币金额" :max=9 v-model="formsData8.wrbtrg"></x-input>
+        <x-input title="原币金额" v-if="currencyFlag === '1'" type="number" placeholder="请填写原币金额" :max=9 v-model="formsData8.wrbtrg"></x-input>
         <cell v-show="originalCurrency8" v-if="currencyFlag === '1'">{{originalCurrency8}}</cell>
         <x-input title="汇率" v-if="currencyFlag === '1'" type="number" v-model="formsData8.kursfg"></x-input>
         <x-input title="总金额"  v-if="currencyFlag === '1'" readonly v-model="amount8" ></x-input>
@@ -189,8 +191,8 @@
     '6': '培训费',
     '7': '通讯费',
     '8': '礼品费',
-    '9': '电子发票',
-    '10': '汇总'
+    '9': '电子发票'
+   // '10': '汇总'
   }
 
   export default {
@@ -1325,7 +1327,7 @@
     getProtypeInfo() {
       let _that = this
       let sparams = {
-        burks: this.burks
+        bukrs: this.burks
       }
       if (this.checker === '1') {
         this.cbFlag = '0'
@@ -1359,7 +1361,7 @@
         }
         api.getTaxCodeList(sparams, function (res) {
           if (res[0].isTaxPayer) {
-            _that.purchoList = res.data.taxCodeList
+            _that.purchoList = res[0].taxCodeList
             _that.pFlag = '1'
           }
         })

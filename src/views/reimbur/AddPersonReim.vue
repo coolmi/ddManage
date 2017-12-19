@@ -91,6 +91,7 @@
         <v-search title="币种" :cdata="currencyList" v-model="formsData5.waersh" @on-hide="getProtypeInfo"></v-search>
         <x-input title="原币金额" v-if="currencyFlag === '1'" placeholder="请填写原币金额" :max=9 v-model="formsData5.wrbtrh"></x-input>
         <x-input title="汇率" v-if="currencyFlag === '1'" type="number" v-model="formsData5.kursfh"></x-input>
+        <v-search title="税码" v-if="pFlag === '1' && currencyFlag === '0'" :cdata="purchoList" v-model="formsData5.purchh" ></v-search>
         <x-input title="总金额"  v-if="currencyFlag === '1'" readonly v-model="amount5" ></x-input>
         <x-input title="总金额" v-if="currencyFlag === '0'" type="number" v-model="formsData5.dmbtrh"  @on-blur="changeAmountZ"></x-input>
         <cell v-if="cbFlag === '1'"><font color="#FF0000">超额{{ulfeeh}}</font></cell>
@@ -291,6 +292,7 @@
           edateh: moment().format('YYYY-MM-DD'),
           saddrh: '',
           waersh: 'CNY',
+          purchh: '',
           wrbtrh: '',
           kursfh: '',
           colnrh: '',
@@ -395,7 +397,7 @@
         ulfeeh: 0,
         ulfeee: 0,
         ExcessiveCb: '',
-        purchoList: '',
+        purchoList: [],
         pFlag: '0',
         yfList: [
           {
@@ -807,6 +809,7 @@
           if (this.formsData1.waers === 'CNY') {
             this.currencyFlag = '0'
             this.formsData1.kursf = '1'
+            this.getProtypeInfo()
           } else {
             this.currencyFlag = '1'
           }
@@ -841,6 +844,7 @@
           if (this.formsData2.waersc === 'CNY') {
             this.currencyFlag = '0'
             this.formsData2.kursfc = '1'
+            this.getProtypeInfo()
           } else {
             this.currencyFlag = '1'
           }
@@ -875,6 +879,8 @@
           if (this.formsData3.waerso === 'CNY') {
             this.currencyFlag = '0'
             this.formsData3.kursfo = '1'
+            this.getProtypeInfo()
+           // this.pFlag = '1'
           } else {
             this.currencyFlag = '1'
           }
@@ -902,6 +908,7 @@
           if (this.formsData4.waersm === 'CNY') {
             this.currencyFlag = '0'
             this.formsData4.kursfm = '1'
+            this.getProtypeInfo()
           } else {
             this.currencyFlag = '1'
           }
@@ -929,6 +936,7 @@
           if (this.formsData5.waersh === 'CNY') {
             this.currencyFlag = '0'
             this.formsData5.kursfh = '1'
+            this.getProtypeInfo()
           } else {
             this.currencyFlag = '1'
           }
@@ -957,6 +965,7 @@
           if (this.formsData6.waerst === 'CNY') {
             this.currencyFlag = '0'
             this.formsData6.kursft = '1'
+            this.getProtypeInfo()
           } else {
             this.currencyFlag = '1'
           }
@@ -984,6 +993,7 @@
           if (this.formsData7.waerse === 'CNY') {
             this.currencyFlag = '0'
             this.formsData7.kursfe = '1'
+            this.getProtypeInfo()
           } else {
             this.currencyFlag = '1'
           }
@@ -1010,6 +1020,7 @@
           if (this.formsData8.waersg === 'CNY') {
             this.currencyFlag = '0'
             this.formsData8.kursfg = '1'
+            this.getProtypeInfo()
           } else {
             this.currencyFlag = '1'
           }
@@ -1032,18 +1043,19 @@
         })
       }
     },
-    getTaxInfo() {
+  /*  getTaxInfo() {
       let _that = this
       let sparams = {
         burks: this.burks
       }
       api.getTaxCodeList(sparams, function (res) {
+        alert(JSON.stringify(res))
         if (res[0].isTaxPayer) {
           _that.purchoList = res.data.taxCodeList
           _that.pFlag = '1'
         }
       })
-    },
+    }, */
     // 获取项目号
     getitemnoInfo() {
       let mtypeClass = ''
@@ -1311,6 +1323,10 @@
       }
     },
     getProtypeInfo() {
+      let _that = this
+      let sparams = {
+        burks: this.burks
+      }
       if (this.checker === '1') {
         this.cbFlag = '0'
         this.formsData1.kursf = ''
@@ -1320,7 +1336,6 @@
         }
         if (this.formsData1.waers !== 'CNY') {
           this.currencyFlag = '1'
-          this.read = 'readonly'
         }
       }
       if (this.checker === '2') {
@@ -1331,7 +1346,6 @@
         }
         if (this.formsData2.waersc !== 'CNY') {
           this.currencyFlag = '1'
-          this.read = 'readonly'
         }
       }
       if (this.checker === '3') {
@@ -1342,9 +1356,13 @@
         }
         if (this.formsData3.waerso !== 'CNY') {
           this.currencyFlag = '1'
-          this.read = 'readonly'
         }
-        this.getTaxInfo()
+        api.getTaxCodeList(sparams, function (res) {
+          if (res[0].isTaxPayer) {
+            _that.purchoList = res.data.taxCodeList
+            _that.pFlag = '1'
+          }
+        })
       }
       if (this.checker === '4') {
         this.formsData4.kursfm = ''
@@ -1354,7 +1372,6 @@
         }
         if (this.formsData4.waersm !== 'CNY') {
           this.currencyFlag = '1'
-          this.read = 'readonly'
         }
       }
       if (this.checker === '5') {
@@ -1367,6 +1384,12 @@
           this.currencyFlag = '1'
           this.read = 'readonly'
         }
+        api.getTaxCodeList(sparams, function (res) {
+          if (res[0].isTaxPayer) {
+            _that.purchoList = res.data.taxCodeList
+            _that.pFlag = '1'
+          }
+        })
       }
       if (this.checker === '6') {
         this.formsData6.kursft = ''
@@ -1378,7 +1401,12 @@
           this.currencyFlag = '1'
           this.read = 'readonly'
         }
-        this.getTaxInfo()
+        api.getTaxCodeList(sparams, function (res) {
+          if (res[0].isTaxPayer) {
+            _that.purchoList = res.data.taxCodeList
+            _that.pFlag = '1'
+          }
+        })
       }
       if (this.checker === '7') {
         this.cbFlag = '0'

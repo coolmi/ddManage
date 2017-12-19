@@ -225,148 +225,153 @@
         })
       },
       addReserve(flag) {
-        if (this.forms.rbstype === '') {
-          whole.showTop('请选择报销类型')
-          return;
-        }
-        if (this.forms.postid === '') {
-          whole.showTop('请选择岗位')
-          return;
-        }
-        if (this.forms.protype === '') {
-          whole.showTop('请选择项目类型')
-          return;
-        }
-        if (this.forms.protype === '0') {
-          if (this.forms.burks === '') {
-            whole.showTop('请选择费用归集成本中心')
+        if (this.dataArray.length > 0) {
+          if (this.forms.rbstype === '') {
+            whole.showTop('请选择报销类型')
             return;
           }
-        }
-        if (this.forms.protype === '') {
-          whole.showTop('请选择项目类型')
-          return;
-        }
-        var cdburksname = dataUtils.getDescValue(this.burksList, this.forms.burks);
-        var cdkostlname = dataUtils.getDescValue(this.kostlList, this.forms.kostl);
-        var cdpostidname = dataUtils.getDescValue(this.positionList, this.forms.postid);
-        if (this.forms.protype === '通用项目') {
-          this.forms.protype = '0'
-        }
-        if (this.forms.protype === '专项项目') {
-          this.forms.protype = '1'
-        }
-        let parmas = {
-          feeApp: {
-            proc_inst_id: '',
-            gener: '',
-            repLLeaderGeneral: false,
-            bukrs: '',
-            userid: '',
-            syspostname: cdpostidname,
-            appid: '',
-            travleid: '',
-            username: '',
-            kostl: '',
-            bukrsAkostl: '',
-            reservconent: '',
-            sysdeptid: '',
-            appda: new Date().getTime(),
-            pernr: '',
-            outmonthstandard: '',
-            sd: '',
-            credentialinfor: '',
-            mindappda: '',
-            cdbukrsname: cdburksname,
-            businessistrue: false,
-            inoutbuget: '',
-            reserve: 0,
-            sysdeptname: '',
-            ltype: '',
-            sate: '',
-            zdgz: '',
-            twodepartrespon: false,
-            excess: false,
-            ed: '',
-            id: '',
-            excedstand: false,
-            pztxt: '',
-            standard: false,
-            sysbusinessunitid: '',
-            sysbusinessunitname: '',
-            cdkostlsname: cdkostlname,
-            numpg: 1,
-            notravle: this.forms.rbstype,
-            protype: this.forms.protype,
-            postid: this.forms.postid,
-            cdbukrs: this.forms.burks,
-            cdkostls: this.forms.kostl,
-            aufnr: this.forms.aufnr,
-            atrlnr: this.forms.atrlnr,
-            smemo: this.forms.instruction
-          },
-          afUser: {
-            sumfwbasf_valz: '',
-            telpr: '',
-            telnr: '',
-            bukrs: '',
-            userid: '',
-            appid: '',
-            userd: '',
-            sumcdmbtrf_valz: 0,
-            sumdmbtrf_valz: 0,
-            akostl: '',
-            pfach: '',
-            bukrsAkostl: '',
-            aktext: '',
-            gtelpr: '',
-            zzdbxjb: '',
-            pernr: '',
-            upostid: '',
-            orgeh: '',
-            upostname: '',
-            ename: '',
-            lifnr: '',
-            businessunitname: '',
-            pernr1: ''
-          },
-           data: this.dataArray
-        }
-        this.parmasOption = parmas;
-        let _that = this
-        if (flag === 0) {
-        api.getnextassigneeFeeAppURL(parmas, function (res) {
-          if (res) {
-            if (res.data.code) {
-              if (res.data.message) {
-                _that.message = res.data.message;
-                _that.showCon = true;
-              } else if (res.data.error) {
-                _that.showCon = false;
-                whole.showTop(res.data.error);
-              }
-            } else {
-              whole.showTop(res.data.message);
-              _that.$store.dispatch('clearPersonReim')
-              _that.$router.go(-1)
+          if (this.forms.postid === '') {
+            whole.showTop('请选择岗位')
+            return;
+          }
+          if (this.forms.protype === '') {
+            whole.showTop('请选择项目类型')
+            return;
+          }
+          if (this.forms.protype === '0') {
+            if (this.forms.burks === '') {
+              whole.showTop('请选择费用归集成本中心')
+              return;
             }
           }
-        })
-        }
-        if (flag === 1) {
-          api.saveFeeAppURL(parmas, function (res) {
-            if (res) {
-              if (res.data.code) {
-                 whole.showTop(res.data.message);
-                _that.$store.dispatch('clearPersonReim')
-                _that.$router.go(-1)
-              } else {
-                whole.showTop(res.data.message);
-                _that.$store.dispatch('clearPersonReim')
-                _that.$router.go(-1)
+          if (this.forms.protype === '') {
+            whole.showTop('请选择项目类型')
+            return;
+          }
+          var cdburksname = dataUtils.getDescValue(this.burksList, this.forms.burks);
+          var cdkostlname = dataUtils.getDescValue(this.kostlList, this.forms.kostl);
+          var cdpostidname = dataUtils.getDescValue(this.positionList, this.forms.postid);
+          if (this.forms.protype === '通用项目') {
+            this.forms.protype = '0'
+          }
+          if (this.forms.protype === '专项项目') {
+            this.forms.protype = '1'
+          }
+          let parmas = {
+            feeApp: {
+              proc_inst_id: '',
+              gener: '',
+              repLLeaderGeneral: false,
+              bukrs: '',
+              userid: '',
+              syspostname: cdpostidname,
+              appid: '',
+              travleid: '',
+              username: '',
+              kostl: '',
+              bukrsAkostl: '',
+              reservconent: '',
+              sysdeptid: '',
+              appda: new Date().getTime(),
+              pernr: '',
+              outmonthstandard: '',
+              sd: '',
+              credentialinfor: '',
+              mindappda: '',
+              cdbukrsname: cdburksname,
+              businessistrue: false,
+              inoutbuget: '',
+              reserve: 0,
+              sysdeptname: '',
+              ltype: '',
+              sate: '',
+              zdgz: '',
+              twodepartrespon: false,
+              excess: false,
+              ed: '',
+              id: '',
+              excedstand: false,
+              pztxt: '',
+              standard: false,
+              sysbusinessunitid: '',
+              sysbusinessunitname: '',
+              cdkostlsname: cdkostlname,
+              numpg: 1,
+              notravle: this.forms.rbstype,
+              protype: this.forms.protype,
+              postid: this.forms.postid,
+              cdbukrs: this.forms.burks,
+              cdkostls: this.forms.kostl,
+              aufnr: this.forms.aufnr,
+              atrlnr: this.forms.atrlnr,
+              smemo: this.forms.instruction
+            },
+            afUser: {
+              sumfwbasf_valz: '',
+              telpr: '',
+              telnr: '',
+              bukrs: '',
+              userid: '',
+              appid: '',
+              userd: '',
+              sumcdmbtrf_valz: 0,
+              sumdmbtrf_valz: 0,
+              akostl: '',
+              pfach: '',
+              bukrsAkostl: '',
+              aktext: '',
+              gtelpr: '',
+              zzdbxjb: '',
+              pernr: '',
+              upostid: '',
+              orgeh: '',
+              upostname: '',
+              ename: '',
+              lifnr: '',
+              businessunitname: '',
+              pernr1: ''
+            },
+            data: this.dataArray
+          }
+          this.parmasOption = parmas;
+          let _that = this
+          if (flag === 0) {
+            api.getnextassigneeFeeAppURL(parmas, function (res) {
+              if (res) {
+                if (res.data.code) {
+                  if (res.data.message) {
+                    _that.message = res.data.message;
+                    _that.showCon = true;
+                  } else if (res.data.error) {
+                    _that.showCon = false;
+                    whole.showTop(res.data.error);
+                  }
+                } else {
+                  whole.showTop(res.data.message);
+                  _that.$store.dispatch('clearPersonReim')
+                  _that.$router.go(-1)
+                }
               }
-            }
-          })
+            })
+          }
+          if (flag === 1) {
+            api.saveFeeAppURL(parmas, function (res) {
+              if (res) {
+                if (res.data.code) {
+                  whole.showTop(res.data.message);
+                  _that.$store.dispatch('clearPersonReim')
+                  _that.$router.go(-1)
+                } else {
+                  whole.showTop(res.data.message);
+                  _that.$store.dispatch('clearPersonReim')
+                  _that.$router.go(-1)
+                }
+              }
+            })
+          }
+        } else {
+          whole.showTop('请填写报销申请明细');
+          return;
         }
       },
       onConfirm () {

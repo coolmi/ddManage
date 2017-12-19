@@ -2,6 +2,9 @@
   <div>
     <group v-if="draftList.length > 0">
       <cell v-for="(item, appid) in draftList" :key="item.appid" :title="item.draftName" :inline-desc="item.appda | dateFormat" is-link @click.native="addBusinessTripOption(item)"></cell>
+      <infinite-loading v-if="draftList.length > 0" @infinite="getMoreDraftList">
+        <span slot="no-more">没有更多消息了</span>
+      </infinite-loading>
     </group>
   </div>
 </template>
@@ -9,15 +12,18 @@
 </style>
 <script>
 import {Group, Cell} from 'vux';
+import InfiniteLoading from 'vue-infinite-loading';
 import api from 'api' // 接口
 import ding from '@/lib/ding'
 export default {
   components: {
-    Group, Cell
+    Group, Cell, InfiniteLoading
   },
   data() {
     return {
-      draftList: []
+      draftList: [],
+      pageNo: 1,
+      pageSize: 20
     }
   },
   created() {
@@ -30,6 +36,25 @@ export default {
     this.startPush(); // 启动刷新
   },
   methods: {
+    getMoreDraftList($state) {
+      let _that = this;
+      _that.pageNo++
+      let params = {
+        pageNo: _that.pageNo,
+        pageSize: _that.pageSize
+      }
+      api.getDraftListURL(params, function (res) {
+        if (res) {
+          console.log(res.data.data.draftlist);
+          if (res.data.data.draftlist.length) {
+            _that.draftList = _that.draftList.concat(res.data.data.draftlist)
+            $state.loaded();
+          } else {
+            $state.complete();
+          }
+        }
+      })
+    },
     startPush() {
       let dd = window.dd;
       let _that = this;
@@ -49,8 +74,8 @@ export default {
         let _that = this;
         let params = {
           draftType: '',
-          pageNo: 1,
-          pageSize: 20
+          pageNo: _that.pageNo,
+          pageSize: _that.pageSize
         }
         api.getDraftListURL(params, function (res) {
           if (res) {

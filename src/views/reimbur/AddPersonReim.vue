@@ -19,8 +19,8 @@
       <group v-if="checker === '1'" :title="typeObj[checker]">
         <v-search title="交通方式" :cdata="trafficWaysList" v-model="formsData1.stype"></v-search>
         <v-search title="交通类型" :cdata="trafficTypeList" v-model="formsData1.mtype" @on-hide="getitemnoInfo()"></v-search>
-        <datetime v-model="formsData1.sdate" :start-date="systemDate" title="出发日期"></datetime>
-        <datetime v-model="formsData1.edate" :start-date="systemDate" title="到达日期"></datetime>
+        <calendar v-model="formsData1.sdate"  title="出发日期"></calendar>
+        <calendar v-model="formsData1.edate"  title="到达日期"></calendar>
         <v-search title="出发地" :cdata="tripPlace" :columns="1" v-model="formsData1.saddr" show-name></v-search>
         <v-search title="到达地" :cdata="tripPlace" :columns="1" v-model="formsData1.eaddr" show-name></v-search>
         <v-search title="币种" :cdata="currencyList" v-model="formsData1.waers" @on-hide="getProtypeInfo"></v-search>
@@ -39,14 +39,14 @@
         <div>
           <v-search title="交通方式" :cdata="trafficWaysList" v-model="formsData2.stypec"></v-search>
           <v-search title="交通类型" :cdata="trafficTypeList" v-model="formsData2.mtypec" @on-hide="getitemnoInfo()"></v-search>
-          <datetime v-model="formsData2.sdatec" :start-date="systemDate" title="出发日期"></datetime>
+          <calendar v-model="formsData2.sdatec"  title="出发日期"></calendar>
           <v-search title="出发地" :cdata="tripPlace" :columns="1" v-model="formsData2.saddrc" show-name></v-search>
           <v-search title="到达地" :cdata="tripPlace" :columns="1" v-model="formsData2.eaddrc" show-name></v-search>
           <v-search title="币种" :cdata="currencyList" v-model="formsData2.waersc" @on-hide="getProtypeInfo"></v-search>
           <x-input title="原币金额" v-if="currencyFlag === '1'" type="number" v-model="formsData2.wrbtrc"></x-input>
           <cell v-show="originalCurrency2" v-if="currencyFlag === '1'">{{originalCurrency2}}</cell>
           <x-input title="汇率" v-if="currencyFlag === '1'" type="number" v-model="formsData2.kursfc"></x-input>
-          <x-input title="金额"  v-if="currencyFlag === '1'" readonly v-model="amount2" @on-blur="changeAmountC"></x-input>
+          <x-input title="金额"  v-if="currencyFlag === '1'" readonly v-model="amount2" ></x-input>
           <x-input title="金额" v-if="currencyFlag === '0'" type="number" v-model="formsData2.dmbtrc" @on-blur="changeAmountC"></x-input>
           <cell v-if="cbFlag === '1'"><font color="#FF0000">超额{{ulfeec}}</font></cell>
           <v-search title="项目号" :cdata="colnrList" v-model="formsData2.colnrc"></v-search>
@@ -57,7 +57,7 @@
       </group>
       <group v-if="checker === '3'" :title="typeObj[checker]">
         <v-search title="办公费用类型" :cdata="OffTypeList" v-model="formsData3.stypeo" @on-hide="getitemnoInfo()"></v-search>
-        <datetime v-model="formsData3.sdateo" :start-date="systemDate" title="日期"></datetime>
+        <calendar v-model="formsData3.sdateo"  title="日期"></calendar>
         <v-search title="币种" :cdata="currencyList" v-model="formsData3.waerso" @on-hide="getProtypeInfo"></v-search>
         <x-input title="原币金额" v-if="currencyFlag === '1'" type="number" v-model="formsData3.wrbtro"></x-input>
         <cell v-show="originalCurrency3" v-if="currencyFlag === '1'">{{originalCurrency3}}</cell>
@@ -71,7 +71,7 @@
       </group>
       <group v-if="checker === '4'" :title="typeObj[checker]">
         <v-search title="餐费类型" :cdata="mealsList" v-model="formsData4.stypem" @on-hide="getitemnoInfo()"></v-search>
-        <datetime v-model="formsData4.sdatem" :start-date="systemDate" title="日期"></datetime>
+        <calendar v-model="formsData4.sdatem"  title="日期"></calendar>
         <v-search title="币种" :cdata="currencyList" v-model="formsData4.waersm" @on-hide="getProtypeInfo"></v-search>
         <x-input title="原币金额" v-if="currencyFlag === '1'" type="number" v-model="formsData4.wrbtrm"></x-input>
         <cell v-show="originalCurrency4" v-if="currencyFlag === '1'">{{originalCurrency4}}</cell>
@@ -86,8 +86,8 @@
       <group v-if="checker === '5'" :title="typeObj[checker]">
         <v-search title="住宿类型" :cdata="zslxList" v-model="formsData5.stypeh" @on-hide="getitemnoInfo()"></v-search>
         <v-search title="酒店地点" :cdata="tripPlace" v-model="formsData5.saddrh"></v-search>
-        <datetime v-model="formsData5.sdateh" :start-date="systemDate" title="入住日期"></datetime>
-        <datetime v-model="formsData5.edateh" :start-date="systemDate" title="退房日期"></datetime>
+        <calendar v-model="formsData5.sdateh"  title="入住日期"></calendar>
+        <calendar v-model="formsData5.edateh"  title="退房日期"></calendar>
         <v-search title="币种" :cdata="currencyList" v-model="formsData5.waersh" @on-hide="getProtypeInfo"></v-search>
         <x-input title="原币金额" v-if="currencyFlag === '1'" type="number" placeholder="请填写原币金额" :max=9 v-model="formsData5.wrbtrh"></x-input>
         <cell v-show="originalCurrency5" v-if="currencyFlag === '1'">{{originalCurrency5}}</cell>
@@ -134,7 +134,7 @@
       </group>
       <group v-if="checker === '8'" :title="typeObj[checker]">
         <v-search title="礼品费类型" :cdata="lplxList" v-model="formsData8.stypeg" @on-hide="getitemnoInfo()"></v-search>
-        <datetime v-model="formsData8.sdateg" :start-date="systemDate" title="发生日期"></datetime>
+        <calendar v-model="formsData8.sdateg"  title="发生日期"></calendar>
         <v-search title="币种" :cdata="currencyList" v-model="formsData8.waersg" @on-hide="getProtypeInfo"></v-search>
         <x-input title="原币金额" v-if="currencyFlag === '1'" type="number" placeholder="请填写原币金额" :max=9 v-model="formsData8.wrbtrg"></x-input>
         <cell v-show="originalCurrency8" v-if="currencyFlag === '1'">{{originalCurrency8}}</cell>
@@ -173,7 +173,8 @@
     Scroller,
     Cell,
     Checker,
-    CheckerItem
+    CheckerItem,
+    Calendar
   } from 'vux'
   import vSearch from '@/components/searchChecker';
   import dataUtils from '../../filters/dataUtils'
@@ -209,7 +210,8 @@
       Checker,
       Scroller,
       CheckerItem,
-      vSearch
+      vSearch,
+      Calendar
     },
     data() {
       return {
@@ -1439,7 +1441,7 @@
     changeAmount(value) {
       let params = {
         mtype_class: this.mtype_class,
-        mtype: this.mtype,
+        mtype: this.formsData1.stype,
         bukrs: this.burks,
         abroadis: this.currencyFlag,
         money: value,
@@ -1459,7 +1461,8 @@
     // 城市交通
     changeAmountC(value) {
       let params = {
-        mtype_class: this.mtype_class,
+        mtype_class: this.mtype,
+        mtype: this.formsData2.mtypec,
         bukrs: this.burks,
         abroadis: this.currencyFlag,
         money: value,

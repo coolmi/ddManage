@@ -3,7 +3,7 @@
     <group title="基本信息" label-width="7.5rem" value-align="left">
       <v-search title="报销类型" :cdata="rbsTypeList" v-model="forms.rbstype" @on-hide="changerbstype"></v-search>
       <v-search title="选择岗位" :cdata="positionList" v-model="forms.postid" @on-hide="getProtypeInfo"></v-search>
-      <x-input title="项目类型" v-model="forms.protype"></x-input>
+      <x-input title="项目类型" readonly v-model="forms.protype"></x-input>
       <v-search title="费用承担公司" :cdata="burksList" v-model="forms.burks" @on-hide="changeBurks"></v-search>
       <v-search title="费用归集成本中心"v-if="protype === '0'"  :cdata="kostlList" v-model="forms.kostl" ></v-search>
       <x-input title="专项内部订单号" v-if="protype === '1'"  v-model="forms.aufnr"></x-input>
@@ -201,7 +201,7 @@
             return;
           }
         }
-        if (this.forms.rbstype === '0') {
+         if (this.forms.rbstype === '0') {
           if (this.forms.atrlnr === '') {
             whole.showTop('请选择出差申请号')
             return;

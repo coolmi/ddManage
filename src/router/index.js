@@ -129,6 +129,7 @@ router.beforeEach((to, from, next) => {
 //     next(false)
 //   }
   if (dd.version === null && to.fullPath.indexOf('/cs') < 0) {
+    window.alert('请在钉钉手机端打开')
     next(false)
   } else {
     if (to.meta.ddConfig) { // 如果ddConfig为ture 则进行授权jsAPI

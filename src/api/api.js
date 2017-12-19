@@ -12,7 +12,8 @@ export default {
    * @param cb
    */
   getDebugLogin: function (code, itcode, cb) {
-    axios.get('/dingding/es/login?code=' + code + '&debugitcode=' + itcode)
+    let dingtalkCode = ding.parseParam(window.location.href, 'dingtalk_code') || ding.getLocation(AUTH_DINGTALKCODE)
+    axios.get('/dingding/es/login?code=' + code + '&debugitcode=' + itcode + '&dingtalk_code=' + dingtalkCode)
       .then((res) => {
         cb(res);
       }).catch((error) => {

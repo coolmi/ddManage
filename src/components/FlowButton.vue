@@ -88,8 +88,8 @@
 
   .flow_footer {
     width: 100%;
-    height: @flow_button_footer_height;
-    line-height: @flow_button_footer_height;
+    /*height: @flow_button_footer_height;*/
+    /*line-height: @flow_button_footer_height;*/
     padding-top: 10px;
     padding-bottom: 20px;
     position: fixed;

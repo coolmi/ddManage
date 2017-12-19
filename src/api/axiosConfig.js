@@ -7,7 +7,7 @@ import DEM from '@/lib/dingErrMessage'
 import whole from '@/lib/whole'
 
 // let dd = window.dd
-axios.defaults.timeout = 15000;
+axios.defaults.timeout = 25000;
 axios.defaults.headers.post['Content-Type'] = 'application/json;charset=UTF-8';
 // axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 axios.defaults.baseURL = baseConfig.baseURL;

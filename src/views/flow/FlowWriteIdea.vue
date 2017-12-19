@@ -305,6 +305,7 @@
               isend = false;
             }
             let alertstr = data.msg || data.message;
+            dataStr.v_S_userchoiceposition = ''
             if (alertstr) {
               if ((selectPerson_.selectAble && !selectPerson_.beforPop) && _that.btype === 'tj' && (isend !== 'true' || isend === true || isjiaqian_)) {
                 let confirmConfig = {

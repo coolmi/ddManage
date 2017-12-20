@@ -143,6 +143,8 @@
         dataStr.issignning = flowParams.issignningA_;
         dataStr.issignplushandle = flowParams.issignplushandleA;
         dataStr.params = flowParams.editArr || {}; // 补填字段
+        dataStr.v_S_userchoiceposition = ''
+        dataStr.v_S_ownerassignee = ''
         if (_that.btype === 'tj') { // 提交
           dataStr.taskId = flowParams.TASK_ID_;
           dataStr.ctype = 'default';
@@ -171,7 +173,7 @@
                         return;
                       }
                       let beAsigners = res.data.data.postids
-                      dataStr.v_S_userchoiceposition = beAsigners
+                      dataStr.v_S_ownerassignee = beAsigners
                       _that.goNextAssigne(dataStr, selectPerson_, isjiaqian_);
                     });
                   }
@@ -305,7 +307,6 @@
               isend = false;
             }
             let alertstr = data.msg || data.message;
-            dataStr.v_S_userchoiceposition = ''
             if (alertstr) {
               if ((selectPerson_.selectAble && !selectPerson_.beforPop) && _that.btype === 'tj' && (isend !== 'true' || isend === true || isjiaqian_)) {
                 let confirmConfig = {

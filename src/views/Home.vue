@@ -62,7 +62,8 @@
             {{item.START_USER_NAME || item.start_user_name | getName}}
           </div>
         </cell>
-        <infinite-loading v-if="yblList.length > 0" @infinite="yblinfiniteHandler"></infinite-loading>
+        <infinite-loading v-if="yblList.length > 0" @infinite="yblinfiniteHandler">
+        </infinite-loading>
       </group>
       <div v-if="(flowType === 2 || flowType === '2') && ifybl === 1" class="emptyDiv">
         <img src="/static/images/zwsj.png">
@@ -80,7 +81,8 @@
             {{yjscurrentInfo.currentUsername | getName}}
           </div>
         </cell>
-        <infinite-loading v-if="yjsList.length > 0" @infinite="yjsinfiniteHandler"></infinite-loading>
+        <infinite-loading v-if="yjsList.length > 0" @infinite="yjsinfiniteHandler">
+        </infinite-loading>
       </group>
       <div v-if="(flowType === 3 || flowType === '3') && ifyjs === 1" class="emptyDiv">
         <img src="/static/images/zwsj.png">
@@ -157,10 +159,12 @@
 //      }
       let _that = this;
       this.$navigation.on('back', (to, from) => {
-        _that.pageNo = 1;
-        _that.doNext(_that.index)
-        _that.selectedIndex = _that.index
-        _that.startPush(); // 启动刷新
+        if (to.route.path === '/home') {
+          _that.pageNo = 1;
+          _that.doNext(_that.index)
+          _that.selectedIndex = _that.index
+          _that.startPush(); // 启动刷新
+        }
       })
       if (this.getLoginStatus) {
         this.pageNo = 1;
@@ -182,8 +186,12 @@
           pageSize: _that.pageSize
         }
         flowRU.getYBLList(params, function (res) {
-          _that.yblList = _that.yblList.concat(res.page.list)
-          $state.loaded();
+          if (res.page.list.length > 0) {
+            _that.yblList = _that.yblList.concat(res.page.list)
+            $state.loaded();
+          } else {
+            $state.complete();
+          }
         })
       },
       yjsinfiniteHandler($state) {
@@ -194,9 +202,13 @@
           pageSize: _that.pageSize
         }
         flowRU.getYJSList(params, function (res) {
-          _that.yjsList = _that.yjsList.concat(res.page.list)
-          _that.yjscurrentInfo = res
-          $state.loaded();
+          if (res.page.list.length > 0) {
+            _that.yjsList = _that.yjsList.concat(res.page.list)
+            _that.yjscurrentInfo = res
+            $state.loaded();
+          } else {
+            $state.complete();
+          }
         })
       },
       startPush() {

@@ -3,7 +3,7 @@
     <div class="littlebox">
       <div class="tiptitle">
         <div class="titlep">
-          <p class="titlelarge">审批</p>
+          <p class="titlelarge">我的常用</p>
         </div>
         <p v-show="!editState" class="tips">（按住拖动调整排序）</p>
         <p class="tipbtn" @click="dragg">{{editText}}</p>
@@ -20,7 +20,21 @@
         </transition-group>
       </draggable>
       <div class="tiptitle tiptwo">
-        <p class="titlep">发起</p>
+        <p class="titlep">新闻公告</p>
+      </div>
+      <draggable class="draggbox" v-model="list2"
+                 :options="dragOption">
+        <transition-group name="list2">
+          <div v-for="element in list2" :key="element.id" class="draggable" @click="clickLink(element)">
+            <div class="itembox" :class="flag">
+              <img :src="element.url" class="appimg">
+              <p class="appinfo">{{element.name}}</p>
+            </div>
+          </div>
+        </transition-group>
+      </draggable>
+      <div class="tiptitle tiptwo">
+        <p class="titlep">行政办公</p>
       </div>
       <draggable class="draggbox" v-model="list3"
                  :options="dragOption">
@@ -59,6 +73,29 @@
             type: 'bd'
           }
         ],
+        list2: [
+          {
+            id: 7,
+            name: '新闻',
+            url: ('static/images/xinw.png'),
+            link: '/saveList',
+            type: 'wl'
+          },
+          {
+            id: 8,
+            name: '公文',
+            url: ('static/images/gongw.png'),
+            link: '/saveList',
+            type: 'wl'
+          },
+          {
+            id: 9,
+            name: '公告',
+            url: ('static/images/gongg.png'),
+            link: '/saveList',
+            type: 'wl'
+          }
+        ],
         list3: [
           {
             id: 2,
@@ -90,9 +127,9 @@
           },
           {
             id: 6,
-            name: '人事',
-            url: ('static/logo.png'),
-            link: '',
+            name: '我保存的',
+            url: ('static/images/bcd.png'),
+            link: '/saveList',
             type: 'bd'
           }
         ],
@@ -118,7 +155,7 @@
     },
     created() {
       this.getUserid();
-      this.setRight(); // 设置右上角按钮
+//      this.setRight(); // 设置右上角按钮
     },
     methods: {
       getUserid() {
@@ -257,7 +294,7 @@
 
   .tiptitle {
     width: 100%;
-    height: 30px;
+    height: 50px;
     /*border: 1px solid #e5e5e5;*/
     border-bottom: 1px solid #f1f1f1;
     display: flex;
@@ -272,11 +309,11 @@
 
   .titlep {
     width: 60%;
-    height: 30px;
+    height: 50px;
     padding-left: 20px;
     font-size: 16px;
     color: #2a374a;
-    line-height: 30px;
+    line-height: 50px;
   }
 
   .titlelarge {
@@ -297,8 +334,8 @@
     font-size: 12px;
     color: #999999;
     position: absolute;
-    left: 80px;
-    top: 15px;
+    right: 60px;
+    top: 25px;
   }
 
   .appimg {

@@ -91,16 +91,19 @@ export default {
   created() {
     console.log(this.formsData);
     let saveParams = this.$route.query.saveParams;
-    if (saveParams !== undefined) {
+    if (saveParams) {
       this.$store.dispatch('clearReserve')
       this.draftData(saveParams)
-    }
-    let flag = this.$route.query.flag;
-    if (flag === 'save') {
+    } else {
       this.$store.dispatch('clearReserve')
-      console.log('save');
       this.validateUserData();
     }
+    // let flag = this.$route.query.flag;
+    // if (flag === 'save') {
+    //   this.$store.dispatch('clearReserve')
+    //   console.log('save');
+    //   this.validateUserData();
+    // }
     this.getBaseData() // 请求部门和费用承担公司
     // this.setData() // 填写的时候回退保存值
     if (this.forms.postid !== '' && this.forms.cdbukrs !== '') {

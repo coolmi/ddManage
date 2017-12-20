@@ -6,6 +6,7 @@
         <span slot="no-more">没有更多消息了</span>
       </infinite-loading>
     </group>
+    <p v-if="draftList.length === 0" style="text-align: center;margin-top: 10px;">暂无数据</p>
   </div>
 </template>
 <style scoped lang="less" type="text/less">
@@ -30,6 +31,7 @@ export default {
     let _that = this;
     this.$navigation.on('back', (to, from) => {
       if (to.route.path === '/saveList') {
+        _that.pageNo = 1;
         _that.doNext();
         _that.startPush(); // 启动刷新
       }

@@ -9,7 +9,7 @@
         <p class="tipbtn" @click="dragg">{{editText}}</p>
       </div>
       <draggable class="draggbox" v-model="list1"
-                 :options="dragOption">
+                 :options="dragOption"  :move="getdata" @update="datadragEnd">
         <transition-group name="list1" min-height="50px">
           <div v-for="element in list1" :key="element.id" class="draggable" @click="clickLink(element)">
             <div class="itembox" :class="flag">
@@ -217,9 +217,21 @@
         }
       },
       dragg() {
+        alert('1222')
         this.editState = !this.editState
         this.flag = this.editState ? 'bordernone' : 'dashedline'
         this.editText = this.editState ? '编辑' : '完成'
+        alert('12121212')
+      },
+      getdata(evt) {
+        console.log(evt.draggedContext.element.id)
+      },
+      datadragEnd (evt) {
+        console.log('拖动前的索引 :' + evt.oldIndex)
+        console.log('拖动后的索引 :' + evt.newIndex)
+        let nIndex = evt.newIndex
+        console.log(nIndex)
+        console.log(this.tags)
       },
       disabled: true,
       draggable: false
@@ -243,14 +255,14 @@
   }
 
   .draggable {
-    width: 33.3%;
+    width: 25%;
     height: 100px;
     display: flex;
     flex-direction: column;
     justify-content: space-around;
     align-items: center;
     margin-top: 15px;
-    /*border: 1px solid #E5E5E5;*/
+    border:1px solid red;
   }
 
   .itembox {
@@ -346,5 +358,6 @@
     margin-top: 5px;
     font-size: 14px;
     color: #2a374a;
+    font-family: PingFangSC-Regular;
   }
 </style>

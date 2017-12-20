@@ -7,7 +7,6 @@
       <v-search title="费用承担公司" :cdata="burksList" v-model="forms.burks" @on-hide="changeBurks"></v-search>
       <v-search title="费用归集成本中心"v-if="protype === '0'"  :cdata="kostlList" v-model="forms.kostl" ></v-search>
       <x-input title="专项内部订单号" v-if="protype === '1'"  v-model="forms.aufnr"></x-input>
-    <!--  <x-input title="附件数" v-model="forms.attach"></x-input>-->
       <v-search title="出差申请单号" v-if="show === '0'" :cdata="travelList" v-model="forms.atrlnr" ></v-search>
       <x-textarea title="说明" v-model="forms.instruction" ></x-textarea>
     </group>
@@ -65,7 +64,8 @@
           atrlnr: '',
           attach: '',
           instruction: '',
-          aufnr: ''
+          aufnr: '',
+          appid: ''
         },
         positionList: [],
         rbsTypeList: [
@@ -104,6 +104,14 @@
     },
 
     created() {
+  //  this.$navigation.on('back', (to, from) => {
+      if (this.$route.query.saveParams) {
+      let saveParams = this.$route.query.saveParams;
+      this.draftData(saveParams)
+        this.$store.dispatch('clearPersonReim')
+      } else {
+        this.$store.dispatch('clearPersonReim')
+      }
     this.$navigation.on('back', (to, from) => {
     var data = dataUtils.getFormData(this.formsData);
     this.dataArray.push(data)
@@ -213,17 +221,6 @@
         }
         this.$router.push({path: '/addPreim', query: {formsData: info}})
       },
-     /* setData() {
-        let forms = this._data.forms;
-        let _that = this;
-        Object.keys(forms).forEach(key => {
-          if (_.isArray(_that.forms[key])) {
-            _that.forms[key][0] = _that.infos[key]
-          } else {
-            _that.forms[key] = _that.infos[key]
-          }
-        })
-      }, */
       addReserve(flag) {
         if (this.dataArray.length > 0) {
           if (this.forms.rbstype === '') {
@@ -337,8 +334,7 @@
           let _that = this
           if (flag === 0) {
             api.getnextassigneeFeeAppURL(parmas, function (res) {
-              if (res) {
-                if (res.data.code) {
+                if (res) {
                   if (res.data.message) {
                     _that.message = res.data.message;
                     _that.showCon = true;
@@ -351,7 +347,6 @@
                   _that.$store.dispatch('clearPersonReim')
                   _that.$router.go(-1)
                 }
-              }
             })
           }
           if (flag === 1) {
@@ -387,6 +382,96 @@
               _that.$store.dispatch('clearPersonReim')
               _that.$router.go(-1)
             }
+          }
+        })
+      },
+      // 获取保存信息修改信息
+      draftData(saveParams) {
+        let params = {
+          appid: saveParams.appid,
+          draftType: saveParams.draftType
+        }
+        let _that = this;
+        api.getDraftDataByIdURL(params, function (res) {
+          if (res) {
+            let draftlistData = res.data.data.draftlist;
+            if (draftlistData.feeApp.protype === '0') {
+              draftlistData.feeApp.protype = '通用项目'
+            }
+            if (draftlistData.feeApp.protype === '1') {
+              draftlistData.feeApp.protype = '专项项目'
+            }
+            _that.forms.postid = draftlistData.feeApp.postid;
+            _that.forms.rbstype = draftlistData.feeApp.notravle;
+            _that.forms.burks = draftlistData.feeApp.cdbukrs;
+            _that.forms.protype = draftlistData.feeApp.protype;
+            _that.forms.kostl = draftlistData.feeApp.cdkostls;
+            _that.forms.appid = draftlistData.feeApp.appid;
+            _that.forms.aufnr = draftlistData.feeApp.aufnr;
+            _that.forms.atrlnr = draftlistData.feeApp.atrlnr;
+            _that.forms.instruction = draftlistData.feeApp.smemo
+            if (draftlistData.ltrad) {
+              for (let i = 0; i < draftlistData.ltrad.length; i++) {
+                draftlistData.ltrad[i].type = '长途交通'
+                _that.$store.dispatch('addPersonReim', draftlistData.ltrad[i])
+              }
+            }
+            if (draftlistData.citytrad) {
+              for (let i = 0; i < draftlistData.citytrad.length; i++) {
+                draftlistData.citytrad[i].type = '市内交通'
+                _that.$store.dispatch('addPersonReim', draftlistData.citytrad[i])
+              }
+            }
+            if (draftlistData.officecost) {
+              for (let i = 0; i < draftlistData.officecost.length; i++) {
+                draftlistData.officecost[i].type = '办公费用'
+                _that.$store.dispatch('addPersonReim', draftlistData.officecost[i])
+              }
+            }
+            if (draftlistData.mealfee) {
+              for (let i = 0; i < draftlistData.mealfee.length; i++) {
+                draftlistData.mealfee[i].type = '餐费'
+                _that.$store.dispatch('addPersonReim', draftlistData.mealfee[i])
+              }
+            }
+            if (draftlistData.hotelexpense) {
+              for (let i = 0; i < draftlistData.hotelexpense.length; i++) {
+                draftlistData.hotelexpense[i].type = '住宿及餐补'
+                _that.$store.dispatch('addPersonReim', draftlistData.hotelexpense[i])
+              }
+            }
+            if (draftlistData.train) {
+              for (let i = 0; i < draftlistData.train.length; i++) {
+                draftlistData.hotelexpense[i].type = '培训费'
+                _that.$store.dispatch('addPersonReim', draftlistData.train[i])
+              }
+            }
+            if (draftlistData.telnet) {
+              for (let i = 0; i < draftlistData.telnet.length; i++) {
+                draftlistData.telnet[i].type = '通讯费'
+                _that.$store.dispatch('addPersonReim', draftlistData.telnet[i])
+              }
+            }
+            if (draftlistData.giftfee) {
+              for (let i = 0; i < draftlistData.giftfee.length; i++) {
+                draftlistData.giftfee[i].type = '礼品费'
+                _that.$store.dispatch('addPersonReim', draftlistData.giftfee[i])
+              }
+            }
+            if (draftlistData.electronic) {
+              for (let i = 0; i < draftlistData.electronic.length; i++) {
+                draftlistData.electronic[i].type = '电子发票'
+                _that.$store.dispatch('addPersonReim', draftlistData.electronic[i])
+              }
+            }
+           // _that.id = draftlistData.depositApp.id;
+           /*  draftlistData.resegs.map(function (item) {
+              item.type = 'byj'
+              item.field = 'fwbas'
+              _that.$store.dispatch('addReserve', item)
+            }); */
+            _that.changeBurks(_that.forms.postid, _that.forms.cdbukrs)
+            _that.changeDepart(_that.forms.postid, _that.forms.cdbukrs)
           }
         })
       }

@@ -99,6 +99,9 @@ export default {
       } else if (data.draftType === 'depositApp') {
         this.$router.push({path: '/Reserve', query: {saveParams: saveParams}})
       }
+      if (data.draftType === 'reimburse') {
+        this.$router.push({path: '/preim', query: {saveParams: saveParams}})
+      }
     }
   }
 }

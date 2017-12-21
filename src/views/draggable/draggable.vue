@@ -9,7 +9,7 @@
         <p class="tipbtn" @click="dragg">{{editText}}</p>
       </div>
       <draggable class="draggbox" v-model="list1"
-                 :options="dragOption"  :move="getdata" @update="datadragEnd">
+                 :options="dragOption">
         <transition-group name="list1" min-height="50px">
           <div v-for="element in list1" :key="element.id" class="draggable" @click="clickLink(element)">
             <div class="itembox" :class="flag">
@@ -78,21 +78,28 @@
             id: 7,
             name: '新闻',
             url: ('static/images/xinw.png'),
-            link: '/saveList',
+            link: 'http://dingtalk.gmkholdings.com:8081',
             type: 'wl'
           },
           {
             id: 8,
             name: '公文',
             url: ('static/images/gongw.png'),
-            link: '/saveList',
+            link: 'http://dingtalk.gmkholdings.com:8081/gw',
             type: 'wl'
           },
           {
             id: 9,
             name: '公告',
             url: ('static/images/gongg.png'),
-            link: '/saveList',
+            link: 'http://dingtalk.gmkholdings.com:8081/gg',
+            type: 'wl'
+          },
+          {
+            id: 9,
+            name: '集团官网',
+            url: ('static/images/guanw.png'),
+            link: 'http://www.gmkholdings.com',
             type: 'wl'
           }
         ],
@@ -101,7 +108,7 @@
             id: 2,
             name: '会议室',
             url: ('static/images/hys.png'),
-            link: 'http://10.5.1.253:10086',
+            link: 'http://dingtalk.gmkholdings.com:8082',
             type: 'wl'
           },
           {
@@ -127,11 +134,18 @@
           },
           {
             id: 6,
-            name: '我保存的',
-            url: ('static/images/bcd.png'),
-            link: '/saveList',
-            type: 'bd'
+            name: '会议纪要',
+            url: ('static/images/hyjy.png'),
+            link: 'http://mm.gmkholdings.com',
+            type: 'wl'
           }
+//          {
+//            id: 6,
+//            name: '我保存的',
+//            url: ('static/images/bcd.png'),
+//            link: '/saveList',
+//            type: 'bd'
+//          }
         ],
         flag: '',
         editText: '编辑'
@@ -213,25 +227,21 @@
           window.location.href = 'dingtalk://dingtalkclient/page/link?url=' + encodeURI(baseConfig.baseURL + path + '?dingtalk_code=' + dingtalkCode)
         } else if (element.type === 'wl') {
           let path = element.link
-          window.location.href = 'dingtalk://dingtalkclient/page/link?url=' + encodeURI(path)
+          let dd = window.dd;
+          dd.biz.util.openLink({
+            url: path, // 要打开链接的地址
+            onSuccess: function(result) {
+
+            },
+            onFail: function(err) {}
+          })
+//          window.location.href = 'dingtalk://dingtalkclient/page/link?url=' + encodeURI(path)
         }
       },
       dragg() {
-        alert('1222')
         this.editState = !this.editState
         this.flag = this.editState ? 'bordernone' : 'dashedline'
         this.editText = this.editState ? '编辑' : '完成'
-        alert('12121212')
-      },
-      getdata(evt) {
-        console.log(evt.draggedContext.element.id)
-      },
-      datadragEnd (evt) {
-        console.log('拖动前的索引 :' + evt.oldIndex)
-        console.log('拖动后的索引 :' + evt.newIndex)
-        let nIndex = evt.newIndex
-        console.log(nIndex)
-        console.log(this.tags)
       },
       disabled: true,
       draggable: false
@@ -262,7 +272,7 @@
     justify-content: space-around;
     align-items: center;
     margin-top: 15px;
-    border:1px solid red;
+    /*border:1px solid red;*/
   }
 
   .itembox {

@@ -4,7 +4,8 @@
       <v-search title="选择岗位" :cdata="positionList" v-model="forms.postid"></v-search>
       <v-search title="费用承担公司" :cdata="burkList" v-model="forms.cdbukrs"></v-search>
       <v-search title="费用归集成本中心" :noticeDesc="noticeDesc" :cdata="kostlList" v-model="forms.cdkostls" @on-show="changeBurks"></v-search>
-      <v-search title="费用所属事业部" :noticeDesc="noticeDesc" :cdata="departments" v-model="forms.businessunitid" @on-show="changeDepart"></v-search>
+      <cell v-if="showSelect" title="请选择专项负责人" is-link @click.native="selectPerson">{{m_zxfzrnm}}</cell>
+      <v-search v-if="showDepart" title="费用所属事业部" :noticeDesc="noticeDesc" :cdata="departments" v-model="forms.businessunitid" @on-show="changeDepart"></v-search>
       <cell v-if="formsData.length > 0" title="汇总">{{byjsum[0].sum}}</cell>
     </group>
     <sticky>
@@ -40,6 +41,7 @@
 import {Group, Sticky, Box, XButton, Scroller, Cell, Flexbox, FlexboxItem, Confirm, TransferDomDirective as TransferDom} from 'vux';
 import vSearch from '@/components/searchChecker';
 import api from 'api';
+import ding from '@/lib/ding'
 import whole from '@/lib/whole'
 import {mapGetters} from 'vuex'
 import dataUtils from '../../filters/dataUtils' // 工具类
@@ -66,7 +68,11 @@ export default {
       burkList: [],
       kostlList: [],
       departments: [],
-      parmasOption: {}
+      parmasOption: {},
+      m_zxfzrid: '',
+      m_zxfzrnm: '',
+      showSelectOption: false,
+      showDepartOption: false
     }
   },
   computed: {
@@ -86,6 +92,26 @@ export default {
     byjsum: function () {
       let baseType = [{type: 'byj', field: 'fwbas'}];
       return dataUtils.getSummary(this.formsData, baseType)
+    },
+    showSelect: function () {
+      let option = false
+      this.formsData.map(function (item) {
+        if (item.stype.toString() === '专项') {
+          option = true
+        }
+      });
+      this.showSelectOption = option;
+      return option;
+    },
+    showDepart: function () {
+      let option = false
+      this.formsData.map(function (item) {
+        if (item.stype.toString() === '人力资源') {
+          option = true
+        }
+      });
+      this.showDepartOption = option;
+      return option;
     }
   },
   created() {
@@ -218,6 +244,43 @@ export default {
         whole.showTop('请选择费用承担公司')
       }
     },
+    selectPerson() {
+      let _that = this;
+      let dd = window.dd;
+      dd.ready(function () {
+              dd.biz.contact.complexPicker({
+                title: '选择人员并提交',
+                corpId: ding.getItemInLocation().corpId || ding.CORPID,
+                multiple: true,
+                limitTips: '请选择要提交给的人员',
+                maxUsers: 1,
+                appId: 126759727,
+                permissionType: 'GLOBAL',
+                responseUserOnly: false,
+                onSuccess: function (result) {
+                  console.log(result);
+                  if (result.users.length > 0) {
+                    let ddid = result.users[0].emplId
+                    _that.m_zxfzrnm = result.users[0].name;
+                    let cparams = {
+                      ddid: [ddid]
+                    }
+                    api.getMPostidByDdid(cparams, function (res) {
+                      if (res.data.data && res.data.data.error !== undefined) {
+                        whole.showTop('无法获取此人的岗位，请联系HR人员');
+                        return;
+                      }
+                      let beAsigners = res.data.data.postids
+                      _that.m_zxfzrid = 'S' + beAsigners;
+                    });
+                  }
+                },
+                onFail: function (err) {
+                  console.log(err)
+                }
+              });
+            });
+    },
     addReserve(flag) {
       if (this.forms.postid === '') {
         whole.showTop('请选择岗位')
@@ -231,9 +294,17 @@ export default {
         whole.showTop('请选择费用归集成本中心')
         return;
       }
-      if (this.forms.businessunitid === '') {
-        whole.showTop('费用所属事业部')
-        return;
+      if (this.showDepartOption) {
+        if (this.forms.businessunitid === '') {
+          whole.showTop('请选择费用所属事业部')
+          return;
+        }
+      }
+      if (this.showSelectOption) {
+        if (this.m_zxfzrnm === '') {
+          whole.showTop('请选择专项负责人')
+          return;
+        }
       }
       var cdbukrsname = dataUtils.getDescValue(this.burkList, this.forms.cdbukrs);
       var cdkostlsname = dataUtils.getDescValue(this.kostlList, this.forms.cdkostls);
@@ -270,7 +341,9 @@ export default {
           cdkostls: this.forms.cdkostls,
           cdkostlsname: cdkostlsname,
           businessunitid: this.forms.businessunitid,
-          businessunitname: businessunitname
+          businessunitname: businessunitname,
+          m_zxfzrnm: this.m_zxfzrnm,
+          m_zxfzrid: this.m_zxfzrid
         },
         resegs: demoArray
       }

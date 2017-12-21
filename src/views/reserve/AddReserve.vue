@@ -71,7 +71,6 @@ export default {
       };
       api.getReserveSubData(params, function (res) {
         if (res) {
-          console.log(res);
           // _that.waerslist = dataUtils.getListValue(res.waerslist) // 币种类型
           _that.waerslist = res.waerslist // 币种类型
           // _that.fundTypeList = dataUtils.getListValue(res.fundTypeList) // 备用金类型

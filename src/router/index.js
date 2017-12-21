@@ -46,7 +46,7 @@ const router = new Router({
     {
       path: '/reserve',
       component: require('@/views/reserve/Reserve'),
-      meta: {title: '备用金申请'}
+      meta: {title: '备用金申请', ddConfig: true}
     },
     {
       path: '/addReserve',

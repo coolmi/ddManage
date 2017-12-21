@@ -9,6 +9,7 @@
       <x-input title="专项内部订单号" v-if="protype === '1'"  v-model="forms.aufnr"></x-input>
       <v-search title="出差申请单号" v-if="show === '0'" :cdata="travelList" v-model="forms.atrlnr" ></v-search>
       <x-textarea title="说明" v-model="forms.instruction" ></x-textarea>
+      <x-switch  v-if="reimsum.length > 0" title="汇总" v-model="showP"></x-switch>
     </group>
     <sticky :offset="50">
       <box gap="10px 10px">
@@ -18,6 +19,16 @@
     <group title="员工报销申请列表" v-if="formsData.length > 0" style="margin-bottom: 60px;">
       <cell v-for="d in formsData" :key="d.type" :title="d.type" is-link @click.native="addPreim(d)"></cell>
     </group>
+    <div v-transfer-dom>
+      <popup v-model="showP" @on-hide="log('hide')" @on-show="log('show')">
+        <div class="popup0">
+          <group>
+            <cell v-if="reimsum.length > 0" v-for="c in reimsum" :title="c.type" :key="c.type" >{{c.sum}}</cell>
+            <cell  title="汇总" key="" >{{sum}}</cell>
+          </group>
+        </div>
+      </popup>
+    </div>
     <flexbox class="footerButton">
       <flexbox-item class="vux-1px-r" @click.native="addReserve(0)" style="color:#00B705">提交</flexbox-item>
       <flexbox-item @click.native="addReserve(1)" style="color:#FF8519">保存</flexbox-item>
@@ -35,7 +46,7 @@
 </template>
 
 <script>
-  import {Box, XButton, PopupPicker, XInput, XTextarea, Group, Cell, FlexboxItem, Flexbox, Sticky, Confirm, TransferDomDirective as TransferDom} from 'vux'
+  import {Box, XButton, PopupPicker, XInput, XTextarea, Group, Cell, FlexboxItem, Flexbox, Sticky, Confirm, Popup, XSwitch, TransferDomDirective as TransferDom} from 'vux'
   import vSearch from '@/components/searchChecker';
   import api from 'api'
   import {mapGetters} from 'vuex'
@@ -48,7 +59,7 @@
       TransferDom
     },
     components: {
-      Box, XButton, PopupPicker, XInput, XTextarea, Group, Cell, FlexboxItem, Flexbox, Sticky, vSearch, Confirm
+      Box, XButton, PopupPicker, XInput, XTextarea, Group, Cell, FlexboxItem, Flexbox, Sticky, vSearch, Confirm, Popup, XSwitch
     },
     data() {
       return {
@@ -67,7 +78,10 @@
           aufnr: '',
           appid: ''
         },
+        showP: false,
+        baseType: [],
         positionList: [],
+        sumList: [],
         rbsTypeList: [
           {
             value: '差旅',
@@ -83,7 +97,9 @@
         kostlList: [],
         dataArray: [],
         formsDataArray: [],
+        res: [],
         travelList: [],
+        sumData: [],
         protype: '',
         show: '1'
       }
@@ -92,7 +108,35 @@
       ...mapGetters({
         formsData: 'getPersonReimFroms'
        // infos: 'getReserveInfos'
-      })
+      }),
+    reimsum: function () {
+      let type = ''
+      if (this.formsData.length > 0) {
+        for (let i = this.formsData.length - 1; i < this.formsData.length; i++) {
+          type = {type: this.formsData[this.formsData.length - 1].type, field: this.formsData[this.formsData.length - 1].field};
+        }
+        this.baseType.push(type)
+        this.res = [this.baseType[0]];
+        for (let i = 1; i < this.baseType.length; i++) {
+          if (this.baseType[i].type !== this.res[this.res.length - 1].type) {
+            this.res.push(this.baseType[i]);
+          }
+        }
+        this.sumList = dataUtils.getSummary(this.formsData, this.res)
+        return this.sumList
+      } else {
+        return ''
+      }
+    },
+    sum: function () {
+      let sumNumber = 0
+      if (this.sumList.length > 0) {
+        for (let i = 0; i < this.sumList.length; i++) {
+          sumNumber = sumNumber + this.sumList[i].sum
+        }
+      }
+      return sumNumber
+    }
     },
     watch: {
      // positionList: function (val) {

@@ -16,6 +16,9 @@
          <!-- <checker-item value="10">{{typeObj[10]}}</checker-item>-->
         </checker>
       </group>
+      <group v-if="checker === ''" title="">
+        <cell title="请选择报销类型..."></cell>
+      </group>
       <group v-if="checker === '1'" :title="typeObj[checker]">
         <v-search title="交通方式" :cdata="trafficWaysList" v-model="formsData1.stype"></v-search>
         <v-search title="交通类型" :cdata="trafficTypeList" v-model="formsData1.mtype" @on-hide="getitemnoInfo()"></v-search>
@@ -1640,6 +1643,7 @@
           ulrea: this.formsData1.ulrea,
           smemoltrad: this.formsData1.smemoltrad,
           dmbtr: this.amount,
+          field: 'dmbtr',
           uuid: this.formsData1.uuid,
             buzei: '',
             aufnrl: this.aufnr,
@@ -1735,6 +1739,7 @@
           ulreac: this.formsData2.ulreac,
           smemc: this.formsData2.smemoc,
           dmbtrc: this.amount2,
+          field: 'dmbtrc',
           uuid: this.formsData2.uuid,
           childconamc: this.formsData2.childconamc,
           appid: '',
@@ -1800,6 +1805,7 @@
           smemoo: this.formsData3.smemoo,
           colnro: this.formsData3.colnro,
           dmbtro: this.amount3,
+          field: 'dmbtro',
           uuid: this.formsData3.uuid,
           aufnro: this.aufnr,
           appid: '',
@@ -1867,6 +1873,7 @@
           smemom: this.formsData4.smemom,
           colnrm: this.formsData4.colnrm,
           dmbtrm: this.amount4,
+          field: 'dmbtrm',
           uuid: this.formsData4.uuid,
           childconamm: this.formsData4.childconamm,
           eaterym: '',
@@ -1957,6 +1964,7 @@
           smemoh: this.formsData5.smemoh,
           ulreah: this.formsData5.ulreah,
           dmbtrh: this.amount5,
+          field: 'dmbtrh',
           uuid: this.formsData5.uuid,
           aufnrh: this.aufnr,
           subsidyh: this.subsidyh,
@@ -2033,6 +2041,7 @@
           tnlnrt: this.formsData6.tnlnrt,
           smemot: this.formsData6.smemot,
           dmbtrt: this.amount6,
+          field: 'dmbtrt',
           conamt: conamt,
           uuid: this.formsData6.uuid,
           appid: '',
@@ -2089,6 +2098,7 @@
           kursfe: this.formsData7.kursfe,
           colnre: this.formsData7.colnre,
           dmbtre: this.amount7,
+          field: 'dmbtre',
           uuid: this.formsData7.uuid,
           appid: '',
           childcolnre: this.formsData7.childcolnre,
@@ -2154,6 +2164,7 @@
           ulreag: this.formsData8.ulreag,
           smemg: this.formsData8.smemg,
           dmbtrg: this.amount8,
+          field: 'dmbtrg',
           uuid: this.formsData8.uuid,
           aufnrg: this.aufnr,
           appid: '',

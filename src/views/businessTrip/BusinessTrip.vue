@@ -7,7 +7,7 @@
       <!-- <popup-picker title="选择岗位" :data="positionList" :columns="1" v-model="forms.postid" show-name></popup-picker>
       <cell title="费用承担公司" is-link @click.native="show1 = true">{{stringDemo}}</cell> -->
       <x-switch title="是否提高标准" :value-map="['0', '1']" v-model="beup"></x-switch>
-      <x-textarea v-show="beup === '1'" title="提高标准原因" v-model="reason" placeholder="请输入提高标准原因" :show-counter="false" :rows="3" autosize></x-textarea>
+      <x-textarea v-show="beupOption" title="提高标准原因" v-model="reason" placeholder="请输入提高标准原因" :show-counter="false" :rows="3" autosize></x-textarea>
     </group>
     <sticky>
       <box gap="10px 10px">
@@ -84,6 +84,9 @@ export default {
         desc = '请选择费用承担公司'
       }
       return desc
+    },
+    beupOption() {
+      return this.beup === '1'
     }
   },
   created() {
@@ -291,7 +294,14 @@ export default {
               } else {
                 whole.showTop(res.data.message);
                 _that.$store.dispatch('clearBusinessTrip')
-                _that.$router.go(-1)
+                setTimeout(() => {
+                  let dd = window.dd;
+                  dd.biz.navigation.close({
+                    onSuccess: function(result) {
+                    },
+                    onFail: function(err) {}
+                  })
+                }, 1500)
               }
             }
           })
@@ -302,11 +312,25 @@ export default {
             if (res.data.code) {
                 whole.showTop(res.data.message);
                 _that.$store.dispatch('clearBusinessTrip')
-                _that.$router.go(-1)
+                setTimeout(() => {
+                  let dd = window.dd;
+                  dd.biz.navigation.close({
+                    onSuccess: function(result) {
+                    },
+                    onFail: function(err) {}
+                  })
+                }, 1500)
             } else {
                 whole.showTop(res.data.message);
                 _that.$store.dispatch('clearBusinessTrip')
-                _that.$router.go(-1)
+                setTimeout(() => {
+                  let dd = window.dd;
+                  dd.biz.navigation.close({
+                    onSuccess: function(result) {
+                    },
+                    onFail: function(err) {}
+                  })
+                }, 1500)
             }
           }
           console.log(res);
@@ -321,11 +345,25 @@ export default {
           if (res.data.code) {
             whole.showTop(res.data.message);
             _that.$store.dispatch('clearBusinessTrip')
-            _that.$router.go(-1)
+            setTimeout(() => {
+              let dd = window.dd;
+              dd.biz.navigation.close({
+                onSuccess: function(result) {
+                },
+                onFail: function(err) {}
+              })
+            }, 1500)
           } else {
             whole.showTop(res.data.message);
             _that.$store.dispatch('clearBusinessTrip')
-            _that.$router.go(-1)
+            setTimeout(() => {
+              let dd = window.dd;
+              dd.biz.navigation.close({
+                onSuccess: function(result) {
+                },
+                onFail: function(err) {}
+              })
+            }, 1500)
           }
         }
       })

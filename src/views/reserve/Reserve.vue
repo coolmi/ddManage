@@ -142,13 +142,19 @@ export default {
       let params = {
         vfiled: 'lifnr'
       }
-      let _that = this;
       api.getvalidateUserBaseInfoURL(params, function (res) {
         if (res) {
           if (res.data.passFlag) {
           } else {
             whole.showTop(res.data.message);
-            _that.$router.go(-1)
+            setTimeout(() => {
+              let dd = window.dd;
+              dd.biz.navigation.close({
+                onSuccess: function(result) {
+                },
+                onFail: function(err) {}
+              })
+            }, 1500)
           }
         }
       })
@@ -367,7 +373,14 @@ export default {
               } else {
                 whole.showTop(res.data.message);
                 _that.$store.dispatch('clearReserve')
-                _that.$router.go(-1)
+                setTimeout(() => {
+                  let dd = window.dd;
+                  dd.biz.navigation.close({
+                    onSuccess: function(result) {
+                    },
+                    onFail: function(err) {}
+                  })
+                }, 1500)
               }
             }
           })
@@ -378,11 +391,25 @@ export default {
             if (res.data.code) {
               whole.showTop(res.data.message);
               _that.$store.dispatch('clearReserve')
-              _that.$router.go(-1)
+              setTimeout(() => {
+                let dd = window.dd;
+                dd.biz.navigation.close({
+                  onSuccess: function(result) {
+                  },
+                  onFail: function(err) {}
+                })
+              }, 1500)
             } else {
               whole.showTop(res.data.message);
               _that.$store.dispatch('clearReserve')
-              _that.$router.go(-1)
+              setTimeout(() => {
+                let dd = window.dd;
+                dd.biz.navigation.close({
+                  onSuccess: function(result) {
+                  },
+                  onFail: function(err) {}
+                })
+              }, 1500)
             }
           }
           console.log(res);
@@ -397,11 +424,25 @@ export default {
           if (res.data.code) {
             whole.showTop(res.data.message);
             _that.$store.dispatch('clearReserve')
-            _that.$router.go(-1)
+            setTimeout(() => {
+              let dd = window.dd;
+              dd.biz.navigation.close({
+                onSuccess: function(result) {
+                },
+                onFail: function(err) {}
+              })
+            }, 1500)
           } else {
             whole.showTop(res.data.message);
             _that.$store.dispatch('clearReserve')
-            _that.$router.go(-1)
+            setTimeout(() => {
+              let dd = window.dd;
+              dd.biz.navigation.close({
+                onSuccess: function(result) {
+                },
+                onFail: function(err) {}
+              })
+            }, 1500)
           }
         }
       })

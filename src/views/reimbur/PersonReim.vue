@@ -7,8 +7,8 @@
       <v-search title="费用承担公司" :cdata="burksList" v-model="forms.burks" @on-hide="changeBurks"></v-search>
       <v-search title="费用归集成本中心"v-if="protype === '0'"  :cdata="kostlList" v-model="forms.kostl" ></v-search>
       <x-input title="专项内部订单号" v-if="protype === '1'"  v-model="forms.aufnr"></x-input>
-      <v-search title="出差申请单号" v-if="show === '0'" :cdata="travelList" v-model="forms.atrlnr" ></v-search>
-      <x-textarea title="说明" v-model="forms.instruction" ></x-textarea>
+      <v-search title="出差申请单号" v-if="show === '0' && tflag === '1'" :cdata="travelList" v-model="forms.atrlnr" ></v-search>
+      <x-textarea title="说明" v-model="forms.instruction"  :rows="1" autosize></x-textarea>
       <x-switch  v-if="reimsum.length > 0" title="汇总" v-model="showP"></x-switch>
     </group>
     <sticky :offset="50">
@@ -101,7 +101,8 @@
         travelList: [],
         sumData: [],
         protype: '',
-        show: '1'
+        show: '1',
+        tflag: '0'
       }
     },
     computed: {
@@ -178,6 +179,21 @@
           _that.show = '1'
         }
       },
+      // 判断是否需要选择出差申请号
+      getTflag() {
+        let params = {
+          postid: this.forms.postid,
+          bukrs: this.forms.burks
+        }
+        let _that = this
+        api.getIsSelTravel(params, function (res) {
+          if (res) {
+            if (!res.data.data.nocc) {
+              _that.tflag = '1'
+            }
+          }
+        })
+      },
       getProtypeInfo() {
         let _that = this
         let data = {
@@ -193,6 +209,9 @@
             }
           }
         })
+        if (this.show === '0') {
+          _that.getTflag()
+        }
       },
      /* changeRbs() {
         this.show = this.forms.rbstype[0]
@@ -206,6 +225,7 @@
           }
         })
       },
+
       changeBurks() {
         if (this.forms.postid.length > 0 && this.forms.burks > 0) {
           let postid = this.forms.postid;
@@ -389,7 +409,15 @@
                 } else {
                   whole.showTop(res.data.message);
                   _that.$store.dispatch('clearPersonReim')
-                  _that.$router.go(-1)
+                  setTimeout(() => {
+                    let dd = window.dd;
+                  dd.biz.navigation.close({
+                    onSuccess: function(result) {
+                    },
+                    onFail: function(err) {}
+                  })
+                }, 1500)
+                //  _that.$router.go(-1)
                 }
             })
           }
@@ -399,11 +427,27 @@
                 if (res.data.code) {
                   whole.showTop(res.data.message);
                   _that.$store.dispatch('clearPersonReim')
-                  _that.$router.go(-1)
+                  setTimeout(() => {
+                    let dd = window.dd;
+                  dd.biz.navigation.close({
+                    onSuccess: function(result) {
+                    },
+                    onFail: function(err) {}
+                  })
+                }, 1500)
+                 // _that.$router.go(-1)
                 } else {
                   whole.showTop(res.data.message);
                   _that.$store.dispatch('clearPersonReim')
-                  _that.$router.go(-1)
+                  setTimeout(() => {
+                    let dd = window.dd;
+                  dd.biz.navigation.close({
+                    onSuccess: function(result) {
+                    },
+                    onFail: function(err) {}
+                  })
+                }, 1500)
+                 // _that.$router.go(-1)
                 }
               }
             })

@@ -16,7 +16,7 @@
          <!-- <checker-item value="10">{{typeObj[10]}}</checker-item>-->
         </checker>
       </group>
-      <group v-if="checker === ''" title="">
+      <group v-if="checker === ''" title="请选择...">
         <cell title="请选择报销类型..."></cell>
       </group>
       <group v-if="checker === '1'" :title="typeObj[checker]">
@@ -35,7 +35,7 @@
         <cell v-if="cbFlag === '1'"><font color="#FF0000">超额{{ulfee}}</font></cell>
         <v-search title="项目号" :cdata="colnrList" v-model="formsData1.colnr"></v-search>
         <x-input title="超标事由" v-if="cbFlag === '1'" v-model="formsData1.ulrea"></x-input>
-        <x-textarea title="说明"  v-model="formsData1.smemoltrad"></x-textarea>
+        <x-textarea title="说明"  v-model="formsData1.smemoltrad"  autosize></x-textarea>
         <x-input title="隐藏" placeholder="隐藏" v-show="false" v-model="formsData1.uuid"></x-input>
       </group>
       <group v-if="checker === '2'" :title="typeObj[checker]">
@@ -54,7 +54,7 @@
           <cell v-if="cbFlag === '1'"><font color="#FF0000">超额{{ulfeec}}</font></cell>
           <v-search title="项目号" :cdata="colnrList" v-model="formsData2.colnrc"></v-search>
           <x-input title="超标事由" v-if="cbFlag === '1'"  v-model="formsData2.ulreac"></x-input>
-          <x-textarea title="说明"  v-model="formsData2.smemoc"></x-textarea>
+          <x-textarea title="说明"  v-model="formsData2.smemoc"  autosize></x-textarea>
           <x-input title="隐藏" placeholder="隐藏" v-show="false" v-model="formsData2.uuid"></x-input>
         </div>
       </group>
@@ -69,7 +69,7 @@
         <x-input title="总金额" v-if="currencyFlag === '0'" type="number" v-model="formsData3.dmbtro"></x-input>
         <v-search title="税码" v-if="pFlag === '1' && currencyFlag === '0'" :cdata="purchoList" v-model="formsData3.purcho" ></v-search>
         <v-search title="项目号" :cdata="colnrList" v-model="formsData3.colnro"></v-search>
-        <x-textarea title="事由" v-model="formsData3.smemoo"></x-textarea>
+        <x-textarea title="事由" v-model="formsData3.smemoo"  autosize></x-textarea>
         <x-input title="隐藏" placeholder="隐藏" v-show="false" v-model="formsData3.uuid"></x-input>
       </group>
       <group v-if="checker === '4'" :title="typeObj[checker]">
@@ -83,7 +83,7 @@
         <x-input title="总金额" v-if="currencyFlag === '0'" type="number" v-model="formsData4.dmbtrm"></x-input>
         <v-search title="项目号" :cdata="colnrList" v-model="formsData4.colnrm"></v-search>
         <!--<x-input title="项目号" readonly v-model="formsData4.colnrm"></x-input>-->
-        <x-textarea title="用餐原因" v-model="formsData4.smemom"></x-textarea>
+        <x-textarea title="用餐原因" v-model="formsData4.smemom"  autosize></x-textarea>
         <x-input title="隐藏" placeholder="隐藏" v-show="false" v-model="formsData4.uuid"></x-input>
       </group>
       <group v-if="checker === '5'" :title="typeObj[checker]">
@@ -103,8 +103,8 @@
         <x-input title="餐补" v-if="show === '0'" v-model="formsData5.mealsuph" @on-blur="changeAmountCE"></x-input>
         <cell v-if="cbceFlag === '1'"><font color="#FF0000">超额{{ExcessiveCb}}</font></cell>
         <x-input title="扣除餐补"  v-if="currencyFlag === '0' && show === '0'" readonly v-model="formsData5.demealh"></x-input>
-        <x-textarea title="住宿原因" v-model="formsData5.smemoh"></x-textarea>
-        <x-textarea title="超额原因" v-if="cbFlag === '1'" v-model="formsData5.ulreah"></x-textarea>
+        <x-textarea title="住宿原因" v-model="formsData5.smemoh"  autosize></x-textarea>
+        <x-textarea title="超额原因" v-if="cbFlag === '1'" v-model="formsData5.ulreah"  autosize></x-textarea>
         <x-input title="隐藏" placeholder="隐藏" v-show="false" v-model="formsData5.uuid"></x-input>
       </group>
       <group v-if="checker === '6'" :title="typeObj[checker]">
@@ -119,7 +119,7 @@
         <v-search title="税码" v-if="pFlag === '1' && currencyFlag === '0'" :cdata="purchoList" v-model="formsData6.purcht" ></v-search>
         <v-search title="项目号" :cdata="colnrList" v-model="formsData6.colnrt"></v-search>
         <x-input title="培训申请单号"  v-model="formsData6.tnlnrt"></x-input>
-        <x-textarea title="培训说明" v-model="formsData6.smemot"></x-textarea>
+        <x-textarea title="培训说明" v-model="formsData6.smemot"  autosize></x-textarea>
         <x-input title="隐藏" placeholder="隐藏" v-show="false" v-model="formsData6.uuid"></x-input>
       </group>
       <group v-if="checker === '7'" :title="typeObj[checker]">
@@ -145,7 +145,7 @@
         <x-input title="总金额"  v-if="currencyFlag === '1'" readonly v-model="amount8" ></x-input>
         <x-input title="总金额" v-if="currencyFlag === '0'" type="number" v-model="formsData8.dmbtrg"></x-input>
         <v-search title="项目号" :cdata="colnrList" v-model="formsData8.colnrg"></v-search>
-        <x-textarea title="事由" v-model="formsData8.ulreag"></x-textarea>
+        <x-textarea title="事由" v-model="formsData8.ulreag"  autosize></x-textarea>
         <x-input title="隐藏" placeholder="隐藏" v-show="false" v-model="formsData8.uuid"></x-input>
       </group>
       <group v-if="checker === '9'" :title="typeObj[checker]">
@@ -2203,7 +2203,7 @@
         this.$store.dispatch('addPersonReim', formsData)
         console.log('保存')
       }
-        this.$router.go(-1)
+      this.$router.go(-1)
     }
   }
   }

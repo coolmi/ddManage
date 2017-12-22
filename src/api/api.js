@@ -456,6 +456,22 @@ export default {
     })
   },
   /**
+   * 获取是否临时岗位（专项）
+   * @param  {[type]}   params [参数]
+   * @param  {Function} cb     [返回数据]
+   * @return {[type]}          [description]
+   */
+  getIsTempOrg: function (params, cb) {
+    axios.get(APISEND.getIsTempOrgURL, {
+      params
+    })
+      .then((res) => {
+        cb(res);
+      }).catch((error) => {
+      return Promise.reject(error)
+    })
+  },
+  /**
    * 提交验证
    * @param cb
    */

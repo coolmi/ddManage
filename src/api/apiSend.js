@@ -31,6 +31,8 @@ const getOverproofTelnetURL = '/authapi/ddtalkwf/getOverproofTelnet'
 // 备用金
 // 获取费用所属事业部(bukrs, appda | Get)
 const getBusinessDepartmentURL = '/authapi/ddtalkwf/getBusinessDepartment'
+// 获取是否临时岗位（专项）(postid | Get)
+const getIsTempOrgURL = 'authapi/ddtalkwf/getIsTempOrg'
 // 获取备用金类型(无参数 | Get)
 const getReserveTypeURL = '/authapi/ddtalkwf/getFundTypeList'
 // 获取币种列表(bukrs, appda | Get)
@@ -171,6 +173,7 @@ const getPersonReimTrafficType = function (params = {}) {
 export default {
   getPositionURL,
   getBusinessDepartmentURL,
+  getIsTempOrgURL,
   getReserveTypeURL,
   getWaersListByBukrsURL,
   nextassigneeDepositWFURL,

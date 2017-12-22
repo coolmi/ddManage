@@ -4,7 +4,7 @@
       <v-search title="选择岗位" :cdata="positionList" v-model="forms.postid"></v-search>
       <v-search title="费用承担公司" :cdata="burkList" v-model="forms.cdbukrs"></v-search>
       <v-search title="费用归集成本中心" :noticeDesc="noticeDesc" :cdata="kostlList" v-model="forms.cdkostls" @on-show="changeBurks"></v-search>
-      <cell v-if="showSelect" title="请选择专项负责人" is-link @click.native="selectPerson">{{m_zxfzrnm}}</cell>
+      <!-- <cell v-if="showSelect" title="请选择专项负责人" is-link @click.native="selectPerson">{{m_zxfzrnm}}</cell> -->
       <v-search v-if="showDepart" title="费用所属事业部" :noticeDesc="noticeDesc" :cdata="departments" v-model="forms.businessunitid" @on-show="changeDepart"></v-search>
       <cell v-if="formsData.length > 0" title="汇总">{{byjsum[0].sum}}</cell>
     </group>
@@ -62,6 +62,7 @@ export default {
         businessunitid: ''
       },
       showCon: false,
+      optionP: false,
       message: '',
       id: '',
       positionList: [],
@@ -104,14 +105,25 @@ export default {
       return option;
     },
     showDepart: function () {
-      let option = false
+      let _that = this;
       this.formsData.map(function (item) {
-        if (item.stype.toString() === '人力资源') {
-          option = true
+        if (item.stype.toString() === '专项') {
+          let params = {
+            postid: _that.forms.postid
+          }
+          api.getIsTempOrg(params, function (res) {
+            if (res.data.code) {
+              if (res.data.data.isTemp) {
+                _that.optionP = false;
+              } else {
+                _that.optionP = true;
+              }
+            }
+          })
         }
       });
-      this.showDepartOption = option;
-      return option;
+      this.showDepartOption = this.optionP;
+      return this.optionP;
     }
   },
   created() {
@@ -231,23 +243,27 @@ export default {
       }
     },
     addReserveOption (data = {}) {
-      if (this.forms.cdbukrs > 0) {
-        let info = {
-          forms: this.forms
+      if (this.forms.postid > 0) {
+        if (this.forms.cdbukrs > 0) {
+          let info = {
+            forms: this.forms
+          }
+          this.$store.dispatch('addReserveInfo', info)
+
+          let formsDemo = {};
+          formsDemo = {
+            bukrs: this.forms.cdbukrs,
+            formsData: JSON.stringify(data)
+          };
+
+          console.log(formsDemo);
+
+          this.$router.push({path: '/addReserve', query: {formsDemo: formsDemo}})
+        } else {
+          whole.showTop('请选择费用承担公司')
         }
-        this.$store.dispatch('addReserveInfo', info)
-
-        let formsDemo = {};
-        formsDemo = {
-          bukrs: this.forms.cdbukrs,
-          formsData: JSON.stringify(data)
-        };
-
-        console.log(formsDemo);
-
-        this.$router.push({path: '/addReserve', query: {formsDemo: formsDemo}})
       } else {
-        whole.showTop('请选择费用承担公司')
+        whole.showTop('请选择岗位')
       }
     },
     selectPerson() {

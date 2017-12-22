@@ -1,45 +1,18 @@
 <template>
   <div class="box">
-    <div class="littlebox">
-      <div class="tiptitle">
+    <div class="littlebox" v-for="(l, index) in list">
+
+      <div class="tiptitle tiptwo">
         <div class="titlep">
-          <p class="titlelarge">我的常用</p>
+          <p class="titlelarge">{{l.title}}</p>
         </div>
-        <p v-show="!editState" class="tips">（按住拖动调整排序）</p>
-        <p class="tipbtn" @click="dragg">{{editText}}</p>
+        <p v-show="!editState" class="tips" v-if="index === 0">（按住拖动调整排序）</p>
+        <p class="tipbtn" @click="dragg" v-if="index === 0">{{editText}}</p>
       </div>
-      <draggable class="draggbox" v-model="list1"
+      <draggable class="draggbox" v-model="l.item"
                  :options="dragOption">
-        <transition-group name="list1" min-height="50px">
-          <div v-for="element in list1" :key="element.id" class="draggable" @click="clickLink(element)">
-            <div class="itembox" :class="flag">
-              <img :src="element.url" class="appimg">
-              <p class="appinfo">{{element.name}}</p>
-            </div>
-          </div>
-        </transition-group>
-      </draggable>
-      <div class="tiptitle tiptwo">
-        <p class="titlep">新闻公告</p>
-      </div>
-      <draggable class="draggbox" v-model="list2"
-                 :options="dragOption">
-        <transition-group name="list2">
-          <div v-for="element in list2" :key="element.id" class="draggable" @click="clickLink(element)">
-            <div class="itembox" :class="flag">
-              <img :src="element.url" class="appimg">
-              <p class="appinfo">{{element.name}}</p>
-            </div>
-          </div>
-        </transition-group>
-      </draggable>
-      <div class="tiptitle tiptwo">
-        <p class="titlep">行政办公</p>
-      </div>
-      <draggable class="draggbox" v-model="list3"
-                 :options="dragOption">
-        <transition-group name="list3">
-          <div v-for="element in list3" :key="element.id" class="draggable" @click="clickLink(element)">
+        <transition-group name="list">
+          <div v-for="element in l.item" :key="element.name" class="draggable" @click="clickLink(element)">
             <div class="itembox" :class="flag">
               <img :src="element.url" class="appimg">
               <p class="appinfo">{{element.name}}</p>
@@ -53,6 +26,7 @@
 
 <script>
   import draggable from 'vuedraggable'
+  import {swiper, swiperSlide} from 'vue-awesome-swiper'
   import api from 'api'
   import ding from '@/lib/ding'
   import dingUser from '@/lib/dingUser'
@@ -63,96 +37,113 @@
   export default {
     data() {
       return {
+        tiptwo: 'tiptwo',
         editState: true,
-        list1: [
+        swiperOption: {
+          autoplay: {
+            delay: 2500,
+            disableOnInteraction: false
+          },
+          spaceBetween: 30
+        },
+        list: [
           {
-            id: 1,
-            name: '审批',
-            url: ('static/images/sp.png'),
-            link: '/home',
-            type: 'bd'
+            title: '我的常用',
+            item: [
+              {
+                id: 1,
+                name: '审批',
+                url: ('static/images/sp.png'),
+                link: '/home',
+                type: 'bd'
+              }
+            ]
+          },
+          {
+            title: '新闻公告',
+            item: [
+              {
+                name: '新闻',
+                url: ('static/images/xinw.png'),
+                link: 'http://dingtalk.gmkholdings.com:8081',
+                type: 'wl'
+              },
+              {
+                name: '公文',
+                url: ('static/images/gongw.png'),
+                link: 'http://dingtalk.gmkholdings.com:8081/gw',
+                type: 'wl'
+              },
+              {
+                name: '公告',
+                url: ('static/images/gongg.png'),
+                link: 'http://dingtalk.gmkholdings.com:8081/gg',
+                type: 'wl'
+              },
+              {
+                name: '集团官网',
+                url: ('static/images/guanw.png'),
+                link: 'http://www.gmkholdings.com',
+                type: 'wl'
+              }
+            ]
+          },
+          {
+            title: '行政办公',
+            item: [
+              {
+                id: 2,
+                name: '会议室',
+                url: ('static/images/hys.png'),
+                link: 'http://dingtalk.gmkholdings.com:8082',
+                type: 'wl'
+              },
+              {
+                id: 3,
+                name: '出差',
+                url: ('static/images/cc.png'),
+                link: '/businessTrip',
+                type: 'bd'
+              },
+              {
+                id: 4,
+                name: '备用金',
+                url: ('static/images/byj.png'),
+                link: '/reserve',
+                type: 'bd'
+              },
+              {
+                id: 5,
+                name: '报销',
+                url: ('static/images/bx.png'),
+                link: '/preim',
+                type: 'bd'
+              },
+              {
+                id: 6,
+                name: '会议纪要',
+                url: ('static/images/hyjy.png'),
+                link: 'http://mm.gmkholdings.com',
+                type: 'wl'
+              },
+              {
+                id: 6,
+                name: '会议纪要',
+                url: ('static/images/hyjy.png'),
+                link: '/saveList',
+                type: 'bd'
+              }
+            ]
           }
-        ],
-        list2: [
-          {
-            id: 7,
-            name: '新闻',
-            url: ('static/images/xinw.png'),
-            link: 'http://dingtalk.gmkholdings.com:8081',
-            type: 'wl'
-          },
-          {
-            id: 8,
-            name: '公文',
-            url: ('static/images/gongw.png'),
-            link: 'http://dingtalk.gmkholdings.com:8081/gw',
-            type: 'wl'
-          },
-          {
-            id: 9,
-            name: '公告',
-            url: ('static/images/gongg.png'),
-            link: 'http://dingtalk.gmkholdings.com:8081/gg',
-            type: 'wl'
-          },
-          {
-            id: 9,
-            name: '集团官网',
-            url: ('static/images/guanw.png'),
-            link: 'http://www.gmkholdings.com',
-            type: 'wl'
-          }
-        ],
-        list3: [
-          {
-            id: 2,
-            name: '会议室',
-            url: ('static/images/hys.png'),
-            link: 'http://dingtalk.gmkholdings.com:8082',
-            type: 'wl'
-          },
-          {
-            id: 3,
-            name: '出差',
-            url: ('static/images/cc.png'),
-            link: '/businessTrip',
-            type: 'bd'
-          },
-          {
-            id: 4,
-            name: '备用金',
-            url: ('static/images/byj.png'),
-            link: '/reserve',
-            type: 'bd'
-          },
-          {
-            id: 5,
-            name: '报销',
-            url: ('static/images/bx.png'),
-            link: '/preim',
-            type: 'bd'
-          },
-          {
-            id: 6,
-            name: '会议纪要',
-            url: ('static/images/hyjy.png'),
-            link: 'http://mm.gmkholdings.com',
-            type: 'wl'
-          }
-//          {
-//            id: 6,
-//            name: '我保存的',
-//            url: ('static/images/bcd.png'),
-//            link: '/saveList',
-//            type: 'bd'
-//          }
         ],
         flag: '',
         editText: '编辑'
       }
     },
     components: {
-      draggable
+      draggable,
+      swiper,
+      swiperSlide
     },
     computed: {
       ...mapGetters({
@@ -169,7 +160,7 @@
     },
     created() {
       this.getUserid();
-//      this.setRight(); // 设置右上角按钮
+      this.setRight(); // 设置右上角按钮
     },
     methods: {
       getUserid() {
@@ -178,7 +169,12 @@
         dingUser.getRequestAuthCode(this.path).then((data) => {
           api.getLogin(data, function (res) {
             if (res.data.code) {
-              _that.$store.dispatch('saveLoginStatus', true)
+              _that.$store.dispatch('saveLoginStatus', true);
+              api.getAppItemList(function (res) {
+                if (res.data.code) {
+                  _that.list = res.data.data.list.length > 0 ? res.data.data.list : _that.list
+                }
+              })
             } else {
               whole.showTop('获取钉钉免登权限失败')
             }
@@ -242,6 +238,12 @@
         this.editState = !this.editState
         this.flag = this.editState ? 'bordernone' : 'dashedline'
         this.editText = this.editState ? '编辑' : '完成'
+        if (this.editState) {
+          let _that = this;
+          api.saveAppItem(_that.list, function (res) {
+            console.log(res)
+          })
+        }
       },
       disabled: true,
       draggable: false
@@ -331,11 +333,13 @@
 
   .titlep {
     width: 60%;
-    height: 50px;
+    height: 44px;
     padding-left: 20px;
+    font-family: PingFangSC-Medium;
     font-size: 16px;
-    color: #2a374a;
-    line-height: 50px;
+    color: #191F25;
+    letter-spacing: -0.82px;
+    line-height: 44px;
   }
 
   .titlelarge {
@@ -367,7 +371,9 @@
   .appinfo {
     margin-top: 5px;
     font-size: 14px;
-    color: #2a374a;
     font-family: PingFangSC-Regular;
+    color: rgba(25,31,37,0.56);
+    letter-spacing: -0.16px;
+    line-height: 32px;
   }
 </style>

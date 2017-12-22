@@ -38,14 +38,14 @@
               <div slot="default" style="padding: 10px">点击选择</div>
               <p slot="left" @click="showSearch = false"
                  style="margin-right: 5px; margin-top: 3px; pading: 18px; border: 1px solid #38ADFF; border-radius: 20%">
-                关闭</p>
+                取消</p>
             </search>
-            <scroller lock-x v-show="showlist" height="-70">
+            <mt-index-list>
               <div style="height: 100%">
                 <span v-show="cdata.length <= 0">{{noticeDesc}}</span>
                 <radio :options="cdata" v-model="checkerValue" @on-change="radioChange"></radio>
               </div>
-            </scroller>
+            </mt-index-list>
           </section>
         </transition>
       </div>

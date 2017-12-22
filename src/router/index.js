@@ -119,7 +119,7 @@ const router = new Router({
     {
       path: '/',
       component: require('@/views/draggable/draggable'),
-      meta: {title: '新凤祥办公'}
+      meta: {title: '新凤祥工作台'}
     }
   ]
 })

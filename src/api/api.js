@@ -860,6 +860,30 @@ export default {
   }).catch((error) => {
       return Promise.reject(error)
     })
+  },
+  /**
+   * app拖拽位置保存接口
+   * @param params
+   * @param cb
+   */
+  saveAppItem: function (params, cb) {
+    axios.post('/authapi/appPosition/saveAppItem', params)
+      .then((res) => {
+        cb(res);
+      }).catch((error) => {
+      return Promise.reject(error)
+    })
+  },
+  /**
+   * app拖拽位置查询接口
+   * @param cb
+   */
+  getAppItemList: function (cb) {
+    axios.get('/authapi/appPosition/getAppItemList')
+      .then((res) => {
+        cb(res);
+      }).catch((error) => {
+      return Promise.reject(error)
+    })
   }
-
 }

@@ -128,7 +128,7 @@
               },
               {
                 id: 6,
-                name: '会议纪要',
+                name: '草稿',
                 url: ('static/images/hyjy.png'),
                 link: '/saveList',
                 type: 'bd'

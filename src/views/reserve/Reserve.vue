@@ -112,7 +112,6 @@ export default {
             postid: _that.forms.postid
           }
           api.getIsTempOrg(params, function (res) {
-            alert(JSON.stringify(res))
             if (res.data.code) {
               if (res.data.data.isTemp) {
                 _that.optionP = false;

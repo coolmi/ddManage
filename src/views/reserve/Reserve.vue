@@ -62,7 +62,7 @@ export default {
         businessunitid: ''
       },
       showCon: false,
-      optionP: false,
+      optionP: true,
       message: '',
       id: '',
       positionList: [],
@@ -106,12 +106,13 @@ export default {
     },
     showDepart: function () {
       let _that = this;
-      this.formsData.map(function (item) {
-        if (item.stype.toString() === '专项') {
+      for (let i = 0; i < this.formsData.length; i++) {
+        if (this.formsData[i].stype === '专项') {
           let params = {
             postid: _that.forms.postid
           }
           api.getIsTempOrg(params, function (res) {
+            alert(JSON.stringify(res))
             if (res.data.code) {
               if (res.data.data.isTemp) {
                 _that.optionP = false;
@@ -121,7 +122,7 @@ export default {
             }
           })
         }
-      });
+      }
       this.showDepartOption = this.optionP;
       return this.optionP;
     }

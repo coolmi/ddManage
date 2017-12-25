@@ -34,7 +34,7 @@ export default {
   data: () => ({
     formsData: {
       stype: '',
-      waers: '',
+      waers: 'CNY',
       edate: moment().format('YYYY-MM-DD'),
       fwbas: '',
       smemo: '',

@@ -65,19 +65,19 @@
               {
                 name: '新闻',
                 url: ('static/images/xinw.png'),
-                link: 'http://dingtalk.gmkholdings.com:8081',
+                link: 'https://dingtalk.gmkholdings.com:8081',
                 type: 'wl'
               },
               {
                 name: '公文',
                 url: ('static/images/gongw.png'),
-                link: 'http://dingtalk.gmkholdings.com:8081/gw',
+                link: 'https://dingtalk.gmkholdings.com:8081/gw',
                 type: 'wl'
               },
               {
                 name: '公告',
                 url: ('static/images/gongg.png'),
-                link: 'http://dingtalk.gmkholdings.com:8081/gg',
+                link: 'https://dingtalk.gmkholdings.com:8081/gg',
                 type: 'wl'
               },
               {
@@ -95,7 +95,7 @@
                 id: 2,
                 name: '会议室',
                 url: ('static/images/hys.png'),
-                link: 'http://dingtalk.gmkholdings.com:8082',
+                link: 'https://dingtalk.gmkholdings.com:8082',
                 type: 'wl'
               },
               {
@@ -240,7 +240,10 @@
         this.editText = this.editState ? '编辑' : '完成'
         if (this.editState) {
           let _that = this;
-          api.saveAppItem(_that.list, function (res) {
+          let params = {
+            list: _that.list
+          }
+          api.saveAppItem(params, function (res) {
             console.log(res)
           })
         }

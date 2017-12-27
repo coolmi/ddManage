@@ -32,7 +32,7 @@
         <x-input title="汇率" v-if="currencyFlag === '1'" type="number" v-model="formsData1.kursf"></x-input>
         <x-input title="金额"  v-if="currencyFlag === '1'" readonly v-model="amount" ></x-input>
         <x-input title="金额" v-if="currencyFlag === '0'" type="number" v-model="formsData1.dmbtr" @on-blur="changeAmount"></x-input>
-        <cell v-if="cbFlag === '1'"><font color="#FF0000">超额{{ulfee}}</font></cell>
+        <!--<cell v-if="cbFlag === '1'"><font color="#FF0000">超额{{ulfee}}</font></cell>-->
         <v-search title="项目号" :cdata="colnrList" v-model="formsData1.colnr"></v-search>
         <x-input title="超标事由" v-if="cbFlag === '1'" v-model="formsData1.ulrea"></x-input>
         <x-textarea title="说明"  v-model="formsData1.smemoltrad"  autosize></x-textarea>

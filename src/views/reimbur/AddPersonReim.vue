@@ -816,6 +816,7 @@
           if (this.formsData1.waers === 'CNY') {
             this.currencyFlag = '0'
             this.formsData1.kursf = '1'
+            this.cbFlag = '0'
             this.getProtypeInfo()
           } else {
             this.currencyFlag = '1'
@@ -851,6 +852,7 @@
           if (this.formsData2.waersc === 'CNY') {
             this.currencyFlag = '0'
             this.formsData2.kursfc = '1'
+            this.cbFlag = '0'
             this.getProtypeInfo()
           } else {
             this.currencyFlag = '1'
@@ -943,6 +945,7 @@
           if (this.formsData5.waersh === 'CNY') {
             this.currencyFlag = '0'
             this.formsData5.kursfh = '1'
+            this.cbFlag = '0'
             this.getProtypeInfo()
           } else {
             this.currencyFlag = '1'

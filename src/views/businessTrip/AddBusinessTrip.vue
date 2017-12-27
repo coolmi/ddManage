@@ -2,17 +2,11 @@
   <div>
     <group title="出差明细">
       <cell title="类型" v-if="show === true">去程</cell>
-      <!-- <popup-picker v-if="show === false" title="类型" :data="typeList" :columns="1" v-model="formsData.tp" show-name></popup-picker> -->
       <v-search v-if="show === false" title="类型" :cdata="typeList" v-model="formsData.tp"></v-search>
-      <!-- <datetime v-model="formsData.startda" :start-date="systemDate" title="出发日期"></datetime> -->
-      <calendar v-model="formsData.startda" title="出发日期" disable-past></calendar>
-      <!-- <datetime v-model="formsData.endda" :start-date="systemDate" title="到达日期"></datetime> -->
-      <calendar v-model="formsData.endda" title="到达日期" disable-past></calendar>
-      <!-- <popup-picker title="出发地点" :data="tripPlace" :columns="1" v-model="formsData.splace" show-name></popup-picker> -->
+      <calendar v-model="formsData.startda" title="出发日期"></calendar>
+      <calendar v-model="formsData.endda" title="到达日期"></calendar>
       <v-search title="出发地点" :cdata="tripPlace" v-model="formsData.splace"></v-search>
-      <!-- <popup-picker title="到达地点" :data="tripPlace" :columns="1" v-model="formsData.eplace" show-name></popup-picker> -->
       <v-search title="到达地点" :cdata="tripPlace" v-model="formsData.eplace"></v-search>
-      <!-- <popup-picker title="交通方式" :data="tripTraffic" :columns="1" v-model="formsData.transmodeId" show-name></popup-picker> -->
       <v-search title="交通方式" :cdata="tripTraffic" v-model="formsData.transmodeId"></v-search>
       <x-textarea title="工作内容" v-model="formsData.workc" placeholder="请输入工作内容" :show-counter="false" :rows="3" autosize></x-textarea>
       <x-input title="隐藏" placeholder="隐藏" v-show="false" v-model="formsData.uuid"></x-input>
@@ -64,11 +58,11 @@ export default {
         this.typeList = [{key: '去程', value: '去程'}]
         this.formsData.tp = '去程'
       } else {
-        this.typeList = [{key: '返程', value: '返程'}]
-        this.formsData.tp = '返程'
+          this.typeList = [{key: '中转', value: '中转'}, {key: '返程', value: '返程'}]
+          this.formsData.tp = '返程'
       }
     } else {
-      this.typeList = [{key: '去程', value: '去程'}, {key: '返程', value: '返程'}]
+      this.typeList = [{key: '去程', value: '去程'}, {key: '中转', value: '中转'}, {key: '返程', value: '返程'}]
       this.show = true
       this.formsData = JSON.parse(this.$route.query.formsDemo.formsData)
     }

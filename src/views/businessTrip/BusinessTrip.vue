@@ -304,14 +304,14 @@ export default {
               } else {
                 whole.showTop(res.data.message);
                 _that.$store.dispatch('clearBusinessTrip')
-                setTimeout(() => {
-                  let dd = window.dd;
-                  dd.biz.navigation.close({
-                    onSuccess: function(result) {
-                    },
-                    onFail: function(err) {}
-                  })
-                }, 1500)
+//                setTimeout(() => {
+//                  let dd = window.dd;
+//                  dd.biz.navigation.close({
+//                    onSuccess: function(result) {
+//                    },
+//                    onFail: function(err) {}
+//                  })
+//                }, 1500)
               }
             }
           })
@@ -333,14 +333,14 @@ export default {
             } else {
                 whole.showTop(res.data.message);
                 _that.$store.dispatch('clearBusinessTrip')
-                setTimeout(() => {
-                  let dd = window.dd;
-                  dd.biz.navigation.close({
-                    onSuccess: function(result) {
-                    },
-                    onFail: function(err) {}
-                  })
-                }, 1500)
+//                setTimeout(() => {
+//                  let dd = window.dd;
+//                  dd.biz.navigation.close({
+//                    onSuccess: function(result) {
+//                    },
+//                    onFail: function(err) {}
+//                  })
+//                }, 1500)
             }
           }
           console.log(res);
@@ -366,14 +366,14 @@ export default {
           } else {
             whole.showTop(res.data.message);
             _that.$store.dispatch('clearBusinessTrip')
-            setTimeout(() => {
-              let dd = window.dd;
-              dd.biz.navigation.close({
-                onSuccess: function(result) {
-                },
-                onFail: function(err) {}
-              })
-            }, 1500)
+//            setTimeout(() => {
+//              let dd = window.dd;
+//              dd.biz.navigation.close({
+//                onSuccess: function(result) {
+//                },
+//                onFail: function(err) {}
+//              })
+//            }, 1500)
           }
         }
       })

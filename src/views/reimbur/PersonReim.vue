@@ -50,7 +50,6 @@
   import vSearch from '@/components/searchChecker';
   import api from 'api'
   import {mapGetters} from 'vuex'
- // import * as _ from 'underscore'
   import whole from '@/lib/whole'
   import dataUtils from '../../filters/dataUtils' // 工具类
 

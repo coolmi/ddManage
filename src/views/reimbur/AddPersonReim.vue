@@ -2099,7 +2099,6 @@
           childconamt: this.formsData6.childconamt,
           childcolnrt: this.formsData6.childcolnrt
         }
-       // console.log(train)
         this.$store.dispatch('addPersonReim', formsData)
         console.log('保存')
       //  this.$router.go(-1)

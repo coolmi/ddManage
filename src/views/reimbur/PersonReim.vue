@@ -464,7 +464,15 @@
             if (res.data.code) {
               whole.showTop(res.data.message);
               _that.$store.dispatch('clearPersonReim')
-              _that.$router.go(-1)
+              setTimeout(() => {
+                    let dd = window.dd;
+                  dd.biz.navigation.close({
+                    onSuccess: function(result) {
+                    },
+                    onFail: function(err) {}
+                  })
+                }, 1500)
+             // _that.$router.go(-1)
             } else {
               whole.showTop(res.data.message);
 //              _that.$store.dispatch('clearPersonReim')
@@ -501,54 +509,90 @@
             if (draftlistData.ltrad) {
               for (let i = 0; i < draftlistData.ltrad.length; i++) {
                 draftlistData.ltrad[i].type = '长途交通'
+                let ltrad = []
+                ltrad.push(draftlistData.ltrad[i])
+                var data = dataUtils.getFormData(ltrad);
+                _that.dataArray.push(data)
                 _that.$store.dispatch('addPersonReim', draftlistData.ltrad[i])
               }
             }
             if (draftlistData.citytrad) {
               for (let i = 0; i < draftlistData.citytrad.length; i++) {
                 draftlistData.citytrad[i].type = '市内交通'
+                let citytrad = []
+                citytrad.push(draftlistData.citytrad[i])
+                 data = dataUtils.getFormData(citytrad);
+                _that.dataArray.push(data)
                 _that.$store.dispatch('addPersonReim', draftlistData.citytrad[i])
               }
             }
             if (draftlistData.officecost) {
               for (let i = 0; i < draftlistData.officecost.length; i++) {
                 draftlistData.officecost[i].type = '办公费用'
+                let officecost = []
+                officecost.push(draftlistData.officecost[i])
+                 data = dataUtils.getFormData(officecost);
+                _that.dataArray.push(data)
                 _that.$store.dispatch('addPersonReim', draftlistData.officecost[i])
               }
             }
             if (draftlistData.mealfee) {
               for (let i = 0; i < draftlistData.mealfee.length; i++) {
                 draftlistData.mealfee[i].type = '餐费'
+                let mealfee = []
+                mealfee.push(draftlistData.mealfee[i])
+                 data = dataUtils.getFormData(mealfee);
+                _that.dataArray.push(data)
                 _that.$store.dispatch('addPersonReim', draftlistData.mealfee[i])
               }
             }
             if (draftlistData.hotelexpense) {
               for (let i = 0; i < draftlistData.hotelexpense.length; i++) {
                 draftlistData.hotelexpense[i].type = '住宿及餐补'
+                let hotelexpense = []
+                hotelexpense.push(draftlistData.hotelexpense[i])
+                 data = dataUtils.getFormData(hotelexpense);
+                _that.dataArray.push(data)
                 _that.$store.dispatch('addPersonReim', draftlistData.hotelexpense[i])
               }
             }
             if (draftlistData.train) {
               for (let i = 0; i < draftlistData.train.length; i++) {
-                draftlistData.hotelexpense[i].type = '培训费'
+                draftlistData.train[i].type = '培训费'
+                let train = []
+                train.push(draftlistData.train[i])
+                 data = dataUtils.getFormData(train);
+                _that.dataArray.push(data)
                 _that.$store.dispatch('addPersonReim', draftlistData.train[i])
               }
             }
             if (draftlistData.telnet) {
               for (let i = 0; i < draftlistData.telnet.length; i++) {
                 draftlistData.telnet[i].type = '通讯费'
+                let telnet = []
+                telnet.push(draftlistData.telnet[i])
+                 data = dataUtils.getFormData(telnet);
+                _that.dataArray.push(data)
                 _that.$store.dispatch('addPersonReim', draftlistData.telnet[i])
               }
             }
             if (draftlistData.giftfee) {
               for (let i = 0; i < draftlistData.giftfee.length; i++) {
                 draftlistData.giftfee[i].type = '礼品费'
+                let giftfee = []
+                giftfee.push(draftlistData.giftfee[i])
+                 data = dataUtils.getFormData(giftfee);
+                _that.dataArray.push(data)
                 _that.$store.dispatch('addPersonReim', draftlistData.giftfee[i])
               }
             }
             if (draftlistData.electronic) {
               for (let i = 0; i < draftlistData.electronic.length; i++) {
                 draftlistData.electronic[i].type = '电子发票'
+                let electronic = []
+                electronic.push(draftlistData.electronic[i])
+                 data = dataUtils.getFormData(electronic);
+                _that.dataArray.push(data)
                 _that.$store.dispatch('addPersonReim', draftlistData.electronic[i])
               }
             }

@@ -2,7 +2,7 @@
   <div>
     <div style="margin-bottom: 60px">
       <group title="选择类型">
-        <checker v-model="checker" class="checkerDiv" default-item-class="checker-item"
+        <!--<checker v-model="checker" class="checkerDiv" default-item-class="checker-item"
                  selected-item-class="checker-item-selected">
           <checker-item value="1">{{typeObj[1]}}</checker-item>
           <checker-item value="2">{{typeObj[2]}}</checker-item>
@@ -13,13 +13,14 @@
           <checker-item value="7">{{typeObj[7]}}</checker-item>
           <checker-item value="8">{{typeObj[8]}}</checker-item>
           <checker-item value="9">{{typeObj[9]}}</checker-item>
-         <!-- <checker-item value="10">{{typeObj[10]}}</checker-item>-->
-        </checker>
+         &lt;!&ndash; <checker-item value="10">{{typeObj[10]}}</checker-item>&ndash;&gt;
+        </checker>-->
+        <v-search title="报销类型" :cdata="checkerList" v-model="checker" ></v-search>
       </group>
       <group v-if="checker === ''" title="请选择...">
         <cell title="请选择报销类型..."></cell>
       </group>
-      <group v-if="checker === '1'" :title="typeObj[checker]" labelWidth="6.5rem" labelMarginRight="1rem">
+      <group v-if="checker === '1'" title="长途交通" labelWidth="6.5rem" labelMarginRight="1rem">
         <v-search title="交通方式" :cdata="trafficWaysList" v-model="formsData1.stype"></v-search>
         <v-search title="交通类型" :cdata="trafficTypeList" v-model="formsData1.mtype" @on-hide="getitemnoInfo()"></v-search>
         <calendar v-model="formsData1.sdate"  title="出发日期"></calendar>
@@ -38,7 +39,7 @@
         <x-textarea title="说明"  v-model="formsData1.smemoltrad"  autosize></x-textarea>
         <x-input title="隐藏" placeholder="隐藏" v-show="false" v-model="formsData1.uuid"></x-input>
       </group>
-      <group v-if="checker === '2'" :title="typeObj[checker]" labelWidth="6.5rem" labelMarginRight="1rem">
+      <group v-if="checker === '2'" title="市内交通" labelWidth="6.5rem" labelMarginRight="1rem">
         <div>
           <v-search title="交通方式" :cdata="trafficWaysList" v-model="formsData2.stypec"></v-search>
           <v-search title="交通类型" :cdata="trafficTypeList" v-model="formsData2.mtypec" @on-hide="getitemnoInfo()"></v-search>
@@ -58,7 +59,7 @@
           <x-input title="隐藏" placeholder="隐藏" v-show="false" v-model="formsData2.uuid"></x-input>
         </div>
       </group>
-      <group v-if="checker === '3'" :title="typeObj[checker]" labelWidth="6.5rem" labelMarginRight="1rem">
+      <group v-if="checker === '3'" title="办公费用" labelWidth="6.5rem" labelMarginRight="1rem">
         <v-search title="办公费用类型" :cdata="OffTypeList" v-model="formsData3.stypeo" @on-hide="getitemnoInfo()"></v-search>
         <calendar v-model="formsData3.sdateo"  title="日期"></calendar>
         <v-search title="币种" :cdata="currencyList" v-model="formsData3.waerso" @on-hide="getProtypeInfo"></v-search>
@@ -72,7 +73,7 @@
         <x-textarea title="事由" v-model="formsData3.smemoo"  autosize></x-textarea>
         <x-input title="隐藏" placeholder="隐藏" v-show="false" v-model="formsData3.uuid"></x-input>
       </group>
-      <group v-if="checker === '4'" :title="typeObj[checker]" labelWidth="6.5rem" labelMarginRight="1rem">
+      <group v-if="checker === '4'" title="餐费" labelWidth="6.5rem" labelMarginRight="1rem">
         <v-search title="餐费类型" :cdata="mealsList" v-model="formsData4.stypem" @on-hide="getitemnoInfo()"></v-search>
         <calendar v-model="formsData4.sdatem"  title="日期"></calendar>
         <v-search title="币种" :cdata="currencyList" v-model="formsData4.waersm" @on-hide="getProtypeInfo"></v-search>
@@ -86,7 +87,7 @@
         <x-textarea title="用餐原因" v-model="formsData4.smemom"  autosize></x-textarea>
         <x-input title="隐藏" placeholder="隐藏" v-show="false" v-model="formsData4.uuid"></x-input>
       </group>
-      <group v-if="checker === '5'" :title="typeObj[checker]" labelWidth="6.5rem" labelMarginRight="1rem">
+      <group v-if="checker === '5'" title="住宿及餐补" labelWidth="6.5rem" labelMarginRight="1rem">
         <v-search title="住宿类型" :cdata="zslxList" v-model="formsData5.stypeh" @on-hide="getitemnoInfo()"></v-search>
         <v-search title="酒店地点" :cdata="tripPlace" v-model="formsData5.saddrh"></v-search>
         <calendar v-model="formsData5.sdateh"  title="入住日期"></calendar>
@@ -107,7 +108,7 @@
         <x-textarea title="超额原因" v-if="cbFlag === '1'" v-model="formsData5.ulreah"  autosize></x-textarea>
         <x-input title="隐藏" placeholder="隐藏" v-show="false" v-model="formsData5.uuid"></x-input>
       </group>
-      <group v-if="checker === '6'" :title="typeObj[checker]" labelWidth="6.5rem" labelMarginRight="1rem">
+      <group v-if="checker === '6'" title="培训费" labelWidth="6.5rem" labelMarginRight="1rem">
         <v-search title="培训类型" :cdata="pxlxList" v-model="formsData6.stypet" @on-hide="getitemnoInfo()"></v-search>
         <x-input title="书籍/课程名称"  v-model="formsData6.traint"></x-input>
         <v-search title="币种" :cdata="currencyList" v-model="formsData6.waerst" @on-hide="getProtypeInfo"></v-search>
@@ -122,7 +123,7 @@
         <x-textarea title="培训说明" v-model="formsData6.smemot"  autosize></x-textarea>
         <x-input title="隐藏" placeholder="隐藏" v-show="false" v-model="formsData6.uuid"></x-input>
       </group>
-      <group v-if="checker === '7'" :title="typeObj[checker]" labelWidth="6.5rem" labelMarginRight="1rem">
+      <group v-if="checker === '7'" title="通讯费" labelWidth="6.5rem" labelMarginRight="1rem">
         <v-search title="通讯类型" :cdata="txlxList" v-model="formsData7.stypee" @on-hide="getitemnoInfo()"></v-search>
         <v-search title="月份" :cdata="yfList" v-model="formsData7.sdatee"></v-search>
         <v-search title="币种" :cdata="currencyList" v-model="formsData7.waerse" @on-hide="getProtypeInfo"></v-search>
@@ -135,7 +136,7 @@
         <v-search title="项目号" :cdata="colnrList" v-model="formsData7.colnre"></v-search>
         <x-input title="隐藏" placeholder="隐藏" v-show="false" v-model="formsData7.uuid"></x-input>
       </group>
-      <group v-if="checker === '8'" :title="typeObj[checker]" labelWidth="6.5rem" labelMarginRight="1rem">
+      <group v-if="checker === '8'" title="礼品费" labelWidth="6.5rem" labelMarginRight="1rem">
         <v-search title="礼品费类型" :cdata="lplxList" v-model="formsData8.stypeg" @on-hide="getitemnoInfo()"></v-search>
         <calendar v-model="formsData8.sdateg"  title="发生日期"></calendar>
         <v-search title="币种" :cdata="currencyList" v-model="formsData8.waersg" @on-hide="getProtypeInfo"></v-search>
@@ -148,12 +149,12 @@
         <x-textarea title="事由" v-model="formsData8.ulreag"  autosize></x-textarea>
         <x-input title="隐藏" placeholder="隐藏" v-show="false" v-model="formsData8.uuid"></x-input>
       </group>
-      <group v-if="checker === '9'" :title="typeObj[checker]" labelWidth="6.5rem" labelMarginRight="1rem">
+      <group v-if="checker === '9'" title="电子发票" labelWidth="6.5rem" labelMarginRight="1rem">
         <x-input title="电子发票号"  v-model="formsData9.electronicnum"></x-input>
         <x-input title="链接"  v-model="formsData9.linkv"></x-input>
         <x-input title="隐藏" placeholder="隐藏" v-show="false" v-model="formsData9.uuid"></x-input>
       </group>
-      <group v-if="checker === '10'" :title="typeObj[checker]"></group>
+     <!-- <group v-if="checker === '10'" :title="typeObj[checker]"></group>-->
 
     </div>
     <flexbox class="footerButton">
@@ -186,7 +187,7 @@
   import {mapGetters} from 'vuex'
   import moment from 'moment' // 时间类
 
-  let typeObj = {
+  /* let typeObj = {
     '1': '长途交通',
     '2': '市内交通',
     '3': '办公费用',
@@ -197,7 +198,7 @@
     '8': '礼品费',
     '9': '电子发票'
    // '10': '汇总'
-  }
+  } */
 
   export default {
     components: {
@@ -218,6 +219,44 @@
     },
     data() {
       return {
+        checkerList: [
+          {
+            value: '长途交通',
+            key: '1'
+          },
+          {
+            value: '市内交通',
+            key: '2'
+          },
+          {
+            value: '办公费用',
+            key: '3'
+          },
+          {
+            value: '餐费',
+            key: '4'
+          },
+          {
+            value: '住宿及餐补',
+            key: '5'
+          },
+          {
+            value: '培训费',
+            key: '6'
+          },
+          {
+            value: '通讯费',
+            key: '7'
+          },
+          {
+            value: '礼品费',
+            key: '8'
+          },
+          {
+            value: '电子发票',
+            key: '9'
+          }
+        ],
         formsData: {},
         formsData1: {
           stype: '',
@@ -379,7 +418,7 @@
         currencyList: [],
         burks: '',
         rspType: '',
-        typeObj: typeObj,
+       // typeObj: typeObj,
         show: '1',
         flag: '0',
         checker: '1',

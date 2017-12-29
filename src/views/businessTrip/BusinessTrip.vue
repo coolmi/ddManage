@@ -86,11 +86,7 @@ export default {
       return desc
     },
     beupOption() {
-      if (this.beup === '0' || !this.beup) {
-        return false
-      } else {
-        return true
-      }
+      return this.beup === '1'
     }
   },
   created() {
@@ -180,7 +176,6 @@ export default {
         })
     },
     addBusinessTripOption (data = {}) {
-      let _that = this
       if (this.forms.m_comp > 0) {
         let info = {
           forms: this.forms,
@@ -190,40 +185,31 @@ export default {
         this.$store.dispatch('addBusinessTripInfo', info)
 
         let formsDemo = {};
-        let fc = ''
-        for (let i = 0; i < _that.formsData.length; i++) {
-          if (this.formsData[i].tp === '返程') {
-            whole.showTop('已存在返程')
-            return
-          }
-        }
         if (data.tp === undefined) {
           if (this.formsData.length === 0) {
             formsDemo = {
               bukrs: this.forms.m_comp,
               flag: 0,
-              formsData: JSON.stringify(data),
-              fc: fc
+              formsData: JSON.stringify(data)
             };
-          } else if (this.formsData.length >= 1) {
+          } else if (this.formsData.length === 1) {
             formsDemo = {
               bukrs: this.forms.m_comp,
               flag: 1,
-              formsData: JSON.stringify(data),
-              fc: fc
+              formsData: JSON.stringify(data)
             };
-          } /* else if (this.formsData.length === 2) {
+          } else if (this.formsData.length === 2) {
             whole.showTop('已完善出差申请明细，无需再次添加')
             return;
-          } */
+          }
         } else {
           formsDemo = {
             bukrs: this.forms.m_comp,
             flag: 0,
-            formsData: JSON.stringify(data),
-            fc: fc
+            formsData: JSON.stringify(data)
           };
         }
+
         this.$router.push({path: '/addBusinessTrip', query: {formsDemo: formsDemo}})
       } else {
         whole.showTop('请选择费用承担公司')

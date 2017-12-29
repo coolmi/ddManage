@@ -58,11 +58,11 @@ export default {
         this.typeList = [{key: '去程', value: '去程'}]
         this.formsData.tp = '去程'
       } else {
-          this.typeList = [{key: '中转', value: '中转'}, {key: '返程', value: '返程'}]
-          this.formsData.tp = '返程'
+        this.typeList = [{key: '返程', value: '返程'}]
+        this.formsData.tp = '返程'
       }
     } else {
-      this.typeList = [{key: '去程', value: '去程'}, {key: '中转', value: '中转'}, {key: '返程', value: '返程'}]
+      this.typeList = [{key: '去程', value: '去程'}, {key: '返程', value: '返程'}]
       this.show = true
       this.formsData = JSON.parse(this.$route.query.formsDemo.formsData)
     }

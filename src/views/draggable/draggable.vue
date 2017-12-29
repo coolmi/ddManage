@@ -46,7 +46,7 @@
   import {mapGetters} from 'vuex'
   import whole from '@/lib/whole'
   import baseConfig from '@/api/baseConfig'
- // import '@/styles/swiper.css'
+//  import '@/styles/swiper.css'
 
   export default {
     data() {

@@ -4,6 +4,7 @@
       <cell v-for="(item, appid) in draftList" :key="item.appid" :title="item.draftName" :inline-desc="item.appda | dateFormat" is-link @click.native="addBusinessTripOption(item)"></cell>
       <infinite-loading v-if="draftList.length > 0" @infinite="getMoreDraftList">
         <span slot="no-more">没有更多消息了</span>
+        <span slot="no-results">没有更多了</span>
       </infinite-loading>
     </group>
     <p v-if="draftList.length === 0" style="text-align: center;margin-top: 10px;">暂无数据</p>
@@ -65,7 +66,8 @@ export default {
       dd.ready(function () {
         dd.ui.pullToRefresh.enable({
           onSuccess: function () {
-            _that.doNext(_that.index);
+            _that.pageNo = 1
+            _that.doNext();
             console.log('onSuccess');
           },
           onFail: function () {

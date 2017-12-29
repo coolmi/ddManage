@@ -1,6 +1,6 @@
 <template>
   <div>
-    <group title="申请信息">
+    <group title="申请信息" labelWidth="6.5rem" labelMarginRight="1rem">
       <v-search title="选择岗位" :cdata="positionList" v-model="forms.postid"></v-search>
       <v-search title="费用承担公司" :cdata="burkList" v-model="forms.m_comp"></v-search>
       <v-search title="费用归集成本中心" :noticeDesc="noticeDesc" :cdata="kostlList" v-model="forms.m_cbzx" @on-show="changeBurks"></v-search>
@@ -86,7 +86,11 @@ export default {
       return desc
     },
     beupOption() {
-      return this.beup === '1'
+      if (this.beup === '0' || !this.beup) {
+        return false
+      } else {
+        return true
+      }
     }
   },
   created() {
@@ -303,7 +307,7 @@ export default {
                 }
               } else {
                 whole.showTop(res.data.message);
-                _that.$store.dispatch('clearBusinessTrip')
+//                _that.$store.dispatch('clearBusinessTrip')
 //                setTimeout(() => {
 //                  let dd = window.dd;
 //                  dd.biz.navigation.close({
@@ -332,7 +336,7 @@ export default {
                 }, 1500)
             } else {
                 whole.showTop(res.data.message);
-                _that.$store.dispatch('clearBusinessTrip')
+//                _that.$store.dispatch('clearBusinessTrip')
 //                setTimeout(() => {
 //                  let dd = window.dd;
 //                  dd.biz.navigation.close({
@@ -365,7 +369,7 @@ export default {
             }, 1500)
           } else {
             whole.showTop(res.data.message);
-            _that.$store.dispatch('clearBusinessTrip')
+//            _that.$store.dispatch('clearBusinessTrip')
 //            setTimeout(() => {
 //              let dd = window.dd;
 //              dd.biz.navigation.close({

@@ -408,7 +408,7 @@
                   }
                 } else {
                   whole.showTop(res.data.message);
-                  _that.$store.dispatch('clearPersonReim')
+//                  _that.$store.dispatch('clearPersonReim')
 //                  setTimeout(() => {
 //                    let dd = window.dd;
 //                  dd.biz.navigation.close({
@@ -438,7 +438,7 @@
                  // _that.$router.go(-1)
                 } else {
                   whole.showTop(res.data.message);
-                  _that.$store.dispatch('clearPersonReim')
+//                  _that.$store.dispatch('clearPersonReim')
 //                  setTimeout(() => {
 //                    let dd = window.dd;
 //                  dd.biz.navigation.close({
@@ -467,8 +467,8 @@
               _that.$router.go(-1)
             } else {
               whole.showTop(res.data.message);
-              _that.$store.dispatch('clearPersonReim')
-              _that.$router.go(-1)
+//              _that.$store.dispatch('clearPersonReim')
+//              _that.$router.go(-1)
             }
           }
         })

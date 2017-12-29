@@ -1,6 +1,6 @@
 <template>
   <div>
-    <group title="申请信息">
+    <group title="申请信息" labelWidth="6.5rem" labelMarginRight="1rem">
       <v-search title="选择岗位" :cdata="positionList" v-model="forms.postid"></v-search>
       <v-search title="费用承担公司" :cdata="burkList" v-model="forms.cdbukrs"></v-search>
       <v-search title="费用归集成本中心" :noticeDesc="noticeDesc" :cdata="kostlList" v-model="forms.cdkostls" @on-show="changeBurks"></v-search>
@@ -388,7 +388,7 @@ export default {
                 }
               } else {
                 whole.showTop(res.data.message);
-                _that.$store.dispatch('clearReserve')
+//                _that.$store.dispatch('clearReserve')
 //                setTimeout(() => {
 //                  let dd = window.dd;
 //                  dd.biz.navigation.close({
@@ -417,7 +417,7 @@ export default {
               }, 1500)
             } else {
               whole.showTop(res.data.message);
-              _that.$store.dispatch('clearReserve')
+//              _that.$store.dispatch('clearReserve')
 //              setTimeout(() => {
 //                let dd = window.dd;
 //                dd.biz.navigation.close({
@@ -450,7 +450,7 @@ export default {
             }, 1500)
           } else {
             whole.showTop(res.data.message);
-            _that.$store.dispatch('clearReserve')
+//            _that.$store.dispatch('clearReserve')
 //            setTimeout(() => {
 //              let dd = window.dd;
 //              dd.biz.navigation.close({

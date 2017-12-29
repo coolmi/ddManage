@@ -1,5 +1,18 @@
 <template>
   <div class="box">
+    <!--<div class="swiper-box" ref="swiperBox">-->
+      <!--<swiper :options="swiperOption" ref="mySwiper" class="box-container">-->
+        <!--&lt;!&ndash; slides &ndash;&gt;-->
+        <!--<swiper-slide v-for="item in flashmeets" :key="item.id" class="slide" @click.native="viewDetail(item.id)">-->
+          <!--<img :src="item.imgurl" class="nimg">-->
+          <!--<p class="ntip"></p>-->
+        <!--</swiper-slide>-->
+        <!--&lt;!&ndash; Optional controls &ndash;&gt;-->
+        <!--<p class="ntips">{{item.title}}</p>-->
+        <!--<div class="swiper-pagination" slot="pagination"></div>-->
+        <!--&lt;!&ndash;<div class="swiper-scrollbar" slot="scrollbar"></div>&ndash;&gt;-->
+      <!--</swiper>-->
+    <!--</div>-->
     <div class="littlebox" v-for="(l, index) in list">
 
       <div class="tiptitle tiptwo">
@@ -33,16 +46,22 @@
   import {mapGetters} from 'vuex'
   import whole from '@/lib/whole'
   import baseConfig from '@/api/baseConfig'
+  import '@/styles/swiper.css'
 
   export default {
     data() {
       return {
         tiptwo: 'tiptwo',
+        flashmeets: [],
         editState: true,
         swiperOption: {
           autoplay: {
-            delay: 2500,
+            delay: 6500,
             disableOnInteraction: false
+          },
+          pagination: {
+            el: '.swiper-pagination',
+            clickable: true
           },
           spaceBetween: 30
         },
@@ -161,6 +180,7 @@
     created() {
       this.getUserid();
       this.setRight(); // 设置右上角按钮
+//      this.getNews();
     },
     methods: {
       getUserid() {
@@ -179,6 +199,26 @@
               whole.showTop('获取钉钉免登权限失败')
             }
           })
+        })
+      },
+      getNews() {
+        let _that = this;
+        api.getNews(function (res) {
+          if (res.data.code) {
+            if (res.data.data.newList.length > 0) {
+              _that.flashmeets = res.data.data.newList;
+            }
+          }
+        })
+      },
+      viewDetail(data) {
+        let dd = window.dd;
+        dd.biz.util.openLink({
+          url: 'https://dingtalk.gmkholdings.com:8081/viewnews?codeData=' + data, // 要打开链接的地址
+          onSuccess: function(result) {
+
+          },
+          onFail: function(err) {}
         })
       },
       setRight() {
@@ -247,9 +287,7 @@
             console.log(res)
           })
         }
-      },
-      disabled: true,
-      draggable: false
+      }
     }
   }
 </script>
@@ -266,7 +304,18 @@
   .box {
     width: 100%;
     height: 100%;
-    margin-top: 10px;
+    margin-top: 6px;
+  }
+
+  .box-container {
+    width: 96%;
+    border-radius: 6px;
+    border-width: 20px;
+    background: rgba(50,150,250,0.30);
+  }
+
+  .slide {
+    height: 180px;
   }
 
   .draggable {

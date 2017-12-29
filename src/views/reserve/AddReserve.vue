@@ -1,6 +1,6 @@
 <template>
   <div>
-    <group title="备用金录入">
+    <group title="备用金录入" labelWidth="6.5rem" labelMarginRight="1rem">
       <!-- <popup-picker title="备用金类型" :data="fundTypeList" :columns="1" v-model="formsData.stype" show-name></popup-picker> -->
       <v-search title="备用金类型" :cdata="fundTypeList" v-model="formsData.stype"></v-search>
       <!-- <datetime v-model="formsData.edate" :start-date="systemDate" title="预计归还日期"></datetime> -->

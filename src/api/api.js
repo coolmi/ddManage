@@ -885,5 +885,13 @@ export default {
       }).catch((error) => {
       return Promise.reject(error)
     })
+  },
+  getNews: function (cb) {
+    axios.get('/news/flashImages4Dd')
+      .then((res) => {
+        cb(res);
+      }).catch((error) => {
+      return Promise.reject(error)
+    })
   }
 }

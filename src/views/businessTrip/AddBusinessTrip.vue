@@ -1,6 +1,6 @@
 <template>
   <div>
-    <group title="出差明细">
+    <group title="出差明细" labelWidth="6.5rem" labelMarginRight="1rem">
       <cell title="类型" v-if="show === true">去程</cell>
       <v-search v-if="show === false" title="类型" :cdata="typeList" v-model="formsData.tp"></v-search>
       <calendar v-model="formsData.startda" title="出发日期"></calendar>

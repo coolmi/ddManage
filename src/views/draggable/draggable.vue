@@ -148,7 +148,7 @@
               {
                 id: 6,
                 name: '草稿',
-                url: ('static/images/hyjy.png'),
+                url: ('static/images/caog.png'),
                 link: '/saveList',
                 type: 'bd'
               }

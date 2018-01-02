@@ -421,6 +421,22 @@ export default {
       return Promise.reject(error)
     })
   },
+  /**
+   * 获取费用归集成本中心
+   * @param  {[type]}   params [参数]
+   * @param  {Function} cb     [返回数据]
+   * @return {[type]}          [description]
+   */
+  getIsSelTravel: function (params, cb) {
+    axios.get(APILIST.getIsSelTravel_url, {
+      params
+    })
+      .then((res) => {
+      cb(res);
+  }).catch((error) => {
+      return Promise.reject(error)
+    })
+  },
   // 备用金申请
   // 获取备用金类型+币种列表
   getReserveSubData: function (params, cb) {
@@ -855,6 +871,20 @@ export default {
    */
   saveFeeAppURL: function (params, cb) {
     axios.post(APISEND.saveFeeAppURL, params)
+      .then((res) => {
+      cb(res);
+  }).catch((error) => {
+      return Promise.reject(error)
+    })
+  },
+  /**
+   * 获取代办人下拉框
+   * @param  {[type]}   params [参数]
+   * @param  {Function} cb     [返回数据]
+   * @return {[type]}          [description]
+   */
+  findGPerson: function (cb) {
+    axios.get(APISEND.findGPersonURL)
       .then((res) => {
       cb(res);
   }).catch((error) => {

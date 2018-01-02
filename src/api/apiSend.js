@@ -1,4 +1,6 @@
 import axios from './axiosConfig'
+// 代报销下拉框
+const findGPersonURL = '/authapi/ddtalkwf/findGPerson'
 // 获取部门
 const getPositionURL = '/authapi/ddtalkwf/getPostion'
 // 获取费用承担公司
@@ -171,6 +173,7 @@ const getPersonReimTrafficType = function (params = {}) {
   });
 }
 export default {
+  findGPersonURL,
   getPositionURL,
   getBusinessDepartmentURL,
   getIsTempOrgURL,

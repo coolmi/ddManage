@@ -59,6 +59,7 @@ let APILIST = {
   reset_pass_url: '/api/updatepass/password/reset-pass',
 
   getBukrsAndKostlByPostid_url: '/authapi/ddtalkwf/getBukrsAndKostlByPostid',
+  getIsSelTravel_url: '/authapi/ddtalkwf/getIsSelTravel',
   // 获取出差订单号
   travellist_url: '/authapi/ddtalkwf/getTravelList',
   // 获取交通方式

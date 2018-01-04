@@ -6,14 +6,11 @@
 
 <script>
   import pdf from 'vue-pdf'
-  import ding from '@/lib/ding'
   import APILIST from '@/api/apiBase'
   import baseConfig from '@/api/baseConfig'
-  import api from 'api'
-  import whole from '@/lib/whole';
 
-//  var pdfjsLib = require('pdfjs-dist');
-//  var pdfjsWorker = require('pdfjs-dist/build/pdf.worker');
+  var pdfjsLib = require('pdfjs-dist');
+  var pdfjsWorker = require('pdfjs-dist/build/pdf.worker');
 
   export default {
     data() {
@@ -38,71 +35,32 @@
     },
     methods: {
       openPdf(params) {
-        let dd = window.dd;
-        let fujianUrl = APILIST.openDingfile_url + '?docmentafrescoid=' + params.docmentafrescoid + '&docmentafresconame=' + params.docmentafresconame + '&ispdf=' + params.ispdf;
-        api.getDocument(fujianUrl, function (res) {
-          console.log(res)
-          if (res.data && res.data.mediaId !== undefined && res.data.mediaId) {
-            dd.ready(function () {
-              dd.biz.cspace.saveFile({
-                corpId: ding.CORPID,
-                url: res.data.mediaId,
-                name: params.docmentafresconame,
-                onSuccess: function(data) {
-                  console.log(data)
-                  dd.biz.cspace.preview({
-                    corpId: ding.CORPID,
-                    spaceId: data.data[0].spaceId,
-                    fileId: data.data[0].fileId,
-                    fileName: data.data[0].fileName,
-                    fileSize: data.data[0].fileSize,
-                    fileType: 'xlsx',
-                    onSuccess: function() {
-                      // 无，直接在native显示文件详细信息
-                    },
-                    onFail: function(err) {
-                      whole.showTop('预览失败')
-                      // 无，直接在native页面显示具体的错误
-                    }
-                  });
-                },
-                onFail: function(err) {
-//                  window.alert(JSON.stringify(err));
-                }
-              });
-            })
-          }
-        })
-//        fujianUrl = encodeURIComponent(fujianUrl)
+        let _that = this;
+        let fujianUrl = baseConfig.baseURL + APILIST.openfile_url + '?docmentafrescoid=' + params.docmentafrescoid + '&docmentafresconame=' + params.docmentafresconame + '&ispdf=' + params.ispdf;
         console.log(fujianUrl)
-        console.log(ding.CORPID)
-        console.log(params.docmentafresconame)
-//        let _that = this;
-//        let fujianUrl = baseConfig.baseURL + APILIST.openfile_url + '?docmentafrescoid=' + params.docmentafrescoid + '&docmentafresconame=' + params.docmentafresconame + '&ispdf=' + params.ispdf;
-//        console.log(fujianUrl)
-//        pdfjsLib.PDFJS.workerSrc = pdfjsWorker;
-//        var loadingTask = pdfjsLib.getDocument(fujianUrl);
-//        loadingTask.promise.then(function (pdfDocument) {
-//          // Request a first page
-//          const num = pdfDocument.pdfInfo.numPages
-//          _that.num = pdfDocument.pdfInfo.numPages
-//          for (let i = 0; i <= num; i++) {
-//            pdfDocument.getPage(i).then(function (pdfPage) {
-//              // Display page on the existing canvas with 100% scale.
-//              var viewport = pdfPage.getViewport(1.0);
-//              var canvas = document.getElementById('theCanvas' + i);
-//              canvas.width = viewport.width;
-//              canvas.height = viewport.height;
-//              var ctx = canvas.getContext('2d');
-//              pdfPage.render({
-//                canvasContext: ctx,
-//                viewport: viewport
-//              });
-//            });
-//          }
-//        }).catch(function (reason) {
-//          console.error('Error: ' + reason);
-//        });
+        pdfjsLib.PDFJS.workerSrc = pdfjsWorker;
+        var loadingTask = pdfjsLib.getDocument(fujianUrl);
+        loadingTask.promise.then(function (pdfDocument) {
+          // Request a first page
+          const num = pdfDocument.pdfInfo.numPages
+          _that.num = pdfDocument.pdfInfo.numPages
+          for (let i = 0; i <= num; i++) {
+            pdfDocument.getPage(i).then(function (pdfPage) {
+              // Display page on the existing canvas with 100% scale.
+              var viewport = pdfPage.getViewport(1.0);
+              var canvas = document.getElementById('theCanvas' + i);
+              canvas.width = viewport.width;
+              canvas.height = viewport.height;
+              var ctx = canvas.getContext('2d');
+              pdfPage.render({
+                canvasContext: ctx,
+                viewport: viewport
+              });
+            });
+          }
+        }).catch(function (reason) {
+          console.error('Error: ' + reason);
+        });
       },
       downPdf(params) {
         window.location.href = baseConfig.baseURL + APILIST.openfile_url + '?docmentafrescoid=' + params.docmentafrescoid + '&docmentafresconame=' + params.docmentafresconame

@@ -14,7 +14,7 @@ const router = new Router({
   mode: 'history',
   routes: [
     {
-      path: '/home',
+      path: '/',
       component: require('@/views/Home'),
       meta: {title: '首页'}
     },
@@ -132,7 +132,7 @@ const router = new Router({
       }
     },
     {
-      path: '/',
+      path: '/asd',
       component: require('@/views/draggable/draggable'),
       meta: {title: '新凤祥工作台'}
     }

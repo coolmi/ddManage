@@ -159,7 +159,7 @@
 //      }
       let _that = this;
       this.$navigation.on('back', (to, from) => {
-        if (to.route.path === '/home') {
+        if (to.route.path === '/') {
           _that.pageNo = 1;
           _that.doNext(_that.index)
           _that.selectedIndex = _that.index

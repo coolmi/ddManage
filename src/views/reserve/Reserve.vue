@@ -17,7 +17,7 @@
       <cell v-for="d in formsData" :key="d.uuid" :title="d.stype.toString()" is-link @click.native="addReserveOption(d)">{{d.fwbas}}</cell>
     </group>
     <flexbox class="footerButton">
-      <flexbox-item class="vux-1px-r" @click.native="addReserve(0)" style="color:#00B705">提交</flexbox-item>
+      <flexbox-item @click.native="addReserve(0)" style="color:#00B705">提交</flexbox-item>
       <flexbox-item @click.native="addReserve(1)" style="color:#FF8519">保存</flexbox-item>
     </flexbox>
     <div v-transfer-dom>

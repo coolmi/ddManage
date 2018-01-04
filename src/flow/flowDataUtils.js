@@ -32,9 +32,9 @@ export function getFlowData(flowData) {
   data.EDITARR_ = [];
   if (flowData.forms) {
     for (let sub of flowData.forms) {
-      // if (sub.showLinkage && sub.showLinkage.length > 0) {
-      //   ifHidden(sub)
-      // }
+      if (sub.showLinkage && sub.showLinkage.length > 0) {
+        ifHidden(sub)
+      }
       sub.showContent = false;
       if (sub.pageid === 'sqxxmx') {
         sub.showContent = true;
@@ -206,9 +206,9 @@ export function getFlowData(flowData) {
 
 function getSubComponents(subData) {
   for (let sub of subData) {
-    // if (sub.showLinkage && sub.showLinkage.length > 0) {
-    //   ifHidden(sub)
-    // }
+    if (sub.showLinkage && sub.showLinkage.length > 0) {
+      ifHidden(sub)
+    }
     if (sub.subComponents) {
       let subComp = sub.subComponents
       getSubComponents(subComp);

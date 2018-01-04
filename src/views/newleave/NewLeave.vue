@@ -14,7 +14,8 @@
 
       <!--<v-search title="选择岗位" :cdata="positionList" v-model="forms.postid"></v-search>-->
       <v-search title="选择休假类型" :cdata="leavetypelist" v-model="forms.holidaytype"></v-search>
-      <v-search title="选择病假类型" :cdata="bjlxList" v-show="holidaytype==='B01'" v-model="forms.bjlx"></v-search>
+      <v-search title="直系亲属" :cdata="zxqsList" v-show="isshowsaj" v-model="forms.zxqs"></v-search>
+      <v-search title="选择病假类型" :cdata="bjlxList" v-show="isshowbj" v-model="forms.bjlx"></v-search>
       <datetime v-model="forms.sdate" format="YYYY-MM-DD" title="开始日期"></datetime>
       <datetime v-model="forms.timea" format="HH:mm" title="开始时间" v-show="isshowsj"></datetime>
       <v-search title="开始日班次" :cdata="bcaList" v-show="isshowbc" v-model="forms.dutya"></v-search>
@@ -25,8 +26,8 @@
 
       <!--<x-input :readonly="true" v-model="forms.thisdays" title="休假天数"></x-input>-->
       <cell title="休假天数" v-show="thisdays">{{forms.thisdays}}</cell>
-      <cell title="自然天数" v-show="thisdays">{{forms.comdays}}</cell>
-      <cell title="剩余额度(时)" v-show="thisdays">{{forms.surplus}}</cell>
+      <cell title="自然天数" v-show="false">{{forms.comdays}}</cell>
+      <cell title="剩余额度(时)" v-show="surplus">{{forms.surplus}}</cell>
       <x-textarea title="请假原因" v-model="readks" placeholder="" :show-counter="false" :rows="3" autosize></x-textarea>
       <x-input title="存休类型" v-show="false" v-model="forms.suebreak"></x-input>
       <x-input title="存休类型" v-show="false" v-model="forms.effecta"></x-input>
@@ -107,15 +108,18 @@ export default {
       },
       // positionList: [],
       leavetypelist: [],
+      zxqsList: [{'key': '公公', 'value': '公公'}, {'key': '婆婆', 'value': '婆婆'},
+        {'key': '父亲', 'value': '父亲'}, {'key': '母亲', 'value': '母亲'}, {'key': '岳父', 'value': '岳父'},
+        {'key': '岳母', 'value': '岳母'}, {'key': '子女', 'value': '子女'}],
       bjlxList: [{'key': '长期病假', 'value': '长期病假'}, {'key': '短期病假', 'value': '短期病假'}],
-      bcaList: [{'key': 'lower', 'value': '下午'}, {'key': 'all', 'value': '全天'}],
-      bcbList: [{'key': 'upper', 'value': '上午'}, {'key': 'all', 'value': '全天'}]
+      bcaList: [{'key': 'lower', 'value': '下午'}, {'key': 'all', 'value': '全天'}, {'key': '', 'value': '空'}],
+      bcbList: [{'key': 'upper', 'value': '上午'}, {'key': 'all', 'value': '全天'}, {'key': '', 'value': '空'}]
     }
   },
   computed: {
     thisdays: function () {
       let _that = this;
-      if (this.forms.sdate !== '' && this.forms.edate !== '') {
+      if ((this.forms.sdate !== '' && this.forms.edate !== '' && (this.forms.dutya !== '' || this.forms.dutyb !== '')) || (this.forms.sdate !== '' && this.forms.edate !== '' && this.forms.timea !== '' && this.forms.timeb !== '')) {
         let params = {
           mainModel: this.forms
         }
@@ -158,6 +162,20 @@ export default {
       } else {
         return false
       }
+    },
+    isshowsaj: function () {
+      if (this.forms.holidaytype === 'A05') {
+        return true
+      } else {
+        return false
+      }
+    },
+    isshowbj: function () {
+      if (this.forms.holidaytype === 'B01') {
+        return true
+      } else {
+        return false
+      }
     }
   },
   created() {
@@ -192,7 +210,7 @@ export default {
         return;
       }
       var holidaytypename = dataUtils.getDescValue(this.leavetypelist, this.forms.holidaytype);
-      this.holidaytypename = holidaytypename
+      this.forms.holidaytypename = holidaytypename
       let parmas = {
         mainModel: this.forms
       }
@@ -217,9 +235,9 @@ export default {
               if (res.data.message) {
                 _that.message = res.data.message;
                 _that.showCon = true;
-              } else if (res.data.error) {
+              } else if (res.data.data.error) {
                 _that.showCon = false;
-                whole.showTop(res.data.error);
+                whole.showTop(res.data.data.error);
               }
             } else {
               whole.showTop(res.data.message);

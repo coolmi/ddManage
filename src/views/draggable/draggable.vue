@@ -151,6 +151,27 @@
                 url: ('static/images/caog.png'),
                 link: '/saveList',
                 type: 'bd'
+              },
+              {
+                id: 6,
+                name: '休假',
+                url: ('static/images/caog.png'),
+                link: '/newLeave',
+                type: 'bd'
+              },
+              {
+                id: 6,
+                name: '值班',
+                url: ('static/images/caog.png'),
+                link: '/overTime',
+                type: 'bd'
+              },
+              {
+                id: 6,
+                name: '中止休假',
+                url: ('static/images/caog.png'),
+                link: '/newLeaveBackList',
+                type: 'bd'
               }
             ]
           }

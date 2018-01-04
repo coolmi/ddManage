@@ -34,6 +34,21 @@ const router = new Router({
       meta: {title: '员工休假申请'}
     },
     {
+      path: '/newLeaveBackList',
+      component: require('@/views/newleaveback/NewLeaveBackList'),
+      meta: {title: '员工提前中止休假申请列表'}
+    },
+    {
+      path: '/newLeaveBack',
+      component: require('@/views/newleaveback/NewLeaveBack'),
+      meta: {title: '员工提前中止休假申请'}
+    },
+    {
+      path: '/overTime',
+      component: require('@/views/overtime/OverTime'),
+      meta: {title: '员工值班申请'}
+    },
+    {
       path: '/businessTrip',
       component: require('@/views/businessTrip/BusinessTrip'),
       meta: {title: '员工出差申请'}

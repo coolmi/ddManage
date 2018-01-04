@@ -549,6 +549,20 @@ export default {
     })
   },
   /**
+   * 获取实际休假天数
+   * @param  {[type]}   params [参数]
+   * @param  {Function} cb     [返回数据]
+   * @return {[type]}          [description]
+   */
+  getSjXjtsURL: function (params, cb) {
+    axios.post(APISEND.sjXjtsURL, params)
+      .then((res) => {
+        cb(res);
+      }).catch((error) => {
+      return Promise.reject(error)
+    })
+  },
+  /**
    * 获取休假天数
    * @param  {[type]}   params [参数]
    * @param  {Function} cb     [返回数据]
@@ -633,6 +647,42 @@ export default {
    * 预判
    * @param cb
    */
+  getNextAssignNewLeaveBackURL: function (params, cb) {
+    axios.post(APISEND.nextAssignNewLeaveBackURL, params)
+      .then((res) => {
+        cb(res);
+      }).catch((error) => {
+      return Promise.reject(error)
+    })
+  },
+  /**
+   * 提交
+   * @param cb
+   */
+  getStartNewLeaveBackURL: function (params, cb) {
+    axios.post(APISEND.startNewLeaveBackURL, params)
+      .then((res) => {
+        cb(res);
+      }).catch((error) => {
+      return Promise.reject(error)
+    })
+  },
+  /**
+   * 保存
+   * @param cb
+   */
+  getSaveNewLeaveBackURL: function (params, cb) {
+    axios.post(APISEND.saveNewLeaveBackURL, params)
+      .then((res) => {
+        cb(res);
+      }).catch((error) => {
+      return Promise.reject(error)
+    })
+  },
+  /**
+   * 预判
+   * @param cb
+   */
   getNextAssignOverTimeURL: function (params, cb) {
     axios.post(APISEND.nextAssignOverTimeURL, params)
       .then((res) => {
@@ -666,7 +716,7 @@ export default {
     })
   },
   getNewLeaveBackListURL: function (params, cb) {
-    axios.post(APISEND.newLeaveBackListURL, params)
+    axios.get(APISEND.newLeaveBackListURL, params)
       .then((res) => {
         cb(res);
       }).catch((error) => {
@@ -674,7 +724,9 @@ export default {
     })
   },
   getNewLeaveInfoByIdURL: function (params, cb) {
-    axios.post(APISEND.newLeaveInfoByIdURL, params)
+    axios.get(APISEND.newLeaveInfoByIdURL, {
+      params
+    })
       .then((res) => {
         cb(res);
       }).catch((error) => {

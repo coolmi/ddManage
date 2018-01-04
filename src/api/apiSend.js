@@ -14,6 +14,7 @@ const getBurkList1 = '/authapi/ddtalkwf/getBukrlist'
 // 获取休假类型
 const leaveTypeListURL = '/authapi/newleave/getLeaveTypeList'
 const xjtsURL = '/authapi/newleave/getXjts'
+const sjXjtsURL = '/authapi/newleaveback/getSjXjts'
 const kqbcURL = '/authapi/newleave/getKqbc'
 const saveNewLeaveURL = '/authapi/newleave/saveNewLeave'
 const startNewLeaveURL = '/authapi/newleave/startNewLeave'
@@ -21,10 +22,10 @@ const nextAssignNewLeaveURL = '/authapi/newleave/nextAssignNewLeave'
 const saveOverTimeURL = '/authapi/overtime/saveOverTime'
 const startOverTimeURL = '/authapi/overtime/startOverTime'
 const nextAssignOverTimeURL = '/authapi/overtime/nextAssignOverTime'
-const saveNewLeaveBackURL = '/authapi/newleaveback/saveNewLeaveBack'
-const startNewLeaveBackURL = '/authapi/newleaveback/startNewLeaveBack'
-const nextAssignNewLeaveBackURL = '/authapi/newleaveback/nextAssignNewLeaveBack'
-const newLeaveBackListURL = '/authapi/newleaveback/backList'
+const saveNewLeaveBackURL = '/authapi/newleaveback/saveNewLeave'
+const startNewLeaveBackURL = '/authapi/newleaveback/startNewLeave'
+const nextAssignNewLeaveBackURL = '/authapi/newleaveback/nextAssignNewLeave'
+const newLeaveBackListURL = '/authapi/newleaveback/getBackList'
 const newLeaveInfoByIdURL = '/authapi/newleaveback/getNewLeaveInfoById'
 
 // 报销
@@ -224,6 +225,7 @@ export default {
   getDraftDataByIdURL,
   leaveTypeListURL,
   xjtsURL,
+  sjXjtsURL,
   kqbcURL,
   saveNewLeaveBackURL,
   startNewLeaveBackURL,

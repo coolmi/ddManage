@@ -293,6 +293,27 @@ export default {
         cb(obj);
       }));
   },
+  getPosition1: function (cb) {
+    axios.all([APISEND.getPosition()])
+      .then(axios.spread(function (...a) {
+      // 两个请求现在都执行完成
+      let aa = _.map(a, _.iteratee('data'));
+      let aaa = _.map(aa, _.iteratee('data'));
+      cb(aaa);
+    }
+    ))
+    ;
+  },
+  getBurck1: function (params, cb) {
+    axios.get(APISEND.getBurkList1, {
+      params
+    })
+    .then((res) => {
+      cb(res);
+  }).catch((error) => {
+      return Promise.reject(error)
+    })
+  },
   /**
    * 验证是否获取到用户基本信息
    * @param cb

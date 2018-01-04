@@ -208,6 +208,23 @@
             }
           }
         })
+        let params = {
+          postid: this.forms.postid
+        }
+        api.getBurck1(params, function (res) {
+          if (res) {
+            _that.burksList = res.data.data.bukrlist
+            if (res.data.data.protype === '0') {
+              if (res.data.data.bukrs) {
+                _that.forms.burks = res.data.data.bukrs
+                _that.changeBurks()
+              }
+            }
+              if (res.data.data.protype === '1') {
+                _that.forms.burks = _that.burksList[0].key
+              }
+            }
+        })
         if (this.show === '0') {
           _that.getTflag()
         }
@@ -217,14 +234,12 @@
       }, */
       getBaseData() {
         let _that = this;
-        api.getPosition(function (res) {
+        api.getPosition1(function (res) {
           if (res) {
-            _that.positionList = res.positionlist
-            _that.burksList = res.bukrlist // 转换可识别的样式
+            _that.positionList = res[0].positionlist
           }
         })
       },
-
       changeBurks() {
         if (this.forms.postid.length > 0 && this.forms.burks > 0) {
           let postid = this.forms.postid;

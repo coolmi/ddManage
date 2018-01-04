@@ -10,6 +10,7 @@ const getBurkListURL = '/authapi/ddtalkwf/getBukrlist'
  * @type vfiled ：需要验证的字段，多个用逗号隔开（lifnr："财务编号",pernr,"员工编号",postid,"岗位编号",sysbusinessunitid,"事业部编号",sysdeptid,"部门编号",userid,"itcode",zzdbxjb,"报销级别"）
  */
 const validateUserBaseInfoURL = '/authapi/ddtalkwf/validateUserBaseInfo'
+const getBurkList1 = '/authapi/ddtalkwf/getBukrlist'
 // 获取休假类型
 const leaveTypeListURL = '/authapi/newleave/getLeaveTypeList'
 const xjtsURL = '/authapi/newleave/getXjts'
@@ -197,6 +198,7 @@ export default {
   getColdconamzList,
   getBurkListURL,
   validateUserBaseInfoURL,
+  getBurkList1,
   getTrafficwaysURL,
   getCitysbyBukrsURL,
   nextassigneeTravelWFURL,

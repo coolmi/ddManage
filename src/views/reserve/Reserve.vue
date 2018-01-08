@@ -152,24 +152,26 @@ export default {
   methods: {
     getProtypeInfo() {
       let _that = this
-      let params = {
-        postid: this.forms.postid
-      }
-      api.getBurck1(params, function (res) {
-        if (res) {
-          _that.burkList = res.data.data.bukrlist
-          if (res.data.data.protype === '0') {
-            if (res.data.data.bukrs) {
-              _that.forms.cdbukrs = res.data.data.bukrs
+      if (this.forms.postid) {
+        let params = {
+          postid: this.forms.postid
+        }
+        api.getBurck1(params, function (res) {
+          if (res) {
+            _that.burkList = res.data.data.bukrlist
+            if (res.data.data.protype === '0') {
+              if (res.data.data.bukrs) {
+                _that.forms.cdbukrs = res.data.data.bukrs
+                _that.changeBurks()
+              }
+            }
+            if (res.data.data.protype === '1') {
+              _that.forms.cdbukrs = res.data.data.bukrlist[0].key
               _that.changeBurks()
             }
           }
-          if (res.data.data.protype === '1') {
-            _that.forms.cdbukrs = res.data.data.bukrlist[0].key
-            _that.changeBurks()
-          }
-        }
-      })
+        })
+      }
     },
     validateUserData() {
       let params = {

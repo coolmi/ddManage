@@ -208,6 +208,7 @@
             }
           }
         })
+        if (this.forms.postid) {
         let params = {
           postid: this.forms.postid
         }
@@ -225,6 +226,7 @@
               }
             }
         })
+        }
         if (this.show === '0') {
           _that.getTflag()
         }

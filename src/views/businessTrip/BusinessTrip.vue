@@ -1,9 +1,9 @@
 <template>
   <div>
     <group title="申请信息" labelWidth="6.5rem" labelMarginRight="1rem">
-      <v-search title="选择岗位" :cdata="positionList" v-model="forms.postid"></v-search>
-      <v-search title="费用承担公司" :cdata="burkList" v-model="forms.m_comp"></v-search>
-      <v-search title="费用归集成本中心" :noticeDesc="noticeDesc" :cdata="kostlList" v-model="forms.m_cbzx" @on-show="changeBurks"></v-search>
+      <v-search title="选择岗位" :cdata="positionList" v-model="forms.postid" @on-hide="getProtypeInfo"></v-search>
+      <v-search title="费用承担公司" :cdata="burkList" v-model="forms.m_comp" @on-hide="changeBurks"></v-search>
+      <v-search title="费用归集成本中心" :noticeDesc="noticeDesc" :cdata="kostlList" v-model="forms.m_cbzx" ></v-search>
       <!-- <popup-picker title="选择岗位" :data="positionList" :columns="1" v-model="forms.postid" show-name></popup-picker>
       <cell title="费用承担公司" is-link @click.native="show1 = true">{{stringDemo}}</cell> -->
       <x-switch title="是否提高标准" :value-map="['0', '1']" v-model="beup"></x-switch>
@@ -105,10 +105,31 @@ export default {
     this.getBaseData() // 请求部门和费用承担公司
     // this.setData() // 填写的时候回退保存值
     if (this.forms.postid !== '' && this.forms.m_comp !== '') {
-      this.changeBurks(this.forms.postid, this.forms.m_comp)
+      this.changeBurks()
     }
   },
   methods: {
+    getProtypeInfo() {
+      let _that = this
+      let params = {
+        postid: this.forms.postid
+      }
+      api.getBurck1(params, function (res) {
+        if (res) {
+          _that.burkList = res.data.data.bukrlist
+          if (res.data.data.protype === '0') {
+            if (res.data.data.bukrs) {
+              _that.forms.m_comp = res.data.data.bukrs
+              _that.changeBurks()
+            }
+          }
+          if (res.data.data.protype === '1') {
+            _that.forms.m_comp = res.data.data.bukrlist[0].key
+            _that.changeBurks()
+          }
+        }
+      })
+    },
     draftData(saveParams) {
       let params = {
         appid: saveParams.appid,
@@ -141,7 +162,7 @@ export default {
 
             _that.$store.dispatch('addBusinessTrip', item)
           });
-          _that.changeBurks(_that.forms.postid, _that.forms.m_comp)
+          _that.changeBurks()
         }
       })
     },
@@ -150,7 +171,7 @@ export default {
       api.getPosition(function (res) {
         if (res) {
           _that.positionList = res.positionlist
-          _that.burkList = res.bukrlist
+         // _that.burkList = res.bukrlist
         }
       })
     },
@@ -161,7 +182,7 @@ export default {
     //   this.beup = this.formsInfos.beup;
     //   this.reason = this.formsInfos.reason;
     // },
-    changeBurks(postid, bukrs) {
+    /* changeBurks(postid, bukrs) {
         postid = this.forms.postid;
         bukrs = this.forms.m_comp;
         let params = {
@@ -174,6 +195,30 @@ export default {
             _that.kostlList = res.data.data.kostlrulist
           }
         })
+    }, */
+    changeBurks() {
+      if (this.forms.postid.length > 0 && this.forms.m_comp > 0) {
+        let postid = this.forms.postid;
+        let bukrs = this.forms.m_comp;
+        let params = {
+          postid: postid,
+          bukrs: bukrs
+        }
+        let _that = this;
+        api.getKostal(params, function (res) {
+          if (res.data.code && res.data.data) {
+            _that.kostlList = res.data.data.kostlrulist
+            if (res.data.data.showkostl) {
+              _that.forms.m_cbzx = res.data.data.showkostl
+            }
+          } else {
+            this.showKostlPopupPicker = false
+          }
+        })
+      } else {
+        whole.showTop('请选择费用承担公司')
+        this.showKostlPopupPicker = false
+      }
     },
     addBusinessTripOption (data = {}) {
       if (this.forms.m_comp > 0) {

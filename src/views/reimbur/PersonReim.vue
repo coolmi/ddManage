@@ -252,8 +252,8 @@
           api.getKostal(params, function (res) {
             if (res.data.code && res.data.data) {
               _that.kostlList = res.data.data.kostlrulist
-              if (_that.kostlList.length === 1) {
-                _that.forms.kostl = _that.kostlList[0].key
+              if (res.data.data.showkostl) {
+                _that.forms.kostl = res.data.data.showkostl
               }
             } else {
               this.showKostlPopupPicker = false

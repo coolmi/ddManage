@@ -1,9 +1,9 @@
 <template>
   <div>
     <group title="申请信息" labelWidth="6.5rem" labelMarginRight="1rem">
-      <v-search title="选择岗位" :cdata="positionList" v-model="forms.postid"></v-search>
-      <v-search title="费用承担公司" :cdata="burkList" v-model="forms.cdbukrs"></v-search>
-      <v-search title="费用归集成本中心" :noticeDesc="noticeDesc" :cdata="kostlList" v-model="forms.cdkostls" @on-show="changeBurks"></v-search>
+      <v-search title="选择岗位" :cdata="positionList" v-model="forms.postid" @on-hide="getProtypeInfo"></v-search>
+      <v-search title="费用承担公司" :cdata="burkList" v-model="forms.cdbukrs" @on-hide="changeBurks"></v-search>
+      <v-search title="费用归集成本中心" :noticeDesc="noticeDesc" :cdata="kostlList" v-model="forms.cdkostls" ></v-search>
       <!-- <cell v-if="showSelect" title="请选择专项负责人" is-link @click.native="selectPerson">{{m_zxfzrnm}}</cell> -->
       <v-search v-if="showDepart" title="费用所属事业部" :noticeDesc="noticeDesc" :cdata="departments" v-model="forms.businessunitid" @on-show="changeDepart"></v-search>
       <cell v-if="formsData.length > 0" title="汇总">{{byjsum[0].sum}}</cell>
@@ -145,11 +145,32 @@ export default {
     this.getBaseData() // 请求部门和费用承担公司
     // this.setData() // 填写的时候回退保存值
     if (this.forms.postid !== '' && this.forms.cdbukrs !== '') {
-      this.changeBurks(this.forms.postid, this.forms.cdbukrs)
+      this.changeBurks()
       this.changeDepart(this.forms.postid, this.forms.cdbukrs)
     }
   },
   methods: {
+    getProtypeInfo() {
+      let _that = this
+      let params = {
+        postid: this.forms.postid
+      }
+      api.getBurck1(params, function (res) {
+        if (res) {
+          _that.burkList = res.data.data.bukrlist
+          if (res.data.data.protype === '0') {
+            if (res.data.data.bukrs) {
+              _that.forms.cdbukrs = res.data.data.bukrs
+              _that.changeBurks()
+            }
+          }
+          if (res.data.data.protype === '1') {
+            _that.forms.cdbukrs = res.data.data.bukrlist[0].key
+            _that.changeBurks()
+          }
+        }
+      })
+    },
     validateUserData() {
       let params = {
         vfiled: 'lifnr'
@@ -190,7 +211,7 @@ export default {
             item.field = 'fwbas'
             _that.$store.dispatch('addReserve', item)
           });
-          _that.changeBurks(_that.forms.postid, _that.forms.cdbukrs)
+          _that.changeBurks()
           _that.changeDepart(_that.forms.postid, _that.forms.cdbukrs)
         }
       })
@@ -200,7 +221,7 @@ export default {
       api.getPosition(function (res) {
         if (res) {
           _that.positionList = res.positionlist
-          _that.burkList = res.bukrlist
+         // _that.burkList = res.bukrlist
         }
       })
     },
@@ -211,18 +232,23 @@ export default {
       this.forms.cdkostls = this.formsInfos.forms.cdkostls;
       this.forms.businessunitid = this.formsInfos.forms.businessunitid;
     },
-    changeBurks(postid, bukrs) {
+    changeBurks() {
       if (this.forms.postid !== '' && this.forms.cdbukrs !== '') {
-        postid = this.forms.postid;
-        bukrs = this.forms.cdbukrs;
+       let postid = this.forms.postid;
+       let bukrs = this.forms.cdbukrs;
         let params = {
           postid: postid,
           bukrs: bukrs
         }
         let _that = this;
         api.getKostal(params, function (res) {
-          if (res) {
+          if (res.data.code && res.data.data) {
             _that.kostlList = res.data.data.kostlrulist
+            if (res.data.data.showkostl) {
+              _that.forms.cdkostls = res.data.data.showkostl
+            }
+          } else {
+            this.showKostlPopupPicker = false
           }
         })
       }

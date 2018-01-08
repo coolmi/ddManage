@@ -199,8 +199,13 @@
         let obj = {};
         _.map(arr, function (item) {
           if (typeof item.value === 'object') {
-            let val = _.map(item.value, _.iteratee('key'));
-            obj[item.name] = val.toString();
+            if (_.isArray(item.value)) {
+              let val = _.map(item.value, _.iteratee('key'));
+              obj[item.name] = val.toString();
+            } else {
+              let val = _.map([item.value], _.iteratee('key'));
+              obj[item.name] = val.toString();
+            }
           } else {
             obj[item.name] = item.value
           }

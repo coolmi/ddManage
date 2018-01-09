@@ -150,14 +150,14 @@ export default {
       }
     },
     isshowbc: function () {
-      if (this.forms.holidaytype !== 'A02' && this.forms.holidaytype !== 'A12') {
+      if (this.forms.holidaytype !== 'A02' && this.forms.holidaytype !== 'A11') {
         return true
       } else {
         return false
       }
     },
     isshowsj: function () {
-      if (this.forms.holidaytype === 'A02' || this.forms.holidaytype === 'A12') {
+      if (this.forms.holidaytype === 'A02' || this.forms.holidaytype === 'A11') {
         return true
       } else {
         return false

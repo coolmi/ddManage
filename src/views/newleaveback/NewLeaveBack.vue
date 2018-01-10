@@ -10,27 +10,26 @@
       <!--<x-input v-model="forms.sysdeptname" title="部门名称" v-show="false"></x-input>-->
       <!--<x-input v-model="forms.sysbusinessunitid" title="事业部编号" v-show="false"></x-input>-->
       <!--<x-input v-model="forms.sysbusinessunitname" title="事业部名称" v-show="false"></x-input>-->
-      <x-input v-model="forms.holidaytypename" title="休假类型名称" v-show="false"></x-input>
+      <!--<x-input v-model="forms.holidaytypename" title="休假类型名称" v-show="false"></x-input>-->
 
       <!--<v-search title="选择岗位" :cdata="positionList" v-model="forms.postid"></v-search>-->
-      <x-input title="休假单号" v-show="false" v-model="forms.leaveappid"></x-input>
-      <x-input title="休假类型" v-show="false" v-model="forms.holidaytype"></x-input>
-      <x-input title="休假类型" v-show="false" v-model="forms.holidaytypename"></x-input>
-      <x-input title="休假类型" v-model="xjlx"></x-input>
-      <x-input title="病假类型" v-show="holidaytype==='B01'" v-model="forms.bjlx"></x-input>
-      <x-input title="直系亲属" v-show="holidaytype==='A05'" v-model="forms.zxqs"></x-input>
+      <x-input title="休假单号" v-show="false" v-model="forms.leaveappid" ></x-input>
+      <x-input title="休假类型" v-show="false" v-model="forms.holidaytype" ></x-input>
+      <x-input title="休假类型" v-show="true" v-model="forms.holidaytypename" readonly></x-input>
+      <x-input title="病假类型" v-show="holidaytype==='B01'" v-model="forms.bjlx" readonly></x-input>
+      <x-input title="直系亲属" v-show="holidaytype==='A05'" v-model="forms.zxqs" readonly></x-input>
 
-      <datetime v-model="forms.sdate" format="YYYY-MM-DD" title="开始日期"></datetime>
-      <datetime v-model="forms.timea" format="HH:mm" title="开始时间" v-show="isshowsj"></datetime>
-      <v-search title="开始日班次" :cdata="bcaList" v-show="isshowbc" v-model="forms.dutya"></v-search>
+      <datetime v-model="forms.sdate" format="YYYY-MM-DD" title="开始日期" readonly></datetime>
+      <datetime v-model="forms.timea" format="HH:mm" title="开始时间" v-show="isshowsj" readonly></datetime>
+      <v-search title="开始日班次" :cdata="bcaList" v-show="isshowbc" v-model="forms.dutya" readonly></v-search>
 
-      <datetime v-model="forms.edate" format="YYYY-MM-DD" title="结束日期"></datetime>
-      <v-search title="结束日班次" :cdata="bcbList" v-show="isshowbc" v-model="forms.dutyb"></v-search>
-      <datetime v-model="forms.timeb" format="HH:mm" title="结束时间" v-show="isshowsj"></datetime>
-      <x-input title="休假天数" v-show="true" v-model="forms.thisdays"></x-input>
+      <datetime v-model="forms.edate" format="YYYY-MM-DD" title="结束日期" readonly></datetime>
+      <v-search title="结束日班次" :cdata="bcbList" v-show="isshowbc" v-model="forms.dutyb" readonly></v-search>
+      <datetime v-model="forms.timeb" format="HH:mm" title="结束时间" v-show="isshowsj" readonly></datetime>
+      <x-input title="休假天数" v-show="true" v-model="forms.thisdays" readonly></x-input>
 
-      <datetime v-model="forms.acsdate" format="YYYY-MM-DD" title="实际开始日期" aria-disabled="true"></datetime>
-      <datetime v-model="forms.actimea" format="HH:mm" title="实际开始时间" v-show="isshowsj" aria-disabled="true"></datetime>
+      <datetime v-model="forms.acsdate" format="YYYY-MM-DD" title="实际开始日期" aria-disabled="true" readonly></datetime>
+      <datetime v-model="forms.actimea" format="HH:mm" title="实际开始时间" v-show="isshowsj" aria-disabled="true" ></datetime>
       <v-search title="实际开始日班次" :cdata="bcaList" v-show="isshowbc" v-model="forms.acdutya" aria-disabled="true"></v-search>
 
       <datetime v-model="forms.acedate" format="YYYY-MM-DD" title="实际结束日期"></datetime>
@@ -181,8 +180,11 @@
             _that.forms.sdate = res.data.sdate;
             _that.forms.edate = res.data.edate;
             _that.forms.acsdate = res.data.sdate;
+            _that.forms.acedate = res.data.edate;
             _that.forms.timea = res.data.timea;
             _that.forms.timeb = res.data.timeb;
+            _that.forms.actimea = res.data.timea;
+            _that.forms.actimeb = res.data.timeb;
             _that.forms.readks = mainModel.readks;
             _that.forms.bjlx = mainModel.bjlx;
             _that.forms.surplus = mainModel.surplus;
@@ -193,8 +195,10 @@
             _that.forms.hasuse = mainModel.hasuse;
             _that.forms.dutya = mainModel.dutya;
             _that.forms.dutyb = mainModel.dutyb;
+            _that.forms.acdutya = mainModel.dutya;
+            _that.forms.acdutyb = mainModel.dutyb;
             _that.forms.holidaytypename = mainModel.holidaytypename;
-            _that.xjlx = mainModel.holidaytypename;
+            _that.forms.leaveappid = mainModel.leaveappid;
             _that.forms.ctxts = res.data.ctxts;
             _that.forms.ctxxss = res.data.ctxxss;
             _that.forms.ctxnjts = res.data.ctxnjts;
@@ -203,7 +207,6 @@
             _that.forms.thisdays = res.data.thisdays;
             _that.forms.comdays = res.data.comdays;
             _that.forms.thishours = res.data.thishours;
-            _that.forms.leaveappid = res.data.leaveappid;
           }
         })
       },

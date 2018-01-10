@@ -268,10 +268,17 @@ export default {
         if (res) {
           if (res.data.code) {
             whole.showTop(res.data.message);
-            _that.$router.go(-1)
+            setTimeout(() => {
+              let dd = window.dd;
+              dd.biz.navigation.close({
+                onSuccess: function(result) {
+                },
+                onFail: function(err) {}
+              })
+            }, 1500)
           } else {
             whole.showTop(res.data.message);
-            _that.$router.go(-1)
+            // _that.$router.go(-1)
           }
         }
       })

@@ -13,12 +13,12 @@
       <x-input v-model="forms.holidaytypename" title="休假类型名称" v-show="false"></x-input>
 
       <!--<v-search title="选择岗位" :cdata="positionList" v-model="forms.postid"></v-search>-->
-      <cell title="休假单号" v-show="false">{{forms.leaveappid}}</cell>
-      <cell title="休假类型" v-show="false">{{forms.holidaytype}}</cell>
-      <cell title="休假类型" v-show="false">{{forms.holidaytypename}}</cell>
-      <cell title="休假类型" >{{xjlx}}</cell>
-      <cell title="病假类型" v-show="holidaytype==='B01'">{{forms.bjlx}}</cell>
-      <cell title="直系亲属" v-show="holidaytype==='A05'">{{forms.zxqs}}</cell>
+      <x-input title="休假单号" v-show="false" v-model="forms.leaveappid"></x-input>
+      <x-input title="休假类型" v-show="false" v-model="forms.holidaytype"></x-input>
+      <x-input title="休假类型" v-show="false" v-model="forms.holidaytypename"></x-input>
+      <x-input title="休假类型" v-model="xjlx"></x-input>
+      <x-input title="病假类型" v-show="holidaytype==='B01'" v-model="forms.bjlx"></x-input>
+      <x-input title="直系亲属" v-show="holidaytype==='A05'" v-model="forms.zxqs"></x-input>
 
       <datetime v-model="forms.sdate" format="YYYY-MM-DD" title="开始日期"></datetime>
       <datetime v-model="forms.timea" format="HH:mm" title="开始时间" v-show="isshowsj"></datetime>
@@ -27,6 +27,7 @@
       <datetime v-model="forms.edate" format="YYYY-MM-DD" title="结束日期"></datetime>
       <v-search title="结束日班次" :cdata="bcbList" v-show="isshowbc" v-model="forms.dutyb"></v-search>
       <datetime v-model="forms.timeb" format="HH:mm" title="结束时间" v-show="isshowsj"></datetime>
+      <x-input title="休假天数" v-show="true" v-model="forms.thisdays"></x-input>
 
       <datetime v-model="forms.acsdate" format="YYYY-MM-DD" title="实际开始日期" aria-disabled="true"></datetime>
       <datetime v-model="forms.actimea" format="HH:mm" title="实际开始时间" v-show="isshowsj" aria-disabled="true"></datetime>
@@ -37,9 +38,9 @@
       <datetime v-model="forms.actimeb" format="HH:mm" title="实际结束时间" v-show="isshowsj"></datetime>
 
       <!--<x-input :readonly="true" v-model="forms.thisdays" title="休假天数"></x-input>-->
-      <cell title="休假天数" v-show="thisdays">{{forms.thisdays}}</cell>
-      <cell title="自然天数" v-show="thisdays">{{forms.comdays}}</cell>
-      <cell title="剩余额度(时)" v-show="thisdays">{{forms.surplus}}</cell>
+      <cell title="实际休假天数" v-show="true">{{forms.actualdays}}</cell>
+      <x-input title="自然天数" v-show="false" v-model="forms.comdays"></x-input>
+      <x-input title="剩余额度(时)" v-show="thisdays" v-model="forms.surplus"></x-input>
       <x-textarea title="请假原因" v-model="readks" placeholder="" :show-counter="false" :rows="3" autosize></x-textarea>
       <x-input title="存休类型" v-show="false" v-model="forms.suebreak"></x-input>
       <x-input title="存休类型" v-show="false" v-model="forms.effecta"></x-input>
@@ -91,36 +92,41 @@
       return {
         showCon: false,
         forms: {
+          actualdays: '',
+          holidaytype: '',
           parmasOption: {}
         },
         bcaList: [{'key': 'lower', 'value': '下午'}, {'key': 'all', 'value': '全天'}],
         bcbList: [{'key': 'upper', 'value': '上午'}, {'key': 'all', 'value': '全天'}]
       }
     },
+    watch: {
+      'forms.acdutyb': {
+        handler: function (val, oldval) {
+          if (val) {
+            this.changeVal();
+          }
+        },
+        deep: true
+      },
+      'forms.acdutya': {
+        handler: function (val, oldval) {
+          if (val) {
+            this.changeVal();
+          }
+        },
+        deep: true
+      },
+      'forms.acedate': {
+        handler: function (val, oldval) {
+          if (val) {
+            this.changeVal();
+          }
+        },
+        deep: true
+      }
+    },
     computed: {
-      // thisdays: function () {
-      //   let _that = this;
-      //   if (this.forms.acedate !== 'undefined' && this.forms.acedate !== '') {
-      //     console.log(33);
-      //     console.log(this.forms.acedate);
-      //     let params = {
-      //       mainModel: this.forms
-      //     }
-      //     // api.getXjtsURL(params, function (res) {
-      //     //   if (res) {
-      //     //     console.log(res.data.data.thisdays)
-      //     //   }
-      //     // })
-      //     api.getSjXjtsURL(params, function (res) {
-      //       if (res) {
-      //         _that.forms.thisdays = res.data.data.thisdays
-      //         _that.forms.comdays = res.data.data.comdays
-      //         _that.forms.thishours = res.data.data.thishours
-      //       }
-      //     })
-      //     return true
-      //   }
-      // },
       isshowbc: function () {
         if (this.forms.holidaytype !== 'A02' && this.forms.holidaytype !== 'A11') {
           return true
@@ -145,6 +151,21 @@
       this.setData() // 填写的时候回退保存值
     },
     methods: {
+      changeVal() {
+        let _that = this;
+          if ((this.forms.holidaytype !== '' && this.forms.acsdate !== '' && this.forms.acedate !== '' && (this.forms.acdutya !== '' || this.forms.acdutyb !== '')) || (this.forms.holidaytype !== '' && this.forms.acsdate !== '' && this.forms.acedate !== '' && this.forms.actimea !== '' && this.forms.actimeb !== '')) {
+            let params = {
+              mainModel: this.forms
+            }
+            api.getSjXjtsURL(params, function (res) {
+              console.log(res)
+              if (res) {
+                _that.forms.actualdays = res.data.data.actualdays
+              }
+            })
+            return true
+          }
+      },
       draftData(saveParams) {
         let params = {
           id: saveParams.id
@@ -173,7 +194,6 @@
             _that.forms.dutya = mainModel.dutya;
             _that.forms.dutyb = mainModel.dutyb;
             _that.forms.holidaytypename = mainModel.holidaytypename;
-            _that.forms.holidaytype = mainModel.holidaytype;
             _that.xjlx = mainModel.holidaytypename;
             _that.forms.ctxts = res.data.ctxts;
             _that.forms.ctxxss = res.data.ctxxss;
@@ -183,6 +203,7 @@
             _that.forms.thisdays = res.data.thisdays;
             _that.forms.comdays = res.data.comdays;
             _that.forms.thishours = res.data.thishours;
+            _that.forms.leaveappid = res.data.leaveappid;
           }
         })
       },
@@ -248,10 +269,17 @@
           if (res) {
             if (res.data.code) {
               whole.showTop(res.data.message);
-              _that.$router.go(-1)
+              setTimeout(() => {
+                let dd = window.dd;
+                dd.biz.navigation.close({
+                  onSuccess: function(result) {
+                  },
+                  onFail: function(err) {}
+                })
+              }, 1500)
             } else {
               whole.showTop(res.data.message);
-              _that.$router.go(-1)
+              // _that.$router.go(-1)
             }
           }
         })

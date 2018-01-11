@@ -78,35 +78,35 @@
               }
             ]
           },
-          {
-            title: '新闻公告',
-            item: [
-              {
-                name: '新闻',
-                url: ('static/images/xinw.png'),
-                link: 'https://dingtalk.gmkholdings.com:8081',
-                type: 'wl'
-              },
-              {
-                name: '公文',
-                url: ('static/images/gongw.png'),
-                link: 'https://dingtalk.gmkholdings.com:8081/gw',
-                type: 'wl'
-              },
-              {
-                name: '公告',
-                url: ('static/images/gongg.png'),
-                link: 'https://dingtalk.gmkholdings.com:8081/gg',
-                type: 'wl'
-              },
-              {
-                name: '集团官网',
-                url: ('static/images/guanw.png'),
-                link: 'http://www.gmkholdings.com',
-                type: 'wl'
-              }
-            ]
-          },
+//          {
+//            title: '新闻公告',
+//            item: [
+//              {
+//                name: '新闻',
+//                url: ('static/images/xinw.png'),
+//                link: 'https://dingtalk.gmkholdings.com:8081',
+//                type: 'wl'
+//              },
+//              {
+//                name: '公文',
+//                url: ('static/images/gongw.png'),
+//                link: 'https://dingtalk.gmkholdings.com:8081/gw',
+//                type: 'wl'
+//              },
+//              {
+//                name: '公告',
+//                url: ('static/images/gongg.png'),
+//                link: 'https://dingtalk.gmkholdings.com:8081/gg',
+//                type: 'wl'
+//              },
+//              {
+//                name: '集团官网',
+//                url: ('static/images/guanw.png'),
+//                link: 'http://www.gmkholdings.com',
+//                type: 'wl'
+//              }
+//            ]
+//          },
           {
             title: '行政办公',
             item: [
@@ -199,8 +199,8 @@
       }
     },
     created() {
-      this.getUserid();
-      this.setRight(); // 设置右上角按钮
+//      this.getUserid();
+//      this.setRight(); // 设置右上角按钮
 //      this.getNews();
     },
     methods: {

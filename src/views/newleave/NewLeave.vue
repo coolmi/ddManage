@@ -16,6 +16,7 @@
       <v-search title="选择休假类型" :cdata="leavetypelist" v-model="forms.holidaytype"></v-search>
       <v-search title="直系亲属" :cdata="zxqsList" v-show="isshowsaj" v-model="forms.zxqs"></v-search>
       <v-search title="选择病假类型" :cdata="bjlxList" v-show="isshowbj" v-model="forms.bjlx"></v-search>
+      <cell v-show="isshowsaj">500公里以内最多休3天</cell>
       <datetime v-model="forms.sdate" format="YYYY-MM-DD" title="开始日期"></datetime>
       <datetime v-model="forms.timea" format="HH:mm" title="开始时间" v-show="isshowsj"></datetime>
       <v-search title="开始日班次" :cdata="bcaList" v-show="isshowbc" v-model="forms.dutya"></v-search>
@@ -25,20 +26,21 @@
       <datetime v-model="forms.timeb" format="HH:mm" title="结束时间" v-show="isshowsj"></datetime>
 
       <!--<x-input :readonly="true" v-model="forms.thisdays" title="休假天数"></x-input>-->
-      <cell title="休假天数" v-show="thisdays">{{forms.thisdays}}</cell>
+      <cell title="休假天数" v-show="thisdays" readonly>{{forms.thisdays}}</cell>
+      <cell title="休假时数" v-show="isshowbxj" readonly>{{forms.thishours}}</cell>
       <cell title="自然天数" v-show="false">{{forms.comdays}}</cell>
-      <cell title="剩余额度(时)" v-show="surplus">{{forms.surplus}}</cell>
       <x-textarea title="请假原因" v-model="readks" placeholder="" :show-counter="false" :rows="3" autosize></x-textarea>
       <x-input title="存休类型" v-show="false" v-model="forms.suebreak"></x-input>
       <x-input title="存休类型" v-show="false" v-model="forms.effecta"></x-input>
       <x-input title="存休类型" v-show="false" v-model="forms.effectb"></x-input>
-      <x-input title="存休类型" v-show="false" v-model="forms.enjoy"></x-input>
       <x-input title="存调休天数" v-show="false" v-model="forms.ctxts"></x-input>
-      <x-input title="存调休小时数" v-show="false" v-model="forms.ctxxss"></x-input>
+      <x-input title="存调休小时数" v-show="isshowbxj" v-model="forms.ctxxss"></x-input>
       <x-input title="存调休年假天数" v-show="false" v-model="forms.ctxnjts"></x-input>
-      <x-input title="年累计事假天数" v-show="false" v-model="forms.ljsjtsy"></x-input>
-      <x-input title="月累计事假天数" v-show="false" v-model="forms.ljsjtsm"></x-input>
-      <x-input title="已用" v-show="false" v-model="forms.hasuse"></x-input>
+      <x-input title="当月已休事假天数" v-show="isshowshj" v-model="forms.ljsjtsm" readonly></x-input>
+      <x-input title="当年已休事假天数" v-show="isshowshj" v-model="forms.ljsjtsy" readonly></x-input>
+      <x-input title="剩余额度(时)" v-show="isshownj" v-model="forms.surplus" readonly></x-input>
+      <x-input title="享有额度(时)" v-show="isshownj" v-model="forms.enjoy" readonly></x-input>
+      <x-input title="已用额度(时)" v-show="isshownj" v-model="forms.hasuse" readonly></x-input>
     </group>
     <flexbox class="footerButton">
       <flexbox-item class="vux-1px-r" @click.native="addReserve(0)" style="color:#00B705">提交</flexbox-item>
@@ -119,7 +121,8 @@ export default {
   computed: {
     thisdays: function () {
       let _that = this;
-      if ((this.forms.sdate !== '' && this.forms.edate !== '' && (this.forms.dutya !== '' || this.forms.dutyb !== '')) || (this.forms.sdate !== '' && this.forms.edate !== '' && this.forms.timea !== '' && this.forms.timeb !== '')) {
+      if ((this.forms.holidaytype !== 'A02' && this.forms.sdate !== '' && this.forms.edate !== '' && (this.forms.dutya !== '' || this.forms.dutyb !== '')) ||
+        (this.forms.holidaytype === 'A02' && this.forms.sdate !== '' && this.forms.edate !== '' && this.forms.timea !== '' && this.forms.timeb !== '')) {
         let params = {
           mainModel: this.forms
         }
@@ -130,20 +133,21 @@ export default {
         // })
         api.getKqbcURL(params, function (res) {
           if (res) {
+            console.log(res.data.data)
             _that.forms.thisdays = res.data.data.thisdays
             _that.forms.comdays = res.data.data.comdays
-            _that.forms.thishours = res.thishours
+            _that.forms.thishours = res.data.data.thishours
             _that.forms.surplus = res.data.data.yuedays
+            _that.forms.enjoy = res.data.data.vacdays
+            _that.forms.hasuse = res.data.data.usedays
             _that.forms.suebreak = res.data.data.ltypek
             _that.forms.effecta = res.data.data.effs
             _that.forms.effectb = res.data.data.effe
-            _that.forms.enjoy = res.data.data.vacdays
             _that.forms.ctxts = res.data.data.ctxts
             _that.forms.ctxxss = res.data.data.ctxxss
             _that.forms.ctxnjts = res.data.data.ctxnjts
             _that.forms.ljsjtsy = res.data.data.ljsjtsy
             _that.forms.ljsjtsm = res.data.data.ljsjtsm
-            _that.forms.hasuse = res.data.data.usedays
           }
         })
         return true
@@ -172,6 +176,27 @@ export default {
     },
     isshowbj: function () {
       if (this.forms.holidaytype === 'B01') {
+        return true
+      } else {
+        return false
+      }
+    },
+    isshownj: function () {
+      if (this.forms.holidaytype === 'J01') {
+        return true
+      } else {
+        return false
+      }
+    },
+    isshowshj: function () {
+      if (this.forms.holidaytype === 'C01') {
+        return true
+      } else {
+        return false
+      }
+    },
+    isshowbxj: function () {
+      if (this.forms.holidaytype === 'A02') {
         return true
       } else {
         return false

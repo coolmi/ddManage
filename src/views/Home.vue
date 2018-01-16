@@ -229,7 +229,7 @@
         let _that = this;
         let dingtalkCode = ding.parseParam(window.location.href, 'dingtalk_code') || ding.getLocation(AUTH_DINGTALKCODE)
         let dd = window.dd
-        let title = dingtalkCode === 'APPSERVER' ? '新凤祥办公' : '京华世家办公'
+        let title = dingtalkCode === 'APPSERVER-JH' ? '京华世家办公' : '新凤祥办公'
         dd.biz.navigation.setTitle({
           title: title,
           onSuccess: function(result) {

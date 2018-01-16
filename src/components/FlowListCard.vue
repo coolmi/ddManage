@@ -66,7 +66,6 @@
   .flow_list_card_hd {
     padding: 14px 15px 10px;
     /*color: #ffffff;*/
-    font-weight: bold;
     /*background-color: #B19AF6;*/
     font-size: 15px;
     display: flex;
@@ -97,7 +96,7 @@
     /*flex: 1;*/
     width: 90%;
     text-align: left;
-    margin: 14px 5% 10px;
+    margin: 2px 5% 10px;
     color: #806DF7;
     font-size: 13px;
     /*font-style: italic;*/

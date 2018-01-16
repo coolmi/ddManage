@@ -106,6 +106,7 @@
 //  import whole from '@/lib/whole'
 
   let moment = require('moment');
+  const AUTH_DINGTALKCODE = 'auth.dingtalkcode';
 
   export default {
     components: {
@@ -226,6 +227,15 @@
       },
       getUserid() {
         let _that = this;
+        let dingtalkCode = ding.parseParam(window.location.href, 'dingtalk_code') || ding.getLocation(AUTH_DINGTALKCODE)
+        let dd = window.dd
+        let title = dingtalkCode === 'APPSERVER' ? '新凤祥办公' : '京华世家办公'
+        dd.biz.navigation.setTitle({
+          title: title,
+          onSuccess: function(result) {
+          },
+          onFail: function(err) {}
+        });
         _that.doNext(_that.flowType);
 //        dingUser.getRequestAuthCode(this.path).then((data) => {
 //          api.getLogin(data, function (res) {

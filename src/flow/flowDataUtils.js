@@ -25,20 +25,22 @@ let data = {
   ID_: '',
   EDITARR_: [],
   flowData: [],
+  FLOWSHOW: [],
   showContent: false
 }
 export function getFlowData(flowData) {
   data.flowData = flowData.forms
   data.EDITARR_ = [];
+  data.FLOWSHOW = [];
   if (flowData.forms) {
     for (let sub of flowData.forms) {
       if (sub.showLinkage && sub.showLinkage.length > 0) {
         ifHidden(sub)
       }
       sub.showContent = false;
-      if (sub.pageid === 'sqxxmx') {
-        sub.showContent = true;
-      }
+      // if (sub.pageid === 'sqxxmx') {
+      //   sub.showContent = true;
+      // }
       if (sub.subComponents) {
         let subComp = sub.subComponents
         getSubComponents(subComp);
@@ -57,6 +59,9 @@ export function getFlowData(flowData) {
         }
         if (sub.name === 'id') {
           data.ID_ = sub.value || ''
+        }
+        if (sub.flowshow) {
+          data.FLOWSHOW.push(sub)
         }
         sub.title = sub.title || sub.title1;
         let subcomp = sub.component
@@ -201,6 +206,7 @@ export function getFlowData(flowData) {
   flowData.POSTID_ = data.POSTID_
   flowData.APPDA_ = data.APPDA_
   flowData.EDITARR_ = data.EDITARR_
+  flowData.FLOWSHOW = data.FLOWSHOW
   return flowData;
 }
 
@@ -213,6 +219,9 @@ function getSubComponents(subData) {
       let subComp = sub.subComponents
       getSubComponents(subComp);
     } else {
+      if (sub.flowshow) {
+        data.FLOWSHOW.push(sub)
+      }
       if (sub.name === 'pernr' && sub.component === 'hidden') {
         data.PERNR_ = sub.value
       }

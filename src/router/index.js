@@ -16,7 +16,7 @@ const router = new Router({
     {
       path: '/',
       component: require('@/views/Home'),
-      meta: {title: '首页'}
+      meta: {title: ''}
     },
     {
       path: '/cs',

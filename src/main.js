@@ -5,22 +5,22 @@ import App from './App'
 import router from './router'
 import store from './store';
 import {sync} from 'vuex-router-sync'
-import MintUI from 'mint-ui'
+// import MintUI from 'mint-ui'
 // import Navigation from 'vue-navigation'
 // import vueScrollBehavior from 'vue-scroll-behavior'
-import Raven from 'raven-js';
-import RavenVue from 'raven-js/plugins/vue';
-import RavenConfig from '@/lib/RavenConfig'
+// import Raven from 'raven-js';
+// import RavenVue from 'raven-js/plugins/vue';
+// import RavenConfig from '@/lib/RavenConfig'
 import api from 'api'
 import dingUser from '@/lib/dingUser'
 import whole from '@/lib/whole'
 
-Raven
-  .config('http://c8e1476543fe4622a4711c079dcd144b@192.168.5.195:9000/3')
-  .addPlugin(RavenVue, Vue)
-  .install();
-
-Vue.use(RavenConfig) // 监控
+// Raven
+//   .config('http://c8e1476543fe4622a4711c079dcd144b@192.168.5.195:9000/3')
+//   .addPlugin(RavenVue, Vue)
+//   .install();
+//
+// Vue.use(RavenConfig) // 监控
 
 import Navigation from '@/nav'
 // use plugin
@@ -34,8 +34,8 @@ Vue.use(Navigation, {router})
 // Vue.use(Navigation, {router, store}) // 后退不刷新
 // Vue.use(Navigation, {router, store, moduleName: 'navigation', keyName: 'VNK'})
 
-Vue.use(MintUI);
-import 'mint-ui/lib/style.min.css'
+// Vue.use(MintUI);
+// import 'mint-ui/lib/style.min.css'
 // import { CloseDialogsPlugin } from 'vux'
 // Vue.use(CloseDialogsPlugin, router)
 

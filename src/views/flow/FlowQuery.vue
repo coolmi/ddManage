@@ -7,9 +7,12 @@
           <div class="flow_list_card_hd_left">
             <span>{{flowParams.title || contentdata.name}}<span style="font-size: .85rem; padding: 0 6px">{{flowParams.khcontent}}</span></span>
           </div>
-          <!--<div class="flow_list_card_hd_right">-->
-          <!--<span>NO.{{contentdata.APPID_}}</span>-->
-          <!--</div>-->
+          <div class="flow_list_card_hd_right">
+            <p @click="openFjList" v-if="!showLeftPop" style="font-size: .9rem;"><span><img src="static/images/fj.png"
+                                                                                            width="12" height="12"
+                                                                                            style="padding-right: 2px; margin-top: 6px;"></span>{{flowFiles.length
+              !== 0 ? '附件个数：' + flowFiles.length : '无附件'}}</p>
+          </div>
         </div>
         <div slot="content" class="flow_list_card_content" v-if="contentdata.nachn" @click="openPerInfoPage">
           <div class="flow_list_card_content_a">
@@ -59,16 +62,27 @@
               </ul>
             </div>
 
-            <p v-else-if="cardHistoryData.length = 1" @click="openHistory(flowHistory)" style="padding-bottom: 6px;"><span><img
+            <p v-else-if="cardHistoryData.length = 1" @click="openHistory(flowHistory)"
+               style="padding-bottom: 6px;"><span><img
               src="static/images/je.png" width="13" height="13"
               style="padding-top: 5px; padding-right: 2px"></span>{{(flowHistory.current_task
               ? flowHistory.current_task : '当前节点：审批中'), 20 | subTitle}}</p>
-            <p v-if="cardHistoryData.length > 0" @click="openHistory(flowHistory)" style="text-align: center; padding: 5px 0; margin-bottom: 5px; color: #A0A0A0; border: 1px dashed #ECECEC">点击查看详细审批记录 ></p>
-            <p @click="openFjList" v-if="!showLeftPop"><span><img src="static/images/fj.png" width="12" height="12"
-                                                                  style="padding-right: 2px; margin-top: 12px;"></span>{{flowFiles.length
-              !== 0 ? '附件个数：' + flowFiles.length : '无附件'}}</p>
-            <p @click="showLeftPop = false" v-else><span><img src="static/images/fj.png" width="12" height="12"
-                                                              style="padding-right: 2px;"></span>隐藏附件</p>
+            <p v-if="cardHistoryData.length > 0" @click="openHistory(flowHistory)"
+               style="text-align: center; padding: 5px 0; margin-bottom: 5px; color: #A0A0A0; border: 1px dashed #ECECEC">
+              点击查看详细审批记录 ></p>
+            <flow-child-card
+              v-for="it in contentdata.FLOWSHOW"
+              :title="it.title"
+              :value="it.nvalue || it.value"
+              value-align="left"
+              v-show="it.component !== 'hidden' && !it.hidden"
+            ><!--&& !subC.editable-->
+            </flow-child-card>
+            <!--<p @click="openFjList" v-if="!showLeftPop"><span><img src="static/images/fj.png" width="12" height="12"-->
+            <!--style="padding-right: 2px; margin-top: 12px;"></span>{{flowFiles.length-->
+            <!--!== 0 ? '附件个数：' + flowFiles.length : '无附件'}}</p>-->
+            <!--<p @click="showLeftPop = false" v-else><span><img src="static/images/fj.png" width="12" height="12"-->
+            <!--style="padding-right: 2px;"></span>隐藏附件</p>-->
           </div>
         </div>
       </flow-list-card>
@@ -92,17 +106,28 @@
       <!--</div>-->
       <!--</flow-list-card>-->
       <!--附件列表-->
-      <group>
-        <div v-show="showLeftPop">
-          <cell VHidden @click.native="openFj(file)" v-for="(file, index) in flowFiles" :key="index"
-                :title="(index + 1) + ': ' + file.filename" is-link></cell>
-          <!--<div class="itemTitle" @click="showLeftPop = false">隐藏</div>-->
-          <!--<flow-child-card VHidden @click.native="openFj(file)" v-for="(file, index) in flowFiles" :key="index"-->
-                           <!--:title="file.filename" is-link>-->
-            <!--&lt;!&ndash;{{file.filename, 10 | subTitle}}&ndash;&gt;-->
-          <!--</flow-child-card>-->
-        </div>
-      </group>
+      <!--<group>-->
+      <!--<div v-show="showLeftPop">-->
+      <!--<cell VHidden @click.native="openFj(file)" v-for="(file, index) in flowFiles" :key="index"-->
+      <!--:title="(index + 1) + ': ' + file.filename" is-link></cell>-->
+      <!--&lt;!&ndash;<div class="itemTitle" @click="showLeftPop = false">隐藏</div>&ndash;&gt;-->
+      <!--&lt;!&ndash;<flow-child-card VHidden @click.native="openFj(file)" v-for="(file, index) in flowFiles" :key="index"&ndash;&gt;-->
+      <!--&lt;!&ndash;:title="file.filename" is-link>&ndash;&gt;-->
+      <!--&lt;!&ndash;&lt;!&ndash;{{file.filename, 10 | subTitle}}&ndash;&gt;&ndash;&gt;-->
+      <!--&lt;!&ndash;</flow-child-card>&ndash;&gt;-->
+      <!--</div>-->
+      <!--</group>-->
+      <!--<flow-list-card v-if="contentdata.FLOWSHOW" v-show="contentdata.FLOWSHOW.length > 0">-->
+      <!--<div slot="header" class="flow_list_card_hd flow_list_card_hd_bottom">-->
+      <!--<div class="flow_list_card_hd_left">-->
+      <!--<span>详细信息</span>-->
+      <!--</div>-->
+      <!--</div>-->
+      <!--<div slot="content">-->
+      <!--<flow-sub-content style="margin-top: 0"-->
+      <!--:subforms="contentdata.FLOWSHOW"></flow-sub-content>-->
+      <!--</div>-->
+      <!--</flow-list-card>-->
       <!--循环列表-->
       <flow-content :contentdata="contentdata"></flow-content>
     </div>
@@ -118,6 +143,12 @@
     <div v-transfer-dom>
       <popup v-model="showRightPop" position="right" width="76%">
         <flow-history-content :historyData="historyData"></flow-history-content>
+      </popup>
+      <popup v-model="showRightPopFj" position="right" width="76%">
+        <group>
+          <cell VHidden @click.native="openFj(file)" v-for="(file, index) in flowFiles" :key="index"
+                :title="(index + 1) + ': ' + file.filename" is-link></cell>
+        </group>
       </popup>
     </div>
   </div>
@@ -161,6 +192,7 @@
         showButton: true,
         showLeftPop: false,
         showRightPop: false,
+        showRightPopFj: false,
         showContent: true,
         buttonArr: [],
         flowParams: {},
@@ -225,6 +257,16 @@
 //        this.getRouteHandleInfo(this.flowParams)
 //      },
       showRightPop(val) {
+        if (!val) {
+//          this.setRightMenu();
+          let config = {
+            show: true,
+            text: '更多'
+          }
+          ding.setRight(config)
+        }
+      },
+      showRightPopFj(val) {
         if (!val) {
 //          this.setRightMenu();
           let config = {
@@ -361,7 +403,23 @@
       },
       openFjList() {
         if (this.flowFiles.length !== 0) {
-          this.showLeftPop = true
+//          this.showLeftPop = true
+          this.showRightPopFj = true
+          let _that = this;
+          let config = {
+            show: true,
+            control: true,
+            text: '关闭附件',
+            onSuccess: function (data) {
+              _that.showRightPopFj = false;
+              let config = {
+                show: true,
+                text: '更多'
+              }
+              ding.setRight(config)
+            }
+          }
+          ding.setRight(config)
         }
       },
       openFj(file) {
@@ -404,10 +462,10 @@
   .flow_list_card_hd_left {
     flex: 1;
     text-align: left;
+    font-weight: bold;
   }
 
-  .flow_list_card_hd_right span {
-    font-size: .7rem;
+  .flow_list_card_hd_right p {
     color: @theme-color;
   }
 

@@ -23,7 +23,7 @@ import vSearch from '@/components/searchChecker';
 import api from 'api' // 接口
 import dataUtils from '../../filters/dataUtils' // 工具类
 import whole from '@/lib/whole' // 封装组件库
-import moment from 'moment' // 时间类
+// import moment from 'moment' // 时间类
 
 export default {
 
@@ -35,12 +35,12 @@ export default {
     formsData: {
       stype: '',
       waers: 'CNY',
-      edate: moment().format('YYYY-MM-DD'),
+      edate: '',
       fwbas: '',
       smemo: '',
       uuid: ''
     },
-    systemDate: moment().format('YYYY-MM-DD'),
+    udate: '',
     waerslist: [],
     fundTypeList: []
   }),
@@ -52,6 +52,24 @@ export default {
   },
 
   created() {
+  // let time = new Date().getHours();
+  let y = new Date().getFullYear();
+  let m = new Date().getMonth() + 1;
+  let d = new Date().getDate();
+  if (m < 10) {
+    if (d < 10) {
+      this.date = y + '-' + '0' + m + '-' + '0' + d
+    } else {
+      this.date = y + '-' + '0' + m + '-' + d
+    }
+  } else {
+    if (d < 10) {
+      this.date = y + '-' + m + '-' + '0' + d
+    } else {
+      this.date = y + '-' + m + '-' + d
+    }
+  }
+  this.formsData.edate = this.date
     let bukrs = this.$route.query.formsDemo.bukrs
     if (JSON.stringify(this.$route.query.formsDemo.formsData) === '"{}"') {
     } else {

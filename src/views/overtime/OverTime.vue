@@ -42,7 +42,7 @@ import {Group, XSwitch, XTextarea, Sticky, Box, XButton, Cell, Flexbox, FlexboxI
 import vSearch from '@/components/searchChecker';
 import api from 'api';
 import whole from '@/lib/whole'
-import moment from 'moment'
+// import moment from 'moment'
 // import dataUtils from '../../filters/dataUtils' // 工具类
 
 export default {
@@ -63,8 +63,8 @@ export default {
         s_why: '',
         parmasOption: {}
       },
-      systemDate: moment().format('YYYY-MM-DD'),
-      systemDate2: moment().format('HH:mm'),
+     // systemDate: moment().format('YYYY-MM-DD'),
+     // systemDate2: moment().format('HH:mm'),
       xxscList: [{'key': '0', 'value': '0'}, {'key': '0.5', 'value': '0.5'}, {'key': '1', 'value': '1'}, {'key': '1.5', 'value': '1.5'}]
     }
   },

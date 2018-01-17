@@ -185,7 +185,7 @@
   import whole from '@/lib/whole' // 封装组件库
   import api from 'api'
   import {mapGetters} from 'vuex'
-  import moment from 'moment' // 时间类
+ // import moment from 'moment' // 时间类
 
   /* let typeObj = {
     '1': '长途交通',
@@ -257,12 +257,13 @@
             key: '9'
           }
         ],
+        date: '',
         formsData: {},
         formsData1: {
           stype: '',
           mtype: '',
-          sdate: moment().format('YYYY-MM-DD'),
-          edate: moment().format('YYYY-MM-DD'),
+          sdate: '',
+          edate: '',
           saddr: '',
           eaddr: '',
           waers: 'CNY',
@@ -283,7 +284,7 @@
         formsData2: {
           stypec: '',
           mtypec: '',
-          sdatec: moment().format('YYYY-MM-DD'),
+          sdatec: '',
           saddrc: '',
           eaddrc: '',
           waersc: 'CNY',
@@ -302,7 +303,7 @@
         },
         formsData3: {
           stypeo: '',
-          sdateo: moment().format('YYYY-MM-DD'),
+          sdateo: '',
           wrbtro: '',
           kursfo: '',
           waerso: 'CNY',
@@ -319,7 +320,7 @@
         formsData4: {
           stypem: '',
           colnrm: '',
-          sdatem: moment().format('YYYY-MM-DD'),
+          sdatem: '',
           waersm: 'CNY',
           wrbtrm: '',
           kursfm: '',
@@ -334,8 +335,8 @@
         formsData5: {
           stypeh: '',
           itemNo: '',
-          sdateh: moment().format('YYYY-MM-DD'),
-          edateh: moment().format('YYYY-MM-DD'),
+          sdateh: '',
+          edateh: '',
           saddrh: '',
           waersh: 'CNY',
           purchh: '',
@@ -373,7 +374,7 @@
         },
         formsData7: {
           stypee: '',
-          sdatee: moment().format('YYYY-MM-DD'),
+          sdatee: '',
           waerse: 'CNY',
           wrbtre: '',
           kursfe: '',
@@ -387,7 +388,7 @@
         },
         formsData8: {
           stypeg: '',
-          sdateg: moment().format('YYYY-MM-DD'),
+          sdateg: '',
           waersg: 'CNY',
           wrbtrg: '',
           kursfg: '',
@@ -413,7 +414,6 @@
         mealsList: [],
         trafficTypeList: [],
         trafficWaysList: [],
-        systemDate: moment().format('YYYY-MM-DD'),
         tripPlace: [],
         currencyList: [],
         burks: '',
@@ -588,6 +588,22 @@
     }
   },
   created() {
+    let y = new Date().getFullYear();
+    let m = new Date().getMonth() + 1;
+    let d = new Date().getDate();
+    if (m < 10) {
+      if (d < 10) {
+        this.date = y + '-' + '0' + m + '-' + '0' + d
+      } else {
+        this.date = y + '-' + '0' + m + '-' + d
+      }
+    } else {
+      if (d < 10) {
+        this.date = y + '-' + m + '-' + '0' + d
+      } else {
+        this.date = y + '-' + m + '-' + d
+      }
+    }
     let _that = this
     let mtypeClass = ''
     let mtype = ''
@@ -851,6 +867,8 @@
   methods: {
     getBaseData() {
       if (this.checker === '1') {
+      this.formsData1.sdate = this.date
+        this.formsData1.edate = this.date
         if (this.formsData1.waers !== '') {
           if (this.formsData1.waers === 'CNY') {
             this.currencyFlag = '0'
@@ -887,6 +905,7 @@
         })
       }
       if (this.checker === '2') {
+        this.formsData2.sdatec = this.date
         if (this.formsData2.waersc !== '') {
           if (this.formsData2.waersc === 'CNY') {
             this.currencyFlag = '0'
@@ -923,6 +942,7 @@
         })
       }
       if (this.checker === '3') {
+        this.formsData3.sdateo = this.date
         if (this.formsData3.waerso !== '') {
           if (this.formsData3.waerso === 'CNY') {
             this.currencyFlag = '0'
@@ -952,6 +972,7 @@
         })
       }
       if (this.checker === '4') {
+        this.formsData4.sdatem = this.date
         if (this.formsData4.waersm !== '') {
           if (this.formsData4.waersm === 'CNY') {
             this.currencyFlag = '0'
@@ -980,6 +1001,8 @@
         })
       }
       if (this.checker === '5') {
+      this.formsData5.sdateh = this.date
+        this.formsData5.edateh = this.date
         if (this.formsData5.waersh !== '') {
           if (this.formsData5.waersh === 'CNY') {
             this.currencyFlag = '0'
@@ -1065,6 +1088,7 @@
         })
       }
       if (this.checker === '8') {
+        this.formsData8.sdateg = this.date
         if (this.formsData8.waersg !== '') {
           if (this.formsData8.waersg === 'CNY') {
             this.currencyFlag = '0'
@@ -1624,7 +1648,7 @@
           whole.showTop('请选择到达日期')
           return;
         } else {
-          if (moment(this.formsData1.sdate).isBefore(this.formsData1.edate)) {
+          if ((this.formsData1.sdate).getTime() < (this.formsData1.edate).getTime()) {
             whole.showTop('到达日期不能小于结束日期')
             return;
           }
@@ -1950,7 +1974,7 @@
           whole.showTop('请选择到达日期')
           return;
         } else {
-          if (moment(this.formsData5.sdateh).isBefore(this.formsData5.edateh)) {
+          if ((this.formsData5.sdateh).getTime() < (this.formsData5.edateh).getTime()) {
             whole.showTop('到达日期不能小于结束日期')
             return;
           }

@@ -22,7 +22,7 @@ import vSearch from '@/components/searchChecker';
 import api from 'api' // 接口
 import dataUtils from '../../filters/dataUtils' // 工具类
 import whole from '@/lib/whole' // 封装组件库
-import moment from 'moment' // 时间类
+// import moment from 'moment' // 时间类
 
 export default {
 
@@ -36,12 +36,12 @@ export default {
       splace: '',
       eplace: '',
       transmodeId: '',
-      startda: moment().format('YYYY-MM-DD'),
-      endda: moment().format('YYYY-MM-DD'),
+      startda: '',
+      endda: '',
       workc: '',
       uuid: ''
     },
-    systemDate: moment().format('YYYY-MM-DD'),
+    date: '',
     tripPlace: [],
     tripTraffic: [],
     typeList: [],
@@ -49,6 +49,24 @@ export default {
   }),
 
   created() {
+  let y = new Date().getFullYear();
+  let m = new Date().getMonth() + 1;
+  let d = new Date().getDate();
+  if (m < 10) {
+    if (d < 10) {
+      this.date = y + '-' + '0' + m + '-' + '0' + d
+    } else {
+      this.date = y + '-' + '0' + m + '-' + d
+    }
+  } else {
+    if (d < 10) {
+      this.date = y + '-' + m + '-' + '0' + d
+    } else {
+      this.date = y + '-' + m + '-' + d
+    }
+  }
+    this.formsData.startda = this.date
+    this.formsData.endda = this.date
     // this.setData() // 填写的时候回退保存值
     let bukrs = this.$route.query.formsDemo.bukrs
     let flag = this.$route.query.formsDemo.flag
@@ -96,12 +114,12 @@ export default {
       if (this.formsData.endda.length === 0) {
         whole.showTop('请选择到达日期')
         return;
-      } else {
-        if (moment(this.formsData.endda).isBefore(this.formsData.startda)) {
+      } /* else {
+        if ((this.formsData.endda).getTime() < (this.formsData.startda).getTime()) {
           whole.showTop('到达日期不能小于结束日期')
           return;
         }
-      }
+      } */
       if (this.formsData.splace === '') {
         whole.showTop('请选择出发地点')
         return;

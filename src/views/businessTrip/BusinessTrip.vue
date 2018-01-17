@@ -60,6 +60,7 @@ export default {
         m_comp: '',
         m_cbzx: ''
       },
+      fflag: '0',
       showCon: false,
       message: '',
       beup: '0',
@@ -239,15 +240,12 @@ export default {
               flag: 0,
               formsData: JSON.stringify(data)
             };
-          } else if (this.formsData.length === 1) {
+          } else {
             formsDemo = {
               bukrs: this.forms.m_comp,
               flag: 1,
               formsData: JSON.stringify(data)
             };
-          } else if (this.formsData.length === 2) {
-            whole.showTop('已完善出差申请明细，无需再次添加')
-            return;
           }
         } else {
           formsDemo = {
@@ -322,11 +320,19 @@ export default {
       this.parmasOption = parmas;
 
       console.log(parmas);
-
+      for (let i = 0; i < parmas.subs.length; i++) {
+        if (parmas.subs[i].tp === '返程') {
+          this.fflag = '1'
+        }
+      }
       if (parmas.subs.length < 2) {
         whole.showTop('请完善出差申请明细');
         return;
-      } else if (flag === 0) {
+      } else if (this.fflag === '0') {
+          whole.showTop('请填写返程信息');
+          return;
+        } else {
+          if (flag === 0) {
           let _that = this;
           api.getNextassigneeTravelWFURL(parmas, function (res) {
             if (res) {
@@ -352,22 +358,23 @@ export default {
               }
             }
           })
-      } else if (flag === 1) {
-        let _that = this;
-        api.getSaveTravelURL(parmas, function (res) {
-          if (res) {
-            if (res.data.code) {
+        }
+        if (flag === 1) {
+          let _that = this;
+          api.getSaveTravelURL(parmas, function (res) {
+            if (res) {
+              if (res.data.code) {
                 whole.showTop(res.data.message);
                 _that.$store.dispatch('clearBusinessTrip')
                 setTimeout(() => {
                   let dd = window.dd;
-                  dd.biz.navigation.close({
-                    onSuccess: function(result) {
-                    },
-                    onFail: function(err) {}
-                  })
-                }, 1500)
-            } else {
+                dd.biz.navigation.close({
+                  onSuccess: function(result) {
+                  },
+                  onFail: function(err) {}
+                })
+              }, 1500)
+              } else {
                 whole.showTop(res.data.message);
 //                _that.$store.dispatch('clearBusinessTrip')
 //                setTimeout(() => {
@@ -378,10 +385,11 @@ export default {
 //                    onFail: function(err) {}
 //                  })
 //                }, 1500)
+              }
             }
-          }
-          console.log(res);
-        })
+            console.log(res);
+          })
+        }
       }
     },
     onConfirm () {

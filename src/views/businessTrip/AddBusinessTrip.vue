@@ -81,7 +81,9 @@ export default {
       }
     } else {
       this.typeList = [{key: '去程', value: '去程'}, {key: '中转', value: '中转'}, {key: '返程', value: '返程'}]
-      this.show = true
+      this.show = false
+      // this.formsData.tp = JSON.parse(this.$route.query.formsDemo.formsData).tp
+     // alert(JSON.stringify(this.formsData.tp))
       this.formsData = JSON.parse(this.$route.query.formsDemo.formsData)
     }
     this.getBaseData(bukrs) // 获取交通方式 + 获取出发/到达地点

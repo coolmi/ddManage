@@ -70,19 +70,23 @@
             <p v-if="cardHistoryData.length > 0" @click="openHistory(flowHistory)"
                style="text-align: center; padding: 5px 0; margin-bottom: 5px; color: #A0A0A0; border: 1px dashed #ECECEC">
               点击查看详细审批记录 ></p>
-            <flow-child-card
-              v-for="it in contentdata.FLOWSHOW"
-              :title="it.title"
-              :value="it.nvalue || it.value"
-              value-align="left"
-              v-show="it.component !== 'hidden' && !it.hidden"
-            ><!--&& !subC.editable-->
-            </flow-child-card>
             <!--<p @click="openFjList" v-if="!showLeftPop"><span><img src="static/images/fj.png" width="12" height="12"-->
             <!--style="padding-right: 2px; margin-top: 12px;"></span>{{flowFiles.length-->
             <!--!== 0 ? '附件个数：' + flowFiles.length : '无附件'}}</p>-->
             <!--<p @click="showLeftPop = false" v-else><span><img src="static/images/fj.png" width="12" height="12"-->
             <!--style="padding-right: 2px;"></span>隐藏附件</p>-->
+          </div>
+          <div class="gyinfo" v-if="contentdata.FLOWSHOW.length > 0">
+            <flow-child-card
+              style="padding: 6px 15px;"
+              v-for="it in contentdata.FLOWSHOW"
+              :title="it.title"
+              :key="it.title"
+              :value="it.nvalue || it.value"
+              value-align="left"
+              v-show="it.component !== 'hidden' && !it.hidden"
+            ><!--&& !subC.editable-->
+            </flow-child-card>
           </div>
         </div>
       </flow-list-card>
@@ -454,7 +458,7 @@
   }
 
   .flow_list_card_content_li_span {
-    color: @theme-color;
+    color: #000000;
     padding-top: 5px;
     .text_span
   }
@@ -476,5 +480,13 @@
     padding-right: @itemGapH;
     color: @theme-color;
     font-size: @cell-tips-font-size;
+  }
+
+  .gyinfo {
+    /*border-top: 1px solid #EEEEEE;*/
+    width: 90%;
+    text-align: left;
+    margin: 5px 5% 2px;
+    font-size: 13px;
   }
 </style>

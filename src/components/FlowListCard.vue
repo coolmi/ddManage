@@ -72,7 +72,7 @@
   }
 
   .flow_list_card_hd_bottom {
-    border-bottom: 1px solid #CDCDCD;
+    border-bottom: 1px solid #EEEEEE;
   }
 
   .flow_list_card_content {

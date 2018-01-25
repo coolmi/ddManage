@@ -18,9 +18,21 @@
       </div>
     </div>
     <div v-transfer-dom>
-      <popup v-model="showPopTop" position="top" :show-mask="false">
+      <popup v-model="showPopTop" position="top" :show-mask="false" style="z-index: 10000000">
         <div class="position-vertical">
           {{showPopMessage}}
+        </div>
+      </popup>
+    </div>
+    <div v-transfer-dom>
+      <popup v-model="showBottomMore" height="120px" is-transparent>
+        <div style="background-color:#fff;height:120px;margin:0 auto;">
+          <grid>
+            <grid-item label="联系我们"></grid-item>
+            <grid-item label="意见反馈"></grid-item>
+            <grid-item label="复制链接"></grid-item>
+            <grid-item label="意见反馈"></grid-item>
+          </grid>
         </div>
       </popup>
     </div>
@@ -28,7 +40,7 @@
 </template>
 
 <script>
-  import {TransferDom, Popup} from 'vux'
+  import {TransferDom, Popup, Grid, GridItem} from 'vux'
   import {mapState} from 'vuex'
   import store from '../src/store'
 
@@ -37,11 +49,14 @@
       TransferDom
     },
     components: {
-      Popup
+      Popup,
+      Grid,
+      GridItem
     },
     computed: mapState({
       topMessage: state => state.loading.topMessage,
       showTopMessage: state => state.loading.showTopMessage,
+      showMore: state => state.loading.showMore,
       isLoading: state => state.loading.isLoading
     }),
     watch: {
@@ -61,6 +76,19 @@
           }, 1800)
         }
       },
+      showMore: function (val, oldVal) {
+        if (val && !oldVal) {
+          this.showBottomMore = true;
+        } else {
+          this.showBottomMore = false;
+        }
+      },
+      showBottomMore(val) {
+        if (!val) {
+          store.dispatch('showMore', false);
+          this.showBottomMore = false
+        }
+      },
       isLoading: function (val, oldVal) {
         if (val && !oldVal) {
           this.showLoad = true;
@@ -72,6 +100,7 @@
     data() {
       return {
         showPopTop: false,
+        showBottomMore: false,
         showLoad: false,
         showPopMessage: ''
       }

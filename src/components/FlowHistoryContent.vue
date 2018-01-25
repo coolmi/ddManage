@@ -1,8 +1,9 @@
 <template>
   <div class="timeline">
     <timeline>
+      <divider>点击卡片即可快速联系</divider>
       <timeline-item v-for="(hd, index) in historyData" :key="index">
-        <card :class="[index === 0 ? 'recent' : '']" class="card" style="color: #4C4C4C">
+        <card :class="[index === 0 ? 'recent' : '']" class="card" style="color: #4C4C4C" @click.native="historyCardClick(hd.userId)">
           <div slot="header" class="weui-panel__hd" style="color: #4C4C4C">
             <p>{{hd.content}}</p>
             <p v-if="hd.totalDuration" style="color: #4C4C4C">已耗时：{{hd.totalDuration}}</p>
@@ -22,7 +23,10 @@
 </template>
 
 <script>
-  import {TransferDom, Popup, Timeline, TimelineItem, Card} from 'vux'
+  import {TransferDom, Popup, Timeline, TimelineItem, Card, Divider} from 'vux'
+  import ding from '@/lib/ding'
+  import api from 'api'
+  import whole from '@/lib/whole'
 
   export default {
     name: 'FlowHistoryContent',
@@ -48,7 +52,33 @@
       Popup,
       Timeline,
       TimelineItem,
-      Card
+      Card,
+      Divider
+    },
+    methods: {
+      historyCardClick(id) {
+        if (!id) {
+          whole.showTop('当前节点不能查看联系人哦')
+        }
+        let dd = window.dd
+        api.getDingUserInfoByPostid(id, function (res) {
+          const userid = res.data.userid
+          dd.ready(function () {
+            dd.biz.util.open({
+              name: 'profile',
+              params: {
+                id: userid,
+                corpId: ding.getItemInLocation().corpId || ding.CORPID
+              },
+              onSuccess: function() {
+              },
+              onFail: function(err) {
+
+              }
+            });
+          })
+        })
+      }
     }
   }
 </script>

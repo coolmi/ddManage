@@ -493,6 +493,7 @@ export function getFlowHistoryData(historyData) {
       let typename = types[c.type];
       let user = usernames[c.userId];
       let positionname = positions[c.taskId];
+      dataParam.userId = c.userId;
       dataParam.content = `${positionname} - ${user} : ${typename}`
       dataParam.message = c.fullMessage
       dataParam.time = dateFormatter.fmtDate(c.time, 'yyyy-MM-dd hh:mm:ss')

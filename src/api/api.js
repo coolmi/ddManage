@@ -176,8 +176,20 @@ export default {
    * @param cb
    */
   getDingUserInfo: function (params, cb) {
-    console.log(params)
     axios.get(APILIST.getduser_url + '?pernr=' + params)
+      .then((res) => {
+        cb(res);
+      }).catch((error) => {
+      return Promise.reject(error)
+    })
+  },
+  /**
+   * 根据postid获取钉钉用户信息
+   * @param params
+   * @param cb
+   */
+  getDingUserInfoByPostid: function (params, cb) {
+    axios.get(APILIST.getduserbypostid_url + '?postidoritcode=' + params)
       .then((res) => {
         cb(res);
       }).catch((error) => {

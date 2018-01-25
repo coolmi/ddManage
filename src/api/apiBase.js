@@ -6,6 +6,8 @@ let APILIST = {
   yjslist_url: '/authapi/gmkcommon/V1/myfinishedapplylist',
   // 根据pernr获取钉钉用户信息
   getduser_url: '/authapi/common/V1/getDingUserInfo',
+  // 根据postid获取钉钉用户信息
+  getduserbypostid_url: '/authapi/common/V1/getDingUserInfo2',
   // 根据钉钉id获取主岗
   getMPostidByDdid_url: '/authapi/forexmobi/V1/getMPostidByDdid',
   // 待办

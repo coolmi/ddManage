@@ -4,6 +4,7 @@
 const state = {
   topMessage: '未知错误',
   showTopMessage: false,
+  showMore: false,
   isLoading: ''
 }
 
@@ -13,6 +14,9 @@ const actions = {
   },
   showTopMessage({ commit }, status) {
     commit('SHOW_TOP_MESSAGE', status);
+  },
+  showMore({ commit }, status) {
+    commit('SHOW_MORE', status);
   },
   isLoading({ commit }, status) {
     commit('LOADING', status);
@@ -25,6 +29,9 @@ const mutations = {
   },
   'SHOW_TOP_MESSAGE'(state, status) {
     state.showTopMessage = status
+  },
+  'SHOW_MORE'(state, status) {
+    state.showMore = status
   },
   'LOADING'(state, status) {
     state.isLoading = status

@@ -85,7 +85,7 @@
               :key="it.title"
               :value="it.nvalue || it.value"
               value-align="left"
-              v-show="it.component !== 'hidden' && !it.hidden"
+              v-show="it.component !== 'hidden' && !it.hidden && (it.nvalue || it.value)"
             ><!--&& !subC.editable-->
             </flow-child-card>
           </div>

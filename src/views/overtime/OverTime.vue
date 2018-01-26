@@ -82,6 +82,10 @@ export default {
         whole.showTop('请选择结束时间')
         return;
       }
+      if (this.forms.s_why === '') {
+        whole.showTop('请填写值班原因')
+        return;
+      }
       let parmas = {
         mainModel: this.forms
       }

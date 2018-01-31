@@ -99,11 +99,11 @@
   import flowBN from '@/flow/flowButtonNames'
   import flowRU from '@/flow/flowResponseUtils'
   import flowGLU from '@/flow/flowGetListUtils'
-  import api from 'api'
+  //  import api from 'api'
   import ding from '@/lib/ding'
-  import dingUser from '@/lib/dingUser'
+  //  import dingUser from '@/lib/dingUser'
   import {mapGetters} from 'vuex'
-//  import whole from '@/lib/whole'
+  import whole from '@/lib/whole'
 
   let moment = require('moment');
   const AUTH_DINGTALKCODE = 'auth.dingtalkcode';
@@ -161,6 +161,7 @@
       let _that = this;
       this.$navigation.on('back', (to, from) => {
         if (to.route.path === '/') {
+          _that.getUserid();
           _that.pageNo = 1;
           _that.doNext(_that.index)
           _that.selectedIndex = _that.index
@@ -174,7 +175,7 @@
         this.startPush(); // 启动刷新
       } else {
         this.getUserid();
-//        this.setRight(); // 设置右上角按钮
+        this.setRight(); // 设置右上角按钮
         this.startPush(); // 启动刷新
       }
     },
@@ -230,12 +231,13 @@
         let dingtalkCode = ding.parseParam(window.location.href, 'dingtalk_code') || ding.getLocation(AUTH_DINGTALKCODE)
         let dd = window.dd
         let title = dingtalkCode === 'APPSERVER-JH' ? '京华世家办公' : '新凤祥办公'
-        dd.biz.navigation.setTitle({
-          title: title,
-          onSuccess: function(result) {
-          },
-          onFail: function(err) {}
-        });
+        dd.ready(function () {
+          dd.biz.navigation.setTitle({
+            title: title,
+            onSuccess: function (result) {},
+            onFail: function (err) {}
+          });
+        })
         _that.doNext(_that.flowType);
 //        dingUser.getRequestAuthCode(this.path).then((data) => {
 //          api.getLogin(data, function (res) {
@@ -309,38 +311,41 @@
       },
       setRight() {
         let dd = window.dd
-        let _that = this;
-        let rightBtn = {
-          text: '切换用户',
-          show: true, // 控制按钮显示， true 显示， false 隐藏， 默认true
-          control: true, // 是否控制点击事件，true 控制，false 不控制， 默认false
-          showIcon: true, // 是否显示icon，true 显示， false 不显示，默认true； 注：具体UI以客户端为准
-          onSuccess: function (result) {
-            api.getLogout(function () {
-              dd.device.notification.prompt({
-                message: '输入itcode',
-                title: '提示',
-                buttonLabels: ['确定', '取消'],
-                onSuccess: function (result) {
-                  if (result.buttonIndex === 0) {
-                    dingUser.getRequestAuthCode(_that.path).then((data) => {
-                      api.getDebugLogin(data, result.value, function (res) {
-                        if (res.data.code) {
-                          _that.showPage = 1;
-                        } else {
-                          _that.showPage = 2;
-                        }
-                      })
-                    })
-                  }
-                },
-                onFail: function (err) {
-                }
-              });
-            })
+//        let _that = this;
+        dd.ready(function () {
+          let rightBtn = {
+            text: ding.RIGHT_TOP_TITLE,
+            show: true, // 控制按钮显示， true 显示， false 隐藏， 默认true
+            control: true, // 是否控制点击事件，true 控制，false 不控制， 默认false
+            showIcon: true, // 是否显示icon，true 显示， false 不显示，默认true； 注：具体UI以客户端为准
+            onSuccess: function (result) {
+              whole.showMore();
+//            api.getLogout(function () {
+//              dd.device.notification.prompt({
+//                message: '输入itcode',
+//                title: '提示',
+//                buttonLabels: ['确定', '取消'],
+//                onSuccess: function (result) {
+//                  if (result.buttonIndex === 0) {
+//                    dingUser.getRequestAuthCode(_that.path).then((data) => {
+//                      api.getDebugLogin(data, result.value, function (res) {
+//                        if (res.data.code) {
+//                          _that.showPage = 1;
+//                        } else {
+//                          _that.showPage = 2;
+//                        }
+//                      })
+//                    })
+//                  }
+//                },
+//                onFail: function (err) {
+//                }
+//              });
+//            })
+            }
           }
-        }
-        ding.setRight(rightBtn)
+          ding.setRight(rightBtn)
+        });
       }
     },
     filters: {
@@ -434,18 +439,19 @@
   }
 
   .emptyDiv {
-    width:100%;
-    height:500px;
-    line-height:500px;
-    overflow:hidden;
-    position:relative;
-    text-align:center;
-    margin:auto
+    width: 100%;
+    height: 500px;
+    line-height: 500px;
+    overflow: hidden;
+    position: relative;
+    text-align: center;
+    margin: auto
   }
 
   .emptyDiv img {
-    position:static;
-    top:-50%;left:-50%;
-    vertical-align:middle
+    position: static;
+    top: -50%;
+    left: -50%;
+    vertical-align: middle
   }
 </style>

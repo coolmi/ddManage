@@ -397,7 +397,12 @@
               _that.showRightPop = false;
               let config = {
                 show: true,
-                text: '更多'
+                text: ding.RIGHT_TOP_TITLE,
+                control: true, // 是否控制点击事件，true 控制，false 不控制， 默认false
+                showIcon: true, // 是否显示icon，true 显示， false 不显示，默认true； 注：具体UI以客户端为准
+                onSuccess: function (result) {
+                  whole.showMore();
+                }
               }
               ding.setRight(config)
             }
@@ -418,7 +423,12 @@
               _that.showRightPopFj = false;
               let config = {
                 show: true,
-                text: '更多'
+                text: ding.RIGHT_TOP_TITLE,
+                control: true, // 是否控制点击事件，true 控制，false 不控制， 默认false
+                showIcon: true, // 是否显示icon，true 显示， false 不显示，默认true； 注：具体UI以客户端为准
+                onSuccess: function (result) {
+                  whole.showMore();
+                }
               }
               ding.setRight(config)
             }

@@ -319,21 +319,13 @@
       showRightPop(val) {
         if (!val) {
 //          this.setRightMenu();
-          let config = {
-            show: true,
-            text: '更多'
-          }
-          ding.setRight(config)
+          this.setRightMore();
         }
       },
       showRightPopFj(val) {
         if (!val) {
 //          this.setRightMenu();
-          let config = {
-            show: true,
-            text: '更多'
-          }
-          ding.setRight(config)
+          this.setRightMore();
         }
       }
     },
@@ -565,20 +557,19 @@
           this.showRightPop = true;
           let historyData = FDUtils.getFlowHistoryData(data)
           this.historyData = historyData
-          let config = {
-            show: true,
-            control: true,
-            text: '关闭记录',
-            onSuccess: function (data) {
-              _that.showRightPop = false;
-              let config = {
-                show: true,
-                text: '更多'
+          let dd = window.dd;
+          dd.ready(function () {
+            let config = {
+              show: true,
+              control: true,
+              text: '关闭记录',
+              onSuccess: function (data) {
+                _that.showRightPop = false;
+                _that.setRightMore();
               }
-              ding.setRight(config)
             }
-          }
-          ding.setRight(config)
+            ding.setRight(config)
+          })
         }
       },
       // 打开附件列表
@@ -587,25 +578,39 @@
 //          this.showLeftPop = true
           this.showRightPopFj = true
           let _that = this;
-          let config = {
-            show: true,
-            control: true,
-            text: '关闭附件',
-            onSuccess: function (data) {
-              _that.showRightPopFj = false;
-              let config = {
-                show: true,
-                text: '更多'
+          let dd = window.dd;
+          dd.ready(function () {
+            let config = {
+              show: true,
+              control: true,
+              text: '关闭附件',
+              onSuccess: function (data) {
+                _that.showRightPopFj = false;
+                _that.setRightMore();
               }
-              ding.setRight(config)
             }
-          }
-          ding.setRight(config)
+            ding.setRight(config)
+          });
         }
       },
       // 打开附件
       openFj(file) {
         FFEU.openFj(file)
+      },
+      setRightMore() {
+        let dd = window.dd
+        dd.ready(function () {
+          let rightBtn = {
+            text: ding.RIGHT_TOP_TITLE,
+            show: true, // 控制按钮显示， true 显示， false 隐藏， 默认true
+            control: true, // 是否控制点击事件，true 控制，false 不控制， 默认false
+            showIcon: true, // 是否显示icon，true 显示， false 不显示，默认true； 注：具体UI以客户端为准
+            onSuccess: function (result) {
+              whole.showMore();
+            }
+          }
+          ding.setRight(rightBtn)
+        });
       }
     }
   }

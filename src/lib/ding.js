@@ -21,6 +21,12 @@ let dd = window.dd;
 
 const NOREFRESH = [];
 
+const RIGHT_TOP_TITLE = '帮助';
+
+const GMK_LZL = '094211534726242584'
+const W3_CONCAT_DDID = '095117221320233106' // 明月的ddid
+const JH_CONCAT_DDID = 'manager9648' // 京华世家任小冰的ddid
+
 const CORPID = 'ding7d5c838d71be2f8535c2f4657eb6378f';
 
 const AUTH_DDCONFIG = 'auth.ddconfig';
@@ -156,6 +162,7 @@ export function jsApiOAuth(path) {
           jsApiList: jsApiList // 必填，需要使用的jsapi列表，注意：不要带dd。
         }
         store.dispatch('dcSuccess', ddConfig)
+        dd.config(ddConfig)
         success(ddConfig);
       } else {
         store.dispatch('dcFail')
@@ -196,6 +203,10 @@ export function ddISReady(corpID) {
 export default {
   NOREFRESH,
   CORPID,
+  RIGHT_TOP_TITLE,
+  GMK_LZL,
+  W3_CONCAT_DDID,
+  JH_CONCAT_DDID,
   parseParam,
   getItemInLocation,
   getLocation,

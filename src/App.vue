@@ -25,24 +25,31 @@
       </popup>
     </div>
     <div v-transfer-dom>
-      <popup v-model="showBottomMore" height="120px" is-transparent>
-        <div style="background-color:#fff;height:120px;margin:0 auto;">
-          <grid>
-            <grid-item label="联系我们"></grid-item>
-            <grid-item label="意见反馈"></grid-item>
-            <grid-item label="复制链接"></grid-item>
-            <grid-item label="意见反馈"></grid-item>
-          </grid>
-        </div>
-      </popup>
+      <actionsheet v-model="showBottomMore" :menus="menus" show-cancel @on-click-menu="clickMenu"></actionsheet>
+      <!--<popup v-model="showBottomMore" height="120px" is-transparent>-->
+      <!--<div style="background-color:#fff;height:120px;margin:0 auto;">-->
+      <!--<grid>-->
+      <!--<grid-item label="联系我们"></grid-item>-->
+      <!--<grid-item label="意见反馈"></grid-item>-->
+      <!--<grid-item label="复制链接"></grid-item>-->
+      <!--<grid-item label="意见反馈"></grid-item>-->
+      <!--</grid>-->
+      <!--</div>-->
+      <!--</popup>-->
     </div>
   </div>
 </template>
 
 <script>
-  import {TransferDom, Popup, Grid, GridItem} from 'vux'
-  import {mapState} from 'vuex'
+  import {TransferDom, Popup, Grid, GridItem, Actionsheet} from 'vux'
+  import {mapState, mapGetters} from 'vuex'
   import store from '../src/store'
+  import ding from '@/lib/ding'
+  import router from './router'
+  import api from 'api'
+  import dingUser from '@/lib/dingUser'
+
+  const AUTH_DINGTALKCODE = 'auth.dingtalkcode';
 
   export default {
     directives: {
@@ -51,14 +58,22 @@
     components: {
       Popup,
       Grid,
-      GridItem
+      GridItem,
+      Actionsheet
     },
-    computed: mapState({
-      topMessage: state => state.loading.topMessage,
-      showTopMessage: state => state.loading.showTopMessage,
-      showMore: state => state.loading.showMore,
-      isLoading: state => state.loading.isLoading
-    }),
+    computed: {
+      ...mapGetters({
+        path: 'getddConfigPath',
+        getLoginStatus: 'getLoginStatus',
+        itemIndex: 'getItemIndex'
+      }),
+      ...mapState({
+        topMessage: state => state.loading.topMessage,
+        showTopMessage: state => state.loading.showTopMessage,
+        showMore: state => state.loading.showMore,
+        isLoading: state => state.loading.isLoading
+      })
+    },
     watch: {
       showTopMessage: function (val, oldVal) {
         if (val && !oldVal) {
@@ -102,7 +117,94 @@
         showPopTop: false,
         showBottomMore: false,
         showLoad: false,
-        showPopMessage: ''
+        showPopMessage: '',
+        menus: [{
+          label: '<span style="color: #986526">问题反馈</span>',
+          value: 'menu1'
+        }, {
+          label: '关于',
+          value: 'menu2'
+        }]
+      }
+    },
+    created() {
+      let dd = window.dd
+      let _that = this;
+      dd.ready(function () {
+        dd.biz.user.get({
+          onSuccess: function (info) {
+            if (info.emplId === ding.GMK_LZL || info.emplId === ding.W3_CONCAT_DDID) {
+              let obj = {
+                label: '移动办公',
+                value: 'ydbg',
+                type: 'warn'
+              }
+              _that.menus.push(obj)
+            }
+          },
+          onFail: function (err) {
+            console.log(err)
+          }
+        });
+      })
+    },
+    methods: {
+      clickMenu(key) {
+        let dd = window.dd;
+        let _that = this;
+        if (key === 'menu1') {
+          let dingtalkCode = ding.parseParam(window.location.href, 'dingtalk_code') || ding.getLocation(AUTH_DINGTALKCODE)
+          let ddid = dingtalkCode === 'APPSERVER-JH' ? ding.JH_CONCAT_DDID : ding.W3_CONCAT_DDID
+          dd.ready(function () {
+            dd.biz.util.open({
+              name: 'profile',
+              params: {
+                id: ddid,
+                corpId: ding.getItemInLocation().corpId || ding.CORPID
+              },
+              onSuccess: function () {
+              },
+              onFail: function (err) {
+                console.log(err)
+              }
+            });
+          })
+        } else if (key === 'menu2') {
+          router.push('/about')
+        } else if (key === 'ydbg') {
+          api.getLogout(function () {
+            dd.device.notification.prompt({
+              message: '输入密码',
+              title: '提示',
+              buttonLabels: ['确定', '取消'],
+              onSuccess: function (result) {
+                if (result.buttonIndex === 0) {
+                  if (result.value === 'gmklzl') {
+                    dd.device.notification.prompt({
+                      message: '输入确认密码',
+                      title: '提示',
+                      buttonLabels: ['确定', '取消'],
+                      onSuccess: function (result1) {
+                        if (result1.buttonIndex === 0) {
+                          dingUser.getRequestAuthCode(_that.path).then((data) => {
+                            api.getDebugLogin(data, result1.value, function (res) {
+                            })
+                          })
+                        }
+                      },
+                      onFail: function (err) {
+                      }
+                    });
+                  } else {
+                    window.alert('密码错误')
+                  }
+                }
+              },
+              onFail: function (err) {
+              }
+            });
+          })
+        }
       }
     }
   }
@@ -228,5 +330,9 @@
       -webkit-transform: scale3D(0, 0, 1);
       transform: scale3D(0, 0, 1);
     }
+  }
+
+  .weui-actionsheet_toggle {
+    padding-bottom: 10px;
   }
 </style>

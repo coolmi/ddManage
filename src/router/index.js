@@ -15,8 +15,8 @@ const router = new Router({
   routes: [
     {
       path: '/',
-      component: require('@/views/Home'),
-      meta: {title: ''}
+      component: require('@/views/Home')
+      // meta: {title: ''}
     },
     {
       path: '/cs',
@@ -124,6 +124,16 @@ const router = new Router({
       meta: {title: '预览', ddConfig: true}
     },
     {
+      path: '/about',
+      component: require('@/views/other/about'),
+      meta: {title: '关于'}
+    },
+    {
+      path: '/newFunc',
+      component: require('@/views/other/newFunc'),
+      meta: {title: '新功能介绍'}
+    },
+    {
       path: '/error',
       component: require('@/views/error'),
       meta: {
@@ -191,15 +201,17 @@ let setDDConfig = function (to) {
 // }
 
 let setDocumentTitle = function (title) {
-  let config = {
-    title: title
+  if (title !== undefined) {
+    let config = {
+      title: title
+    }
+    dd.ready(function () {
+      dd.biz.navigation.setTitle(config);
+    });
+    dd.error(function (err) {
+      console.error('dd setTitle error: ' + window.location.href + JSON.stringify(err));
+    });
   }
-  dd.ready(function () {
-    dd.biz.navigation.setTitle(config);
-  });
-  dd.error(function (err) {
-    console.error('dd setTitle error: ' + window.location.href + JSON.stringify(err));
-  });
 };
 
 let setLeftBtn = function (to) {

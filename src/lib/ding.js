@@ -21,11 +21,13 @@ let dd = window.dd;
 
 const NOREFRESH = [];
 
-const RIGHT_TOP_TITLE = '帮助';
+const RIGHT_TOP_TITLE = '帮助'; // 页面右上角的名称
 
 const GMK_LZL = '094211534726242584'
 const W3_CONCAT_DDID = '095117221320233106' // 明月的ddid
 const JH_CONCAT_DDID = 'manager9648' // 京华世家任小冰的ddid
+
+const JH_DINGTALK_CODE = 'APPSERVER-JH' // 京华世家dingtalk_code
 
 const CORPID = 'ding7d5c838d71be2f8535c2f4657eb6378f';
 
@@ -207,6 +209,7 @@ export default {
   GMK_LZL,
   W3_CONCAT_DDID,
   JH_CONCAT_DDID,
+  JH_DINGTALK_CODE,
   parseParam,
   getItemInLocation,
   getLocation,

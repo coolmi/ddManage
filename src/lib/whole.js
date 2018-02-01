@@ -3,8 +3,8 @@
  */
 import store from '../store/index'
 
-export function showMore() {
-  store.dispatch('showMore', true);
+export function showMore(flag) {
+  store.dispatch('showMore', flag);
 }
 
 export function showTop(str) {

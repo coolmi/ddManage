@@ -26,7 +26,7 @@
           </div>
         </cell>
       </group>
-      <div v-if="(flowType === 0 || flowType === '0') && ifdb === 1" class="emptyDiv">
+      <div v-if="(flowType === 0 || flowType === '0') && (ifdb === 1 && dbList.length <= 0)" class="emptyDiv">
         <img src="/static/images/zwsj.png">
       </div>
       <group gutter="0" v-if="flowType === 1 || flowType === '1' && sqzList.length > 0">
@@ -175,7 +175,7 @@
         this.startPush(); // 启动刷新
       } else {
         this.getUserid();
-        this.setRight(); // 设置右上角按钮
+//        this.setRight(); // 设置右上角按钮
         this.startPush(); // 启动刷新
       }
     },
@@ -230,7 +230,7 @@
         let _that = this;
         let dingtalkCode = ding.parseParam(window.location.href, 'dingtalk_code') || ding.getLocation(AUTH_DINGTALKCODE)
         let dd = window.dd
-        let title = dingtalkCode === 'APPSERVER-JH' ? '京华世家办公' : '新凤祥办公'
+        let title = dingtalkCode === ding.JH_DINGTALK_CODE ? '京华世家办公' : '新凤祥办公'
         dd.ready(function () {
           dd.biz.navigation.setTitle({
             title: title,

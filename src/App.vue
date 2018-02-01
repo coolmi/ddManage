@@ -24,9 +24,6 @@
         </div>
       </popup>
     </div>
-    <div v-transfer-dom>
-      <actionsheet v-model="showBottomMore" :menus="menus" show-cancel @on-click-menu="clickMenu"></actionsheet>
-    </div>
   </div>
 </template>
 
@@ -83,17 +80,72 @@
         }
       },
       showMore: function (val, oldVal) {
-        if (val && !oldVal) {
-          this.showBottomMore = true;
-        } else {
-          this.showBottomMore = false;
-        }
-      },
-      showBottomMore(val) {
-        if (!val) {
-          store.dispatch('showMore', false);
-          this.showBottomMore = false
-        }
+        let dd = window.dd
+        let _that = this;
+        dd.ready(function () {
+          dd.device.notification.actionSheet({
+            cancelButton: '取消',
+            otherButtons: _that.otherButtons,
+            onSuccess: function (result) {
+              let buttonIndex = result.buttonIndex
+              if (buttonIndex === 0) {
+                let dingtalkCode = ding.parseParam(window.location.href, 'dingtalk_code') || ding.getLocation(AUTH_DINGTALKCODE)
+                let ddid = dingtalkCode === 'APPSERVER-JH' ? ding.JH_CONCAT_DDID : ding.W3_CONCAT_DDID
+                dd.ready(function () {
+                  dd.biz.util.open({
+                    name: 'profile',
+                    params: {
+                      id: ddid,
+                      corpId: ding.getItemInLocation().corpId || ding.CORPID
+                    },
+                    onSuccess: function () {
+                    },
+                    onFail: function (err) {
+                      console.log(err)
+                    }
+                  });
+                })
+              } else if (buttonIndex === 1) {
+                router.push('/about')
+              } else if (buttonIndex === 2) {
+                api.getLogout(function () {
+                  dd.device.notification.prompt({
+                    message: '输入密码',
+                    title: '提示',
+                    buttonLabels: ['确定', '取消'],
+                    onSuccess: function (result) {
+                      if (result.buttonIndex === 0) {
+                        if (result.value === 'gmklzl') {
+                          dd.device.notification.prompt({
+                            message: '输入确认密码',
+                            title: '提示',
+                            buttonLabels: ['确定', '取消'],
+                            onSuccess: function (result1) {
+                              if (result1.buttonIndex === 0) {
+                                dingUser.getRequestAuthCode(_that.path).then((data) => {
+                                  api.getDebugLogin(data, result1.value, function (res) {
+                                  })
+                                })
+                              }
+                            },
+                            onFail: function (err) {
+                            }
+                          });
+                        } else {
+                          window.alert('密码错误')
+                        }
+                      }
+                    },
+                    onFail: function (err) {
+                    }
+                  });
+                })
+              }
+            },
+            onFail: function (err) {
+            }
+          })
+        })
       },
       isLoading: function (val, oldVal) {
         if (val && !oldVal) {
@@ -106,16 +158,9 @@
     data() {
       return {
         showPopTop: false,
-        showBottomMore: false,
         showLoad: false,
         showPopMessage: '',
-        menus: [{
-          label: '<span style="color: #986526">问题反馈</span>',
-          value: 'menu1'
-        }, {
-          label: '关于',
-          value: 'menu2'
-        }]
+        otherButtons: ['问题反馈', '关于']
       }
     },
     created() {
@@ -126,12 +171,7 @@
         dd.biz.user.get({
           onSuccess: function (info) {
             if (info.emplId === ding.GMK_LZL || info.emplId === ding.W3_CONCAT_DDID) {
-              let obj = {
-                label: '移动办公',
-                value: 'ydbg',
-                type: 'warn'
-              }
-              _that.menus.push(obj)
+              _that.otherButtons = ['问题反馈', '关于', '移动办公']
             }
           },
           onFail: function (err) {
@@ -141,66 +181,9 @@
       })
     },
     methods: {
-      clickMenu(key) {
-        let dd = window.dd;
-        let _that = this;
-        if (key === 'menu1') {
-          let dingtalkCode = ding.parseParam(window.location.href, 'dingtalk_code') || ding.getLocation(AUTH_DINGTALKCODE)
-          let ddid = dingtalkCode === 'APPSERVER-JH' ? ding.JH_CONCAT_DDID : ding.W3_CONCAT_DDID
-          dd.ready(function () {
-            dd.biz.util.open({
-              name: 'profile',
-              params: {
-                id: ddid,
-                corpId: ding.getItemInLocation().corpId || ding.CORPID
-              },
-              onSuccess: function () {
-              },
-              onFail: function (err) {
-                console.log(err)
-              }
-            });
-          })
-        } else if (key === 'menu2') {
-          router.push('/about')
-        } else if (key === 'ydbg') {
-          api.getLogout(function () {
-            dd.device.notification.prompt({
-              message: '输入密码',
-              title: '提示',
-              buttonLabels: ['确定', '取消'],
-              onSuccess: function (result) {
-                if (result.buttonIndex === 0) {
-                  if (result.value === 'gmklzl') {
-                    dd.device.notification.prompt({
-                      message: '输入确认密码',
-                      title: '提示',
-                      buttonLabels: ['确定', '取消'],
-                      onSuccess: function (result1) {
-                        if (result1.buttonIndex === 0) {
-                          dingUser.getRequestAuthCode(_that.path).then((data) => {
-                            api.getDebugLogin(data, result1.value, function (res) {
-                            })
-                          })
-                        }
-                      },
-                      onFail: function (err) {
-                      }
-                    });
-                  } else {
-                    window.alert('密码错误')
-                  }
-                }
-              },
-              onFail: function (err) {
-              }
-            });
-          })
-        }
-      },
       setRight() {
         let dd = window.dd
-//        let _that = this;
+        let _that = this;
         dd.ready(function () {
           let rightBtn = {
             text: ding.RIGHT_TOP_TITLE,
@@ -208,7 +191,7 @@
             control: true, // 是否控制点击事件，true 控制，false 不控制， 默认false
             showIcon: true, // 是否显示icon，true 显示， false 不显示，默认true； 注：具体UI以客户端为准
             onSuccess: function (result) {
-              whole.showMore();
+              whole.showMore(!_that.showMore);
             }
           }
           ding.setRight(rightBtn)
@@ -344,3 +327,4 @@
     padding-bottom: 10px;
   }
 </style>
+

@@ -24,19 +24,6 @@
         </div>
       </popup>
     </div>
-    <div v-transfer-dom>
-      <actionsheet v-model="showBottomMore" :menus="menus" show-cancel @on-click-menu="clickMenu"></actionsheet>
-      <!--<popup v-model="showBottomMore" height="120px" is-transparent>-->
-      <!--<div style="background-color:#fff;height:120px;margin:0 auto;">-->
-      <!--<grid>-->
-      <!--<grid-item label="联系我们"></grid-item>-->
-      <!--<grid-item label="意见反馈"></grid-item>-->
-      <!--<grid-item label="复制链接"></grid-item>-->
-      <!--<grid-item label="意见反馈"></grid-item>-->
-      <!--</grid>-->
-      <!--</div>-->
-      <!--</popup>-->
-    </div>
   </div>
 </template>
 
@@ -48,6 +35,7 @@
   import router from './router'
   import api from 'api'
   import dingUser from '@/lib/dingUser'
+  import whole from '@/lib/whole'
 
   const AUTH_DINGTALKCODE = 'auth.dingtalkcode';
 
@@ -128,25 +116,26 @@
       }
     },
     created() {
-      let dd = window.dd
-      let _that = this;
-      dd.ready(function () {
-        dd.biz.user.get({
-          onSuccess: function (info) {
-            if (info.emplId === ding.GMK_LZL || info.emplId === ding.W3_CONCAT_DDID) {
-              let obj = {
-                label: '移动办公',
-                value: 'ydbg',
-                type: 'warn'
-              }
-              _that.menus.push(obj)
-            }
-          },
-          onFail: function (err) {
-            console.log(err)
-          }
-        });
-      })
+      this.setRight();
+//      let dd = window.dd
+//      let _that = this;
+//      dd.ready(function () {
+//        dd.biz.user.get({
+//          onSuccess: function (info) {
+//            if (info.emplId === ding.GMK_LZL || info.emplId === ding.W3_CONCAT_DDID) {
+//              let obj = {
+//                label: '移动办公',
+//                value: 'ydbg',
+//                type: 'warn'
+//              }
+//              _that.menus.push(obj)
+//            }
+//          },
+//          onFail: function (err) {
+//            console.log(err)
+//          }
+//        });
+//      })
     },
     methods: {
       clickMenu(key) {
@@ -205,6 +194,22 @@
             });
           })
         }
+      },
+      setRight() {
+        let dd = window.dd
+//        let _that = this;
+        dd.ready(function () {
+          let rightBtn = {
+            text: ding.RIGHT_TOP_TITLE,
+            show: true, // 控制按钮显示， true 显示， false 隐藏， 默认true
+            control: true, // 是否控制点击事件，true 控制，false 不控制， 默认false
+            showIcon: true, // 是否显示icon，true 显示， false 不显示，默认true； 注：具体UI以客户端为准
+            onSuccess: function (result) {
+              whole.showMore();
+            }
+          }
+          ding.setRight(rightBtn)
+        });
       }
     }
   }

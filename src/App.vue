@@ -24,6 +24,9 @@
         </div>
       </popup>
     </div>
+    <div v-transfer-dom>
+      <actionsheet v-model="showBottomMore" :menus="menus" show-cancel @on-click-menu="clickMenu"></actionsheet>
+    </div>
   </div>
 </template>
 
@@ -117,25 +120,25 @@
     },
     created() {
       this.setRight();
-//      let dd = window.dd
-//      let _that = this;
-//      dd.ready(function () {
-//        dd.biz.user.get({
-//          onSuccess: function (info) {
-//            if (info.emplId === ding.GMK_LZL || info.emplId === ding.W3_CONCAT_DDID) {
-//              let obj = {
-//                label: '移动办公',
-//                value: 'ydbg',
-//                type: 'warn'
-//              }
-//              _that.menus.push(obj)
-//            }
-//          },
-//          onFail: function (err) {
-//            console.log(err)
-//          }
-//        });
-//      })
+      let dd = window.dd
+      let _that = this;
+      dd.ready(function () {
+        dd.biz.user.get({
+          onSuccess: function (info) {
+            if (info.emplId === ding.GMK_LZL || info.emplId === ding.W3_CONCAT_DDID) {
+              let obj = {
+                label: '移动办公',
+                value: 'ydbg',
+                type: 'warn'
+              }
+              _that.menus.push(obj)
+            }
+          },
+          onFail: function (err) {
+            console.log(err)
+          }
+        });
+      })
     },
     methods: {
       clickMenu(key) {

@@ -155,6 +155,7 @@
   import dingUser from '@/lib/dingUser'
   import api from 'api'
   import whole from '@/lib/whole'
+  import { mapState } from 'vuex'
 
   export default {
     directives: {
@@ -173,6 +174,11 @@
       Group,
       Cell,
       Sticky
+    },
+    computed: {
+      ...mapState({
+        showMore: state => state.loading.showMore
+      })
     },
     data() {
       return {
@@ -599,6 +605,7 @@
       },
       setRightMore() {
         let dd = window.dd
+        let _that = this;
         dd.ready(function () {
           let rightBtn = {
             text: ding.RIGHT_TOP_TITLE,
@@ -606,7 +613,7 @@
             control: true, // 是否控制点击事件，true 控制，false 不控制， 默认false
             showIcon: true, // 是否显示icon，true 显示， false 不显示，默认true； 注：具体UI以客户端为准
             onSuccess: function (result) {
-              whole.showMore();
+              whole.showMore(!_that.showMore);
             }
           }
           ding.setRight(rightBtn)

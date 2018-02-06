@@ -173,6 +173,7 @@
   import dingUser from '@/lib/dingUser'
   import api from 'api'
   import whole from '@/lib/whole'
+  import { mapState } from 'vuex'
 
   export default {
     directives: {
@@ -210,6 +211,11 @@
         flowHistory: [],
         userid: ''
       };
+    },
+    computed: {
+      ...mapState({
+        showMore: state => state.loading.showMore
+      })
     },
     beforeRouteEnter(to, from, next) {
       var reg = new RegExp('(^|&)' + 'zin' + '=([^&]*)(&|$)');
@@ -263,21 +269,12 @@
       showRightPop(val) {
         if (!val) {
 //          this.setRightMenu();
-          let config = {
-            show: true,
-            text: '更多'
-          }
-          ding.setRight(config)
+          this.setRightMore();
         }
       },
       showRightPopFj(val) {
         if (!val) {
-//          this.setRightMenu();
-          let config = {
-            show: true,
-            text: '更多'
-          }
-          ding.setRight(config)
+          this.setRightMore();
         }
       }
     },
@@ -395,16 +392,7 @@
             text: '关闭记录',
             onSuccess: function (data) {
               _that.showRightPop = false;
-              let config = {
-                show: true,
-                text: ding.RIGHT_TOP_TITLE,
-                control: true, // 是否控制点击事件，true 控制，false 不控制， 默认false
-                showIcon: true, // 是否显示icon，true 显示， false 不显示，默认true； 注：具体UI以客户端为准
-                onSuccess: function (result) {
-                  whole.showMore();
-                }
-              }
-              ding.setRight(config)
+              _that.setRightMore();
             }
           }
           ding.setRight(config)
@@ -421,16 +409,7 @@
             text: '关闭附件',
             onSuccess: function (data) {
               _that.showRightPopFj = false;
-              let config = {
-                show: true,
-                text: ding.RIGHT_TOP_TITLE,
-                control: true, // 是否控制点击事件，true 控制，false 不控制， 默认false
-                showIcon: true, // 是否显示icon，true 显示， false 不显示，默认true； 注：具体UI以客户端为准
-                onSuccess: function (result) {
-                  whole.showMore();
-                }
-              }
-              ding.setRight(config)
+              _that.setRightMore();
             }
           }
           ding.setRight(config)
@@ -438,6 +417,22 @@
       },
       openFj(file) {
         FFEU.openFj(file)
+      },
+      setRightMore() {
+        let dd = window.dd
+        let _that = this;
+        dd.ready(function () {
+          let rightBtn = {
+            text: ding.RIGHT_TOP_TITLE,
+            show: true, // 控制按钮显示， true 显示， false 隐藏， 默认true
+            control: true, // 是否控制点击事件，true 控制，false 不控制， 默认false
+            showIcon: true, // 是否显示icon，true 显示， false 不显示，默认true； 注：具体UI以客户端为准
+            onSuccess: function (result) {
+              whole.showMore(!_that.showMore);
+            }
+          }
+          ding.setRight(rightBtn)
+        });
       }
     }
   }

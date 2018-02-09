@@ -2,7 +2,7 @@
   <div class="b-box">
     <group v-for="(item,index) in list" :key="index" gutter="0" class="b-group" v-show="showCheck">
       <cell title="考勤排班"
-            :title="item.number"
+            :title="item.calendardate"
             is-link
             :border-intent="false"
             :arrow-direction="item.showContent ? 'up' : 'down'"
@@ -10,27 +10,27 @@
             :class="item.showContent ? 'b-cell':''"
             class="bcell">
       </cell>
-      <div class="slide" :class="item.showContent ? 'animate' : ''">
-        <ul class="bul">
-          <li class="blist"><span class="bspan1">序号</span><span class="bspan2">{{item.number}}</span></li>
-          <li class="blist"><span class="bspan1">排班日期</span><span class="bspan2">{{item.pbdate}}</span></li>
-          <li class="blist"><span class="bspan1">班次</span><span class="bspan2">{{item.pbclass}}</span></li>
-          <li class="blist"><span class="bspan1">排班类型</span><span class="bspan2">{{item.pbtype}}</span></li>
-          <li class="blist"><span class="bspan1">排班开始时间</span><span class="bspan2">{{item.pbstartime}}</span></li>
-          <li class="blist"><span class="bspan1">排班结束时间</span><span class="bspan2">{{item.pbendtime}}</span></li>
-          <li class="blist"><span class="bspan1">班次时数</span><span class="bspan2">{{item.pbburn}}</span></li>
-          <li class="blist"><span class="bspan1">休息方式</span><span class="bspan2">{{item.restype}}</span></li>
-          <li class="blist"><span class="bspan1">休息时长</span><span class="bspan2">{{item.restime}}</span></li>
-          <li class="blist"><span class="bspan1">休息开始时间</span><span class="bspan2">{{item.reststart}}</span></li>
-          <li class="blist"><span class="bspan1">休息结束时间</span><span class="bspan2">{{item.restend}}</span></li>
-        </ul>
-      </div>
+      <group v-if="item.showContent" gutter="0">
+          <cell title="排班日期">{{item.calendardate}}</cell>
+          <cell title="班次">{{item.timeclassname}}</cell>
+          <cell title="排班类型">{{item.calendartype}}</cell>
+          <cell title="排班开始时间">{{item.timefrom}}</cell>
+          <cell title="排班结束时间">{{item.timeto}}</cell>
+          <cell title="班次时数">{{item.calhours}}</cell>
+          <cell title="休息方式">{{item.timeclassresttype}}</cell>
+          <cell title="休息时长">{{item.timeclassresthours}}</cell>
+          <cell title="休息开始时间">{{item.timeclassreststarttime}}</cell>
+          <cell title="休息结束时间">{{item.timeclassrestendtime}}</cell>
+      </group>
     </group>
   </div>
 </template>
 
 <script>
   import { Checklist, Group, Cell } from 'vux'
+  import api from 'api';
+  import whole from '@/lib/whole'
+  import dateFormatter from '@/lib/dateFormatter';
 
   export default {
     components: {
@@ -38,59 +38,41 @@
       Group,
       Cell
     },
+    created() {
+      this.startdate = dateFormatter.fmtDate(this.$route.query.startdate, 'yyyy-MM-dd')
+      this.enddate = dateFormatter.fmtDate(this.$route.query.enddate, 'yyyy-MM-dd')
+      this.getPbInfo()
+    },
     data () {
       return {
+        startdate: '',
+        enddate: '',
         showTips: false,
         showCheck: true,
         showbg: false,
         showContent: false,
-        list: [
-          {
-            number: 1,
-            pbdate: '2018-01-01',
-            pbclass: '休息',
-            pbtype: 3,
-            pbstartime: '',
-            pbendtime: '',
-            pbburn: 0.0,
-            restype: 0,
-            restime: 0.00,
-            reststart: '',
-            restend: '',
-            showContent: false
-          },
-          {
-            number: 2,
-            pbdate: '2018-01-02',
-            pbclass: '08:00-17:00/B/12:00-13:00',
-            pbtype: 1,
-            pbstartime: '08:00',
-            pbendtime: '17:00',
-            pbburn: 8.0,
-            restype: 1,
-            restime: 1.00,
-            reststart: '12:00',
-            restend: '13:00',
-            showContent: false
-          },
-          {
-            number: 3,
-            pbdate: '2018-01-03',
-            pbclass: '08:00-17:00/B/12:00-13:00',
-            pbtype: 1,
-            pbstartime: '08:00',
-            pbendtime: '17:00',
-            pbburn: 8.0,
-            restype: 1,
-            restime: 1.00,
-            reststart: '12:00',
-            restend: '13:00',
-            showContent: false
-          }
-        ]
+        list: []
       }
     },
     methods: {
+      getPbInfo() {
+        let _that = this;
+        api.getPbInfo(_that.startdate, _that.enddate, function (res) {
+          if (res.data.code) {
+            if (res.data.data.message) {
+              whole.showTop(res.data.data.message)
+            } else {
+              for (let item of res.data.data.schedulelist) {
+                item.showContent = false
+              }
+              _that.list = res.data.data.schedulelist
+            }
+            console.log(res)
+          } else {
+            whole.showTop('获取排班信息失败')
+          }
+        })
+      },
       showbtn () {
         this.showCheck = true
         this.showTips = false

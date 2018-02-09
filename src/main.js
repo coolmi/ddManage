@@ -5,7 +5,7 @@ import App from './App'
 import router from './router'
 import store from './store';
 import {sync} from 'vuex-router-sync'
-// import MintUI from 'mint-ui'
+import MintUI from 'mint-ui'
 // import Navigation from 'vue-navigation'
 // import vueScrollBehavior from 'vue-scroll-behavior'
 // import Raven from 'raven-js';
@@ -34,8 +34,8 @@ Vue.use(Navigation, {router})
 // Vue.use(Navigation, {router, store}) // 后退不刷新
 // Vue.use(Navigation, {router, store, moduleName: 'navigation', keyName: 'VNK'})
 
-// Vue.use(MintUI);
-// import 'mint-ui/lib/style.min.css'
+Vue.use(MintUI);
+import 'mint-ui/lib/style.min.css'
 // import { CloseDialogsPlugin } from 'vux'
 // Vue.use(CloseDialogsPlugin, router)
 

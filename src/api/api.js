@@ -1008,5 +1008,21 @@ export default {
       }).catch((error) => {
       return Promise.reject(error)
     })
+  },
+  getFXgfOrg: function (postid, cb) {
+    axios.get('/authapi/ddtalkwf/getIsFxgfOrg?postid=' + postid)
+      .then((res) => {
+        cb(res);
+      }).catch((error) => {
+      return Promise.reject(error)
+    })
+  },
+  getPbInfo: function (startdate, enddate, cb) {
+    axios.get('/authapi/ddtalkwf/getSchedulelist?startdate=' + startdate + '&enddate=' + enddate)
+      .then((res) => {
+        cb(res);
+      }).catch((error) => {
+      return Promise.reject(error)
+    })
   }
 }

@@ -14,8 +14,11 @@
         <x-button plain type="primary" @click.native="addBusinessTripOption()">添加出差申请明细</x-button>
       </box>
     </sticky>
-    <group title="出差申请明细列表" v-if="formsData.length > 0" style="margin-bottom: 60px;">
+    <group title="出差申请明细列表" v-if="formsData.length > 0">
       <cell v-for="d in formsData" :key="d.uuid" :title="d.tp" is-link @click.native="addBusinessTripOption(d)"></cell>
+    </group>
+    <group title="排班信息" v-if="fflag === '1' && ifFXgfOrg" style="margin-bottom: 60px;">
+      <cell title="排班信息" is-link @click.native="queryPbInfo()"></cell>
     </group>
     <flexbox class="footerButton">
       <flexbox-item @click.native="addReserve(0)" style="color:#00B705">提交</flexbox-item>
@@ -69,7 +72,11 @@ export default {
       positionList: [],
       burkList: [],
       kostlList: [],
-      parmasOption: {}
+      parmasOption: {},
+      parmassubs: [],
+      ifFXgfOrg: false,
+      startdate: '',
+      enddate: ''
     }
   },
   computed: {
@@ -91,7 +98,6 @@ export default {
     }
   },
   created() {
-    console.log(this.formsData);
     let saveParams = this.$route.query.saveParams;
     if (saveParams) {
       this.$store.dispatch('clearBusinessTrip')
@@ -108,6 +114,15 @@ export default {
     if (this.forms.postid !== '' && this.forms.m_comp !== '') {
       this.changeBurks()
     }
+    let _that = this;
+    this.$navigation.on('back', (to, from) => {
+      if (to.route.path === '/businessTrip') {
+        if (_that.formsData.length > 1) {
+          _that.ifFlag();
+          _that.ifFXgfOrgMethod();
+        }
+      }
+    })
   },
   methods: {
     getProtypeInfo() {
@@ -318,8 +333,6 @@ export default {
       }
 
       this.parmasOption = parmas;
-
-      console.log(parmas);
       for (let i = 0; i < parmas.subs.length; i++) {
         if (parmas.subs[i].tp === '返程') {
           this.fflag = '1'
@@ -422,6 +435,58 @@ export default {
           }
         }
       })
+    },
+    ifFXgfOrgMethod() {
+      let _that = this;
+      api.getFXgfOrg(_that.forms.postid, function (res) {
+        if (res.data.code) {
+          _that.ifFXgfOrg = res.data.data.befxgf
+        } else {
+        }
+      })
+    },
+    ifFlag() {
+      var demoArray = [];
+      this.formsData.map(function (item) {
+        let demo = {};
+        for (var v in item) {
+          if (v === 'id') {
+            demo['id'] = item['id']
+          } else if (v === 'mainkey') {
+            demo['mainkey'] = item['mainkey']
+          } else if (item[v].match(/^[1-9]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/)) {
+            demo[v] = new Date(item[v].replace(/-/g, '/')).getTime()
+          } else {
+            demo[v] = item[v]
+          }
+        }
+        demoArray.push(demo)
+      });
+
+      let parmas = {
+        subs: demoArray
+      }
+
+      this.parmassubs = parmas.subs
+
+      this.parmasOption = parmas;
+      for (let i = 0; i < parmas.subs.length; i++) {
+        if (parmas.subs[i].tp === '返程') {
+          this.fflag = '1'
+        }
+      }
+    },
+    queryPbInfo() {
+      let _that = this;
+      let parmassubs = this.parmassubs
+      for (let i = 0; i < parmassubs.length; i++) {
+        if (parmassubs[i].tp === '去程') {
+          _that.startdate = parmassubs[i].startda
+        } else if (parmassubs[i].tp === '返程') {
+          _that.enddate = parmassubs[i].endda
+        }
+      }
+      this.$router.push({path: 'pbInfo', query: {startdate: this.startdate, enddate: this.enddate}})
     }
   }
 }

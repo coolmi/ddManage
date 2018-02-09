@@ -59,6 +59,11 @@ const router = new Router({
       meta: {title: '出差申请明细'}
     },
     {
+      path: '/pbInfo',
+      component: require('@/views/businessTrip/pbInfo'),
+      meta: {title: '排班信息'}
+    },
+    {
       path: '/reserve',
       component: require('@/views/reserve/Reserve'),
       meta: {title: '备用金申请', ddConfig: true}

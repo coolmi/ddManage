@@ -23,8 +23,10 @@ const NOREFRESH = [];
 
 const RIGHT_TOP_TITLE = '帮助'; // 页面右上角的名称
 
-const GMK_LZL = '094211534726242584'
+const GMK_LZL = '094211534726242584'  //  李振龙ddid
+const GMK_ZBM = '094345602424062002'  //  张保敏 ddid
 const W3_CONCAT_DDID = '095117221320233106' // 明月的ddid
+const W3_YUNWEI_DDID = '131164676026354846' // 炳冉的ddid
 const JH_CONCAT_DDID = 'manager9648' // 京华世家任小冰的ddid
 
 const JH_DINGTALK_CODE = 'APPSERVER-JH' // 京华世家dingtalk_code
@@ -207,7 +209,9 @@ export default {
   CORPID,
   RIGHT_TOP_TITLE,
   GMK_LZL,
-  W3_CONCAT_DDID,
+  GMK_ZBM,         // 保敏
+  W3_CONCAT_DDID,  //  明月
+  W3_YUNWEI_DDID, //  炳冉
   JH_CONCAT_DDID,
   JH_DINGTALK_CODE,
   parseParam,

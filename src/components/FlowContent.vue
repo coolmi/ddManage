@@ -4,14 +4,15 @@
       <!--&& item.pageid !== 'jbxx' && item.pageid !== 'sqxx' && item.pageid !== 'sqrxx'-->
       <!--<div class="itemTitle" v-if="item.title && item.pageid !== 'fjxx' && item.pageid !== 'spjl' && item.pageid !== 'jbxx'">{{item.title}}</div>-->
       <group gutter="2">
-        <cell class="itemTitle" v-if="item.title && item.pageid !== 'fjxx' && item.pageid !== 'spjl'"
+        <cell class="itemTitle" v-if="item.title && item.pageid !== 'fjxx' && item.pageid !== 'spjl' && item.pageid !== 'ywfj'"
               :title="item.title" is-link :arrow-direction="item.showContent ? 'down' : 'left'"
               @click.native="item.showContent = !item.showContent"></cell>
         <!--{{item.showContent ? '隐藏': '展开'}}-->
       </group>
       <flow-sub-content v-show="item.showContent" :ref="item.pageid" style="margin-top: 0"
                         :subforms="item.subComponents"
-                        v-if="item.subComponents && item.pageid !== 'fjxx' && item.pageid !== 'spjl'"></flow-sub-content>
+                        v-if="item.subComponents && item.pageid !== 'fjxx' && item.pageid !== 'spjl' && item.pageid !== 'ywfj'"></flow-sub-content>
+      <!--增加隐藏掉业务附件，并将后续的 非alfreco的附件pageid 定义为ywfj by zbm 2018-03-27 19:35:37-->
     </div>
   </div>
 </template>

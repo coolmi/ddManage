@@ -25,6 +25,8 @@ const RIGHT_TOP_TITLE = '帮助'; // 页面右上角的名称
 
 const GMK_LZL = '094211534726242584'  //  李振龙ddid
 const GMK_ZBM = '094345602424062002'  //  张保敏 ddid
+const GMK_CXN = '1962122737810613'  //  晓楠 ddid
+const GMK_XCM = '131509693424719696'  //  徐长孟 ddid
 const W3_CONCAT_DDID = '095117221320233106' // 明月的ddid
 const W3_YUNWEI_DDID = '131164676026354846' // 炳冉的ddid
 const JH_CONCAT_DDID = 'manager9648' // 京华世家任小冰的ddid
@@ -210,6 +212,8 @@ export default {
   RIGHT_TOP_TITLE,
   GMK_LZL,
   GMK_ZBM,         // 保敏
+  GMK_CXN,         // 晓楠
+  GMK_XCM,         // 长孟
   W3_CONCAT_DDID,  //  明月
   W3_YUNWEI_DDID, //  炳冉
   JH_CONCAT_DDID,

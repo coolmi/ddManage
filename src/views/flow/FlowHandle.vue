@@ -197,7 +197,8 @@
         flowFiles: [],
         flowHistory: [],
         userid: '',
-        zin: ''
+        zin: '',
+        fileUrls: []
       };
     },
     beforeRouteEnter(to, from, next) {
@@ -361,6 +362,7 @@
             data = eval('(' + data + ')');
           }
           let flowdata = FDUtils.getFlowData(data); // 流程数据再处理
+          _that.fileUrls = flowdata.fileUrls;  // 增加fileUrls 获取
           console.log(flowdata.FLOWSHOW)
           _that.flowParams.ID_ = flowdata.ID_ // 按钮事件中用
           _that.flowParams.EDITARR_ = flowdata.EDITARR_ // 按钮事件中用 补填的字段
@@ -535,7 +537,7 @@
           _that.cardHistoryData = historyData
         })
       },
-      // 获取流程附件
+      // 获取流程附件 并增加业务附件
       getFlowFiles() {
         let _that = this;
         let params = {
@@ -551,6 +553,10 @@
 //            whole.showTop('暂无附件')
           } else {
             _that.flowFiles = data.files || [];
+
+            for (var i = 0; i < _that.fileUrls.length; i++) {
+              _that.flowFiles.push(_that.fileUrls[i]);
+            }
           }
         })
       },
@@ -601,7 +607,13 @@
       },
       // 打开附件
       openFj(file) {
-        FFEU.openFj(file)
+        // 流程附件信息
+        if (file.afrescoid) {
+          FFEU.openFj(file);
+        } else if (file.fileurl) {
+          //  业务附件信息
+          FFEU.openFJ4Ywfj(file);
+        }
       },
       setRightMore() {
         let dd = window.dd

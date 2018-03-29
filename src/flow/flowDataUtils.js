@@ -26,7 +26,12 @@ let data = {
   EDITARR_: [],
   flowData: [],
   FLOWSHOW: [],
-  showContent: false
+  showContent: false,
+  fileparam: {
+    filename: '',
+    fileurl: ''
+  },
+  fileUrls: []
 }
 export function getFlowData(flowData) {
   data.flowData = flowData.forms
@@ -92,6 +97,28 @@ export function getFlowData(flowData) {
             sub.nvalue = sub.label;
           } else if (subcomp === 'text') {
             let valueStr = sub.value;
+            // 此处需要增加对应的 events事件
+            //  此处判断是否有events events 为打开预览文件的标志，将数据保存到列表中，
+            if (sub.events) {
+              /**
+               *  events 中有viewOther openUrl openHtml openDocument  openHtmlContent
+               *  其中最常用的是 openDocument和 openUrl
+               */
+              //
+              if (sub.events.eventType === 'openUrl') {
+                data.fileparam.filename = sub.value;
+                data.fileparam.fileurl = sub.events.openUrl;
+                flowData.fileUrls.push(data.fileparam);
+              } else if (sub.events.eventType === 'openDocumnet') {
+                data.fileparam.filename = sub.value;
+                data.fileparam.afrescoid = sub.events.afrescoid;
+                flowData.fileUrls.push(data.fileparam);
+              } else if (sub.events.eventType === 'openHtml') {
+                // TODO
+              } else if (sub.events.eventType === 'openHtmlContent') {
+                // TODO
+              }
+            }
             if (sub.datatype === 'money') {
               valueStr = fixMoney(sub.value) || 0;
             } else if (sub.datatype === 'money2dx') {
@@ -207,6 +234,7 @@ export function getFlowData(flowData) {
   flowData.APPDA_ = data.APPDA_
   flowData.EDITARR_ = data.EDITARR_
   flowData.FLOWSHOW = data.FLOWSHOW
+  flowData.fileUrls = data.fileUrls;
   return flowData;
 }
 
@@ -266,6 +294,27 @@ function getSubComponents(subData) {
           sub.nvalue = sub.label;
         } else if (subcomp === 'text') {
           let valueStr = sub.value;
+          //  此处判断是否有events events 为打开预览文件的标志，将数据保存到列表中，
+          if (sub.events) {
+            /**
+             *  events 中有viewOther openUrl openHtml openDocument  openHtmlContent
+             *  其中最常用的是 openDocument和 openUrl
+             */
+            if (sub.events.eventType === 'openUrl') {
+              data.fileparam.filename = sub.value;
+              data.fileparam.fileurl = sub.events.openUrl;
+              data.fileUrls.push(data.fileparam);
+            } else if (sub.events.eventType === 'openDocumnet') {
+              // TODO
+              data.fileparam.filename = sub.value;
+              data.fileparam.afrescoid = sub.events.afrescoid;
+              data.fileUrls.push(data.fileparam);
+            } else if (sub.events.eventType === 'openHtml') {
+              // TODO
+            } else if (sub.events.eventType === 'openHtmlContent') {
+              // TODO
+            }
+          }
           if (sub.datatype === 'money') {
             valueStr = fixMoney(sub.value) || 0;
           } else if (sub.datatype === 'money2dx') {

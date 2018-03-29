@@ -23,6 +23,7 @@ let APILIST = {
   // openfile_url: '/authapi/common/V1/getflowfile',
   openfile_url: '/authapi/common/V1/getflowfilefordding',
   openDingfile_url: '/authapi/common/V1/getflowfilefordding2',
+  openDingfile4Ywfj_url: '/authapi/common/V1/getflowfilefordding3', // 业务附件，非流程附件下的eventsType：openUrl 使用
 
   // 表单中的选人请求有值时 获取 name
   selectPersonName_url: '/authapi/common/V1/getPositionAndPersionItem',

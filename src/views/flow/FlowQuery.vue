@@ -209,7 +209,8 @@
         flowFilesData: [],
         flowFiles: [],
         flowHistory: [],
-        userid: ''
+        userid: '',
+        fileUrls: []
       };
     },
     computed: {
@@ -288,6 +289,7 @@
             data = eval('(' + data + ')');
           }
           let flowdata = FDUtils.getFlowData(data); // 流程数据再处理
+          _that.fileUrls = flowdata.fileUrls;
           _that.flowParams.ID_ = flowdata.ID_ // 按钮事件中用
           _that.flowParams.APPID_ = flowdata.APPID_ // 按钮事件中用
           _that.flowParams.POSTID_ = flowdata.POSTID_ // 按钮事件中用
@@ -367,6 +369,8 @@
           NAME_: _that.flowParams.NAME_,
           processDefinitionKey: _that.flowParams.KEY_
         }
+//        alert(_that.flowParams.BUSINESS_KEY_)
+//        console.log(_that.flowParams.BUSINESS_KEY_)
         api.getFlowFiles(params, function (res) {
           let data = res.data;
           if (data.error || data.err) {
@@ -375,6 +379,9 @@
 //            whole.showTop('暂无附件')
           } else {
             _that.flowFiles = data.files || [];
+            for (var i = 0; i < _that.fileUrls.length; i++) {
+              _that.flowFiles.push(_that.fileUrls[i]);
+            }
           }
         })
       },
@@ -415,8 +422,15 @@
           ding.setRight(config)
         }
       },
+      // 打开附件
       openFj(file) {
-        FFEU.openFj(file)
+        // 流程附件信息
+        if (file.afrescoid) {
+          FFEU.openFj(file);
+        } else if (file.fileurl) {
+          //  业务附件信息
+          FFEU.openFJ4Ywfj(file);
+        }
       },
       setRightMore() {
         let dd = window.dd

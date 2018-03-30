@@ -37,6 +37,7 @@ export function getFlowData(flowData) {
   data.flowData = flowData.forms
   data.EDITARR_ = [];
   data.FLOWSHOW = [];
+  data.fileUrls = [];
   if (flowData.forms) {
     for (let sub of flowData.forms) {
       if (sub.showLinkage && sub.showLinkage.length > 0) {

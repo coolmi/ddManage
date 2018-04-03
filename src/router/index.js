@@ -14,7 +14,7 @@ const router = new Router({
   mode: 'history',
   routes: [
     {
-      path: '/',
+      path: '/home',
       component: require('@/views/Home')
       // meta: {title: ''}
     },
@@ -29,9 +29,19 @@ const router = new Router({
       meta: {title: '申请保存列表'}
     },
     {
-      path: '/newLeave',
+      path: '/',
       component: require('@/views/newleave/NewLeave'),
       meta: {title: '员工休假申请'}
+    },
+    {
+      path: '/accredit',
+      component: require('@/views/newleave/accredit'),
+      meta: {title: '工作授权表单'}
+    },
+    {
+      path: '/connect',
+      component: require('@/views/newleave/toConnect'),
+      meta: {title: '工作交接表单'}
     },
     {
       path: '/newLeaveBackList',

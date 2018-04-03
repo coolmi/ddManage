@@ -156,6 +156,7 @@
   import api from 'api'
   import whole from '@/lib/whole'
   import { mapState } from 'vuex'
+  import router from '../../router'
 
   export default {
     directives: {
@@ -225,17 +226,18 @@
                         } else if (result.buttonIndex === 1) {
                           flowRU.getDBList(function (res) {
                             if (res.page.count !== 0) {
-                              let dingtalkCode = ding.parseParam(window.location.href, 'dingtalk_code') || 'APPSERVER'
-                              let flowParams = flowGLU.getList(res.page.list[0], 'db');
-                              let dd = window.dd;
-                              dd.biz.util.openLink({
-                                url: encodeURI('https://dingtalk.gmkholdings.com/flowHandle?dingtalk_code=' + dingtalkCode + '&flowParams=' + JSON.stringify(flowParams)), // 要打开链接的地址
-                                onSuccess: function (result) {
-
-                                },
-                                onFail: function (err) {
-                                }
-                              })
+//                              let dingtalkCode = ding.parseParam(window.location.href, 'dingtalk_code') || 'APPSERVER'
+//                              let flowParams = flowGLU.getList(res.page.list[res.page.count - 1], 'db');
+                              router.push({path: '/flowHandletemp', query: {info: 'next', flowParams: JSON.stringify(to.query.flowParams)}})
+//                              let dd = window.dd;
+//                              dd.biz.util.openLink({
+//                                url: encodeURI('https://dingtalk.gmkholdings.com/flowHandle?dingtalk_code=' + dingtalkCode + '&flowParams=' + JSON.stringify(flowParams)), // 要打开链接的地址
+//                                onSuccess: function (result) {
+//
+//                                },
+//                                onFail: function (err) {
+//                                }
+//                              })
                             }
                           })
                         }
@@ -259,17 +261,18 @@
                           } else if (result.buttonIndex === 1) {
                             flowRU.getDBList(function (res) {
                               if (res.page.count !== 0) {
-                                let dingtalkCode = ding.parseParam(window.location.href, 'dingtalk_code') || 'APPSERVER'
-                                let flowParams = flowGLU.getList(res.page.list[0], 'db');
-                                let dd = window.dd;
-                                dd.biz.util.openLink({
-                                  url: encodeURI('https://dingtalk.gmkholdings.com/flowHandle?dingtalk_code=' + dingtalkCode + '&flowParams=' + JSON.stringify(flowParams)), // 要打开链接的地址
-                                  onSuccess: function (result) {
-
-                                  },
-                                  onFail: function (err) {
-                                  }
-                                })
+//                                let dingtalkCode = ding.parseParam(window.location.href, 'dingtalk_code') || 'APPSERVER'
+//                                let flowParams = flowGLU.getList(res.page.list[res.page.count - 1], 'db');
+                                router.push({path: '/flowHandletemp', query: {info: 'next', flowParams: JSON.stringify(to.query.flowParams)}})
+//                                let dd = window.dd;
+//                                dd.biz.util.openLink({
+//                                  url: encodeURI('https://dingtalk.gmkholdings.com/flowHandle?dingtalk_code=' + dingtalkCode + '&flowParams=' + JSON.stringify(flowParams)), // 要打开链接的地址
+//                                  onSuccess: function (result) {
+//
+//                                  },
+//                                  onFail: function (err) {
+//                                  }
+//                                })
                               }
                             })
                           }
@@ -306,6 +309,7 @@
               next(false)
             }
           })
+//          router.push({path: '/flowHandletemp', query: {info: 'next', flowParams: JSON.stringify(to.query.flowParams)}})
         } else {
           next()
         }

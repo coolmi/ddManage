@@ -90,7 +90,7 @@
               let buttonIndex = result.buttonIndex
               if (buttonIndex === 0) {
                 let dingtalkCode = ding.parseParam(window.location.href, 'dingtalk_code') || ding.getLocation(AUTH_DINGTALKCODE)
-                let ddid = dingtalkCode === 'APPSERVER-JH' ? ding.JH_CONCAT_DDID : ding.W3_CONCAT_DDID
+                let ddid = dingtalkCode === 'APPSERVER-JH' ? ding.JH_CONCAT_DDID : ding.W3_YUNWEI_DDID
                 dd.ready(function () {
                   dd.biz.util.open({
                     name: 'profile',
@@ -109,63 +109,53 @@
                 router.push('/about')
               } else if (buttonIndex === 2) {
                 api.getLogout(function () {
+                  //  测试机不设置验证密码 方便测试
+//                  dd.device.notification.prompt({
+//                    message: '输入确认密码',
+//                    title: '提示',
+//                    buttonLabels: ['确定', '取消'],
+//                    onSuccess: function (result1) {
+//                      if (result1.buttonIndex === 0) {
+//                        dingUser.getRequestAuthCode(_that.path).then((data) => {
+//                          api.getDebugLogin(data, result1.value, function (res) {
+//                          })
+//                        })
+//                      }
+//                    },
+//                    onFail: function (err) {
+//                    }
+//                  });
+                  //  正式机移动办公菜单只开放两人，且设置密码
                   dd.device.notification.prompt({
                     message: '输入密码',
                     title: '提示',
                     buttonLabels: ['确定', '取消'],
                     onSuccess: function (result) {
                       if (result.buttonIndex === 0) {
-                        dd.device.notification.prompt({
-                          message: '输入确认密码',
-                          title: '提示',
-                          buttonLabels: ['确定', '取消'],
-                          onSuccess: function (result1) {
-                            if (result1.buttonIndex === 0) {
-                              dingUser.getRequestAuthCode(_that.path).then((data) => {
-                                api.getDebugLogin(data, result1.value, function (res) {
-                              })
-                            })
+                        if (result.value === 'gmklzl') {
+                          dd.device.notification.prompt({
+                            message: '输入确认密码',
+                            title: '提示',
+                            buttonLabels: ['确定', '取消'],
+                            onSuccess: function (result1) {
+                              if (result1.buttonIndex === 0) {
+                                dingUser.getRequestAuthCode(_that.path).then((data) => {
+                                  api.getDebugLogin(data, result1.value, function (res) {
+                                  })
+                                })
+                              }
+                            },
+                            onFail: function (err) {
                             }
-                          },
-                          onFail: function (err) {
-                          }
-                        });
+                          });
+                        } else {
+                          window.alert('密码错误')
+                        }
                       }
                     },
                     onFail: function (err) {
                     }
                   });
-                  //  正式机移动办公菜单只开放两人，且设置密码
-//                  dd.device.notification.prompt({
-//                    message: '输入密码',
-//                    title: '提示',
-//                    buttonLabels: ['确定', '取消'],
-//                    onSuccess: function (result) {
-//                      if (result.buttonIndex === 0) {
-//                        if (result.value === 'gmklzl') {
-//                          dd.device.notification.prompt({
-//                            message: '输入确认密码',
-//                            title: '提示',
-//                            buttonLabels: ['确定', '取消'],
-//                            onSuccess: function (result1) {
-//                              if (result1.buttonIndex === 0) {
-//                                dingUser.getRequestAuthCode(_that.path).then((data) => {
-//                                  api.getDebugLogin(data, result1.value, function (res) {
-//                                  })
-//                                })
-//                              }
-//                            },
-//                            onFail: function (err) {
-//                            }
-//                          });
-//                        } else {
-//                          window.alert('密码错误')
-//                        }
-//                      }
-//                    },
-//                    onFail: function (err) {
-//                    }
-//                  });
                 })
               }
             },
@@ -197,7 +187,9 @@
       dd.ready(function () {
         dd.biz.user.get({
           onSuccess: function (info) {
-            if (info.emplId === ding.GMK_LZL || info.emplId === ding.W3_CONCAT_DDID) {
+            if (info.emplId === ding.GMK_LZL || info.emplId === ding.W3_CONCAT_DDID || info.emplId === ding.GMK_ZBM) {
+//  正式机 只有张保敏，李振龙，付明月拥有切换用户的权限
+//            if (info.emplId === ding.GMK_LZL || info.emplId === ding.W3_CONCAT_DDID || info.emplId === ding.GMK_ZBM || info.emplId === ding.GMK_CXN || info.emplId === ding.GMK_XCM) {
               _that.otherButtons = ['问题反馈', '关于', '移动办公']
             }
           },

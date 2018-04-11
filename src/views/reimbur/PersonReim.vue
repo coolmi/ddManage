@@ -158,6 +158,7 @@
       }
     this.$navigation.on('back', (to, from) => {
     var data = dataUtils.getFormData(this.formsData);
+      this.dataArray = [];
     this.dataArray.push(data)
     })
     //  this.setData() // 填写的时候回退保存值
@@ -523,94 +524,94 @@
             _that.forms.atrlnr = draftlistData.feeApp.atrlnr;
             _that.forms.instruction = draftlistData.feeApp.smemo
             if (draftlistData.ltrad) {
+              let ltrad = []
               for (let i = 0; i < draftlistData.ltrad.length; i++) {
                 draftlistData.ltrad[i].type = '长途交通'
-                let ltrad = []
                 ltrad.push(draftlistData.ltrad[i])
-                var data = dataUtils.getFormData(ltrad);
-                _that.dataArray.push(data)
                 _that.$store.dispatch('addPersonReim', draftlistData.ltrad[i])
               }
+              var data = dataUtils.getFormData(ltrad);
+              _that.dataArray.push(data)
             }
             if (draftlistData.citytrad) {
+              let citytrad = []
               for (let i = 0; i < draftlistData.citytrad.length; i++) {
                 draftlistData.citytrad[i].type = '市内交通'
-                let citytrad = []
                 citytrad.push(draftlistData.citytrad[i])
-                 data = dataUtils.getFormData(citytrad);
-                _that.dataArray.push(data)
                 _that.$store.dispatch('addPersonReim', draftlistData.citytrad[i])
               }
+              data = dataUtils.getFormData(citytrad);
+              _that.dataArray.push(data)
             }
             if (draftlistData.officecost) {
+              let officecost = []
               for (let i = 0; i < draftlistData.officecost.length; i++) {
                 draftlistData.officecost[i].type = '办公费用'
-                let officecost = []
                 officecost.push(draftlistData.officecost[i])
-                 data = dataUtils.getFormData(officecost);
-                _that.dataArray.push(data)
                 _that.$store.dispatch('addPersonReim', draftlistData.officecost[i])
               }
+              data = dataUtils.getFormData(officecost);
+              _that.dataArray.push(data)
             }
             if (draftlistData.mealfee) {
+              let mealfee = []
               for (let i = 0; i < draftlistData.mealfee.length; i++) {
                 draftlistData.mealfee[i].type = '餐费'
-                let mealfee = []
                 mealfee.push(draftlistData.mealfee[i])
-                 data = dataUtils.getFormData(mealfee);
-                _that.dataArray.push(data)
                 _that.$store.dispatch('addPersonReim', draftlistData.mealfee[i])
               }
+              data = dataUtils.getFormData(mealfee);
+              _that.dataArray.push(data)
             }
             if (draftlistData.hotelexpense) {
+              let hotelexpense = []
               for (let i = 0; i < draftlistData.hotelexpense.length; i++) {
                 draftlistData.hotelexpense[i].type = '住宿及餐补'
-                let hotelexpense = []
                 hotelexpense.push(draftlistData.hotelexpense[i])
-                 data = dataUtils.getFormData(hotelexpense);
-                _that.dataArray.push(data)
                 _that.$store.dispatch('addPersonReim', draftlistData.hotelexpense[i])
               }
+              data = dataUtils.getFormData(hotelexpense);
+              _that.dataArray.push(data)
             }
             if (draftlistData.train) {
+              let train = []
               for (let i = 0; i < draftlistData.train.length; i++) {
                 draftlistData.train[i].type = '培训费'
-                let train = []
                 train.push(draftlistData.train[i])
-                 data = dataUtils.getFormData(train);
-                _that.dataArray.push(data)
                 _that.$store.dispatch('addPersonReim', draftlistData.train[i])
               }
+              data = dataUtils.getFormData(train);
+              _that.dataArray.push(data)
             }
             if (draftlistData.telnet) {
+              let telnet = []
               for (let i = 0; i < draftlistData.telnet.length; i++) {
                 draftlistData.telnet[i].type = '通讯费'
-                let telnet = []
                 telnet.push(draftlistData.telnet[i])
-                 data = dataUtils.getFormData(telnet);
-                _that.dataArray.push(data)
                 _that.$store.dispatch('addPersonReim', draftlistData.telnet[i])
               }
+              data = dataUtils.getFormData(telnet);
+              _that.dataArray.push(data)
             }
             if (draftlistData.giftfee) {
+              let giftfee = []
               for (let i = 0; i < draftlistData.giftfee.length; i++) {
                 draftlistData.giftfee[i].type = '礼品费'
-                let giftfee = []
                 giftfee.push(draftlistData.giftfee[i])
-                 data = dataUtils.getFormData(giftfee);
-                _that.dataArray.push(data)
                 _that.$store.dispatch('addPersonReim', draftlistData.giftfee[i])
               }
+              data = dataUtils.getFormData(giftfee);
+              _that.dataArray.push(data)
             }
             if (draftlistData.electronic) {
+              let electronic = []
               for (let i = 0; i < draftlistData.electronic.length; i++) {
                 draftlistData.electronic[i].type = '电子发票'
-                let electronic = []
                 electronic.push(draftlistData.electronic[i])
-                 data = dataUtils.getFormData(electronic);
-                _that.dataArray.push(data)
                 _that.$store.dispatch('addPersonReim', draftlistData.electronic[i])
               }
+              data = dataUtils.getFormData(electronic);
+              _that.dataArray.push(data)
             }
            // _that.id = draftlistData.depositApp.id;
            /*  draftlistData.resegs.map(function (item) {

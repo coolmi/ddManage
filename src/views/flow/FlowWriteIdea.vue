@@ -406,7 +406,25 @@
           }
 //          let showMessage = data.message || data.msg;
           whole.showTop('审批完成');
-          if (_that.zin !== '') {
+          //  zin = n 循环flowHandle，即消息链接当前任务已办理完，跳转到下一条
+          if (_that.zin === 'n') {
+            setTimeout(function () {
+              let dd = window.dd
+              dd.biz.navigation.close({
+                onSuccess: function (result) {
+                  dd.biz.navigation.close({
+                    onSuccess: function (result) {
+                    },
+                    onFail: function (err) {
+                    }
+                  })
+                },
+                onFail: function (err) {
+                }
+              })
+            }, 2000)
+            //  消息链接打开相应待办, 审批完成后，跳回工作通知
+          } else if (_that.zin !== '') {
             setTimeout(function () {
               let dd = window.dd
               dd.biz.navigation.close({
@@ -416,10 +434,12 @@
                 }
               })
             }, 2000)
+            //  有移动端填写, 退回至待办列表
           } else if (_that.fromPath !== '') {
             setTimeout(function () {
               _that.$router.go(-3);
             })
+            //  无移动端填写，退回至待办列表
           } else {
             setTimeout(function () {
               _that.$router.go(-2);

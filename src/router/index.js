@@ -104,11 +104,6 @@ const router = new Router({
       meta: {title: '详情', ddConfig: true}
     },
     {
-      path: '/flowHandletemp',
-      component: require('@/views/flow/flowHandletemp'),
-      meta: {title: '详情', ddConfig: true}
-    },
-    {
       path: '/flowQuery',
       component: require('@/views/flow/FlowQuery'),
       meta: {title: '查看', ddConfig: true}

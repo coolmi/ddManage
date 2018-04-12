@@ -407,17 +407,12 @@
 //          let showMessage = data.message || data.msg;
           whole.showTop('审批完成');
           //  zin = n 循环flowHandle，即消息链接当前任务已办理完，跳转到下一条
-          if (_that.zin === 'n') {
+          if (_that.zin === 'abc') {
+//            alert(_that.zin);
             setTimeout(function () {
               let dd = window.dd
               dd.biz.navigation.close({
                 onSuccess: function (result) {
-                  dd.biz.navigation.close({
-                    onSuccess: function (result) {
-                    },
-                    onFail: function (err) {
-                    }
-                  })
                 },
                 onFail: function (err) {
                 }

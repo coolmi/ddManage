@@ -230,14 +230,28 @@
                               let flowParams = flowGLU.getList(res.page.list[res.page.count - 1], 'db');
                               let dingtalkCode = ding.parseParam(window.location.href, 'dingtalk_code') || 'APPSERVER'
                               dd.biz.util.openLink({
-                                url: encodeURI('https://dingtalk.gmkholdings.com/flowHandle?zin=n&dingtalk_code=' + dingtalkCode + '&flowParams=' + JSON.stringify(flowParams)), // 要打开链接的地址
+                                url: encodeURI('https://dingtalk.gmkholdings.com/flowHandle?zin=abc&dingtalk_code=' + dingtalkCode + '&flowParams=' + JSON.stringify(flowParams)), // 要打开链接的地址
                                 onSuccess: function (result) {
-
+                                  //  跳转至下一条待办后，需要关闭当前窗口
+                                  dd.biz.navigation.close({
+                                    onSuccess: function (result) {
+                                    },
+                                    onFail: function (err) {
+                                    }
+                                  })
                                 },
                                 onFail: function (err) {
                                 }
                               })
-//                              router.push({path: '/flowHandletemp', query: {zin: '0', flowParams: JSON.stringify(flowParams)}})
+//                              dd.biz.navigation.replace({
+//                                url: 'https://dingtalk.gmkholdings.com/flowHandle?zin=abc&dingtalk_code=' + dingtalkCode + '&flowParams=' + JSON.stringify(flowParams),
+//                                onSuccess: function (result) {
+//
+//                              },
+//                              onFail: function (err) {
+//                              }
+//                            })
+//                              router.push({path: '/flowHandle', query: {zin: 'abc', flowParams: JSON.stringify(flowParams)}})
                             }
                           },
                           onFail: function (err) {
@@ -281,9 +295,15 @@
                                 let dingtalkCode = ding.parseParam(window.location.href, 'dingtalk_code') || 'APPSERVER'
                                 let flowParams = flowGLU.getList(res.page.list[res.page.count - 1], 'db');
                                 dd.biz.util.openLink({
-                                  url: encodeURI('https://dingtalk.gmkholdings.com/flowHandle?zin=n&dingtalk_code=' + dingtalkCode + '&flowParams=' + JSON.stringify(flowParams)), // 要打开链接的地址
+                                  url: encodeURI('https://dingtalk.gmkholdings.com/flowHandle?zin=abc&dingtalk_code=' + dingtalkCode + '&flowParams=' + JSON.stringify(flowParams)), // 要打开链接的地址
                                   onSuccess: function (result) {
-
+                                    //  跳转至下一条待办后，需要关闭当前窗口
+                                    dd.biz.navigation.close({
+                                      onSuccess: function (result) {
+                                      },
+                                      onFail: function (err) {
+                                      }
+                                    })
                                   },
                                   onFail: function (err) {
                                   }
@@ -315,7 +335,7 @@
                       });
                     } else {
                       next(vm => {
-                        vm._data.zin = 'zin'
+                        vm._data.zin = r[2];
                       })
                     }
                   } else {

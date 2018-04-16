@@ -601,6 +601,17 @@ export default {
     })
   },
   /**
+   * 根据ddids获取itcode和手机号
+   * */
+  getUserInfoDdid: function (params, cb) {
+    axios.get(APILIST.getUserInfoDdid_url + '?ddid=' + params)
+      .then(res => {
+        cb(res)
+      }).catch(error => {
+        return Promise.reject(error)
+    })
+  },
+  /**
    * 保存
    * @param cb
    */

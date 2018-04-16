@@ -74,6 +74,8 @@ let APILIST = {
   // 根据公司 大类获取交通方式 类型
   getSubMenuList_url: '/authapi/ddtalkwf/getSubMenuList',
   // 根据费用承担公司获取报销币种
-  getWaersListByBukrs_url: '/authapi/ddtalkwf/getWaersListByBukrs'
+  getWaersListByBukrs_url: '/authapi/ddtalkwf/getWaersListByBukrs',
+  // 根据员工ddids获取ITCODE
+  getUserInfoDdid_url: '/authapi/newleave/getUserInfoByDdid'
 }
 export default APILIST

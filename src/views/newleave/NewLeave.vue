@@ -1,6 +1,6 @@
 <template>
   <div>
-    <group title="申请信息">
+    <group title="申请信息" style="margin-bottom: 54px;">
       <!--<x-input v-model="forms.userid" title="itcode" v-show="false"></x-input>-->
       <!--<x-input v-model="forms.pernr" title="员工编号" v-show="false"></x-input>-->
       <!--<x-input v-model="forms.username" title="姓名" v-show="false"></x-input>-->
@@ -41,6 +41,8 @@
       <x-input title="剩余额度(时)" v-show="isshownj" v-model="forms.surplus" readonly></x-input>
       <x-input title="享有额度(时)" v-show="isshownj" v-model="forms.enjoy" readonly></x-input>
       <x-input title="已用额度(时)" v-show="isshownj" v-model="forms.hasuse" readonly></x-input>
+      <x-button type="primary" @click.native="toAccredit()" v-show="btnshow1">填写工作授权表单</x-button>
+      <x-button type="primary" v-show="btnshow2" @click.native="toConnect()">填写工作交接表单</x-button>
     </group>
     <flexbox class="footerButton">
       <flexbox-item class="vux-1px-r" @click.native="addReserve(0)" style="color:#00B705">提交</flexbox-item>
@@ -126,6 +128,7 @@ export default {
         let params = {
           mainModel: this.forms
         }
+        alert('休假天数：' + this.forms.thisdays)
         // api.getXjtsURL(params, function (res) {
         //   if (res) {
         //     console.log(res.data.data.thisdays)
@@ -197,6 +200,22 @@ export default {
     },
     isshowbxj: function () {
       if (this.forms.holidaytype === 'A02') {
+        return true
+      } else {
+        return false
+      }
+    },
+    btnshow1: function () {
+      let _that = this
+      if (_that.forms.thisdays >= 2 && _that.forms.thisdays < 4) {
+        return true
+      } else {
+        return false
+      }
+    },
+    btnshow2: function () {
+      let _that = this
+      if (_that.forms.thisdays >= 5) {
         return true
       } else {
         return false
@@ -307,6 +326,12 @@ export default {
           }
         }
       })
+    },
+    toAccredit () {
+      this.$router.push({path: '/accredit'})
+    },
+    toConnect () {
+      this.$router.push({path: '/connnect'})
     }
   }
 }

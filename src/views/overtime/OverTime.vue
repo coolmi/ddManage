@@ -10,11 +10,11 @@
       <!--<x-input v-model="forms.sysdeptname" title="部门名称" v-show="false"></x-input>-->
       <!--<x-input v-model="forms.sysbusinessunitid" title="事业部编号" v-show="false"></x-input>-->
       <!--<x-input v-model="forms.sysbusinessunitname" title="事业部名称" v-show="false"></x-input>-->
-      <datetime v-model="forms.s_date" format="YYYY-MM-DD" title="调班日期"></datetime>
+      <datetime v-model="forms.s_date" format="YYYY-MM-DD" title="值班日期"></datetime>
       <datetime v-model="forms.s_starttime" format="HH:mm" title="开始时间"></datetime>
       <datetime v-model="forms.s_endtime" format="HH:mm" title="结束时间"></datetime>
       <v-search title="休息时长" :cdata="xxscList" v-model="forms.s_relex_hours"></v-search>
-      <x-textarea title="调班原因" v-model="forms.s_why" placeholder="" :show-counter="false" :rows="3" autosize></x-textarea>
+      <x-textarea title="值班原因" v-model="forms.s_why" placeholder="" :show-counter="false" :rows="3" autosize></x-textarea>
     </group>
     <flexbox class="footerButton">
       <flexbox-item class="vux-1px-r" @click.native="addReserve(0)" style="color:#00B705">提交</flexbox-item>
@@ -71,7 +71,7 @@ export default {
   methods: {
     addReserve(flag) {
       if (this.forms.s_date === '') {
-        whole.showTop('请选择调班日期')
+        whole.showTop('请选择值班日期')
         return;
       }
       if (this.forms.s_starttime === '') {

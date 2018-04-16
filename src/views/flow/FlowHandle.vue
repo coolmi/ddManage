@@ -243,15 +243,6 @@
                                 onFail: function (err) {
                                 }
                               })
-//                              dd.biz.navigation.replace({
-//                                url: 'https://dingtalk.gmkholdings.com/flowHandle?zin=abc&dingtalk_code=' + dingtalkCode + '&flowParams=' + JSON.stringify(flowParams),
-//                                onSuccess: function (result) {
-//
-//                              },
-//                              onFail: function (err) {
-//                              }
-//                            })
-//                              router.push({path: '/flowHandle', query: {zin: 'abc', flowParams: JSON.stringify(flowParams)}})
                             }
                           },
                           onFail: function (err) {

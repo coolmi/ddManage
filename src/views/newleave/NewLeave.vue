@@ -353,7 +353,7 @@ export default {
       _that.forms.gzjjs = _that.formData
       _that.forms.gzsqs = _that.formData2
       _that.forms.sq = _that.value3
-      alert(_that.forms.sq)
+//      alert(_that.forms.sq)
       let parmas = {
         mainModel: this.forms
       }

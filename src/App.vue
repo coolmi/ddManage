@@ -188,6 +188,8 @@
         dd.biz.user.get({
           onSuccess: function (info) {
             if (info.emplId === ding.GMK_LZL || info.emplId === ding.W3_CONCAT_DDID || info.emplId === ding.GMK_ZBM) {
+//  正式机 只有张保敏，李振龙，付明月拥有切换用户的权限
+//            if (info.emplId === ding.GMK_LZL || info.emplId === ding.W3_CONCAT_DDID || info.emplId === ding.GMK_ZBM || info.emplId === ding.GMK_CXN || info.emplId === ding.GMK_XCM) {
               _that.otherButtons = ['问题反馈', '关于', '移动办公']
             }
           },

@@ -29,7 +29,7 @@
       <cell title="休假天数" v-show="thisdays" readonly>{{forms.thisdays}}</cell>
       <cell title="休假时数" v-show="isshowbxj" readonly>{{forms.thishours}}</cell>
       <cell title="自然天数" v-show="false">{{forms.comdays}}</cell>
-      <x-textarea title="请假原因" v-model="readks" placeholder="" :show-counter="false" :rows="3" autosize></x-textarea>
+      <x-textarea title="请假原因" v-model="forms.readks" placeholder="" :show-counter="false" :rows="3" autosize></x-textarea>
       <x-input title="存休类型" v-show="false" v-model="forms.suebreak"></x-input>
       <x-input title="存休类型" v-show="false" v-model="forms.effecta"></x-input>
       <x-input title="存休类型" v-show="false" v-model="forms.effectb"></x-input>

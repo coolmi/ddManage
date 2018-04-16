@@ -31,7 +31,7 @@ Vue.use(Navigation, {router})
 
 // Vue.use(vueScrollBehavior, {router: router}) // router ScrollBehavior
 
-// Vue.use(Navigation, {router, store}) // 后退不刷新
+Vue.use(Navigation, {router, store}) // 后退不刷新
 // Vue.use(Navigation, {router, store, moduleName: 'navigation', keyName: 'VNK'})
 
 Vue.use(MintUI);

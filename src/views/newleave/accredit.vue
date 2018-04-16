@@ -1,28 +1,33 @@
 <template>
   <div>
-    <group title="工作授权表单">
-      <x-textarea title="工作事项" placeholder="请填写工作事项" :rows="3" autosize></x-textarea>
-      <cell title="授权人姓名" is-link @click.native="selectPerson">{{infos.users}}</cell>
+    <group title="工作授权表单" style="margin-bottom: 40px;">
+      <x-textarea title="工作事项" placeholder="请填写工作事项" :rows="4" autosize v-model="infos.gzsx"></x-textarea>
+      <cell title="授权人姓名" is-link @click.native="selectPerson" v-model="infos.users">{{infos.users}}</cell>
       <x-input title="ITCODE" readonly v-model="infos.itCode" text-align="right"></x-input>
       <x-input title="授权人联系方式" v-model="infos.phone" text-align="right"></x-input>
 
-      <datetime v-model="bdate.sdate" format="YYYY-MM-DD" title="开始日期" @on-confirm="getSdate"></datetime>
-      <datetime v-model="bdate.edate" format="YYYY-MM-DD" title="结束日期" @on-change="getEdate"></datetime>
+      <datetime v-model="bdate.sdate" format="YYYY-MM-DD" title="开始日期" :end-date="endDate"></datetime>
+      <datetime v-model="bdate.edate" format="YYYY-MM-DD" title="结束日期" :start-date="bdate.sdate" :end-date="endDate"></datetime>
 
-
-      <x-textarea title="业务通知人" @click.native="getConnect" v-model="busUser.username" :rows="3" name="业务通知人" autosize></x-textarea>
-      <x-textarea title="业务通知人ITCODE" v-model="busUser.userItcode" :rows="3" name="业务通知人ITCODE" autosize></x-textarea>
+      <x-textarea title="业务通知人" @click.native="getConnect" v-model="busUser.username" :rows="4" name="业务通知人" autosize></x-textarea>
+      <x-textarea title="业务通知人ITCODE" v-model="busUser.userItcode" :rows="4" name="业务通知人ITCODE" autosize></x-textarea>
+      <x-input title="隐藏" placeholder="隐藏" v-show="false" v-model="infos.uuid"></x-input>
     </group>
     <!--<flexbox class="footerButton">-->
       <!--<flexbox-item class="vux-1px-r" @click.native="addReserve(0)" style="color:#00B705">提交</flexbox-item>-->
       <!--&lt;!&ndash;<flexbox-item @click.native="addReserve(1)" style="color:#FF8519">保存</flexbox-item>&ndash;&gt;-->
     <!--</flexbox>-->
+    <flexbox class="footerButton">
+      <flexbox-item>
+        <x-button type="primary" @click.native="btnSubmit">保存</x-button>
+      </flexbox-item>
+    </flexbox>
   </div>
 </template>
 
 <script>
-  import {Group, DatetimeRange, Cell, XInput, Datetime, XTextarea} from 'vux'
-  // import whole from '@/lib/whole'
+  import {Group, DatetimeRange, Cell, XInput, Datetime, XTextarea, XButton, FlexboxItem, Flexbox} from 'vux'
+  import whole from '@/lib/whole'
   import api from 'api'
   import ding from '@/lib/ding'
   // import DEM from '@/lib/dingErrMessage'
@@ -37,8 +42,13 @@
           users: '',
           ddids: '',
           itCode: '',
-          phone: ''
+          phone: '',
+          gzsx: '',
+          pernr: '',
+          uuid: ''
         },
+        startDate: '',
+        endDate: '',
         userInfo: '',
         busUser: {
           username: '',
@@ -57,9 +67,39 @@
       Cell,
       XInput,
       Datetime,
-      XTextarea
+      XTextarea,
+      XButton,
+      FlexboxItem,
+      Flexbox
     },
-    created() {},
+    created() {
+      let _that = this
+      let sdatee = this.$route.query.formsDemo.sdate
+      let edatee = this.$route.query.formsDemo.edate
+      this.startDate = sdatee
+      this.endDate = edatee
+      if (this.bdate.sdate === '') {
+        this.bdate.sdate = sdatee
+      }
+      let data = this.$route.query.formsDemo.formsData
+      if (data === '{}') {
+      } else {
+        if (typeof data === 'string') {
+          // eslint-disable-next-line
+          data = eval('(' + data + ')');
+        }
+        // alert(JSON.stringify(data))
+        _that.infos.gzsx = data.s_gzsx
+        _that.infos.users = data.s_sqrxm
+        _that.infos.itCode = data.s_sqritcode
+        _that.infos.phone = data.s_sqrlxfs
+        _that.bdate.sdate = data.s_starttime
+        _that.bdate.edate = data.s_endtime
+        _that.busUser.username = data.s_ywtzr
+        _that.busUser.userItcode = data.s_ywtzritcode
+        _that.infos.uuid = data.uuid
+      }
+    },
     methods: {
       getConnect() {
         let _that = this
@@ -78,7 +118,7 @@
             appId: 126759727,
             permissionType: 'GLOBAL',
             responseUserOnly: false,
-            startWithDepartmentId: -1,
+            startWithDepartmentId: 0,
             onSuccess: function (result) {
               if (result.users.length > 0) {
                 _that.busUser.username = '';
@@ -128,7 +168,7 @@
             appId: 126759727,
             permissionType: 'GLOBAL',
             responseUserOnly: false,
-            startWithDepartmentId: -1,
+            startWithDepartmentId: 0,
             onSuccess: function (result) {
               if (result.users.length > 0) {
                 let ddids = result.users[0].emplId
@@ -136,15 +176,17 @@
                 api.getUserInfoDdid(ddids, res => {
                   // alert(JSON.stringify(res.data.itcode))
                   // if (res.data.code === true) {
-                    _that.infos.itCode = res.data.itcode
-                    _that.infos.phone = res.data.telephone
+                  _that.infos.itCode = res.data.itcode
+                  _that.infos.phone = res.data.telephone
+                  _that.infos.pernr = res.data.pernr
+                  // alert(JSON.stringify(res.data))
                   // }
                 })
               }
             },
             onFail: function (err) {
               console.log(err)
-              alert('失败')
+              whole.showTop('失败')
             }
           });
         });
@@ -163,19 +205,42 @@
           _that.busUser.userItcode = _that.busUser.userItcode.substring(0, _that.busUser.userItcode.length - 1)
         }
       },
-      getSdate () {
+      btnSubmit () {
         let _that = this
-        // alert(_that.bdate.sdate)
-        if (_that.bdate.sdate !== '') {
-          alert(_that.bdate.sdate)
-        } else {
-          _that.bdate.sdate = _that.bdate.sdate
-          alert(_that.bdate.sdate)
+        if (_that.infos.gzsx === '') {
+          whole.showTop('请输入工作事项')
+          return
         }
-        alert(_that.bdate.sdate)
-      },
-      getEdate () {
-        alert(this.bdate.edate)
+        if (_that.infos.users === '') {
+          whole.showTop('请选择授权人')
+          return
+        }
+        if (_that.bdate.sdate === '') {
+          whole.showTop('请选择授权开始时间')
+          return
+        }
+        if (_that.bdate.edate === '') {
+          whole.showTop('请选择授权结束时间')
+          return
+        }
+        if (_that.busUser.username === '') {
+          whole.showTop('请选择业务通知人')
+          return
+        }
+        let formsData = {
+          s_gzsx: _that.infos.gzsx,
+          s_sqrpernr: _that.infos.pernr,
+          s_sqrxm: _that.infos.users,
+          s_sqritcode: _that.infos.itCode,
+          s_sqrlxfs: _that.infos.phone,
+          s_starttime: _that.bdate.sdate,
+          s_endtime: _that.bdate.edate,
+          s_ywtzr: _that.busUser.username,
+          s_ywtzritcode: _that.busUser.userItcode,
+          uuid: _that.infos.uuid
+        }
+        this.$store.dispatch('addAccredit', formsData)
+        this.$router.go(-1)
       }
     }
   }

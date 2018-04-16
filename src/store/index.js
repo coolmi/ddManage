@@ -7,6 +7,7 @@ import businessTrip from './modules/businessTrip'
 import travel from './modules/travel'
 import city from './modules/city'
 import personReim from './modules/personReim'
+import newleave from './modules/newleave'
 
 Vue.use(Vuex);
 
@@ -20,7 +21,8 @@ export default new Vuex.Store({
       businessTrip,
       travel,
       city,
-      personReim
+      personReim,
+      newleave
     },
     strict: debug
 });

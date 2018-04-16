@@ -1,6 +1,6 @@
 <template>
   <div>
-    <group title="申请信息" style="margin-bottom: 54px;">
+    <group title="申请信息">
       <!--<x-input v-model="forms.userid" title="itcode" v-show="false"></x-input>-->
       <!--<x-input v-model="forms.pernr" title="员工编号" v-show="false"></x-input>-->
       <!--<x-input v-model="forms.username" title="姓名" v-show="false"></x-input>-->
@@ -41,8 +41,23 @@
       <x-input title="剩余额度(时)" v-show="isshownj" v-model="forms.surplus" readonly></x-input>
       <x-input title="享有额度(时)" v-show="isshownj" v-model="forms.enjoy" readonly></x-input>
       <x-input title="已用额度(时)" v-show="isshownj" v-model="forms.hasuse" readonly></x-input>
-      <x-button type="primary" @click.native="toAccredit()" v-show="btnshow1">填写工作授权表单</x-button>
-      <x-button type="primary" v-show="btnshow2" @click.native="toConnect()">填写工作交接表单</x-button>
+
+      <x-button type="primary" @click.native="setConnect2()" v-show="btnshow2">填写工作交接表单</x-button>
+
+    </group>
+
+    <group style="margin-bottom: 60px; z-index: -9;">
+      <selector v-model="value3" title="填写工作授权" :options="list2" @on-change="showBtn1(val)" v-show="btnshow1"></selector>
+
+      <x-button type="primary" @click.native="setAccredit()" v-show="value3">填写工作授权表单</x-button>
+    </group>
+
+
+    <group title="工作交接表单" v-if="formData.length > 0" style="margin-bottom: 60px;" v-show="btnshow2">
+      <cell v-for="d in formData" :key="d.uuid" :title="d.j_gzsx" is-link @click.native="setConnect2(d)">{{d.j_jsrxm  + '    ' + d.j_gzsx}}</cell>
+    </group>
+    <group title="工作授权表单" v-if="formData2.length > 0" style="margin-bottom: 60px;" v-show="value3">
+      <x-textarea v-for="d in formData2" :rows="2" :key="d.uuid" title="工作事项" v-model="d.s_gzsx" is-link @click.native="setAccredit(d)" readonly>{{d.s_gzsx}}</x-textarea>
     </group>
     <flexbox class="footerButton">
       <flexbox-item class="vux-1px-r" @click.native="addReserve(0)" style="color:#00B705">提交</flexbox-item>
@@ -66,18 +81,20 @@
 }
 </style>
 <script>
-import {Group, XSwitch, XTextarea, Sticky, Box, XButton, Cell, Flexbox, FlexboxItem, Datetime, XInput, Confirm, TransferDomDirective as TransferDom} from 'vux';
+import {Group, Selector, XSwitch, XTextarea, Sticky, Box, XButton, Cell, Flexbox, FlexboxItem, Datetime, XInput, Confirm, TransferDomDirective as TransferDom} from 'vux';
 import vSearch from '@/components/searchChecker';
 import api from 'api';
 import whole from '@/lib/whole'
 import dataUtils from '../../filters/dataUtils' // 工具类
+import {mapGetters} from 'vuex'
+import dingUser from '@/lib/dingUser'
 
 export default {
   directives: {
     TransferDom
   },
   components: {
-    Group, XSwitch, XTextarea, Sticky, Box, XButton, Cell, Flexbox, FlexboxItem, vSearch, Datetime, XInput, Confirm
+    Group, Selector, XSwitch, XTextarea, Sticky, Box, XButton, Cell, Flexbox, FlexboxItem, vSearch, Datetime, XInput, Confirm
   },
   data () {
     return {
@@ -107,6 +124,9 @@ export default {
         dutya: 'all',
         dutyb: 'all',
         message: '',
+        gzjjs: {},
+        gzsqs: {},
+        sq: '',
         holidaytypename: '',
         parmasOption: {}
       },
@@ -117,10 +137,20 @@ export default {
         {'key': '岳母', 'value': '岳母'}, {'key': '子女', 'value': '子女'}],
       bjlxList: [{'key': '长期病假', 'value': '长期病假'}, {'key': '短期病假', 'value': '短期病假'}],
       bcaList: [{'key': 'lower', 'value': '下午'}, {'key': 'all', 'value': '全天'}, {'key': '', 'value': '空'}],
-      bcbList: [{'key': 'upper', 'value': '上午'}, {'key': 'all', 'value': '全天'}, {'key': '', 'value': '空'}]
+      bcbList: [{'key': 'upper', 'value': '上午'}, {'key': 'all', 'value': '全天'}, {'key': '', 'value': '空'}],
+      list2: [{key: true, value: '是'}, {key: false, value: '否'}],
+      value3: false
     }
   },
   computed: {
+    ...mapGetters({
+      formData: 'getConnectFroms',
+      formData2: 'getConnectFroms2',
+      path: 'getddConfigPath'
+    }),
+    addInfo: function () {
+      this.forms.gzjjs = this.formData
+    },
     thisdays: function () {
       let _that = this;
       if ((this.forms.holidaytype !== 'A02' && this.forms.sdate !== '' && this.forms.edate !== '' && (this.forms.dutya !== '' || this.forms.dutyb !== '')) ||
@@ -128,7 +158,7 @@ export default {
         let params = {
           mainModel: this.forms
         }
-        alert('休假天数：' + this.forms.thisdays)
+        // alert('休假天数：' + this.forms.thisdays)
         // api.getXjtsURL(params, function (res) {
         //   if (res) {
         //     console.log(res.data.data.thisdays)
@@ -207,24 +237,88 @@ export default {
     },
     btnshow1: function () {
       let _that = this
-      if (_that.forms.thisdays >= 2 && _that.forms.thisdays < 4) {
-        return true
+      // if (_that.forms.thisdays >= 2 && _that.forms.thisdays <= 4 && _that.forms.holidaytype !== 'A04' && _that.forms.holidaytype !== 'A07') {
+      //   if (_that.forms.holidaytype !== 'B01' || _that.forms.bjlx !== '长期病假') {
+      //     _that.btnshow2 = false
+      //     return true
+      //   }
+      // } else {
+      //   return false
+      // }
+      if (_that.forms.holidaytype === 'J01' || _that.forms.holidaytype === 'C01' || _that.forms.holidaytype === 'A03' || _that.forms.holidaytype === 'A05' || _that.forms.holidaytype === 'A08' || _that.forms.holidaytype === 'A02' || _that.forms.holidaytype === 'B01' && _that.forms.bjlx === '短期病假') {
+        if (_that.forms.thisdays >= 2 && _that.forms.thisdays <= 4) {
+          _that.btnshow2 = false
+          _that.value3 = true
+          return true
+        }
       } else {
         return false
       }
     },
     btnshow2: function () {
       let _that = this
-      if (_that.forms.thisdays >= 5) {
+      if (_that.forms.holidaytype === 'A04' || _that.forms.holidaytype === 'A07' || _that.forms.holidaytype === 'B01' && _that.forms.bjlx === '长期病假') {
+        _that.btnshow1 = false
+        // _that.showBtn = false
+        _that.value3 = false
+        whole.showTop('请填写工作交接表单')
         return true
+      } else if (_that.forms.holidaytype === 'J01' || _that.forms.holidaytype === 'C01' || _that.forms.holidaytype === 'A03' || _that.forms.holidaytype === 'A05' || _that.forms.holidaytype === 'A08' || _that.forms.holidaytype === 'A02' || _that.forms.holidaytype === 'B01' && _that.forms.bjlx === '短期病假') {
+        if (_that.forms.thisdays >= 5) {
+          _that.btnshow1 = false
+          // _that.showBtn = false
+          _that.value3 = false
+          whole.showTop('请填写工作交接表单')
+          return true
+        }
+      } else {
+        return false
+      }
+    },
+    showBtn1 (val) {
+      let _that = this
+      if (_that.btnshow1 === true && _that.value3 === true) {
+        whole.showTop('请填写工作授权表单')
+        return true
+      } else if (_that.btnshow1 === false) {
+        return false
+      } else if (_that.value3 === false) {
+        // _that.accreditshow = false
+        whole.showTop('请假期间，无工作授权内容')
+        return false
+      } else {
+        return false
+      }
+    },
+    accreditshow () {
+      let _that = this
+      if (_that.btnshow1 === true) {
+        return true
+      } else if (_that.value3 === false) {
+        return false
       } else {
         return false
       }
     }
   },
   created() {
-    this.getBaseData() // 请求岗位和休假类型
-    this.setData() // 填写的时候回退保存值
+    let _that = this
+    dingUser.getRequestAuthCode(this.path).then((data) => {
+      api.getLogin(data, function (res) {
+        if (res.data.code) {
+          // _that.$store.dispatch('saveLoginStatus', true);
+          _that.getBaseData() // 请求岗位和休假类型
+          _that.setData() // 填写的时候回退保存值
+        } else {
+          whole.showTop('获取钉钉免登权限失败')
+        }
+      })
+    })
+    // this.getBaseData() // 请求岗位和休假类型
+    // this.setData() // 填写的时候回退保存值
+    // let _that = this
+    // alert(JSON.stringify(_that.formData2))
+    // alert(JSON.stringify(_that.formData))
   },
   methods: {
     getBaseData() {
@@ -255,12 +349,28 @@ export default {
       }
       var holidaytypename = dataUtils.getDescValue(this.leavetypelist, this.forms.holidaytype);
       this.forms.holidaytypename = holidaytypename
+      let _that = this
+      _that.forms.gzjjs = _that.formData
+      _that.forms.gzsqs = _that.formData2
+      _that.forms.sq = _that.value3
+      alert(_that.forms.sq)
       let parmas = {
         mainModel: this.forms
       }
       this.parmasOption = parmas;
       console.log(parmas)
-
+      if (_that.value3 === true && JSON.stringify(parmas.mainModel.gzsqs) === '[]') {
+        whole.showTop('请填写工作授权表单')
+        return
+      }
+      if (_that.btnshow2 && JSON.stringify(parmas.mainModel.gzjjs) === '[]') {
+        whole.showTop('请填写工作交接表单')
+        return
+      }
+      // alert(_that.value3)
+      // alert(JSON.stringify(parmas.mainModel)4)
+      // alert(JSON.stringify(parmas.mainModel.gzsqs))
+      // alert(JSON.stringify(parmas))
       if (flag === 0) {
           let _that = this;
         // api.getStartNewLeaveURL(parmas, function (res) {
@@ -304,10 +414,11 @@ export default {
           console.log(res);
         })
       }
+      // alert(JSON.stringify(this.forms))
     },
     onConfirm () {
       let _that = this;
-      console.log(_that.parmasOption);
+      // alert(JSON.stringify(_that.parmasOption));
       api.getStartNewLeaveURL(_that.parmasOption, function (res) {
         if (res) {
           if (res.data.code) {
@@ -327,12 +438,30 @@ export default {
         }
       })
     },
-    toAccredit () {
-      this.$router.push({path: '/accredit'})
+    setConnect2 (data = {}) {
+      let formsDemo = {};
+      formsDemo = {
+        formsData: JSON.stringify(data),
+        sdate: this.forms.sdate,
+        edate: this.forms.edate
+      }
+      this.$router.push({path: '/connect', query: {formsDemo: formsDemo}})
     },
-    toConnect () {
-      this.$router.push({path: '/connnect'})
+    setAccredit (data = {}) {
+      let formsDemo = {};
+      formsDemo = {
+        formsData: JSON.stringify(data),
+        sdate: this.forms.sdate,
+        edate: this.forms.edate
+      }
+      // alert(JSON.stringify(formsDemo))
+      this.$router.push({path: '/accredit', query: {formsDemo: formsDemo}})
     }
   }
 }
 </script>
+<style>
+  .footerButton {
+    z-index: 9;
+  }
+</style>

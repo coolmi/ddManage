@@ -492,8 +492,8 @@
                 let data = res.data;
                 if (data.error || data.err) {
                   whole.showTop(data.error || data.err)
-                } else if (data.files.length <= 0) {
-                  whole.showTop('暂无附件')
+//                } else if (data.files.length <= 0) {
+//                  whole.showTop('暂无附件')
                 } else {
                   let params = {
                     docmentafrescoid: data.files[0].afrescoid,
@@ -596,7 +596,7 @@
           let data = res.data;
           if (data.error || data.err) {
             whole.showTop(data.error || data.err)
-          } else if (data.files.length <= 0) {
+//          } else if (data.files.length <= 0) {
 //            whole.showTop('暂无附件')
           } else {
             _that.flowFiles = data.files || [];

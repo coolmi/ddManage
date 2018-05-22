@@ -107,9 +107,13 @@ export function getFlowData(flowData) {
                */
               //
               if (sub.events.eventType === 'openUrl') {
-                data.fileparam.filename = sub.value;
-                data.fileparam.fileurl = sub.events.openUrl;
-                flowData.fileUrls.push(data.fileparam);
+                let filep = {};
+                filep.filename = sub.value;
+                // 此处文件路径可能拼接错误，修改所有的  \\ 为 / by zbm 2018-05-22 17:55:46
+                filep.fileurl = sub.events.openUrl.replace(/\\/g, '/');
+                // data.fileparam.filename = sub.value;
+                // data.fileparam.fileurl = sub.events.openUrl;
+                flowData.fileUrls.push(filep);
               } else if (sub.events.eventType === 'openDocumnet') {
                 data.fileparam.filename = sub.value;
                 data.fileparam.afrescoid = sub.events.afrescoid;
@@ -302,9 +306,12 @@ function getSubComponents(subData) {
              *  其中最常用的是 openDocument和 openUrl
              */
             if (sub.events.eventType === 'openUrl') {
-              data.fileparam.filename = sub.value;
-              data.fileparam.fileurl = sub.events.openUrl;
-              data.fileUrls.push(data.fileparam);
+              let filep = {};
+              filep.filename = sub.value;
+              filep.fileurl = sub.events.openUrl.replace(/\\/g, '/');
+              // data.fileparam.filename = sub.value;
+              // data.fileparam.fileurl = sub.events.openUrl;
+              data.fileUrls.push(filep);
             } else if (sub.events.eventType === 'openDocumnet') {
               // TODO
               data.fileparam.filename = sub.value;
@@ -439,7 +446,8 @@ function ifHidden(sub) { // 判断含有showLinkage的子项 然后搜索showLin
       console.log('获取不到' + id + '或者' + val)
     }
     for (let sitem of subD) {
-      let index = _.findLastIndex(sitem.subComponents, {name: id}) // 找到name是【id】在父类中的位置
+      // let index = _.findLastIndex(sitem.subComponents, {name: id}) // 找到name是【id】在父类中的位置
+      let index = _.findLastIndex(sitem.subComponents, {id: id}) // 找到id是【id】在父类中的位置，目前情况系 关联字段不能为table_form 下的字段。
       if (index !== -1) {
         let subDVal = sitem.subComponents[index].value
         let isHidden = true;

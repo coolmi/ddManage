@@ -15,6 +15,7 @@ export function setFlowButton(taskAuth) {
     let isusevoid = taskAuth.isusevoid;
     let isusebackto = taskAuth.isusebackto;
     let issignningA = '0';
+    // 此处pc端用的是true or false 2018年05月09日13:26:58 by zbm
     let issignplushandleA = '0';
     if (issignning) issignningA = '1'
     if (!issignning && isAssignee) issignplushandleA = '1'

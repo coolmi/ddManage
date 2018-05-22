@@ -68,7 +68,7 @@
           value-align="left"
           v-show="subC.component !== 'hidden' && !subC.hidden && subC.title"
         > <!--&& subC.editable === false && !subC.editable-->
-          <div slot="value">{{subC.nvalue || subC.value}}</div>
+          <div slot="value"  style="word-break: break-all">{{subC.nvalue || subC.value}}</div>
         </flow-child-card>
         <!--<x-textarea class="weui-cells" :title="subC.title" :value="subC.nvalue || subC.value"-->
         <!--v-if="subC.nvalue || subC.value"></x-textarea>-->

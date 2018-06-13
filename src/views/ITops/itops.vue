@@ -14,7 +14,7 @@
         <x-input title="公司" v-model="forms.bukrsname" text-align="right"> </x-input>
       </p>
       <selector title="紧急程度" v-model="forms.emerg" :options="list1"></selector>
-      <selector title="问题来源类别" v-model="forms.problemsource" :options="list2"></selector>
+      <selector title="问题来源类别" v-model="forms.problemsource" :options="list2" @on-change="getProblemToyw"></selector>
       <cell title="资产类别名称"  v-model="forms.assetname" is-link v-show="mshow2" @click.native=""> </cell>
       <x-input title="品牌型号" v-model="forms.brandmodel" v-show="mshow2"> </x-input>
       <x-input title="技术标识号" v-model="forms.technicalnum" v-show="mshow2"> </x-input>
@@ -67,7 +67,7 @@
           itcodedeptname: '',
           bukrsname: '',
           emerg: '低',
-          problemsource: 'M01',
+          problemsource: 'M02',
           assetname: '',
           brandmodel: '',
           technicalnum: '',
@@ -78,7 +78,7 @@
         positionList: [],
         burkList: [],
         showContent004: false,
-        mshow2: true,
+        mshow2: '',
         list1: [
           {key: '低', value: '低'},
           {key: '中', value: '中'},
@@ -98,18 +98,18 @@
     },
     computed: {
       // 选择问题来源类别
-      // getProblem() {
-      //   let _that = this
-      //   if (_that.forms.problemsource === 'M01') { // 当问题来源为M01时
-      //     this.mshow2 = true
-      //   } else { // 当问题来源为其他时
-      //     _that.forms.assetname = ''
-      //     _that.forms.brandmodel = ''
-      //     _that.forms.technicalnum = ''
-      //     this.mshow2 = false
-      //     // api.get*** 此处为获取运维工程师的请求接口
-      //   }
-      // }
+      getProblem() {
+        let _that = this
+        if (_that.forms.problemsource === 'M01') { // 当问题来源为M01时
+          this.mshow2 = true
+        } else { // 当问题来源为其他时
+          _that.forms.assetname = ''
+          _that.forms.brandmodel = ''
+          _that.forms.technicalnum = ''
+          this.mshow2 = false
+          // api.get*** 此处为获取运维工程师的请求接口
+        }
+      },
       ...mapGetters({
         path: 'getddConfigPath'
       })
@@ -130,8 +130,8 @@
       // this.getUserInfo()
       this.getBaseData()
       this.getUserInfo()
-      this.getProblemsources()
-      this.getProblem()
+      // this.getProblemsources()
+      // this.getProblemToyw()
       this.getYwlist()
     },
     methods: {
@@ -142,8 +142,9 @@
             postid: this.forms.postid
           }
           api.getBurck1(params, function (res) {
+            alert(JSON.stringify(res))
             if (res) {
-              alert(JSON.stringify(res.data.data.bukrlist))
+              // alert(JSON.stringify(res.data.data.bukrlist))
               // alert(JSON.stringify(_that.forms.postid))
               // _that.burkList = res.data.data.burkList
               // alert(JSON.stringify(_that.burkList))
@@ -153,15 +154,13 @@
           })
         }
       },
-      getProblem () {
-        // let _that = this
-        api.getProblems(res => {
-          if (res.data === true) {
-            alert(JSON.stringify(res.data.data.sendbaselist))
-            // _that.list4 = res.data.data
-          }
-        })
-      },
+      // getProblemToyw () {
+      //   let _that = this
+      //   let proval = _that.form.problemsource
+      //   proval.change(function () {
+      //     _that.getYwlist()
+      //   })
+      // },
       // 获取用户信息
       getUserInfo() {
         let _that = this
@@ -173,16 +172,16 @@
         let _that = this
         api.getPosition(function (res) {
           if (res) {
-            // alert(JSON.stringify(res))
+            alert(JSON.stringify(res))
             _that.positionList = res.positionlist
           }
         })
       },
       // 获取问题来源
-      getProblemsources () {
-        // let _that = this
-        api.getProblems(function (res) {
-          if (res) {
+      // getProblemsources () {
+      //   // let _that = this
+      //   api.getProblems(function (res) {
+      //     if (res) {
             /* alert(JSON.stringify(res.data.data.sendbaselist))
             // _that.list2 = res.data.data.sendbaselist
             // alert(JSON.stringify(_that.list2))
@@ -196,26 +195,33 @@
             }
             _that.list2 = arr
             alert(JSON.stringify(_that.list2[0])) */
-            let probj = res.data.data.sendbaselist
+            // let probj = res.data.data.sendbaselist
             // let arr1 = _.keys(probj)
-            alert(JSON.stringify(probj))
-          }
-        })
-      },
+            // alert(JSON.stringify(probj))
+      //     }
+      //   })
+      // },
       // 获取运维工程师
       getYwlist() {
         let _that = this
         api.getYwlist(res => {
           if (res) {
-            // alert(JSON.stringify(res.data.data.ywlist))
+            alert(JSON.stringify(res.data.data.ywlist))
             let ywobj = res.data.data.ywlist
             let arr = []
+            let key = ''
             for (let i in ywobj) {
-              arr.push(ywobj[i])
+              let keyboot = i
+              if (_that.forms.problemsource === keyboot) {
+                for (let k in ywobj[i]) {
+                  key = k
+                  arr = ywobj[i][k]
+                  alert(keyboot + '--' + key + '--' + arr)
+                }
+              }
             }
-            // alert(JSON.stringify(arr))
+            _that.form.operengneer = key
             _that.list3 = arr
-            // alert(JSON.stringify(_that.list3))
           }
         })
       },
@@ -244,19 +250,19 @@
         let _that = this
         if (_that.forms.postid === '') {
           whole.showTop('请选择岗位')
-          return
+          return;
         }
         if (_that.forms.assetname === '') {
           whole.showTop('请选择资产类别名称')
-          return
+          return;
         }
         if (_that.forms.semo === '') {
           whole.showTop('请填写问题描述')
-          return
+          return;
         }
         if (_that.forms.problemsource !== 'M01' && _that.forms.operengneer === '') {
           whole.showTop('请选择运维工程师')
-          return
+          return;
         }
         if (_that.forms.expectdate === '') {
           whole.showTop('请选择期望解决日期')

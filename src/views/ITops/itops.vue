@@ -67,7 +67,7 @@
           itcodedeptname: '',
           bukrsname: '',
           emerg: '低',
-          problemsource: 'M02',
+          problemsource: 'M01',
           assetname: '',
           brandmodel: '',
           technicalnum: '',
@@ -78,7 +78,7 @@
         positionList: [],
         burkList: [],
         showContent004: false,
-        mshow2: '',
+        mshow2: true,
         list1: [
           {key: '低', value: '低'},
           {key: '中', value: '中'},
@@ -98,7 +98,7 @@
     },
     computed: {
       // 选择问题来源类别
-      getProblem() {
+      getProblemToyw() {
         let _that = this
         if (_that.forms.problemsource === 'M01') { // 当问题来源为M01时
           this.mshow2 = true
@@ -107,8 +107,9 @@
           _that.forms.brandmodel = ''
           _that.forms.technicalnum = ''
           this.mshow2 = false
-          // api.get*** 此处为获取运维工程师的请求接口
         }
+        // api.get*** 此处为获取运维工程师的请求接口
+        this.getYwlist()
       },
       ...mapGetters({
         path: 'getddConfigPath'
@@ -131,7 +132,7 @@
       this.getBaseData()
       this.getUserInfo()
       // this.getProblemsources()
-      // this.getProblemToyw()
+      this.getProblemToyw()
       this.getYwlist()
     },
     methods: {
@@ -172,7 +173,7 @@
         let _that = this
         api.getPosition(function (res) {
           if (res) {
-            alert(JSON.stringify(res))
+            // alert(JSON.stringify(res))
             _that.positionList = res.positionlist
           }
         })
@@ -206,22 +207,21 @@
         let _that = this
         api.getYwlist(res => {
           if (res) {
-            alert(JSON.stringify(res.data.data.ywlist))
+            // alert(JSON.stringify(res.data.data.ywlist))
             let ywobj = res.data.data.ywlist
-            let arr = []
-            let key = ''
             for (let i in ywobj) {
               let keyboot = i
               if (_that.forms.problemsource === keyboot) {
-                for (let k in ywobj[i]) {
-                  key = k
-                  arr = ywobj[i][k]
-                  alert(keyboot + '--' + key + '--' + arr)
-                }
+                  let result = [];
+                  for (let key in ywobj[i]) {
+                    result.push({
+                      key: key,
+                      value: ywobj[i][key]
+                    });
+                  }
+                  _that.list3 = result;
               }
-            }
-            _that.form.operengneer = key
-            _that.list3 = arr
+              }
           }
         })
       },

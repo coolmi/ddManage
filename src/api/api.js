@@ -1035,5 +1035,49 @@ export default {
       }).catch((error) => {
       return Promise.reject(error)
     })
+  },
+  // 根据postid获取员工信息
+  getUserInfoByPostid: function (params, cb) {
+    axios.get(APILIST.getUserInfoPostid_url + '?postid=' + params, {
+      params
+    }).then((res) => {
+      // alert(params)
+        cb(res);
+      }).catch((error) => {
+      return Promise.reject(error)
+    })
+  },
+  // IT运维派单
+  /**
+   * 获取问题来源类别
+   * @params cb
+   */
+  getProblemsources: function (params) {
+    axios.get(APISEND.getProblemURL, {
+      params
+    }).then((res) => {
+      alert(params)
+      // cb(res)
+    }).catch((error) => {
+      return Promise.reject(error)
+    })
+  },
+  // 获取问题来源类别
+  getProblems: function (cb) {
+    axios.get('/authapi/sendsingle/findProblemsources')
+      .then((res) => {
+        cb(res);
+      }).catch((error) => {
+      return Promise.reject(error)
+    })
+  },
+  // 获取运维工程师列表
+  getYwlist: function (cb) {
+    axios.get('/authapi/sendsingle/findyw')
+      .then((res) => {
+        cb(res);
+      }).catch((error) => {
+        return Promise.reject(error)
+    })
   }
 }

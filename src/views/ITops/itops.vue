@@ -15,14 +15,15 @@
         <x-input title="公司" v-model="forms.bukrsname" text-align="right"> </x-input>
       </p>
       <selector title="紧急程度" v-model="forms.emerg" :options="list1"></selector>
-      <selector title="问题来源类别" v-model="forms.problemsource" :options="list2"></selector>
-      <selector title="资产类别名称" v-model="list6" :options="list6" @on-change="getChange()"> </selector>
-      <x-input title="品牌型号" v-model="forms.brandmodel"> </x-input>
-      <x-input title="技术标识号" v-model="forms.technicalnum"> </x-input>
+      <selector title="问题来源类别" v-model="forms.problemsource" :options="list2" @on-change="getProblemToyw"></selector>
+      <selector title="资产类别名称" v-model="list6" :options="list6" v-show="mshow2" @on-change="getChange()"> </selector>
+      <x-input title="品牌型号" v-model="forms.brandmodel" v-show="mshow2"> </x-input>
+      <x-input title="技术标识号" v-model="forms.technicalnum" v-show="mshow2"> </x-input>
       <x-textarea title="问题描述" v-model="forms.semo"> </x-textarea>
     </group>
     <group title="分配运维信息" style="margin-bottom: 50px;">
-      <selector title="运维的工程师" v-model="forms.operengneer" :options="list3"></selector>
+      <selector title="运维的工程师" v-model="forms.operengneer" v-show="!mshow2" :options="list3"></selector>
+      <cell title="运维的工程师" v-model="forms.operengneer" v-show="mshow2" :options="list3"></cell>
       <datetime title="期望解决日期" v-model="forms.expectdate"> </datetime>
     </group>
     <flexbox>
@@ -93,11 +94,6 @@
           {key: 'M04', value: 'MES系统运维(生产实时/数模在线/能源/资金系统等等)'},
           {key: 'M05', value: '网络(网络接入问题//等)'}
         ],
-        list4: [
-          {
-            ppxh: ''
-          }
-        ],
         list6: [],
         list5: [],
         list3: []
@@ -108,12 +104,12 @@
       getProblemToyw() {
         let _that = this
         if (_that.forms.problemsource === 'M01') { // 当问题来源为M01时
-          this.mshow2 = true
+          _that.mshow2 = true
         } else { // 当问题来源为其他时
           _that.forms.assetname = ''
           _that.forms.brandmodel = ''
           _that.forms.technicalnum = ''
-          this.mshow2 = false
+          _that.mshow2 = false
         }
         // api.get*** 此处为获取运维工程师的请求接口
         this.getYwlist()
@@ -138,11 +134,10 @@
       // this.getUserInfo()
       this.getBaseData()
       this.getUserInfo()
-      // this.getProblemsources()
-      // this.getProblemToyw()
-      // this.getProblem()
-      // this.getYwlist()
       this.getZclb()
+      // this.getProblemsources()
+      this.getProblemToyw()
+      this.getYwlist()
     },
     methods: {
       getProtypeInfo() {
@@ -165,55 +160,15 @@
           })
         }
       },
-      // 获取资产类别
-      // getZclb() {
-      //   // alert(this.forms.itcode)
-      //   // let _that = this
-      //   // api.getPeritinfo(this.forms.itcode, res => {
-      //   //   if (res.data.code === true) {
-      //   //     // alert(JSON.stringify(res.data.data.peritinfo))
-      //   //     let peritinfo = res.data.data.peritinfo
-      //   //     alert(JSON.stringify(peritinfo))
-      //   //     for (var i = 0; i < peritinfo.length; i++) {
-      //   //       let item = peritinfo[i]
-      //   //       // alert(JSON.stringify(item.ppxh))
-      //   //       let itemarr = JSON.stringify(item.ppxh)
-      //   //       let zxxh = JSON.stringify(item)
-      //   //       _that.list4.push(itemarr)
-      //   //       _that.list5.push(zxxh)
-      //   //     }
-      //   //     alert(_that.list4)
-      //   //     alert(_that.list5)
-      //   //   }
-      //   // })
-      //   let _that = this
-      //   api.getPeritinfo(_that.forms.itcode, res => {
-      //     if (res.data.code === true) {
-      //       alert(JSON.stringify(res.data.data.peritinfo))
-      //       _that.list4 = res.data.data.peritinfo
-      //       alert(_that.list4)
-      //     }
-      //   })
-      // },
       getZclb () {
         let _that = this
         api.getPeritinfo(_that.forms.itcode, res => {
           if (res.data.code === true) {
             let peritinfo = res.data.data.peritinfo
-            // _that.list6 = peritinfo
-            alert(JSON.stringify(peritinfo))
             for (let i in peritinfo) {
-              _that.list6.push(peritinfo[i].ppxh)
+              _that.list6.push(peritinfo[i].zcms)
             }
-            // alert(_that.list6)
-            // alert(JSON.stringify(peritinfo))
-            // for (let i = 0; i < peritinfo.length; i++) {
-            //   if (peritinfo[i].ppxh === '华为P9') {
-            //     alert(JSON.stringify(peritinfo[i]))
-            //   }
-            // }
           }
-          // alert(_that.list6)
         })
       },
       getChange() {
@@ -221,29 +176,15 @@
         api.getPeritinfo(_that.forms.itcode, res => {
           if (res.data.code === true) {
             let peritinfo = res.data.data.peritinfo
-            // alert(JSON.stringify(peritinfo))
-            for (let i = 0; i < peritinfo.length; i++) {
-              if (peritinfo[i].ppxh === _that.list6) {
-                // alert(JSON.stringify(peritinfo[i]))
+            for (let i in peritinfo) {
+              if (peritinfo[i].zcms === _that.list6) {
                 _that.forms.brandmodel = peritinfo[i].ppxh
                 _that.forms.technicalnum = peritinfo[i].zcbsh
               }
             }
           }
-          // alert(_that.list6)
         })
       },
-      // getAsset() {
-      //   let _that = this
-      //   api.getPeritinfo(this.forms.itcode)
-      // },
-      // getProblemToyw () {
-      //   let _that = this
-      //   let proval = _that.form.problemsource
-      //   proval.change(function () {
-      //     _that.getYwlist()
-      //   })
-      // },
       // 获取用户信息
       getUserInfo() {
         let _that = this

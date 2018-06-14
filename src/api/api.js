@@ -1079,5 +1079,22 @@ export default {
       }).catch((error) => {
         return Promise.reject(error)
     })
+  },
+  getUserinfoPostid: function (params, appda, cb) {
+    axios.get(APILIST.getUserinfoPostid + '?postid=' + params, '&appda=' + appda)
+      .then((res) => {
+        cb(res)
+      }).catch((error) => {
+        return Promise.reject(error)
+    })
+  },
+  getPeritinfo: function (params, cb) {
+    axios.get('/authapi/sendsingle/findPeritinfo?itcode=' + params, {
+      params
+    }).then((res) => {
+      cb(res);
+    }).catch((error) => {
+      return Promise.reject(error)
+    })
   }
 }

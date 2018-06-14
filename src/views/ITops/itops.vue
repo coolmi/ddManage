@@ -3,6 +3,7 @@
     <group title="申请信息">
       <v-search title="请选择岗位" :cdata="positionList" v-model="forms.postid" @on-hide="getProtypeInfo"> </v-search>
       <cell title="申请人信息" is-link :border-intent="false"
+            v-model="forms.submissioname"
             :arrow-direction="showContent004 ? 'up' : 'down'"
             @click.native="showContent004 = !showContent004"> </cell>
       <p class="slide" :class="showContent004 ? 'animate': ''">
@@ -14,19 +15,18 @@
         <x-input title="公司" v-model="forms.bukrsname" text-align="right"> </x-input>
       </p>
       <selector title="紧急程度" v-model="forms.emerg" :options="list1"></selector>
-      <selector title="问题来源类别" v-model="forms.problemsource" :options="list2" @on-change="getProblemToyw"></selector>
-      <cell title="资产类别名称"  v-model="forms.assetname" is-link v-show="mshow2" @click.native=""> </cell>
-      <x-input title="品牌型号" v-model="forms.brandmodel" v-show="mshow2"> </x-input>
-      <x-input title="技术标识号" v-model="forms.technicalnum" v-show="mshow2"> </x-input>
+      <selector title="问题来源类别" v-model="forms.problemsource" :options="list2"></selector>
+      <selector title="资产类别名称" v-model="list6" :options="list6" @on-change="getChange()"> </selector>
+      <x-input title="品牌型号" v-model="forms.brandmodel"> </x-input>
+      <x-input title="技术标识号" v-model="forms.technicalnum"> </x-input>
       <x-textarea title="问题描述" v-model="forms.semo"> </x-textarea>
     </group>
     <group title="分配运维信息" style="margin-bottom: 50px;">
       <selector title="运维的工程师" v-model="forms.operengneer" :options="list3"></selector>
       <datetime title="期望解决日期" v-model="forms.expectdate"> </datetime>
     </group>
-    <flexbox class="footerButton">
-      <flexbox-item style="color:#00B705;" @click-native="addReserve">提交</flexbox-item>
-      <!--<flexbox-item style="color:#FF8519">保存</flexbox-item>-->
+    <flexbox>
+      <x-button type="primary" @click-native="addReserve">提交</x-button>
     </flexbox>
     <div v-transfer-dom>
       <confirm
@@ -73,7 +73,8 @@
           technicalnum: '',
           semo: '',
           operengneer: '',
-          expectdate: ''
+          expectdate: '',
+          appda: new Date().toLocaleDateString()
         },
         positionList: [],
         burkList: [],
@@ -92,7 +93,13 @@
           {key: 'M04', value: 'MES系统运维(生产实时/数模在线/能源/资金系统等等)'},
           {key: 'M05', value: '网络(网络接入问题//等)'}
         ],
-        list4: [],
+        list4: [
+          {
+            ppxh: ''
+          }
+        ],
+        list6: [],
+        list5: [],
         list3: []
       }
     },
@@ -132,8 +139,10 @@
       this.getBaseData()
       this.getUserInfo()
       // this.getProblemsources()
-      this.getProblemToyw()
-      this.getYwlist()
+      // this.getProblemToyw()
+      // this.getProblem()
+      // this.getYwlist()
+      this.getZclb()
     },
     methods: {
       getProtypeInfo() {
@@ -143,18 +152,91 @@
             postid: this.forms.postid
           }
           api.getBurck1(params, function (res) {
-            alert(JSON.stringify(res))
+            // alert(JSON.stringify(res))
             if (res) {
               // alert(JSON.stringify(res.data.data.bukrlist))
               // alert(JSON.stringify(_that.forms.postid))
               // _that.burkList = res.data.data.burkList
               // alert(JSON.stringify(_that.burkList))
               let pid = _that.forms.postid
-              _that.getUser(pid)
+              let appda = _that.forms.appda
+              _that.getUser(pid, appda)
             }
           })
         }
       },
+      // 获取资产类别
+      // getZclb() {
+      //   // alert(this.forms.itcode)
+      //   // let _that = this
+      //   // api.getPeritinfo(this.forms.itcode, res => {
+      //   //   if (res.data.code === true) {
+      //   //     // alert(JSON.stringify(res.data.data.peritinfo))
+      //   //     let peritinfo = res.data.data.peritinfo
+      //   //     alert(JSON.stringify(peritinfo))
+      //   //     for (var i = 0; i < peritinfo.length; i++) {
+      //   //       let item = peritinfo[i]
+      //   //       // alert(JSON.stringify(item.ppxh))
+      //   //       let itemarr = JSON.stringify(item.ppxh)
+      //   //       let zxxh = JSON.stringify(item)
+      //   //       _that.list4.push(itemarr)
+      //   //       _that.list5.push(zxxh)
+      //   //     }
+      //   //     alert(_that.list4)
+      //   //     alert(_that.list5)
+      //   //   }
+      //   // })
+      //   let _that = this
+      //   api.getPeritinfo(_that.forms.itcode, res => {
+      //     if (res.data.code === true) {
+      //       alert(JSON.stringify(res.data.data.peritinfo))
+      //       _that.list4 = res.data.data.peritinfo
+      //       alert(_that.list4)
+      //     }
+      //   })
+      // },
+      getZclb () {
+        let _that = this
+        api.getPeritinfo(_that.forms.itcode, res => {
+          if (res.data.code === true) {
+            let peritinfo = res.data.data.peritinfo
+            // _that.list6 = peritinfo
+            alert(JSON.stringify(peritinfo))
+            for (let i in peritinfo) {
+              _that.list6.push(peritinfo[i].ppxh)
+            }
+            // alert(_that.list6)
+            // alert(JSON.stringify(peritinfo))
+            // for (let i = 0; i < peritinfo.length; i++) {
+            //   if (peritinfo[i].ppxh === '华为P9') {
+            //     alert(JSON.stringify(peritinfo[i]))
+            //   }
+            // }
+          }
+          // alert(_that.list6)
+        })
+      },
+      getChange() {
+        let _that = this
+        api.getPeritinfo(_that.forms.itcode, res => {
+          if (res.data.code === true) {
+            let peritinfo = res.data.data.peritinfo
+            // alert(JSON.stringify(peritinfo))
+            for (let i = 0; i < peritinfo.length; i++) {
+              if (peritinfo[i].ppxh === _that.list6) {
+                // alert(JSON.stringify(peritinfo[i]))
+                _that.forms.brandmodel = peritinfo[i].ppxh
+                _that.forms.technicalnum = peritinfo[i].zcbsh
+              }
+            }
+          }
+          // alert(_that.list6)
+        })
+      },
+      // getAsset() {
+      //   let _that = this
+      //   api.getPeritinfo(this.forms.itcode)
+      // },
       // getProblemToyw () {
       //   let _that = this
       //   let proval = _that.form.problemsource
@@ -175,33 +257,34 @@
           if (res) {
             // alert(JSON.stringify(res))
             _that.positionList = res.positionlist
+            alert(JSON.stringify(_that.positionList))
           }
         })
       },
       // 获取问题来源
-      // getProblemsources () {
-      //   // let _that = this
-      //   api.getProblems(function (res) {
-      //     if (res) {
-            /* alert(JSON.stringify(res.data.data.sendbaselist))
-            // _that.list2 = res.data.data.sendbaselist
-            // alert(JSON.stringify(_that.list2))
+      getProblemsources () {
+        let _that = this
+        api.getProblems(function (res) {
+          if (res) {
+             alert(JSON.stringify(res.data.data.sendbaselist))
+            _that.list2 = res.data.data.sendbaselist
+            alert(JSON.stringify(_that.list2))
             let probj = res.data.data.sendbaselist
             let arr = []
             for (let i in probj) {
               let o = {}
               o[i] = probj[i]
               arr.push(o)
-              // arr.push(probj[i])
+              arr.push(probj[i])
             }
             _that.list2 = arr
-            alert(JSON.stringify(_that.list2[0])) */
+            alert(JSON.stringify(_that.list2[0]))
             // let probj = res.data.data.sendbaselist
             // let arr1 = _.keys(probj)
-            // alert(JSON.stringify(probj))
-      //     }
-      //   })
-      // },
+            alert(JSON.stringify(probj))
+          }
+        })
+      },
       // 获取运维工程师
       getYwlist() {
         let _that = this
@@ -226,13 +309,14 @@
         })
       },
       // 选择之后获取用户信息
-      getUser(pid) {
+      getUser(pid, appda) {
         let _that = this
         // let ids = _that.forms.postid
         // alert(pid)
-        api.getUserInfoByPostid(pid, res => {
+        api.getUserinfoPostid(pid, appda, res => {
           // alert(JSON.stringify(res))
           let userinfo = res.data.data.commonUserInfo
+          alert(JSON.stringify(userinfo))
           _that.forms.submissioname = userinfo.username + '-' + userinfo.syspostname
           _that.forms.itcode = userinfo.userid
           if (userinfo.tel) {
@@ -242,7 +326,11 @@
           }
           _that.forms.phone = userinfo.phone
           _that.forms.itcodedeptname = userinfo.sysdeptname
-          _that.forms.bukrsname = userinfo.sysbusinessunitname
+          if (userinfo.butxt) {
+            _that.forms.bukrsname = userinfo.butxt
+          } else if (userinfo.butxt === '' || userinfo.butxt === undefined) {
+            _that.forms.bukrsname = '新凤祥控股集团有限责任公司'
+          }
         })
       },
       // 提交申请

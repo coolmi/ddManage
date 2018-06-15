@@ -3,7 +3,7 @@
     <group title="申请信息">
       <v-search title="请选择岗位" :cdata="positionList" v-model="forms.postid" @on-hide="getProtypeInfo"> </v-search>
       <cell title="申请人信息" is-link :border-intent="false"
-            v-model="forms.submissioname"
+            v-model="forms.username"
             :arrow-direction="showContent004 ? 'up' : 'down'"
             @click.native="showContent004 = !showContent004"> </cell>
       <p class="slide" :class="showContent004 ? 'animate': ''">
@@ -26,10 +26,11 @@
       <cell title="运维的工程师" v-model="forms.operengneer" v-show="mshow2" :options="list3"></cell>
       <datetime title="期望解决日期" v-model="forms.expectdate"> </datetime>
     </group>
-    <flexbox>
-      <x-button type="primary" @click-native="addReserve">提交</x-button>
+    <flexbox class="footerButton" style="z-index: 2;">
+      <!--<x-button type="primary" @click="addReserve()">提交</x-button>-->
+      <flexbox-item class="vux-1px-r" @click.native="addReserve()" style="color:#00B705; z-index: 9999;">提交</flexbox-item>
     </flexbox>
-    <div v-transfer-dom>
+    <!--<div v-transfer-dom>
       <confirm
         v-model="showCon"
         :close-on-confirm="true"
@@ -37,7 +38,7 @@
         @on-confirm="onConfirm">
         <p style="text-align:center;">{{message}}</p>
       </confirm>
-    </div>
+    </div>-->
   </div>
 </template>
 
@@ -61,6 +62,7 @@
       return {
         forms: {
           postid: '',
+          username: '',
           submissioname: '',
           itcode: '',
           tel: '',
@@ -96,7 +98,10 @@
         ],
         list6: [],
         list5: [],
-        list3: []
+        list3: [],
+        sendsingle: {
+          id: ''
+        }
       }
     },
     computed: {
@@ -153,6 +158,7 @@
               // alert(JSON.stringify(_that.forms.postid))
               // _that.burkList = res.data.data.burkList
               // alert(JSON.stringify(_that.burkList))
+              alert(res)
               let pid = _that.forms.postid
               let appda = _that.forms.appda
               _that.getUser(pid, appda)
@@ -166,8 +172,15 @@
           if (res.data.code === true) {
             let peritinfo = res.data.data.peritinfo
             for (let i in peritinfo) {
-              _that.list6.push(peritinfo[i].ppxh)
+              // // _that.list6 = arrstr.split(',')
+              // // _that.list6.add(peritinfo[i].ppxh)
+              // _that.list6.push(peritinfo[i].ppxh)
+              let arrstr = peritinfo[i].ppxh.toString()
+              _that.list6.push(arrstr)
             }
+            // alert(_that.list6)
+            // alert(typeof _that.list6)
+            // alert(JSON.stringify(_that.list6))
           }
         })
       },
@@ -176,12 +189,15 @@
         api.getPeritinfo(_that.forms.itcode, res => {
           if (res.data.code === true) {
             let peritinfo = res.data.data.peritinfo
+            // alert(JSON.stringify(peritinfo))
             for (let i in peritinfo) {
               if (peritinfo[i].ppxh === _that.list6) {
                 _that.forms.brandmodel = peritinfo[i].zcms
                 _that.forms.technicalnum = peritinfo[i].zcbsh
+                _that.forms.operengneer = peritinfo[i].nachn
               }
             }
+            // alert(JSON.stringify(_that.forms))
           }
         })
       },
@@ -198,7 +214,7 @@
           if (res) {
             // alert(JSON.stringify(res))
             _that.positionList = res.positionlist
-            alert(JSON.stringify(_that.positionList))
+            // alert(JSON.stringify(_that.positionList))
           }
         })
       },
@@ -207,9 +223,9 @@
         let _that = this
         api.getProblems(function (res) {
           if (res) {
-             alert(JSON.stringify(res.data.data.sendbaselist))
+             // alert(JSON.stringify(res.data.data.sendbaselist))
             _that.list2 = res.data.data.sendbaselist
-            alert(JSON.stringify(_that.list2))
+            // alert(JSON.stringify(_that.list2))
             let probj = res.data.data.sendbaselist
             let arr = []
             for (let i in probj) {
@@ -219,10 +235,10 @@
               arr.push(probj[i])
             }
             _that.list2 = arr
-            alert(JSON.stringify(_that.list2[0]))
+            // alert(JSON.stringify(_that.list2[0]))
             // let probj = res.data.data.sendbaselist
             // let arr1 = _.keys(probj)
-            alert(JSON.stringify(probj))
+            // alert(JSON.stringify(probj))
           }
         })
       },
@@ -258,6 +274,7 @@
           // alert(JSON.stringify(res))
           let userinfo = res.data.data.commonUserInfo
           alert(JSON.stringify(userinfo))
+          _that.forms.username = userinfo.username
           _that.forms.submissioname = userinfo.username + '-' + userinfo.syspostname
           _that.forms.itcode = userinfo.userid
           if (userinfo.tel) {
@@ -269,7 +286,7 @@
           _that.forms.itcodedeptname = userinfo.sysdeptname
           if (userinfo.butxt) {
             _that.forms.bukrsname = userinfo.butxt
-          } else if (userinfo.butxt === '' || userinfo.butxt === undefined) {
+          } else if (userinfo.butxt === '') {
             _that.forms.bukrsname = '新凤祥控股集团有限责任公司'
           }
         })
@@ -281,8 +298,8 @@
           whole.showTop('请选择岗位')
           return;
         }
-        if (_that.forms.assetname === '') {
-          whole.showTop('请选择资产类别名称')
+        if (_that.list6 === '') {
+          whole.showTop('请选择品牌型号')
           return;
         }
         if (_that.forms.semo === '') {
@@ -296,6 +313,30 @@
         if (_that.forms.expectdate === '') {
           whole.showTop('请选择期望解决日期')
         }
+        alert(JSON.stringify(_that.forms))
+        _that.sendsingle.id = _that.forms.postid
+        // let params1 = {
+        //   postid: _that.forms.postid,
+        //   phone: _that.forms.phone,
+        //   proc_inst_id: '',
+        //   bukrs: _that.forms.bukrs,
+        //   userid: _that.forms.itcode,
+        //   syspostname: _that.forms.postid,
+        //   appid: '',
+        //   id: '',
+        //   username: _that.forms.username,
+        //   sysdeptname: _that.forms.itcodedeptname
+        // }
+        // let params = {
+        //   sendsingle: params1
+        // }
+        api.getSaveItopsBackURL(_that.forms, function (res) {
+          if (res) {
+            alert(res)
+          } else {
+            alert('error')
+          }
+        })
       }
     }
   }

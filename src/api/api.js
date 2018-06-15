@@ -1096,5 +1096,25 @@ export default {
     }).catch((error) => {
       return Promise.reject(error)
     })
+  },
+  /**
+   * 保存
+   * @param cb
+   */
+  getSaveItopsBackURL: function (params, cb) {
+    axios.post(APISEND.saveItopsBackURL, params)
+      .then((res) => {
+        cb(res);
+      }).catch((error) => {
+      return Promise.reject(error)
+    })
+  },
+  getStartItopsURL: function (params, cb) {
+    axios.post(APISEND.startItopsURL, params)
+      .then((res) => {
+        cb(res);
+      }).catch((error) => {
+      return Promise.reject(error)
+    })
   }
 }

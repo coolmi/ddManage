@@ -89,9 +89,11 @@ const getDraftListURL = '/authapi/ddtalkwf/getDraftList'
 // 查看申请保存详情（draftType, appid | Get）
 const getDraftDataByIdURL = '/authapi/ddtalkwf/getDraftDataById'
 // IT运维派单
-// 员工费用报销-交通类型
 const getPersonReimTrafficTypeURL = '/authapi/ddtalkwf/getTrafficType'
-
+// IT保存
+const saveItopsBackURL = '/authapi/sendsingle/save'
+// IT 提交
+const startItopsURL = '/authapi/sendsingle/start'
 const getPosition = function () {
   return axios.get(getPositionURL);
 }
@@ -237,5 +239,7 @@ export default {
   startOverTimeURL,
   nextAssignOverTimeURL,
   newLeaveInfoByIdURL,
-  newLeaveBackListURL
+  newLeaveBackListURL,
+  saveItopsBackURL,
+  startItopsURL
 }

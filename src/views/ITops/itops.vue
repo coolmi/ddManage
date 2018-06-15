@@ -16,8 +16,8 @@
       </p>
       <selector title="紧急程度" v-model="forms.emerg" :options="list1"></selector>
       <selector title="问题来源类别" v-model="forms.problemsource" :options="list2" @on-change="getProblemToyw"></selector>
-      <selector title="资产类别名称" v-model="list6" :options="list6" v-show="mshow2" @on-change="getChange()"> </selector>
-      <x-input title="品牌型号" v-model="forms.brandmodel" v-show="mshow2"> </x-input>
+      <selector title="品牌型号" v-model="list6" :options="list6" v-show="mshow2" @on-change="getChange()"> </selector>
+      <x-input title="资产类别名称" v-model="forms.brandmodel" v-show="mshow2"> </x-input>
       <x-input title="技术标识号" v-model="forms.technicalnum" v-show="mshow2"> </x-input>
       <x-textarea title="问题描述" v-model="forms.semo"> </x-textarea>
     </group>
@@ -166,7 +166,7 @@
           if (res.data.code === true) {
             let peritinfo = res.data.data.peritinfo
             for (let i in peritinfo) {
-              _that.list6.push(peritinfo[i].zcms)
+              _that.list6.push(peritinfo[i].ppxh)
             }
           }
         })
@@ -177,8 +177,8 @@
           if (res.data.code === true) {
             let peritinfo = res.data.data.peritinfo
             for (let i in peritinfo) {
-              if (peritinfo[i].zcms === _that.list6) {
-                _that.forms.brandmodel = peritinfo[i].ppxh
+              if (peritinfo[i].ppxh === _that.list6) {
+                _that.forms.brandmodel = peritinfo[i].zcms
                 _that.forms.technicalnum = peritinfo[i].zcbsh
               }
             }

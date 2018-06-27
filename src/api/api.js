@@ -1081,7 +1081,7 @@ export default {
     })
   },
   getUserinfoPostid: function (params, appda, cb) {
-    axios.get(APILIST.getUserinfoPostid + '?postid=' + params, '&appda=' + appda)
+    axios.get('/authapi/sendsingle/getuserinfo?postid=' + params + '&appda=' + appda)
       .then((res) => {
         cb(res)
       }).catch((error) => {
@@ -1115,6 +1115,14 @@ export default {
         cb(res);
       }).catch((error) => {
       return Promise.reject(error)
+    })
+  },
+  getNextItopsURL: function (params, cb) {
+    axios.post(APISEND.nextassignItopsURL, params)
+      .then((res) => {
+        cb(res);
+      }).catch((error) => {
+        return Promise.reject(error)
     })
   }
 }

@@ -14,7 +14,7 @@ const router = new Router({
   mode: 'history',
   routes: [
     {
-      path: '/home',
+      path: '/',
       component: require('@/views/Home')
       // meta: {title: ''}
     },

@@ -81,7 +81,7 @@ let APILIST = {
   getUserInfoPostid_url: '/authapi/ddtalkwf/commoninfo',
   // IT运维派单
   // IT派单根据postid获取个人信息包括所属公司
-  getUserinfoPostid: '/authapi/sendsingle/getuserinfo/'
+  getUserinfoForPostid_url: '/authapi/sendsingle/getuserinfo'
   // 获取问题来源类别
 }
 export default APILIST

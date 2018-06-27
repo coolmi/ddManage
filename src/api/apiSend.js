@@ -94,6 +94,8 @@ const getPersonReimTrafficTypeURL = '/authapi/ddtalkwf/getTrafficType'
 const saveItopsBackURL = '/authapi/sendsingle/save'
 // IT 提交
 const startItopsURL = '/authapi/sendsingle/start'
+// IT获取下一节点办理人
+const nextassignItopsURL = '/authapi/sendsingle/ajaxjsonnextassignee'
 const getPosition = function () {
   return axios.get(getPositionURL);
 }
@@ -241,5 +243,6 @@ export default {
   newLeaveInfoByIdURL,
   newLeaveBackListURL,
   saveItopsBackURL,
-  startItopsURL
+  startItopsURL,
+  nextassignItopsURL
 }

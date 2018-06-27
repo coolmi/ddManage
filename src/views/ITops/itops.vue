@@ -1,36 +1,39 @@
 <template>
   <div>
-    <group title="申请信息">
-      <v-search title="请选择岗位" :cdata="positionList" v-model="forms.postid" @on-hide="getProtypeInfo"> </v-search>
+    <group title="申请信息" label-width="7rem" label-align="left">
+      <v-search label-width="8rem" title="请选择岗位" :cdata="positionList" v-model="dataforms.postid" @on-hide="getProtypeInfo"> </v-search>
       <cell title="申请人信息" is-link :border-intent="false"
-            v-model="forms.username"
+            align-item="center"
+            after-title="dataforms.submissioname"
+            v-model="dataforms.submissioname"
             :arrow-direction="showContent004 ? 'up' : 'down'"
-            @click.native="showContent004 = !showContent004"> </cell>
+            @click.native="showContent004 = !showContent004">
+      </cell>
       <p class="slide" :class="showContent004 ? 'animate': ''">
-        <x-input title="提报人姓名" v-model="forms.submissioname" text-align="right"> </x-input>
-        <x-input title="提报人itcode" v-model="forms.itcode" text-align="right"> </x-input>
-        <x-input title="电话" v-model="forms.tel" text-align="right"> </x-input>
-        <x-input title="手机" v-model="forms.phone" text-align="right"> </x-input>
-        <x-input title="部门" v-model="forms.itcodedeptname" text-align="right"> </x-input>
-        <x-input title="公司" v-model="forms.bukrsname" text-align="right"> </x-input>
+        <x-input title="提报人姓名" v-model="dataforms.submissioname" text-align="right" readonly> </x-input>
+        <x-input title="提报人itcode" v-model="dataforms.itcode" text-align="right" readonly> </x-input>
+        <x-input title="电话" v-model="dataforms.tel" text-align="right" readonly> </x-input>
+        <x-input title="手机" v-model="dataforms.phone" text-align="right" readonly> </x-input>
+        <x-input title="部门" v-model="dataforms.itcodedeptname" text-align="right" readonly> </x-input>
+        <x-input title="公司" v-model="dataforms.bukrsname" text-align="right" readonly> </x-input>
       </p>
-      <selector title="紧急程度" v-model="forms.emerg" :options="list1"></selector>
-      <selector title="问题来源类别" v-model="forms.problemsource" :options="list2" @on-change="getProblemToyw"></selector>
-      <selector title="品牌型号" v-model="list6" :options="list6" v-show="mshow2" @on-change="getChange()"> </selector>
-      <x-input title="资产类别名称" v-model="forms.brandmodel" v-show="mshow2"> </x-input>
-      <x-input title="技术标识号" v-model="forms.technicalnum" v-show="mshow2"> </x-input>
-      <x-textarea title="问题描述" v-model="forms.semo"> </x-textarea>
+      <selector title="紧急程度" v-model="dataforms.emerg" :options="list1"></selector>
+      <selector title="问题来源类别" v-model="dataforms.problemsource" :options="list2" @on-change="getProblemToyw"></selector>
+      <selector title="品牌型号" v-model="dataforms.brandmodel" :options="list6" v-show="mshow2" @on-change="getChange()"> </selector>
+      <x-input title="资产类别名称" v-model="dataforms.assetname" v-show="mshow2" readonly> 资产类别名称</x-input>
+      <x-input title="技术标识号" v-model="dataforms.technicalnum" v-show="mshow2" readonly> </x-input>
+      <x-textarea title="问题描述" v-model="dataforms.semo"> </x-textarea>
     </group>
-    <group title="分配运维信息" style="margin-bottom: 50px;">
-      <selector title="运维的工程师" v-model="forms.operengneer" v-show="!mshow2" :options="list3"></selector>
-      <cell title="运维的工程师" v-model="forms.operengneer" v-show="mshow2" :options="list3"></cell>
-      <datetime title="期望解决日期" v-model="forms.expectdate"> </datetime>
+    <group title="分配运维信息" label-width="7rem" label-align="left" style="margin-bottom: 50px;">
+      <cell title="运维工程师" v-model="dataforms.opereng" v-show="mshow2"> </cell>
+      <selector title="运维工程师" v-model="dataforms.operengneer" v-show="!mshow2" :options="list3" @on-change="changeOper"></selector>
+      <datetime title="期望解决日期" v-model="dataforms.expectdate"> </datetime>
     </group>
     <flexbox class="footerButton" style="z-index: 2;">
-      <!--<x-button type="primary" @click="addReserve()">提交</x-button>-->
-      <flexbox-item class="vux-1px-r" @click.native="addReserve()" style="color:#00B705; z-index: 9999;">提交</flexbox-item>
+      <flexbox-item @click.native="addReserve(0)" style="color:#00B705;">提交</flexbox-item>
+      <flexbox-item @click.native="addReserve(1)" style="color:#FF8519;">保存</flexbox-item>
     </flexbox>
-    <!--<div v-transfer-dom>
+    <div v-transfer-dom>
       <confirm
         v-model="showCon"
         :close-on-confirm="true"
@@ -38,7 +41,7 @@
         @on-confirm="onConfirm">
         <p style="text-align:center;">{{message}}</p>
       </confirm>
-    </div>-->
+    </div>
   </div>
 </template>
 
@@ -60,7 +63,8 @@
     },
     data () {
       return {
-        forms: {
+        showCon: false,
+        dataforms: {
           postid: '',
           username: '',
           submissioname: '',
@@ -76,9 +80,19 @@
           technicalnum: '',
           semo: '',
           operengneer: '',
+          operengneertxt: '',
+          opereng: '',
           expectdate: '',
-          appda: new Date().toLocaleDateString()
-        },
+          message: '',
+          appda: '',
+          parmasOption: {},
+          operetel: '',
+          outsourc: [
+            {key: '否', value: '否'},
+            {key: '是', value: '是'}
+          ],
+          outsourcost: ''
+      },
         positionList: [],
         burkList: [],
         showContent004: false,
@@ -97,7 +111,6 @@
           {key: 'M05', value: '网络(网络接入问题//等)'}
         ],
         list6: [],
-        list5: [],
         list3: [],
         sendsingle: {
           id: ''
@@ -108,16 +121,25 @@
       // 选择问题来源类别
       getProblemToyw() {
         let _that = this
-        if (_that.forms.problemsource === 'M01') { // 当问题来源为M01时
+        let pros = _that.dataforms.problemsource
+        api.getProblems(function (res) {
+          let sendlist = res.data.data.sendbaselist
+          for (let item in sendlist) {
+            if (item === pros) {
+              _that.dataforms.problemsourcetxt = sendlist[item]
+            }
+          }
+        })
+        if (pros === 'M01') { // 当问题来源为M01时
           _that.mshow2 = true
+          _that.dataforms.operengneertxt = ''
         } else { // 当问题来源为其他时
-          _that.forms.assetname = ''
-          _that.forms.brandmodel = ''
-          _that.forms.technicalnum = ''
+          _that.dataforms.assetname = ''
+          _that.dataforms.brandmodel = ''
+          _that.dataforms.technicalnum = ''
           _that.mshow2 = false
+          this.getYwlist()
         }
-        // api.get*** 此处为获取运维工程师的请求接口
-        this.getYwlist()
       },
       ...mapGetters({
         path: 'getddConfigPath'
@@ -128,7 +150,6 @@
       dingUser.getRequestAuthCode(this.path).then((data) => {
         api.getLogin(data, function (res) {
           if (res.data.code) {
-            // _that.$store.dispatch('saveLoginStatus', true);
             _that.getBaseData() // 请求岗位和休假类型
             // _that.setData() // 填写的时候回退保存值
           } else {
@@ -136,122 +157,134 @@
           }
         })
       })
-      // this.getUserInfo()
+      this.getDate()
       this.getBaseData()
-      this.getUserInfo()
+      // this.getUserInfo()
       this.getZclb()
-      // this.getProblemsources()
       this.getProblemToyw()
       this.getYwlist()
     },
     methods: {
+      getDate() {
+        let date = new Date()
+        let year = date.getFullYear()
+        let month = date.getMonth() + 1
+        let day = date.getDate()
+        if (month < 10) {
+          month = '0' + month
+          this.dataforms.appda = year + '-' + month + '-' + day
+        } else if (month >= 10) {
+          this.dataforms.appda = year + '-' + month + '-' + day
+        }
+        // alert(this.dataforms.appda)
+      },
       getProtypeInfo() {
         let _that = this
-        if (this.forms.postid) {
+        if (this.dataforms.postid) {
           let params = {
-            postid: this.forms.postid
+            postid: this.dataforms.postid
           }
           api.getBurck1(params, function (res) {
-            // alert(JSON.stringify(res))
             if (res) {
-              // alert(JSON.stringify(res.data.data.bukrlist))
-              // alert(JSON.stringify(_that.forms.postid))
-              // _that.burkList = res.data.data.burkList
-              // alert(JSON.stringify(_that.burkList))
-              alert(res)
-              let pid = _that.forms.postid
-              let appda = _that.forms.appda
+              // alert(JSON.stringify(res))
+              let pid = _that.dataforms.postid
+              let appda = _that.dataforms.appda
+              // alert(appda)
               _that.getUser(pid, appda)
             }
           })
         }
       },
+      // 获取资产类别
       getZclb () {
         let _that = this
-        api.getPeritinfo(_that.forms.itcode, res => {
+        api.getPeritinfo(_that.dataforms.itcode, res => {
           if (res.data.code === true) {
             let peritinfo = res.data.data.peritinfo
             for (let i in peritinfo) {
-              // // _that.list6 = arrstr.split(',')
-              // // _that.list6.add(peritinfo[i].ppxh)
-              // _that.list6.push(peritinfo[i].ppxh)
               let arrstr = peritinfo[i].ppxh.toString()
               _that.list6.push(arrstr)
             }
-            // alert(_that.list6)
-            // alert(typeof _that.list6)
-            // alert(JSON.stringify(_that.list6))
+            _that.dataforms.brandmodel = _that.list6
           }
         })
       },
+      // 选择品牌型号
       getChange() {
         let _that = this
-        api.getPeritinfo(_that.forms.itcode, res => {
+        api.getPeritinfo(_that.dataforms.itcode, res => {
           if (res.data.code === true) {
             let peritinfo = res.data.data.peritinfo
-            // alert(JSON.stringify(peritinfo))
             for (let i in peritinfo) {
-              if (peritinfo[i].ppxh === _that.list6) {
-                _that.forms.brandmodel = peritinfo[i].zcms
-                _that.forms.technicalnum = peritinfo[i].zcbsh
-                _that.forms.operengneer = peritinfo[i].nachn
+              if (peritinfo[i].ppxh === _that.dataforms.brandmodel) {
+                _that.dataforms.assetname = peritinfo[i].zcms
+                _that.dataforms.technicalnum = peritinfo[i].zcbsh
+                _that.dataforms.operengneertxt = peritinfo[i].nachn
+                _that.dataforms.operengneer = peritinfo[i].ywgly
+                _that.dataforms.opereng = _that.dataforms.operengneer + '-' + _that.dataforms.operengneertxt
               }
             }
-            // alert(JSON.stringify(_that.forms))
           }
         })
       },
-      // 获取用户信息
-      getUserInfo() {
+      // 当不为M01 的时候选择运维工程师
+      changeOper() {
         let _that = this
-        api.getvalidateUserBaseInfoURL(_that.forms.postid, res => {
-          // alert(JSON.stringify(res.data))
-        })
+        let list3 = _that.list3
+        let operengneer = _that.dataforms.operengneer
+        for (let i in list3) {
+          if (list3[i].key === operengneer) {
+            // 将value赋值给operengneertxt
+            _that.dataforms.operengneertxt = list3[i].value
+          }
+        }
       },
+      // 获取用户信息
+      // getUserInfo() {
+      //   let _that = this
+      //   api.getvalidateUserBaseInfoURL(_that.dataforms.postid, res => {
+      //     alert(JSON.stringify(res))
+      //   })
+      // },
       getBaseData () {
         let _that = this
         api.getPosition(function (res) {
           if (res) {
-            // alert(JSON.stringify(res))
             _that.positionList = res.positionlist
             // alert(JSON.stringify(_that.positionList))
+            _that.dataforms.postid = _that.positionList[0].key
+            _that.getUser(_that.dataforms.postid, _that.dataforms.appda)
+            // alert(_that.dataforms.appda)
           }
         })
       },
       // 获取问题来源
-      getProblemsources () {
-        let _that = this
-        api.getProblems(function (res) {
-          if (res) {
-             // alert(JSON.stringify(res.data.data.sendbaselist))
-            _that.list2 = res.data.data.sendbaselist
-            // alert(JSON.stringify(_that.list2))
-            let probj = res.data.data.sendbaselist
-            let arr = []
-            for (let i in probj) {
-              let o = {}
-              o[i] = probj[i]
-              arr.push(o)
-              arr.push(probj[i])
-            }
-            _that.list2 = arr
-            // alert(JSON.stringify(_that.list2[0]))
-            // let probj = res.data.data.sendbaselist
-            // let arr1 = _.keys(probj)
-            // alert(JSON.stringify(probj))
-          }
-        })
-      },
+      // getProblemsources () {
+      //   let _that = this
+      //   api.getProblems(function (res) {
+      //     if (res) {
+      //       _that.list2 = res.data.data.sendbaselist
+      //       let probj = res.data.data.sendbaselist
+      //       let arr = []
+      //       for (let i in probj) {
+      //         let o = {}
+      //         o[i] = probj[i]
+      //         arr.push(o)
+      //         arr.push(probj[i])
+      //       }
+      //       _that.list2 = arr
+      //     }
+      //   })
+      // },
       // 获取运维工程师
       getYwlist() {
         let _that = this
         api.getYwlist(res => {
           if (res) {
-            // alert(JSON.stringify(res.data.data.ywlist))
             let ywobj = res.data.data.ywlist
             for (let i in ywobj) {
               let keyboot = i
-              if (_that.forms.problemsource === keyboot) {
+              if (_that.dataforms.problemsource === keyboot) {
                   let result = [];
                   for (let key in ywobj[i]) {
                     result.push({
@@ -268,73 +301,141 @@
       // 选择之后获取用户信息
       getUser(pid, appda) {
         let _that = this
-        // let ids = _that.forms.postid
-        // alert(pid)
+        // appda = '2016/06/20'
         api.getUserinfoPostid(pid, appda, res => {
-          // alert(JSON.stringify(res))
-          let userinfo = res.data.data.commonUserInfo
-          alert(JSON.stringify(userinfo))
-          _that.forms.username = userinfo.username
-          _that.forms.submissioname = userinfo.username + '-' + userinfo.syspostname
-          _that.forms.itcode = userinfo.userid
-          if (userinfo.tel) {
-            _that.forms.tel = userinfo.tel
-          } else {
-            _that.forms.tel = '无'
-          }
-          _that.forms.phone = userinfo.phone
-          _that.forms.itcodedeptname = userinfo.sysdeptname
-          if (userinfo.butxt) {
-            _that.forms.bukrsname = userinfo.butxt
-          } else if (userinfo.butxt === '') {
-            _that.forms.bukrsname = '新凤祥控股集团有限责任公司'
+          if (res) {
+            let userinfo = res.data.data.commonUserInfo
+            // alert(JSON.stringify(res))
+            // alert(JSON.stringify(res.data.data.commonUserInfo))
+            _that.dataforms.username = userinfo.username
+            _that.dataforms.submissioname = userinfo.username + '-' + userinfo.syspostname
+            _that.dataforms.itcode = userinfo.userid
+            if (userinfo.tel) {
+              // 电话
+              _that.dataforms.tel = userinfo.tel
+            } else {
+              _that.dataforms.tel = '无'
+            }
+            // if (userinfo.phone) {
+              _that.dataforms.phone = userinfo.phone
+            // }
+            _that.dataforms.itcodedeptname = userinfo.sysdeptname
+            if (userinfo.butxt) {
+              _that.dataforms.bukrsname = userinfo.butxt
+            } else if (userinfo.butxt === '') {
+              _that.dataforms.bukrsname = '新凤祥控股集团有限责任公司'
+            }
           }
         })
       },
       // 提交申请
-      addReserve() {
+      addReserve(flag) {
         let _that = this
-        if (_that.forms.postid === '') {
+        if (_that.dataforms.postid === '') {
           whole.showTop('请选择岗位')
           return;
         }
-        if (_that.list6 === '') {
+        if (_that.dataforms.problemsource === 'M01' && _that.dataforms.assetname === '') {
           whole.showTop('请选择品牌型号')
           return;
         }
-        if (_that.forms.semo === '') {
+        if (_that.dataforms.semo === '') {
           whole.showTop('请填写问题描述')
           return;
         }
-        if (_that.forms.problemsource !== 'M01' && _that.forms.operengneer === '') {
+        if (_that.dataforms.problemsource !== 'M01' && _that.dataforms.operengneer === '') {
           whole.showTop('请选择运维工程师')
           return;
         }
-        if (_that.forms.expectdate === '') {
+        if (_that.dataforms.expectdate === '') {
           whole.showTop('请选择期望解决日期')
+          return;
         }
-        alert(JSON.stringify(_that.forms))
-        _that.sendsingle.id = _that.forms.postid
-        // let params1 = {
-        //   postid: _that.forms.postid,
-        //   phone: _that.forms.phone,
-        //   proc_inst_id: '',
-        //   bukrs: _that.forms.bukrs,
-        //   userid: _that.forms.itcode,
-        //   syspostname: _that.forms.postid,
-        //   appid: '',
-        //   id: '',
-        //   username: _that.forms.username,
-        //   sysdeptname: _that.forms.itcodedeptname
-        // }
-        // let params = {
-        //   sendsingle: params1
-        // }
-        api.getSaveItopsBackURL(_that.forms, function (res) {
+        _that.sendsingle.id = _that.dataforms.postid
+        let params1 = {
+          postid: _that.dataforms.postid,
+          phone: _that.dataforms.phone,
+          proc_inst_id: '',
+          bukrs: _that.dataforms.bukrs,
+          userid: _that.dataforms.itcode,
+          syspostname: _that.dataforms.postid,
+          appid: '',
+          id: '',
+          username: _that.dataforms.username,
+          sysdeptname: _that.dataforms.itcodedeptname,
+          submissioname: _that.dataforms.submissioname,
+          itcode: _that.dataforms.itcode,
+          itcodedeptname: _that.dataforms.itcodedeptname,
+          bukrsname: _that.dataforms.bukrsname,
+          problemsource: _that.dataforms.problemsource,
+          problemsourcetxt: _that.dataforms.problemsourcetxt,
+          assetname: _that.dataforms.assetname,
+          technicalnum: _that.dataforms.technicalnum,
+          brandmodel: _that.dataforms.brandmodel,
+          semo: _that.dataforms.semo,
+          operengneer: _that.dataforms.operengneer,
+          operengneertxt: _that.dataforms.operengneertxt,
+          operetel: _that.dataforms.operetel,
+          expectdate: _that.dataforms.expectdate,
+          emerg: _that.dataforms.emerg,
+          outsourc: '否',
+          outsourcost: ''
+        }
+        let params = {
+          sendsingle: params1
+        }
+        _that.parmasOption = params
+        if (flag === 0) {
+          api.getNextItopsURL(params, function (res) {
+            if (res) {
+              if (res.data.code) {
+                if (res.data.message) {
+                  _that.message = res.data.message;
+                  _that.showCon = true
+                } else if (res.data.data.error) {
+                  _that.showCon = false
+                  whole.showTop(res.data.data.error)
+                }
+              } else {
+                whole.showTop(res.data.message)
+                _that.$router.go(-1)
+              }
+            }
+          })
+        } else if (flag === 1) {
+          let _that = this
+          api.getSaveItopsBackURL(params, function (res) {
+            if (res) {
+              if (res.data.code) {
+                whole.showTop(res.data.message);
+                _that.$router.go(-1)
+              } else {
+                whole.showTop(res.data.message)
+                _that.$router.go(-1)
+              }
+            }
+            console.log(res)
+          })
+        }
+      },
+      onConfirm () {
+        let _that = this
+        api.getStartItopsURL(_that.parmasOption, function (res) {
           if (res) {
-            alert(res)
-          } else {
-            alert('error')
+            if (res.data.code) {
+              whole.showTop(res.data.message);
+              setTimeout(() => {
+                let dd = window.dd
+                dd.biz.navigation.close({
+                  onSuccess: function (result) {
+                  },
+                  onFail: function (err) {
+                  }
+                })
+              }, 1500)
+            } else {
+              whole.showTop(res.data.message)
+            }
           }
         })
       }
@@ -355,6 +456,7 @@
   }
   .animate{
     max-height: 9999px;
+    height: 265px;
     transition-timing-function: cubic-bezier(0.5, 0, 1, 0);
     transition-delay: 0s;
   }

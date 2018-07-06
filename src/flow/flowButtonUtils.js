@@ -15,9 +15,11 @@ export function setFlowButton(taskAuth) {
     let isusevoid = taskAuth.isusevoid;
     let isusebackto = taskAuth.isusebackto;
     let issignningA = '0';
-    let issignplushandleA = '0';
+    let issignplushandleA = false;
+    // let issignplushandleA = '0';
     if (issignning) issignningA = '1'
-    if (!issignning && isAssignee) issignplushandleA = '1'
+    if (!issignning && isAssignee) issignplushandleA = true
+    // if (!issignning && isAssignee) issignplushandleA = '1'
     if (suspensionState === 1) {
       if (isOwner || isAssignee) {
         if (issignning) {

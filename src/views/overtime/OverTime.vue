@@ -68,6 +68,16 @@ export default {
       xxscList: [{'key': '0', 'value': '0'}, {'key': '0.5', 'value': '0.5'}, {'key': '1', 'value': '1'}, {'key': '1.5', 'value': '1.5'}]
     }
   },
+  created() {
+    let _that = this;
+    let currenttime = new Date();
+    let val = currenttime.getMonth() + 1;
+    if (val >= 5 && val < 10) {
+      _that.forms.s_relex_hours = '1.5'
+    } else {
+      _that.forms.s_relex_hours = '1'
+    };
+  },
   methods: {
     addReserve(flag) {
       if (this.forms.s_date === '') {

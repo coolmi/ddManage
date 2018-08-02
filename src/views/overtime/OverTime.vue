@@ -59,7 +59,7 @@ export default {
         s_date: '',
         s_starttime: '',
         s_endtime: '',
-        s_relex_hours: '0',
+        s_relex_hours: '',
         s_why: '',
         parmasOption: {}
       },

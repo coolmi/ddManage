@@ -45,7 +45,7 @@
           <!--is-link-->
           <!--:link="{path: '/flowDetails', query: {title: ntable.title, ctable: ntable.nchildtableForms}}"-->
           <!--value-align="left">-->
-          </acell>
+          <!--</acell>-->
         </div>
         <!--<cell v-for="(subTable, index) in subC.tableForms" :key="index" :border-intent="false" :title="subTable.title" value="123" v-show="subC.component !== 'hidden' && subC.component !== 'table_form'"></cell>-->
         <!--<flow-sub-content :subforms="subC.tableForms"></flow-sub-content>-->
@@ -68,7 +68,7 @@
           value-align="left"
           v-show="subC.component !== 'hidden' && !subC.hidden && subC.title"
         > <!--&& subC.editable === false && !subC.editable-->
-          <div slot="value"  style="word-break: break-all">{{subC.nvalue || subC.value}}</div>
+          <div slot="value"  style="word-break: break-all;margin-right: 0.2rem;">{{subC.nvalue || subC.value}}</div>
         </flow-child-card>
         <!--<x-textarea class="weui-cells" :title="subC.title" :value="subC.nvalue || subC.value"-->
         <!--v-if="subC.nvalue || subC.value"></x-textarea>-->

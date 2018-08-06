@@ -160,6 +160,11 @@ const router = new Router({
       path: '/asd',
       component: require('@/views/draggable/draggable'),
       meta: {title: '新凤祥工作台'}
+    },
+    {
+      path: '/itops',
+      component: require('@/views/ITops/itops'),
+      meta: {title: 'IT运维派单申请'}
     }
   ]
 })
@@ -169,8 +174,9 @@ router.beforeEach((to, from, next) => {
 //     next(false)
 //   }
   if (dd.version === null && to.fullPath.indexOf('/cs') < 0) {
-    window.alert('请在钉钉手机端打开')
-    next(false)
+    // window.alert('请在钉钉手机端打开')
+    // next(false)
+    next()
   } else {
     if (to.meta.ddConfig) { // 如果ddConfig为ture 则进行授权jsAPI
       setDDConfig(to)

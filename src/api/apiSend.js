@@ -88,10 +88,14 @@ const saveFeeAppURL = '/authapi/ddtalkwf/saveFeeApp'
 const getDraftListURL = '/authapi/ddtalkwf/getDraftList'
 // 查看申请保存详情（draftType, appid | Get）
 const getDraftDataByIdURL = '/authapi/ddtalkwf/getDraftDataById'
-
-// 员工费用报销-交通类型
+// IT运维派单
 const getPersonReimTrafficTypeURL = '/authapi/ddtalkwf/getTrafficType'
-
+// IT保存
+const saveItopsBackURL = '/authapi/sendsingle/save'
+// IT 提交
+const startItopsURL = '/authapi/sendsingle/start'
+// IT获取下一节点办理人
+const nextassignItopsURL = '/authapi/sendsingle/ajaxjsonnextassignee'
 const getPosition = function () {
   return axios.get(getPositionURL);
 }
@@ -237,5 +241,8 @@ export default {
   startOverTimeURL,
   nextAssignOverTimeURL,
   newLeaveInfoByIdURL,
-  newLeaveBackListURL
+  newLeaveBackListURL,
+  saveItopsBackURL,
+  startItopsURL,
+  nextassignItopsURL
 }

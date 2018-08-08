@@ -1,6 +1,6 @@
 // let flowData = require('@/data/gmkrule.json');
 import dateFormatter from '@/lib/dateFormatter';
-import * as _ from 'underscore';
+import * as _ from 'underscore'
 
 let childCompFlag = [
   'text',
@@ -45,10 +45,182 @@ export function getFlowData(flowData) {
       }
       sub.showContent = false;
       //  forms的第一层一定是 subComponents,所以此处的判断可以去掉  by zbm 2018-06-21 14:20:56
-      // if (sub.subComponents) {
-      let subComp = sub.subComponents;
-      getSubComponents(subComp);
-      // }
+      if (sub.subComponents) {
+        let subComp = sub.subComponents
+        getSubComponents(subComp);
+      } else {
+        if (sub.name === 'pernr' && sub.component === 'hidden') {
+          data.PERNR_ = sub.value
+        }
+        if (sub.name === 'appid') {
+          data.APPID_ = sub.value
+        }
+        if (sub.name === 'postid') {
+          data.POSTID_ = sub.value
+        }
+        if (sub.name === 'appda') {
+          data.APPDA_ = dateFormatter.fmtDate(sub.value, 'yyyy-MM-dd') || ''
+        }
+        if (sub.name === 'id' && sub.component === 'hidden' && sub.title === '') {
+          data.ID_ = sub.value || ''
+        }
+        if (sub.flowshow) {
+          data.FLOWSHOW.push(sub)
+        }
+        sub.title = sub.title || sub.title1;
+        let subcomp = sub.component
+        if (childCompFlag.indexOf(subcomp) >= 0) { // 匹配需要解析的组件名，没有定义的不需要匹配
+          if (subcomp === 'radio') { // radio
+            if (sub.options) {
+              for (let subOption of sub.options) {
+                if (sub.value === subOption.value) {
+                  sub.nvalue = subOption.title || subOption.text
+                }
+              }
+            } else {
+              sub.nvalue = sub.value
+            }
+          } else if (subcomp === 'select' || subcomp === 'checkbox') { // select
+            if (sub.options) {
+              for (let selectSubOption of sub.options) {
+                if (sub.value === selectSubOption.value) {
+                  sub.nvalue = selectSubOption.text || selectSubOption.title
+                }
+              }
+            } else {
+              sub.nvalue = sub.value
+            }
+          } else if (subcomp.indexOf('date') >= 0) {
+            sub.nvalue = dateFormatter.fmtDate(sub.value, sub.dateFormat)
+          } else if (subcomp === 'label') {
+            sub.nvalue = sub.label;
+          } else if (subcomp === 'text') {
+            let valueStr = sub.value;
+            // 此处需要增加对应的 events事件
+            //  此处判断是否有events events 为打开预览文件的标志，将数据保存到列表中，
+            if (sub.events) {
+              /**
+               *  events 中有viewOther openUrl openHtml openDocument  openHtmlContent
+               *  其中最常用的是 openDocument和 openUrl
+               */
+              //
+              if (sub.events.eventType === 'openUrl') {
+                data.fileparam.filename = sub.value;
+                data.fileparam.fileurl = sub.events.openUrl;
+                flowData.fileUrls.push(data.fileparam);
+              } else if (sub.events.eventType === 'openDocumnet') {
+                data.fileparam.filename = sub.value;
+                data.fileparam.afrescoid = sub.events.afrescoid;
+                flowData.fileUrls.push(data.fileparam);
+              } else if (sub.events.eventType === 'openHtml') {
+                // TODO
+              } else if (sub.events.eventType === 'openHtmlContent') {
+                // TODO
+              }
+            }
+            if (sub.datatype === 'money') {
+              valueStr = fixMoney(sub.value) || 0;
+            } else if (sub.datatype === 'money2dx') {
+              valueStr = money2dx(sub.value) || 0;
+            }
+            sub.nvalue = valueStr;
+          } else if (subcomp === 'comma_concat') {
+            if (sub.options) {
+              for (let commaSubOption of sub.options) {
+                let nvalue = ''
+                if (sub.value === commaSubOption.value) {
+                  nvalue += commaSubOption.text + ',';
+                  sub.nvalue = nvalue.substr(0, nvalue.length - 1);
+                }
+              }
+            } else {
+              sub.nvalue = sub.value;
+            }
+          } else if (subcomp === 'table_form') {
+            sub.ntableForms = [];
+            flowData.forms.SHOWLZL = true
+            if (sub.tableForms.length === 1) {
+              flowData.forms.SHOWLZL = false;
+            }
+            for (let tableIndex = 1, tabLength = sub.tableForms.length; tableIndex < tabLength; tableIndex++) {
+              getSubComponents(sub.tableForms[tableIndex])
+              let rows = sub.tableForms[tableIndex];
+              let titleIndex = sub.titleIndex || 0;
+              let lTitleIndex = titleIndex;
+              let rTitleIndex = titleIndex;
+              if (sub.lTitleIndex !== undefined && sub.lTitleIndex !== null) {
+                lTitleIndex = sub.lTitleIndex;
+              }
+              if (sub.rTitleIndex !== undefined && sub.rTitleIndex !== null) {
+                rTitleIndex = sub.rTitleIndex;
+              }
+
+              let title = ''
+              if (lTitleIndex === rTitleIndex) {
+                title = rows[lTitleIndex].title || rows[lTitleIndex].title1
+              } else {
+                title = getValueSwitchType(rows[lTitleIndex]);
+              }
+              let aa = {};
+              aa.nchildtableForms = rows;
+              aa.title = title;
+              aa.nvalue = getValueSwitchType(rows[rTitleIndex]);
+              // sub.tableForms[tableIndex].title = title;
+              // sub.tableForms[tableIndex].showCollapse = false;
+              // sub.tableForms[tableIndex].nvalue = getValueSwitchType(rows[rTitleIndex]);
+              // sub.tableForms[tableIndex].nchildtableForms = rows
+              sub.ntableForms.push(sub.tableForms[tableIndex])
+            }
+          } else if (subcomp === 'table') {
+            sub.ntableForms = [];
+            flowData.forms.SHOWLZL = true
+            if (sub.tableForms.length === 1) {
+              flowData.forms.SHOWLZL = false;
+            }
+            for (let tableIndex = 1, tabLength = sub.cells.length; tableIndex < tabLength; tableIndex++) {
+              getSubComponents(sub.cells[tableIndex])
+              let rows = sub.cells[tableIndex];
+              let titleIndex = sub.titleIndex || 0;
+              let lTitleIndex = titleIndex;
+              let rTitleIndex = titleIndex;
+              if (sub.lTitleIndex !== undefined && sub.lTitleIndex !== null) {
+                lTitleIndex = sub.lTitleIndex;
+              }
+              if (sub.rTitleIndex !== undefined && sub.rTitleIndex !== null) {
+                rTitleIndex = sub.rTitleIndex;
+              }
+
+              let title = ''
+              if (lTitleIndex === rTitleIndex) {
+                title = rows[lTitleIndex].title || rows[lTitleIndex].title1
+              } else {
+                title = getValueSwitchType(rows[lTitleIndex]);
+              }
+              let aa = {};
+              aa.nchildtableForms = rows;
+              aa.title = title;
+              aa.nvalue = getValueSwitchType(rows[rTitleIndex]);
+              // sub.cells[tableIndex]['title'] = title;
+              // sub.cells[tableIndex].showCollapse = false;
+              // sub.cells[tableIndex].nvalue = getValueSwitchType(rows[rTitleIndex]);
+              // sub.cells[tableIndex].nchildtableForms = rows
+              sub.ntableForms.push(aa)
+            }
+          } else if (subcomp === 'table_ccmx') {
+            sub.ntableForms = [];
+            sub.title = '明细信息'
+            for (let tableIndex = 1, tabLength = sub.tableForms.length; tableIndex < tabLength; tableIndex++) {
+              getSubComponents(sub.tableForms[tableIndex])
+              let rows = sub.tableForms[tableIndex];
+              let titleIndexS = rows.titleIndex_s || 2;
+              let titleIndexE = rows.titleIndex_e || 3;
+              let title = `${rows[titleIndexS].value} --> ${rows[titleIndexE].value}`
+              sub.tableForms[tableIndex].title = title;
+              sub.ntableForms.push(sub.tableForms[tableIndex])
+            }
+          }
+        }
+      }
       if (sub.editable && sub.component !== 'hidden') {
         data.EDITARR_.push(sub)
       }
@@ -70,186 +242,185 @@ function getSubComponents(subData) {
     if (sub.showLinkage && sub.showLinkage.length > 0) {
       ifHidden(sub)
     }
-    // 设计只有一层的 subComponents，永远不会走这个循环 by zbm 2018-06-21 14:46:41
-    // if (sub.subComponents) {
-    //   let subComp = sub.subComponents
-    //   getSubComponents(subComp);
-    // } else {
-    if (sub.flowshow) {
-      data.FLOWSHOW.push(sub)
-    }
-    if (sub.name === 'pernr' && sub.component === 'hidden') {
-      data.PERNR_ = sub.value
-    }
-    if (sub.name === 'appid') {
-      data.APPID_ = sub.value
-    }
-    if (sub.name === 'postid') {
-      data.POSTID_ = sub.value
-    }
-    if (sub.name === 'appda') {
-      data.APPDA_ = dateFormatter.fmtDate(sub.value, 'yyyy-MM-dd') || ''
-    }
-    if (sub.name === 'id') {
-      data.ID_ = sub.value || ''
-    }
-    sub.title = sub.title || sub.title1;
-    let subcomp = sub.component
-    if (childCompFlag.indexOf(subcomp) >= 0) { // 匹配需要解析的组件名，没有定义的不需要匹配
-      if (subcomp === 'radio') { // radio
-        if (sub.options) {
-          for (let subOption of sub.options) {
-            if (sub.value === subOption.value) {
-              sub.nvalue = subOption.title || subOption.text
-            }
-          }
-        } else {
-          sub.nvalue = sub.value
-        }
-      } else if (subcomp === 'select' || subcomp === 'checkbox') { // select
-        if (sub.options) {
-          for (let selectSubOption of sub.options) {
-            if (sub.value === selectSubOption.value) {
-              sub.nvalue = selectSubOption.text || selectSubOption.title
-            }
-          }
-        } else {
-          sub.nvalue = sub.value
-        }
-      } else if (subcomp.indexOf('date') >= 0) {
-        sub.nvalue = dateFormatter.fmtDate(sub.value, sub.dateFormat)
-      } else if (subcomp === 'label') {
-        sub.nvalue = sub.label;
-      } else if (subcomp === 'text') {
-        let valueStr = sub.value;
-        //  此处判断是否有events events 为打开预览文件的标志，将数据保存到列表中，
-        if (sub.events) {
-          /**
-           *  events 中有viewOther openUrl openHtml openDocument  openHtmlContent
-           *  其中最常用的是 openDocument和 openUrl
-           */
-          if (sub.events.eventType === 'openUrl') {
-            data.fileparam.filename = sub.value;
-            data.fileparam.fileurl = sub.events.openUrl;
-            data.fileUrls.push(data.fileparam);
-          } else if (sub.events.eventType === 'openDocumnet') {
-            // 打开文件必须传递的参数有 filename afrescoid
-            data.fileparam.filename = sub.value;
-            data.fileparam.afrescoid = sub.events.afrescoid;
-            data.fileUrls.push(data.fileparam);
-          } else if (sub.events.eventType === 'openHtml') {
-            // TODO 打开Html地址没写
-          } else if (sub.events.eventType === 'openHtmlContent') {
-            // TODO 打开 html文本没写
-          }
-        }
-        if (sub.datatype === 'money') {
-          valueStr = fixMoney(sub.value) || 0;
-        } else if (sub.datatype === 'money2dx') {
-          valueStr = money2dx(sub.value) || 0;
-        }
-        sub.nvalue = valueStr;
-      } else if (subcomp === 'comma_concat') {
-        let commaValue = trimSepeter(sub.value, ',')
-        if (sub.options) {
-          let nvalue = ''
-          for (let commaSubOption of sub.options) {
-            let commaValueArr = commaValue.split(',')
-            for (let cvalue of commaValueArr) {
-              if (cvalue === commaSubOption.value) {
-                nvalue += commaSubOption.text + ',';
-                sub.nvalue = nvalue.substr(0, nvalue.length - 1);
+    if (sub.subComponents) {
+      let subComp = sub.subComponents
+      getSubComponents(subComp);
+    } else {
+      if (sub.flowshow) {
+        data.FLOWSHOW.push(sub)
+      }
+      if (sub.name === 'pernr' && sub.component === 'hidden') {
+        data.PERNR_ = sub.value
+      }
+      if (sub.name === 'appid') {
+        data.APPID_ = sub.value
+      }
+      if (sub.name === 'postid') {
+        data.POSTID_ = sub.value
+      }
+      if (sub.name === 'appda') {
+        data.APPDA_ = dateFormatter.fmtDate(sub.value, 'yyyy-MM-dd') || ''
+      }
+      if (sub.name === 'id' && sub.component === 'hidden' && sub.title === '') {
+        data.ID_ = sub.value || ''
+      }
+      sub.title = sub.title || sub.title1;
+      let subcomp = sub.component
+      if (childCompFlag.indexOf(subcomp) >= 0) { // 匹配需要解析的组件名，没有定义的不需要匹配
+        if (subcomp === 'radio') { // radio
+          if (sub.options) {
+            for (let subOption of sub.options) {
+              if (sub.value === subOption.value) {
+                sub.nvalue = subOption.title || subOption.text
               }
             }
-          }
-        } else {
-          sub.nvalue = sub.value;
-        }
-      } else if (subcomp === 'table_form') {
-        sub.ntableForms = [];
-        subData.SHOWLZL = true
-        if (sub.tableForms.length === 1) {
-          subData.SHOWLZL = false;
-        }
-        for (let tableIndex = 1, tabLength = sub.tableForms.length; tableIndex < tabLength; tableIndex++) {
-          getSubComponents(sub.tableForms[tableIndex])
-          let rows = sub.tableForms[tableIndex];
-          let titleIndex = sub.titleIndex || 0;
-          let lTitleIndex = titleIndex;
-          let rTitleIndex = titleIndex;
-          if (sub.lTitleIndex !== undefined && sub.lTitleIndex !== null) {
-            lTitleIndex = sub.lTitleIndex;
-          }
-          if (sub.rTitleIndex !== undefined && sub.rTitleIndex !== null) {
-            rTitleIndex = sub.rTitleIndex;
-          }
-
-          let title = ''
-          if (lTitleIndex === rTitleIndex) {
-            title = rows[lTitleIndex].title || rows[lTitleIndex].title1
           } else {
-            title = getValueSwitchType(rows[lTitleIndex]);
+            sub.nvalue = sub.value
           }
-          let aa = {};
-          aa.nchildtableForms = rows;
-          aa.title = title;
-          aa.nvalue = getValueSwitchType(rows[rTitleIndex]);
-          // sub.tableForms[tableIndex]['title'] = title;
-          // sub.tableForms[tableIndex].showCollapse = false;
-          // sub.tableForms[tableIndex].nvalue = getValueSwitchType(rows[rTitleIndex]);
-          // sub.tableForms[tableIndex].nchildtableForms = rows
-          sub.ntableForms.push(aa)
-        }
-      } else if (subcomp === 'table') {
-        sub.ntableForms = [];
-        subData.SHOWLZL = true
-        if (sub.cells.length === 1) {
-          subData.SHOWLZL = false;
-        }
-        for (let tableIndex = 1, tabLength = sub.cells.length; tableIndex < tabLength; tableIndex++) {
-          getSubComponents(sub.cells[tableIndex])
-          let rows = sub.cells[tableIndex];
-          let titleIndex = sub.titleIndex || 0;
-          let lTitleIndex = titleIndex;
-          let rTitleIndex = titleIndex;
-          if (sub.lTitleIndex !== undefined && sub.lTitleIndex !== null) {
-            lTitleIndex = sub.lTitleIndex;
-          }
-          if (sub.rTitleIndex !== undefined && sub.rTitleIndex !== null) {
-            rTitleIndex = sub.rTitleIndex;
-          }
-
-          let title = ''
-          if (lTitleIndex === rTitleIndex) {
-            title = rows[lTitleIndex].title || rows[lTitleIndex].title1
+        } else if (subcomp === 'select' || subcomp === 'checkbox') { // select
+          if (sub.options) {
+            for (let selectSubOption of sub.options) {
+              if (sub.value === selectSubOption.value) {
+                sub.nvalue = selectSubOption.text || selectSubOption.title
+              }
+            }
           } else {
-            title = getValueSwitchType(rows[lTitleIndex]);
+            sub.nvalue = sub.value
           }
-          let aa = {};
-          aa.nchildtableForms = rows;
-          aa.title = title;
-          aa.nvalue = getValueSwitchType(rows[rTitleIndex]);
-          // sub.cells[tableIndex].title = title;
-          // sub.cells[tableIndex].showCollapse = false;
-          // sub.cells[tableIndex].nvalue = getValueSwitchType(rows[rTitleIndex]);
-          // sub.cells[tableIndex].nchildtableForms = rows
-          sub.ntableForms.push(aa)
-        }
-      } else if (subcomp === 'table_ccmx') {
-        sub.ntableForms = [];
-        for (let tableIndex = 1, tabLength = sub.tableForms.length; tableIndex < tabLength; tableIndex++) {
-          getSubComponents(sub.tableForms[tableIndex])
-          let rows = sub.tableForms[tableIndex];
-          let titleIndexS = rows.titleIndex_s || 2;
-          let titleIndexE = rows.titleIndex_e || 3;
-          let title = `${rows[titleIndexS].value} --> ${rows[titleIndexE].value}`
-          sub.tableForms[tableIndex].title = title;
-          sub.tableForms[tableIndex].nchildtableForms = rows
-          sub.ntableForms.push(sub.tableForms[tableIndex])
+        } else if (subcomp.indexOf('date') >= 0) {
+          sub.nvalue = dateFormatter.fmtDate(sub.value, sub.dateFormat)
+        } else if (subcomp === 'label') {
+          sub.nvalue = sub.label;
+        } else if (subcomp === 'text') {
+          let valueStr = sub.value;
+          //  此处判断是否有events events 为打开预览文件的标志，将数据保存到列表中，
+          if (sub.events) {
+            /**
+             *  events 中有viewOther openUrl openHtml openDocument  openHtmlContent
+             *  其中最常用的是 openDocument和 openUrl
+             */
+            if (sub.events.eventType === 'openUrl') {
+              data.fileparam.filename = sub.value;
+              data.fileparam.fileurl = sub.events.openUrl;
+              data.fileUrls.push(data.fileparam);
+            } else if (sub.events.eventType === 'openDocumnet') {
+              // TODO
+              data.fileparam.filename = sub.value;
+              data.fileparam.afrescoid = sub.events.afrescoid;
+              data.fileUrls.push(data.fileparam);
+            } else if (sub.events.eventType === 'openHtml') {
+              // TODO
+            } else if (sub.events.eventType === 'openHtmlContent') {
+              // TODO
+            }
+          }
+          if (sub.datatype === 'money') {
+            valueStr = fixMoney(sub.value) || 0;
+          } else if (sub.datatype === 'money2dx') {
+            valueStr = money2dx(sub.value) || 0;
+          }
+          sub.nvalue = valueStr;
+        } else if (subcomp === 'comma_concat') {
+          let commaValue = trimSepeter(sub.value, ',')
+          if (sub.options) {
+            let nvalue = ''
+            for (let commaSubOption of sub.options) {
+              let commaValueArr = commaValue.split(',')
+              for (let cvalue of commaValueArr) {
+                if (cvalue === commaSubOption.value) {
+                  nvalue += commaSubOption.text + ',';
+                  sub.nvalue = nvalue.substr(0, nvalue.length - 1);
+                }
+              }
+            }
+          } else {
+            sub.nvalue = sub.value;
+          }
+        } else if (subcomp === 'table_form') {
+          sub.ntableForms = [];
+          subData.SHOWLZL = true
+          if (sub.tableForms.length === 1) {
+            subData.SHOWLZL = false;
+          }
+          for (let tableIndex = 1, tabLength = sub.tableForms.length; tableIndex < tabLength; tableIndex++) {
+            getSubComponents(sub.tableForms[tableIndex])
+            let rows = sub.tableForms[tableIndex];
+            let titleIndex = sub.titleIndex || 0;
+            let lTitleIndex = titleIndex;
+            let rTitleIndex = titleIndex;
+            if (sub.lTitleIndex !== undefined && sub.lTitleIndex !== null) {
+              lTitleIndex = sub.lTitleIndex;
+            }
+            if (sub.rTitleIndex !== undefined && sub.rTitleIndex !== null) {
+              rTitleIndex = sub.rTitleIndex;
+            }
+
+            let title = ''
+            if (lTitleIndex === rTitleIndex) {
+              title = rows[lTitleIndex].title || rows[lTitleIndex].title1
+            } else {
+              title = getValueSwitchType(rows[lTitleIndex]);
+            }
+            let aa = {};
+            aa.nchildtableForms = rows;
+            aa.title = title;
+            aa.nvalue = getValueSwitchType(rows[rTitleIndex]);
+            // sub.tableForms[tableIndex]['title'] = title;
+            // sub.tableForms[tableIndex].showCollapse = false;
+            // sub.tableForms[tableIndex].nvalue = getValueSwitchType(rows[rTitleIndex]);
+            // sub.tableForms[tableIndex].nchildtableForms = rows
+            sub.ntableForms.push(aa)
+          }
+        } else if (subcomp === 'table') {
+          sub.ntableForms = [];
+          subData.SHOWLZL = true
+          if (sub.cells.length === 1) {
+            subData.SHOWLZL = false;
+          }
+          for (let tableIndex = 1, tabLength = sub.cells.length; tableIndex < tabLength; tableIndex++) {
+            getSubComponents(sub.cells[tableIndex])
+            let rows = sub.cells[tableIndex];
+            let titleIndex = sub.titleIndex || 0;
+            let lTitleIndex = titleIndex;
+            let rTitleIndex = titleIndex;
+            if (sub.lTitleIndex !== undefined && sub.lTitleIndex !== null) {
+              lTitleIndex = sub.lTitleIndex;
+            }
+            if (sub.rTitleIndex !== undefined && sub.rTitleIndex !== null) {
+              rTitleIndex = sub.rTitleIndex;
+            }
+
+            let title = ''
+            if (lTitleIndex === rTitleIndex) {
+              title = rows[lTitleIndex].title || rows[lTitleIndex].title1
+            } else {
+              title = getValueSwitchType(rows[lTitleIndex]);
+            }
+            let aa = {};
+            aa.nchildtableForms = rows;
+            aa.title = title;
+            aa.nvalue = getValueSwitchType(rows[rTitleIndex]);
+            // sub.cells[tableIndex].title = title;
+            // sub.cells[tableIndex].showCollapse = false;
+            // sub.cells[tableIndex].nvalue = getValueSwitchType(rows[rTitleIndex]);
+            // sub.cells[tableIndex].nchildtableForms = rows
+            sub.ntableForms.push(aa)
+          }
+        } else if (subcomp === 'table_ccmx') {
+          sub.ntableForms = [];
+          for (let tableIndex = 1, tabLength = sub.tableForms.length; tableIndex < tabLength; tableIndex++) {
+            getSubComponents(sub.tableForms[tableIndex])
+            let rows = sub.tableForms[tableIndex];
+            let titleIndexS = rows.titleIndex_s || 2;
+            let titleIndexE = rows.titleIndex_e || 3;
+            let title = `${rows[titleIndexS].value} --> ${rows[titleIndexE].value}`
+            sub.tableForms[tableIndex].title = title;
+            sub.tableForms[tableIndex].nchildtableForms = rows
+            sub.ntableForms.push(sub.tableForms[tableIndex])
+          }
         }
       }
     }
-    // }
     if (sub.editable && sub.component !== 'hidden') {
       data.EDITARR_.push(sub)
     }

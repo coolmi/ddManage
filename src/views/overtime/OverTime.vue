@@ -32,123 +32,133 @@
   </div>
 </template>
 <style scoped lang="less" type="text/less">
-.footerButton {
-  padding-bottom: 10px;
-  text-align: center;
-}
+  .footerButton {
+    padding-bottom: 10px;
+    text-align: center;
+  }
 </style>
 <script>
-import {Group, XSwitch, XTextarea, Sticky, Box, XButton, Cell, Flexbox, FlexboxItem, Datetime, XInput, Confirm, TransferDomDirective as TransferDom} from 'vux';
-import vSearch from '@/components/searchChecker';
-import api from 'api';
-import whole from '@/lib/whole'
-// import moment from 'moment'
-// import dataUtils from '../../filters/dataUtils' // 工具类
+  import {Group, XSwitch, XTextarea, Sticky, Box, XButton, Cell, Flexbox, FlexboxItem, Datetime, XInput, Confirm, TransferDomDirective as TransferDom} from 'vux';
+  import vSearch from '@/components/searchChecker';
+  import api from 'api';
+  import whole from '@/lib/whole'
+  // import moment from 'moment'
+  // import dataUtils from '../../filters/dataUtils' // 工具类
 
-export default {
-  directives: {
-    TransferDom
-  },
-  components: {
-    Group, XSwitch, XTextarea, Sticky, Box, XButton, Cell, Flexbox, FlexboxItem, vSearch, Datetime, XInput, Confirm
-  },
-  data () {
-    return {
-      showCon: false,
-      forms: {
-        s_date: '',
-        s_starttime: '',
-        s_endtime: '',
-        s_relex_hours: '0',
-        s_why: '',
-        parmasOption: {}
-      },
-     // systemDate: moment().format('YYYY-MM-DD'),
-     // systemDate2: moment().format('HH:mm'),
-      xxscList: [{'key': '0', 'value': '0'}, {'key': '0.5', 'value': '0.5'}, {'key': '1', 'value': '1'}, {'key': '1.5', 'value': '1.5'}]
-    }
-  },
-  methods: {
-    addReserve(flag) {
-      if (this.forms.s_date === '') {
-        whole.showTop('请选择值班日期')
-        return;
-      }
-      if (this.forms.s_starttime === '') {
-        whole.showTop('请选择开始时间')
-        return;
-      }
-      if (this.forms.s_endtime === '') {
-        whole.showTop('请选择结束时间')
-        return;
-      }
-      if (this.forms.s_why === '') {
-        whole.showTop('请填写值班原因')
-        return;
-      }
-      let parmas = {
-        mainModel: this.forms
-      }
-      this.parmasOption = parmas;
-      console.log(parmas)
-
-      if (flag === 0) {
-        let _that = this;
-        api.getNextAssignOverTimeURL(parmas, function (res) {
-          if (res) {
-            console.log(res)
-            if (res.data.code) {
-              if (res.data.message) {
-                _that.message = res.data.message;
-                _that.showCon = true;
-              } else if (res.data.error) {
-                _that.showCon = false;
-                whole.showTop(res.data.error);
-              }
-            } else {
-              whole.showTop(res.data.message);
-              _that.$router.go(-1)
-            }
-          }
-        })
-      } else if (flag === 1) {
-        let _that = this;
-        api.getSaveOverTimeURL(parmas, function (res) {
-          if (res) {
-            if (res.data.code) {
-              whole.showTop(res.data.message);
-              _that.$router.go(-1)
-            } else {
-              whole.showTop(res.data.message);
-              _that.$router.go(-1)
-            }
-          }
-          console.log(res);
-        })
+  export default {
+    directives: {
+      TransferDom
+    },
+    components: {
+      Group, XSwitch, XTextarea, Sticky, Box, XButton, Cell, Flexbox, FlexboxItem, vSearch, Datetime, XInput, Confirm
+    },
+    data () {
+      return {
+        showCon: false,
+        forms: {
+          s_date: '',
+          s_starttime: '',
+          s_endtime: '',
+          s_relex_hours: '0',
+          s_why: '',
+          parmasOption: {}
+        },
+        // systemDate: moment().format('YYYY-MM-DD'),
+        // systemDate2: moment().format('HH:mm'),
+        xxscList: [{'key': '0', 'value': '0'}, {'key': '0.5', 'value': '0.5'}, {'key': '1', 'value': '1'}, {'key': '1.5', 'value': '1.5'}]
       }
     },
-    onConfirm () {
+    created() {
       let _that = this;
-      console.log(_that.parmasOption);
-      api.getStartOverTimeURL(_that.parmasOption, function (res) {
-        if (res) {
-          if (res.data.code) {
-            whole.showTop(res.data.message);
-            setTimeout(() => {
-              let dd = window.dd;
-              dd.biz.navigation.close({
-                onSuccess: function(result) {
-                },
-                onFail: function(err) {}
-              })
-            }, 1500)
-          } else {
-            whole.showTop(res.data.message);
-            // _that.$router.go(-1)
-          }
+      let currenttime = new Date();
+      let val = currenttime.getMonth() + 1;
+      if (val >= 5 && val < 10) {
+        _that.forms.s_relex_hours = '1.5'
+      } else {
+        _that.forms.s_relex_hours = '1'
+      };
+    },
+    methods: {
+      addReserve(flag) {
+        if (this.forms.s_date === '') {
+          whole.showTop('请选择值班日期')
+          return;
         }
-      })
+        if (this.forms.s_starttime === '') {
+          whole.showTop('请选择开始时间')
+          return;
+        }
+        if (this.forms.s_endtime === '') {
+          whole.showTop('请选择结束时间')
+          return;
+        }
+        if (this.forms.s_why === '') {
+          whole.showTop('请填写值班原因')
+          return;
+        }
+        let parmas = {
+          mainModel: this.forms
+        }
+        this.parmasOption = parmas;
+        console.log(parmas)
+
+        if (flag === 0) {
+          let _that = this;
+          api.getNextAssignOverTimeURL(parmas, function (res) {
+            if (res) {
+              console.log(res)
+              if (res.data.code) {
+                if (res.data.message) {
+                  _that.message = res.data.message;
+                  _that.showCon = true;
+                } else if (res.data.error) {
+                  _that.showCon = false;
+                  whole.showTop(res.data.error);
+                }
+              } else {
+                whole.showTop(res.data.message);
+                _that.$router.go(-1)
+              }
+            }
+          })
+        } else if (flag === 1) {
+          let _that = this;
+          api.getSaveOverTimeURL(parmas, function (res) {
+            if (res) {
+              if (res.data.code) {
+                whole.showTop(res.data.message);
+                _that.$router.go(-1)
+              } else {
+                whole.showTop(res.data.message);
+                _that.$router.go(-1)
+              }
+            }
+            console.log(res);
+          })
+        }
+      },
+      onConfirm () {
+        let _that = this;
+        console.log(_that.parmasOption);
+        api.getStartOverTimeURL(_that.parmasOption, function (res) {
+          if (res) {
+            if (res.data.code) {
+              whole.showTop(res.data.message);
+              setTimeout(() => {
+                let dd = window.dd;
+                dd.biz.navigation.close({
+                  onSuccess: function(result) {
+                  },
+                  onFail: function(err) {}
+                })
+              }, 1500)
+            } else {
+              whole.showTop(res.data.message);
+              // _that.$router.go(-1)
+            }
+          }
+        })
+      }
     }
   }
-}
 </script>

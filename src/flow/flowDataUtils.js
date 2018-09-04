@@ -534,6 +534,7 @@ export function getFlowHistoryData(historyData) {
     // let tasknames = historyData.tasknames
     let usernames = historyData.usernames
     let positions = historyData.positions
+    let signPositions = historyData.signPositions
     let types = historyData.types
     for (let c of comments) {
       let dataParam = {}
@@ -541,6 +542,10 @@ export function getFlowHistoryData(historyData) {
       let typename = types[c.type];
       let user = usernames[c.userId];
       let positionname = positions[c.taskId];
+       // 加签环节 不通过taskId取环节名
+      if (signPositions[c.id] !== undefined) {
+        positionname = signPositions[c.id]
+      }
       dataParam.userId = c.userId;
       dataParam.content = `${positionname} - ${user} : ${typename}`
       dataParam.message = c.fullMessage

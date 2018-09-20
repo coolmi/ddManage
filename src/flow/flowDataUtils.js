@@ -108,7 +108,7 @@ export function getFlowData(flowData) {
                 data.fileparam.filename = sub.value;
                 data.fileparam.fileurl = sub.events.openUrl;
                 flowData.fileUrls.push(data.fileparam);
-              } else if (sub.events.eventType === 'openDocumnet') {
+              } else if (sub.events.eventType === 'openDocument') {
                 data.fileparam.filename = sub.value;
                 data.fileparam.afrescoid = sub.events.afrescoid;
                 flowData.fileUrls.push(data.fileparam);
@@ -303,7 +303,7 @@ function getSubComponents(subData) {
               data.fileparam.filename = sub.value;
               data.fileparam.fileurl = sub.events.openUrl;
               data.fileUrls.push(data.fileparam);
-            } else if (sub.events.eventType === 'openDocumnet') {
+            } else if (sub.events.eventType === 'openDocument') {
               // TODO
               data.fileparam.filename = sub.value;
               data.fileparam.afrescoid = sub.events.afrescoid;
@@ -437,7 +437,8 @@ function ifHidden(sub) { // 判断含有showLinkage的子项 然后搜索showLin
       console.log('获取不到' + id + '或者' + val)
     }
     for (let sitem of subD) {
-      let index = _.findLastIndex(sitem.subComponents, {name: id}) // 找到name是【id】在父类中的位置
+      let index = _.findLastIndex(sitem.subComponents, {id: id}) // 找到name是【id】在父类中的位置
+      // 根据id 搜索而不是根据name 搜索
       if (index !== -1) {
         let subDVal = sitem.subComponents[index].value
         let isHidden = true;

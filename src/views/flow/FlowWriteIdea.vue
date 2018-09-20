@@ -131,7 +131,7 @@
         let dataStr = {};
         let _that = this;
         let dd = window.dd;
-        const flowParams = _that.flowParams
+        let flowParams = _that.flowParams
         let isjiaqian_ = flowParams.isjiaqian_;
         let commentMustable_ = flowParams.commentMustable_;
         let commentMustMsg_ = flowParams.commentMustMsg_;
@@ -150,7 +150,7 @@
           dataStr.ctype = 'default';
           dataStr.isagree = true;
           dataStr.comment = _that.idea || '同意';
-          if (flowParams.selectPerson_.selectAble && flowParams.selectPerson_.beforPop) {
+          if (flowParams.selectPerson_ && flowParams.selectPerson_.selectAble && flowParams.selectPerson_.beforPop) {
             dd.ready(function () {
               dd.biz.contact.complexPicker({
                 title: '选择人员并提交',
@@ -451,7 +451,7 @@
           showIcon: true, // 是否显示icon，true 显示， false 不显示，默认true； 注：具体UI以客户端为准
           onSuccess: function (result) {
             let dataStr = {};
-            const flowParams = _that.flowParams
+            let flowParams = _that.flowParams
             let isjiaqian_ = flowParams.isjiaqian_;
             let commentMustable_ = flowParams.commentMustable_;
             let commentMustMsg_ = flowParams.commentMustMsg_;

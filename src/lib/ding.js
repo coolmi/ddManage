@@ -34,6 +34,7 @@ const W3_YUNWEI_DDID = '131164676026354846' // 炳冉的ddid
 const JH_CONCAT_DDID = 'manager9648' // 京华世家任小冰的ddid
 
 const JH_DINGTALK_CODE = 'APPSERVER-JH' // 京华世家dingtalk_code
+const SHYS_DINGTALK_CODE = 'APPSERVER-YS' // 上海聿晟dingtalk_code
 
 const CORPID = 'ding7d5c838d71be2f8535c2f4657eb6378f';
 
@@ -222,6 +223,7 @@ export default {
   W3_YUNWEI_DDID, //  炳冉
   JH_CONCAT_DDID,
   JH_DINGTALK_CODE,
+  SHYS_DINGTALK_CODE, // 聿晟
   parseParam,
   getItemInLocation,
   getLocation,

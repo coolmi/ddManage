@@ -299,20 +299,20 @@ function getSubComponents(subData) {
              *  events 中有viewOther openUrl openHtml openDocument  openHtmlContent
              *  其中最常用的是 openDocument和 openUrl
              */
+            data.fileparam = {}
             if (sub.events.eventType === 'openUrl') {
               data.fileparam.filename = sub.value;
               data.fileparam.fileurl = sub.events.openUrl;
-              data.fileUrls.push(data.fileparam);
             } else if (sub.events.eventType === 'openDocument') {
               // TODO
               data.fileparam.filename = sub.value;
               data.fileparam.afrescoid = sub.events.afrescoid;
-              data.fileUrls.push(data.fileparam);
             } else if (sub.events.eventType === 'openHtml') {
               // TODO
             } else if (sub.events.eventType === 'openHtmlContent') {
               // TODO
             }
+            data.fileUrls.push(data.fileparam);
           }
           if (sub.datatype === 'money') {
             valueStr = fixMoney(sub.value) || 0;

@@ -309,7 +309,7 @@ function getSubComponents(subData) {
               data.fileparam.afrescoid = sub.events.afrescoid;
             } else if (sub.events.eventType === 'openHtml') {
               // TODO
-            } else if (sub.events.eventType === 'openHtmlContent')
+            } else if (sub.events.eventType === 'openHtmlContent') {
               // TODO
             }
             data.fileUrls.push(data.fileparam);

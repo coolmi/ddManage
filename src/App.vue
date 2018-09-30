@@ -109,7 +109,7 @@
                 router.push('/about')
               } else if (buttonIndex === 2) {
                 api.getLogout(function () {
-                  //  测试机不设置验证密码 方便测试
+//                    测试机不设置验证密码 方便测试
 //                  dd.device.notification.prompt({
 //                    message: '输入确认密码',
 //                    title: '提示',
@@ -125,7 +125,7 @@
 //                    onFail: function (err) {
 //                    }
 //                  });
-                  //  正式机移动办公菜单只开放两人，且设置密码
+//                    正式机移动办公菜单只开放两人，且设置密码
                   dd.device.notification.prompt({
                     message: '输入密码',
                     title: '提示',
@@ -189,7 +189,7 @@
           onSuccess: function (info) {
             if (info.emplId === ding.GMK_LZL || info.emplId === ding.W3_CONCAT_DDID || info.emplId === ding.GMK_ZBM) {
 //  正式机 只有张保敏，李振龙，付明月拥有切换用户的权限
-//            if (info.emplId === ding.GMK_LZL || info.emplId === ding.W3_CONCAT_DDID || info.emplId === ding.GMK_ZBM || info.emplId === ding.GMK_CXN || info.emplId === ding.GMK_XCM || info.emplId === ding.GMK_ZYM || info.emplId === ding.GMK_LZH) {
+//            if (info.emplId === ding.GMK_LZL || info.emplId === ding.W3_CONCAT_DDID || info.emplId === ding.GMK_ZBM || info.emplId === ding.GMK_CXN || info.emplId === ding.GMK_XCM || info.emplId === ding.GMK_ZYM || info.emplId === ding.GMK_LZH || info.emplId === ding.GMK_GJH || info.emplId === ding.GMK_LHH) {
               _that.otherButtons = ['问题反馈', '关于', '移动办公']
             }
           },

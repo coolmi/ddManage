@@ -412,7 +412,8 @@
           _that.fileUrls = flowdata.fileUrls;  // 增加fileUrls 获取
           console.log(flowdata.FLOWSHOW)
           _that.flowParams.ID_ = flowdata.ID_ // 按钮事件中用
-          _that.flowParams.EDITARR_ = flowdata.EDITARR_ // 按钮事件中用 补填的字段
+          _that.$store.dispatch('getEditFields', flowdata.EDITARR_)
+//          _that.flowParams.EDITARR_ = flowdata.EDITARR_ // 按钮事件中用 补填的字段 把补填字段放入状态管理中
           _that.flowParams.APPID_ = flowdata.APPID_ // 按钮事件中用
           _that.flowParams.POSTID_ = flowdata.POSTID_ // 按钮事件中用
           _that.flowParams.APPDA_ = flowdata.APPDA_ // 按钮事件中用
@@ -600,10 +601,9 @@
 //            whole.showTop('暂无附件')
           } else {
             _that.flowFiles = data.files || [];
-
-            for (var i = 0; i < _that.fileUrls.length; i++) {
-              _that.flowFiles.push(_that.fileUrls[i]);
-            }
+          }
+          for (var i = 0; i < _that.fileUrls.length; i++) {
+            _that.flowFiles.push(_that.fileUrls[i]);
           }
         })
       },

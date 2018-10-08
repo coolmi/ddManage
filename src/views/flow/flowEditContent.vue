@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-for="item in flowParams.EDITARR_" :key="item.id">
+    <div v-for="item in editfieldinfo" :key="item.id">
       <template v-if="item.component === 'textarea'">
         <group :title="item.title">
           <x-textarea v-model="item.nvalue" :title="item.title"></x-textarea>
@@ -65,6 +65,7 @@
   import * as _ from 'underscore'
   import ding from '@/lib/ding'
   import api from 'api'
+  import {mapGetters} from 'vuex'
 
   export default {
     components: {
@@ -88,9 +89,20 @@
         userInfo: []
       }
     },
+    computed: {
+      ...mapGetters({
+        editfieldinfo: 'editfieldinfo'
+      })
+    },
     created() {
-      let data = JSON.parse(this.$route.query.flowParams);
-      for (let d of data.EDITARR_) {
+      let param = this.$route.query.flowParams;
+      if (typeof param === 'string') {
+        param = JSON.parse(param);
+      }
+      this.flowParams = param
+//      let data = JSON.parse();
+      let data = this.editfieldinfo;
+      for (let d of data) {
         if (d.forSelectPerson) {
           d.component = 'person'
         }
@@ -120,7 +132,7 @@
           d.options = arr;
         }
       }
-      this.flowParams = data;
+//      this.flowParams = data;
 
       this.btype = this.$route.query.btype;
       this.flag = this.$route.query.flag;
@@ -185,7 +197,7 @@
       },
       saveEditInfo() {
         let arr = [];
-        for (let d of this.flowParams.EDITARR_) {
+        for (let d of this.editfieldinfo) {
           if (d.validation && d.validation.required && d.nvalue === '') {
             whole.showTop('请填写' + d.title);
             return;

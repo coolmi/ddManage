@@ -8,6 +8,7 @@ import travel from './modules/travel'
 import city from './modules/city'
 import personReim from './modules/personReim'
 import newleave from './modules/newleave'
+import editfieldinfo from './modules/editfieldinfo'
 
 Vue.use(Vuex);
 
@@ -22,7 +23,8 @@ export default new Vuex.Store({
       travel,
       city,
       personReim,
-      newleave
+      newleave,
+      editfieldinfo
     },
     strict: debug
 });

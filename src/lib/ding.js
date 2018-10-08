@@ -25,14 +25,18 @@ const RIGHT_TOP_TITLE = '帮助'; // 页面右上角的名称
 
 const GMK_LZL = '094211534726242584'  //  李振龙ddid
 const GMK_ZBM = '094345602424062002'  //  张保敏 ddid
+const GMK_GJH = '051448223438009854'  //  gjh ddid
+const GMK_LZH = '3001136920996174'  //  刘战华 ddid
 const GMK_CXN = '1962122737810613'  //  晓楠 ddid
 const GMK_XCM = '131509693424719696'  //  徐长孟 ddid
 const GMK_ZYM = '154262480124247593'  //  张月民 ddid
+const GMK_LHH = '045643174726213386'  //  李恒虎 ddid
 const W3_CONCAT_DDID = '095117221320233106' // 明月的ddid
 const W3_YUNWEI_DDID = '131164676026354846' // 炳冉的ddid
 const JH_CONCAT_DDID = 'manager9648' // 京华世家任小冰的ddid
 
 const JH_DINGTALK_CODE = 'APPSERVER-JH' // 京华世家dingtalk_code
+const SHYS_DINGTALK_CODE = 'APPSERVER-YS' // 上海聿晟dingtalk_code
 
 const CORPID = 'ding7d5c838d71be2f8535c2f4657eb6378f';
 
@@ -211,15 +215,19 @@ export default {
   NOREFRESH,
   CORPID,
   RIGHT_TOP_TITLE,
+  GMK_GJH,
   GMK_LZL,
   GMK_ZBM,         // 保敏
   GMK_CXN,         // 晓楠
   GMK_XCM,         // 长孟
-  GMK_ZYM,         // 月民
+  GMK_ZYM,  // 月民
+  GMK_LZH,    // 刘占华
+  GMK_LHH,   // 李恒虎
   W3_CONCAT_DDID,  //  明月
   W3_YUNWEI_DDID, //  炳冉
   JH_CONCAT_DDID,
   JH_DINGTALK_CODE,
+  SHYS_DINGTALK_CODE, // 聿晟
   parseParam,
   getItemInLocation,
   getLocation,

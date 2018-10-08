@@ -379,9 +379,9 @@
 //            whole.showTop('暂无附件')
           } else {
             _that.flowFiles = data.files || [];
-            for (var i = 0; i < _that.fileUrls.length; i++) {
-              _that.flowFiles.push(_that.fileUrls[i]);
-            }
+          }
+          for (var i = 0; i < _that.fileUrls.length; i++) {
+            _that.flowFiles.push(_that.fileUrls[i]);
           }
         })
       },

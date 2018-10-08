@@ -1,6 +1,6 @@
 // let flowData = require('@/data/gmkrule.json');
 import dateFormatter from '@/lib/dateFormatter';
-import * as _ from 'underscore';
+import * as _ from 'underscore'
 
 let childCompFlag = [
   'text',

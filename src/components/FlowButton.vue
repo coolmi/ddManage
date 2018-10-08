@@ -11,6 +11,7 @@
 <script>
   import fbname from '@/flow/flowButtonNames'
   import {Divider, Flexbox, FlexboxItem} from 'vux'
+  import {mapGetters} from 'vuex'
 
   export default {
     name: 'FlowButton',
@@ -59,13 +60,18 @@
         });
       })
     },
+    computed: {
+      ...mapGetters({
+        editfieldinfo: 'editfieldinfo'
+      })
+    },
     methods: {
       clickButton(btype) {
-        const flowParams = JSON.stringify(this.flowParams);
+        let flowParams = JSON.stringify(this.flowParams);
         const selectPerson = JSON.stringify(this.flowParams.selectPerson);
         const flag = this.flag;
         const zin = this.zin;
-        let editFlag = this.flowParams.EDITARR_; // 需要补填字段
+        let editFlag = this.editfieldinfo; // 需要补填字段
         if (editFlag.length > 0 && btype === 'tj') {
           this.$router.push({
             path: '/flowEdit',

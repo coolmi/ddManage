@@ -109,7 +109,7 @@
                 router.push('/about')
               } else if (buttonIndex === 2) {
                 api.getLogout(function () {
-                  //  测试机不设置验证密码 方便测试
+//                    测试机不设置验证密码 方便测试
 //                  dd.device.notification.prompt({
 //                    message: '输入确认密码',
 //                    title: '提示',
@@ -125,53 +125,37 @@
 //                    onFail: function (err) {
 //                    }
 //                  });
-                  //  正式机移动办公菜单只开放两人，且设置密码
+//                    正式机移动办公菜单只开放两人，且设置密码
                   dd.device.notification.prompt({
-                    message: '输入确认密码',
+                    message: '输入密码',
                     title: '提示',
                     buttonLabels: ['确定', '取消'],
-                    onSuccess: function (result1) {
-                      if (result1.buttonIndex === 0) {
-                        dingUser.getRequestAuthCode(_that.path).then((data) => {
-                          api.getDebugLogin(data, result1.value, function (res) {
-                          })
-                        })
+                    onSuccess: function (result) {
+                      if (result.buttonIndex === 0) {
+                        if (result.value === 'gmklzl') {
+                          dd.device.notification.prompt({
+                            message: '输入确认密码',
+                            title: '提示',
+                            buttonLabels: ['确定', '取消'],
+                            onSuccess: function (result1) {
+                              if (result1.buttonIndex === 0) {
+                                dingUser.getRequestAuthCode(_that.path).then((data) => {
+                                  api.getDebugLogin(data, result1.value, function (res) {
+                                  })
+                                })
+                              }
+                            },
+                            onFail: function (err) {
+                            }
+                          });
+                        } else {
+                          window.alert('密码错误')
+                        }
                       }
                     },
                     onFail: function (err) {
                     }
                   });
-//                    正式机移动办公菜单只开放两人，且设置密码
-//                  dd.device.notification.prompt({
-//                    message: '输入密码',
-//                    title: '提示',
-//                    buttonLabels: ['确定', '取消'],
-//                    onSuccess: function (result) {
-//                      if (result.buttonIndex === 0) {
-//                        if (result.value === 'gmklzl') {
-//                          dd.device.notification.prompt({
-//                            message: '输入确认密码',
-//                            title: '提示',
-//                            buttonLabels: ['确定', '取消'],
-//                            onSuccess: function (result1) {
-//                              if (result1.buttonIndex === 0) {
-//                                dingUser.getRequestAuthCode(_that.path).then((data) => {
-//                                  api.getDebugLogin(data, result1.value, function (res) {
-//                                  })
-//                                })
-//                              }
-//                            },
-//                            onFail: function (err) {
-//                            }
-//                          });
-//                        } else {
-//                          window.alert('密码错误')
-//                        }
-//                      }
-//                    },
-//                    onFail: function (err) {
-//                    }
-//                  });
                 })
               }
             },

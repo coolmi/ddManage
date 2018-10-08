@@ -127,35 +127,51 @@
 //                  });
                   //  正式机移动办公菜单只开放两人，且设置密码
                   dd.device.notification.prompt({
-                    message: '输入密码',
+                    message: '输入确认密码',
                     title: '提示',
                     buttonLabels: ['确定', '取消'],
-                    onSuccess: function (result) {
-                      if (result.buttonIndex === 0) {
-                        if (result.value === 'gmklzl') {
-                          dd.device.notification.prompt({
-                            message: '输入确认密码',
-                            title: '提示',
-                            buttonLabels: ['确定', '取消'],
-                            onSuccess: function (result1) {
-                              if (result1.buttonIndex === 0) {
-                                dingUser.getRequestAuthCode(_that.path).then((data) => {
-                                  api.getDebugLogin(data, result1.value, function (res) {
-                                  })
-                                })
-                              }
-                            },
-                            onFail: function (err) {
-                            }
-                          });
-                        } else {
-                          window.alert('密码错误')
-                        }
+                    onSuccess: function (result1) {
+                      if (result1.buttonIndex === 0) {
+                        dingUser.getRequestAuthCode(_that.path).then((data) => {
+                          api.getDebugLogin(data, result1.value, function (res) {
+                          })
+                        })
                       }
                     },
                     onFail: function (err) {
                     }
                   });
+//                    正式机移动办公菜单只开放两人，且设置密码
+//                  dd.device.notification.prompt({
+//                    message: '输入密码',
+//                    title: '提示',
+//                    buttonLabels: ['确定', '取消'],
+//                    onSuccess: function (result) {
+//                      if (result.buttonIndex === 0) {
+//                        if (result.value === 'gmklzl') {
+//                          dd.device.notification.prompt({
+//                            message: '输入确认密码',
+//                            title: '提示',
+//                            buttonLabels: ['确定', '取消'],
+//                            onSuccess: function (result1) {
+//                              if (result1.buttonIndex === 0) {
+//                                dingUser.getRequestAuthCode(_that.path).then((data) => {
+//                                  api.getDebugLogin(data, result1.value, function (res) {
+//                                  })
+//                                })
+//                              }
+//                            },
+//                            onFail: function (err) {
+//                            }
+//                          });
+//                        } else {
+//                          window.alert('密码错误')
+//                        }
+//                      }
+//                    },
+//                    onFail: function (err) {
+//                    }
+//                  });
                 })
               }
             },
@@ -187,10 +203,11 @@
       dd.ready(function () {
         dd.biz.user.get({
           onSuccess: function (info) {
-            if (info.emplId === ding.GMK_LZL || info.emplId === ding.W3_CONCAT_DDID || info.emplId === ding.GMK_ZBM) {
+//            if (info.emplId === ding.GMK_LZL || info.emplId === ding.W3_CONCAT_DDID || info.emplId === ding.GMK_ZBM) {
 //  正式机 只有张保敏，李振龙，付明月拥有切换用户的权限
-//            if (info.emplId === ding.GMK_LZL || info.emplId === ding.W3_CONCAT_DDID || info.emplId === ding.GMK_ZBM || info.emplId === ding.GMK_CXN || info.emplId === ding.GMK_XCM || info.emplId === ding.GMK_ZYM) {
+            if (info.emplId === ding.GMK_LZL || info.emplId === ding.W3_CONCAT_DDID || info.emplId === ding.GMK_ZBM || info.emplId === ding.GMK_CXN || info.emplId === ding.GMK_XCM || info.emplId === ding.GMK_ZYM || info.emplId === ding.GMK_LZH || info.emplId === ding.GMK_GJH || info.emplId === ding.GMK_LHH) {
               _that.otherButtons = ['问题反馈', '关于', '移动办公']
+//            }
             }
           },
           onFail: function (err) {

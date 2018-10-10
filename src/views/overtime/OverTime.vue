@@ -45,7 +45,6 @@
   // import moment from 'moment'
   // import dataUtils from '../../filters/dataUtils' // 工具类
 
-<<<<<<< HEAD
 export default {
   directives: {
     TransferDom
@@ -99,29 +98,6 @@ export default {
       }
       let parmas = {
         mainModel: this.forms
-=======
-  export default {
-    directives: {
-      TransferDom
-    },
-    components: {
-      Group, XSwitch, XTextarea, Sticky, Box, XButton, Cell, Flexbox, FlexboxItem, vSearch, Datetime, XInput, Confirm
-    },
-    data () {
-      return {
-        showCon: false,
-        forms: {
-          s_date: '',
-          s_starttime: '',
-          s_endtime: '',
-          s_relex_hours: '0',
-          s_why: '',
-          parmasOption: {}
-        },
-        // systemDate: moment().format('YYYY-MM-DD'),
-        // systemDate2: moment().format('HH:mm'),
-        xxscList: [{'key': '0', 'value': '0'}, {'key': '0.5', 'value': '0.5'}, {'key': '1', 'value': '1'}, {'key': '1.5', 'value': '1.5'}]
->>>>>>> lconnect
       }
     },
     created() {
@@ -216,5 +192,5 @@ export default {
         })
       }
     }
-  }
+  }}
 </script>

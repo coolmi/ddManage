@@ -3,7 +3,8 @@
     <group title="申请信息">
       <x-input v-model="holidaytypenames" title="休假类型名称" v-show="false"></x-input>
 
-      <v-search title="选择休假类型" :cdata="leavetypelist" v-model="forms.holidaytype" @change.native="changeHoliday"></v-search>
+      <v-search title="选择休假类型" :cdata="leavetypelist" v-model="forms.holidaytype"
+                @change.native="changeHoliday"></v-search>
       <v-search title="直系亲属" :cdata="zxqsList" v-show="isshowsaj" v-model="forms.zxqs"></v-search>
       <x-input title="目的地" v-show="isshowsaj" v-model="forms.destion" text-align="right"></x-input>
       <!--<v-search title="选择病假类型" :cdata="bjlxList" v-show="isshowbj" v-model="forms.bjlx"></v-search>-->
@@ -14,6 +15,11 @@
       <cell title="当月已休事假天数" v-show="isshowshj" v-model="forms.ljsjtsm"></cell>
       <cell title="当年已休事假天数" v-show="isshowshj" v-model="forms.ljsjtsy"></cell>
 
+      <datetime v-model="forms.timea" format="HH:mm" title="开始时间" v-show="isshowbrj"></datetime>
+      <datetime v-model="forms.timeb" format="HH:mm" title="结束时间" v-show="isshowbrj"></datetime>
+      <datetime v-show="isshowbrj" v-model="forms.effecta" format="YYYY-MM-DD" title="小孩出生日期"
+                @on-change="changetime(forms.effecta)"></datetime>
+      <datetime v-show="isshowbrj" v-model="forms.effectb" format="YYYY-MM-DD" title="失效日期"></datetime>
       <datetime v-model="forms.sdate" format="YYYY-MM-DD" title="开始日期"></datetime>
       <datetime v-model="forms.edate" format="YYYY-MM-DD" title="结束日期"></datetime>
 
@@ -22,14 +28,10 @@
 
       <v-search title="休假方式" :cdata="bulist" v-show="isshowbrj" v-model="forms.brjxjlx"></v-search>
       <v-search title="生育胎数" :cdata="butailist" v-show="isshowbrj" v-model="forms.tesl"></v-search>
-      <cell title="存调休小时数" v-show="showbrbu" v-model="forms.ctxxss"></cell>
-      <datetime v-show="isshowbrj" v-model="forms.effecta" format="YYYY-MM-DD" title="小孩出生日期" @on-change="changetime(forms.effecta)"></datetime>
-      <datetime v-show="isshowbrj" v-model="forms.effectb" format="YYYY-MM-DD" title="失效日期"></datetime>
-
-      <datetime v-model="forms.timea" format="HH:mm" title="开始时间" v-show="isshowbrj"></datetime>
-      <datetime v-model="forms.timeb" format="HH:mm" title="结束时间" v-show="isshowbrj"></datetime>
       <datetime v-show="showbrj" v-model="forms.timec" format="HH:mm" title="第二次开始时间"></datetime>
       <datetime v-show="showbrj" v-model="forms.timed" format="HH:mm" title="第二次结束时间"></datetime>
+      <cell title="存调休小时数" v-show="showbrbu" v-model="forms.ctxxss"></cell>
+
 
       <!--<x-input :readonly="true" v-model="forms.thisdays" title="休假天数"></x-input>-->
       <cell title="休假天数" v-show="thisdayscount" readonly>{{forms.thisdays}}</cell>
@@ -39,7 +41,8 @@
       <cell title="享有额度(时)" v-show="isshownj" v-model="forms.enjoy"></cell>
       <cell title="已用额度(时)" v-show="isshownj" v-model="forms.hasuse"></cell>
 
-      <x-textarea title="请假原因" v-model="forms.readks" placeholder="" :show-counter="false" :rows="3" autosize></x-textarea>
+      <x-textarea title="请假原因" v-model="forms.readks" placeholder="" :show-counter="false" :rows="3"
+                  autosize></x-textarea>
       <x-button type="primary" @click.native="setConnect2()" v-show="btnshow2">填写工作交接表单</x-button>
 
     </group>
@@ -52,10 +55,13 @@
 
 
     <group title="工作交接表单" v-if="formData.length > 0" style="margin-bottom: 60px;" v-show="btnshow2">
-      <cell v-for="d in formData" :key="d.uuid" :title="d.j_gzsx" is-link @click.native="setConnect2(d)">{{d.j_jsrxm  + '    ' + d.j_gzsx}}</cell>
+      <cell v-for="d in formData" :key="d.uuid" :title="d.j_gzsx" is-link @click.native="setConnect2(d)">{{d.j_jsrxm + ' ' + d.j_gzsx}}
+      </cell>
     </group>
     <group title="工作授权表单" v-if="formData2.length > 0" style="margin-bottom: 60px;" v-show="value3">
-      <x-textarea v-for="d in formData2" :rows="2" :key="d.uuid" title="工作事项" v-model="d.s_gzsx" is-link @click.native="setAccredit(d)" readonly>{{d.s_gzsx}}</x-textarea>
+      <x-textarea v-for="d in formData2" :rows="2" :key="d.uuid" title="工作事项" v-model="d.s_gzsx" is-link
+                  @click.native="setAccredit(d)" readonly>{{d.s_gzsx}}
+      </x-textarea>
     </group>
     <flexbox class="footerButton">
       <flexbox-item class="vux-1px-r" @click.native="addReserve(0)" style="color:#00B705">提交</flexbox-item>
@@ -79,7 +85,22 @@
   }
 </style>
 <script>
-  import {Group, Selector, XSwitch, XTextarea, Sticky, Box, XButton, Cell, Flexbox, FlexboxItem, Datetime, XInput, Confirm, TransferDomDirective as TransferDom} from 'vux';
+  import {
+    Group,
+    Selector,
+    XSwitch,
+    XTextarea,
+    Sticky,
+    Box,
+    XButton,
+    Cell,
+    Flexbox,
+    FlexboxItem,
+    Datetime,
+    XInput,
+    Confirm,
+    TransferDomDirective as TransferDom
+  } from 'vux';
   import vSearch from '@/components/searchChecker';
   import api from 'api';
   import whole from '@/lib/whole'
@@ -93,11 +114,27 @@
       TransferDom
     },
     components: {
-      Group, Selector, XSwitch, XTextarea, Sticky, Box, XButton, Cell, Flexbox, FlexboxItem, vSearch, Datetime, XInput, Confirm
+      Group,
+      Selector,
+      XSwitch,
+      XTextarea,
+      Sticky,
+      Box,
+      XButton,
+      Cell,
+      Flexbox,
+      FlexboxItem,
+      vSearch,
+      Datetime,
+      XInput,
+      Confirm
     },
-    data () {
+    data() {
       return {
         showCon: false,
+        showbrjflag: '',
+        btnshow1flag: '',
+        btnshow2flag: '',
         forms: {
           // postid: '',
           sdate: '',
@@ -147,7 +184,10 @@
         bcbList: [{'key': 'upper', 'value': '上午'}, {'key': 'all', 'value': '全天'}, {'key': '', 'value': '空'}],
         list2: [{key: true, value: '是'}, {key: false, value: '否'}],
         bulist: [{'value': '每天一次', 'key': '1'}, {'value': '每天两次', 'key': '2'}],
-        butailist: [{'value': '一胞胎', 'key': '1'}, {'value': '二胞胎', 'key': '2'}, {'value': '三胞胎', 'key': '3'}, {'value': '四胞胎', 'key': '4'}],
+        butailist: [{'value': '一胞胎', 'key': '1'}, {'value': '二胞胎', 'key': '2'}, {
+          'value': '三胞胎',
+          'key': '3'
+        }, {'value': '四胞胎', 'key': '4'}],
         value3: false
       }
     },
@@ -163,7 +203,7 @@
       thisdayscount: function () {
         let _that = this;
         if ((this.forms.holidaytype !== 'A02' && this.forms.holidaytype !== 'A11' && this.forms.sdate !== '' && this.forms.edate !== '' && (this.forms.dutya !== '' || this.forms.dutyb !== '')) ||
-          (this.forms.holidaytype === 'A02' && this.forms.sdate !== '' && this.forms.edate !== '' && this.forms.dutya !== '' && this.forms.dutyb !== '') ||
+          (this.forms.holidaytype === 'A02' && this.forms.sdate !== '' && this.forms.edate !== '' && (this.forms.dutya !== '' || this.forms.dutyb !== '' || this.forms.dutya === '' || this.forms.dutyb === '')) ||
           (this.forms.holidaytype === 'A11' && this.forms.sdate !== '' && this.forms.edate !== '' && this.forms.timea !== '' && this.forms.timeb !== '')) {
           let params = {
             mainModel: this.forms
@@ -171,7 +211,7 @@
           api.getKqbcURL(params, function (res) {
             if (res.data.code) {
               console.log('计算fdfdf:')
-              console.log(res.data.data)
+              console.log(res)
               _that.forms.thisdays = res.data.data.thisdays
               _that.forms.comdays = res.data.data.comdays
               _that.forms.thishours = res.data.data.thishours
@@ -186,6 +226,10 @@
               _that.forms.ctxnjts = res.data.data.ctxnjts
               _that.forms.ljsjtsy = res.data.data.ljsjtsy
               _that.forms.ljsjtsm = res.data.data.ljsjtsm
+              if (res.data.data.error !== '' && res.data.data.error !== undefined) {
+                console.log(res.data.data.error)
+                whole.showTop(res.data.data.error)
+              }
             }
           })
           if (this.forms.holidaytype === 'A02' || this.forms.holidaytype === 'A11') {
@@ -210,7 +254,7 @@
       },
       // 自动获取假期名字
       holidaytypenames: {
-        get () {
+        get() {
           this.forms.holidaytypename = this.getNameByVal(this.leavetypelist, this.forms.holidaytype);
           if (this.forms.holidaytypename === '丧假' || this.forms.holidaytypename === '年假' || this.forms.holidaytypename === '探亲假') {
             whole.showTop('不包含周六、日及法定节假日!')
@@ -230,16 +274,21 @@
           }
           return this.forms.holidaytypename;
         },
-        set (val) {
+        set(val) {
           this.forms.holidaytypename = val;
         }
       },
       // 哺乳假方式
-      showbrj: function () {
-        if (this.forms.brjxjlx === '2') {
-          return true
-        } else {
-          return false
+      showbrj: {
+        get() {
+          if (this.forms.brjxjlx === '2') {
+            return true
+          } else {
+            return false
+          }
+        },
+        set(val) {
+          this.showbrjflag = val
         }
       },
       // 除了哺乳假之外的假期班次字段
@@ -298,47 +347,57 @@
           return false
         }
       },
-      btnshow1: function () {
-        let _that = this
-        // if (_that.forms.thisdays >= 2 && _that.forms.thisdays <= 4 && _that.forms.holidaytype !== 'A04' && _that.forms.holidaytype !== 'A07') {
-        //   if (_that.forms.holidaytype !== 'B01' || _that.forms.bjlx !== '长期病假') {
-        //     _that.btnshow2 = false
-        //     return true
-        //   }
-        // } else {
-        //   return false
-        // }
-        if (_that.forms.holidaytype === 'J01' || _that.forms.holidaytype === 'C01' || _that.forms.holidaytype === 'A03' || _that.forms.holidaytype === 'A05' || _that.forms.holidaytype === 'A08' || _that.forms.holidaytype === 'A02' || _that.forms.holidaytype === 'B01' && _that.forms.bjlx === '短期病假') {
-          if (_that.forms.thisdays >= 2 && _that.forms.thisdays <= 4) {
-            _that.btnshow2 = false
-            _that.value3 = true
-            return true
+      btnshow1: {
+        get() {
+          let _that = this
+          // if (_that.forms.thisdays >= 2 && _that.forms.thisdays <= 4 && _that.forms.holidaytype !== 'A04' && _that.forms.holidaytype !== 'A07') {
+          //   if (_that.forms.holidaytype !== 'B01' || _that.forms.bjlx !== '长期病假') {
+          //     _that.btnshow2 = false
+          //     return true
+          //   }
+          // } else {
+          //   return false
+          // }
+          if (_that.forms.holidaytype === 'J01' || _that.forms.holidaytype === 'C01' || _that.forms.holidaytype === 'A03' || _that.forms.holidaytype === 'A05' || _that.forms.holidaytype === 'A08' || _that.forms.holidaytype === 'A02' || _that.forms.holidaytype === 'B01' && _that.forms.bjlx === '短期病假') {
+            if (_that.forms.thisdays >= 2 && _that.forms.thisdays <= 4) {
+              _that.btnshow2 = false
+              _that.value3 = true
+              return true
+            }
+          } else {
+            return false
           }
-        } else {
-          return false
+        },
+        set(val) {
+          this.btnshow1flag = val
         }
       },
-      btnshow2: function () {
-        let _that = this
-        if (_that.forms.holidaytype === 'A04' || _that.forms.holidaytype === 'A07' || _that.forms.holidaytype === 'B01' && _that.forms.bjlx === '长期病假') {
-          _that.btnshow1 = false
-          // _that.showBtn = false
-          _that.value3 = false
-          whole.showTop('请填写工作交接表单')
-          return true
-        } else if (_that.forms.holidaytype === 'J01' || _that.forms.holidaytype === 'C01' || _that.forms.holidaytype === 'A03' || _that.forms.holidaytype === 'A05' || _that.forms.holidaytype === 'A08' || _that.forms.holidaytype === 'A02' || _that.forms.holidaytype === 'B01' && _that.forms.bjlx === '短期病假') {
-          if (_that.forms.thisdays >= 5) {
+      btnshow2: {
+        get() {
+          let _that = this
+          if (_that.forms.holidaytype === 'A04' || _that.forms.holidaytype === 'A07' || _that.forms.holidaytype === 'B01' && _that.forms.bjlx === '长期病假') {
             _that.btnshow1 = false
             // _that.showBtn = false
             _that.value3 = false
             whole.showTop('请填写工作交接表单')
             return true
+          } else if (_that.forms.holidaytype === 'J01' || _that.forms.holidaytype === 'C01' || _that.forms.holidaytype === 'A03' || _that.forms.holidaytype === 'A05' || _that.forms.holidaytype === 'A08' || _that.forms.holidaytype === 'A02' || _that.forms.holidaytype === 'B01' && _that.forms.bjlx === '短期病假') {
+            if (_that.forms.thisdays >= 5) {
+              _that.btnshow1 = false
+              // _that.showBtn = false
+              _that.value3 = false
+              whole.showTop('请填写工作交接表单')
+              return true
+            }
+          } else {
+            return false
           }
-        } else {
-          return false
+        },
+        set(val) {
+          this.btnshow2flag = val
         }
       },
-      accreditshow () {
+      accreditshow() {
         let _that = this
         if (_that.btnshow1 === true) {
           return true
@@ -384,7 +443,7 @@
         this.forms.edate = this.forms.edate;
       },
       // 通过value值拿name
-      getNameByVal (obj, code) {
+      getNameByVal(obj, code) {
         let name = '';
         for (let n of obj) {
           if (n.key === code) {
@@ -394,26 +453,49 @@
         return name;
       },
       // 改变假期初始化数据
-      changeHoliday () {
+      changeHoliday() {
         this.forms.sdate = ''
         this.forms.edate = ''
         this.forms.thishours = ''
         this.forms.thisdays = ''
         this.forms.brjxjlx = '1'
+        this.forms.ctxxss = ''
+        this.forms.effecta = ''
+        this.forms.effectb = ''
+        this.forms.timea = ''
+        this.forms.timeb = ''
+        this.forms.timec = ''
+        this.forms.timed = ''
         this.showbrj = false
       },
       // 小孩出生日期给失效日期赋值
-      changetime (val) {
+      changetime(val) {
         console.log(val)
         let date = new Date(val)
-        this.forms.effectb = (date.getFullYear() + 1) + '-' + (date.getMonth() + 1) + '-' + date.getDate()
+        this.forms.effectb = (date.getFullYear() + 1) + '-' + this.changeNumber(date.getMonth()) + '-' + this.changeNumber1(date.getDate())
         console.log(this.forms.effectb);
       },
+      // 月值改变
+      changeNumber(val) {
+        if ((val + 1) > 9) {
+          return val + 1
+        }
+        if ((val + 1) <= 9) {
+          let num = (val + 1).toString()
+          return '0' + num
+        }
+      },
+      // 天值改变
+      changeNumber1(val) {
+        if (val > 9) {
+          return val
+        }
+        if (val <= 9) {
+          let num = val.toString()
+          return '0' + num
+        }
+      },
       addReserve(flag) {
-        // if (this.forms.postid === '') {
-        //   whole.showTop('请选择岗位')
-        //   return;
-        // }
         if (this.forms.sdate === '') {
           whole.showTop('请选择休假开始日期')
           return;
@@ -456,10 +538,11 @@
           // })
           api.getNextAssignNewLeaveURL(parmas, function (res) {
             if (res) {
+              console.log('提交信息')
               console.log(res)
               if (res.data.code) {
                 if (res.data.message) {
-                  _that.message = res.data.message;
+                  _that.forms.message = res.data.message;
                   _that.showCon = true;
                 } else if (res.data.data.error) {
                   _that.showCon = false;
@@ -488,29 +571,29 @@
         }
         // alert(JSON.stringify(this.forms))
       },
-      onConfirm () {
+      onConfirm() {
         let _that = this;
         // alert(JSON.stringify(_that.parmasOption));
         api.getStartNewLeaveURL(_that.parmasOption, function (res) {
-          if (res) {
-            if (res.data.code) {
-              whole.showTop(res.data.message);
-              setTimeout(() => {
-                let dd = window.dd;
-                dd.biz.navigation.close({
-                  onSuccess: function(result) {
-                  },
-                  onFail: function(err) {}
-                })
-              }, 1500)
-            } else {
-              whole.showTop(res.data.message);
-              // _that.$router.go(-1)
-            }
+          if (res.data.code) {
+            console.log(res);
+            whole.showTop(res.data.message);
+            setTimeout(() => {
+              let dd = window.dd;
+              dd.biz.navigation.close({
+                onSuccess: function (result) {
+                },
+                onFail: function (err) {
+                }
+              })
+            }, 1500)
+          } else {
+            whole.showTop(res.data.message);
+            // _that.$router.go(-1)
           }
         })
       },
-      setConnect2 (data = {}) {
+      setConnect2(data = {}) {
         let formsDemo = {};
         formsDemo = {
           formsData: JSON.stringify(data),
@@ -519,7 +602,7 @@
         }
         this.$router.push({path: '/connect', query: {formsDemo: formsDemo}})
       },
-      setAccredit (data = {}) {
+      setAccredit(data = {}) {
         let formsDemo = {};
         formsDemo = {
           formsData: JSON.stringify(data),
@@ -529,7 +612,7 @@
         // alert(JSON.stringify(formsDemo))
         this.$router.push({path: '/accredit', query: {formsDemo: formsDemo}})
       },
-      showBtn1 () {
+      showBtn1() {
         let _that = this
         if (_that.btnshow1 === true && _that.value3 === true) {
           whole.showTop('请填写工作授权表单')

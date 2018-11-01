@@ -100,7 +100,55 @@ export function setFlowButton(taskAuth) {
     return result;
   }
 }
+// "btn_handle_back_jump": false,////驳回选环节
+//   "isCandidate": false,//签收
+//   "isCirculate": true,//传阅按钮
+//   "isEnd": false,// 流程是否结束
+//   "isSuitableOrsign": false,// true非会签 false会签
+//   "isdelegate": true,//转办按钮
+//   "ishandleback": true,//退回按钮
+//   "ishandlesave": true,//办理保存按钮
+//   "ishandlesumit": true,//办理提交按钮
+//   "issignplus": true,//加签按钮
+//   "issignplushandle": false,//当前是否是加签环节
+//   "isusebackto": false,//任意跳转按钮
+//   "isuseprint": false,//打印按钮
+//   "isusevoid": false//作废按钮
+export function setNewFlowButton(taskAuth) {
+  if (typeof taskAuth !== 'undefined' && taskAuth !== null) {
+    let result = {};
+    let btnArr = [];
+    let issignningA = taskAuth.issignplushandle ? '1' : '0';
+    let issignplushandleA = taskAuth.issignplushandle;
+    if (taskAuth.ishandlesumit) {
+      btnArr.push('tj')
+    }
+    if (taskAuth.ishandleback) {
+      btnArr.push('th')
+    }
+    if (taskAuth.issignplus) {
+      btnArr.push('jq')
+    }
+    if (taskAuth.isdelegate) {
+      btnArr.push('zb')
+    }
+    if (taskAuth.isCandidate) {
+      btnArr.push('qs')
+    }
+    if (taskAuth.isSuitableOrsign) {
+      btnArr.push('hq')
+    }
+    if (taskAuth.isusevoid) {
+      btnArr.push('zf')
+    }
+    result.btnArr = btnArr;
+    result.issignningA = issignningA;
+    result.issignplushandleA = issignplushandleA;
+    return result;
+  }
+}
 
 export default {
+  setNewFlowButton,
   setFlowButton
 }

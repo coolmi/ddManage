@@ -1,0 +1,54 @@
+@import "../weui/base/fn";
+.flow-list {
+  position: absolute;
+  top: .3rem;
+  left: 0;
+  right: 0;
+  background: #f8f8f8;
+  //padding: .6rem .75rem;
+  //min-height: 100vh
+}
+
+.flow-list .flow-detail-base {
+  background: #FFF;
+  border: 1px solid rgba(25, 31, 37, .12);
+  box-shadow: 0 5px 20px 0 rgba(25, 31, 37, .08);
+  border-radius: 5px;
+  padding: 10px 16px;
+  margin-bottom: 12px
+}
+.flow-list .flow-detail-title {
+  position: relative;
+  overflow: hidden;
+  height: 20px;
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+  &:after {
+    .setBottomLine(@weuiGridBorderColor, 0px);
+  }
+}
+.detail-title {
+  font-size: 13px;
+  color: rgba(25, 31, 37, .56)
+}
+.flow-list .flow-detail-action {
+  position: relative;
+  overflow: hidden;
+  height: 20px;
+  padding-top: 10px;
+  margin-top: 10px;
+  &:before {
+    .setTopLine(@weuiGridBorderColor, 0px);
+  }
+}
+
+.flow-list .flow-detail-action span {
+  color: rgba(25, 31, 37, .56);
+  font-size: 13px;
+}
+
+.flow-list .flow-detail-action .flow-detail-action-buttons {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+}

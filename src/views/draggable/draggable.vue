@@ -39,7 +39,7 @@
 
 <script>
   import draggable from 'vuedraggable'
-  import {swiper, swiperSlide} from 'vue-awesome-swiper'
+//  import {swiper, swiperSlide} from 'vue-awesome-swiper'
   import api from 'api'
   import ding from '@/lib/ding'
   import dingUser from '@/lib/dingUser'
@@ -181,9 +181,7 @@
       }
     },
     components: {
-      draggable,
-      swiper,
-      swiperSlide
+      draggable
     },
     computed: {
       ...mapGetters({

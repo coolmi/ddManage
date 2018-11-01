@@ -9,6 +9,7 @@ import city from './modules/city'
 import personReim from './modules/personReim'
 import newleave from './modules/newleave'
 import editfieldinfo from './modules/editfieldinfo'
+import myFlow from './modules/myFlow'
 
 Vue.use(Vuex);
 
@@ -24,7 +25,8 @@ export default new Vuex.Store({
       city,
       personReim,
       newleave,
-      editfieldinfo
+      editfieldinfo,
+      myFlow
     },
     strict: debug
 });

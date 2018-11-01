@@ -1,0 +1,45 @@
+@import "../weui/base/mixin/setOnepx";
+.selectDate {
+  padding: 2rem 1rem;
+  min-height: 100vh;
+  //z-index: 1000;
+  background-color: #ffffff;
+}
+.selectDate-group {
+  display: flex;
+}
+.selectDate-group-date{
+  flex: 1;
+}
+.selectDate-group-span {
+  align-self: center;
+}
+.selectDateBtn {
+  display: inline-flex;
+  align-items: center;
+  padding: .2rem .6rem;
+  background-color: #3DBAEF;
+  color: #ffffff;
+  border-radius: 10px;
+}
+.selectDateBtn img{
+  width: 1.2rem;
+  height: 1.2rem;
+  padding-left: .6rem;
+}
+.selectDate-showDate {
+  position: relative;
+  padding: 1rem;
+  text-align: center;
+  border-bottom: 1px solid #3DBAEF;
+}
+.fade-enter-active {
+  transition: all .5s ease;
+}
+.fade-leave-active {
+  transition: all .5s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+}
+.fade-enter, .fade-leave-to {
+  transform: translateY(-100%);
+  opacity: 0;
+}

@@ -390,6 +390,7 @@
         api.getAuthor(flowParams, function (authorRes) {
           // 按钮处理
           let buttonData = authorRes.data;
+          console.log(buttonData)
           if (buttonData.taskAuth) {
             let result = FBtnUtils.setFlowButton(buttonData.taskAuth);
             _that.buttonArr = result.btnArr;
@@ -432,12 +433,22 @@
             api.getAuthor(flowParams, function (authorRes) {
               // 按钮处理
               let buttonData = authorRes.data;
-              if (buttonData.taskAuth) {
-                let result = FBtnUtils.setFlowButton(buttonData.taskAuth);
-                _that.buttonArr = result.btnArr;
-                _that.flowParams.isjiaqian_ = !!result.isjiaqian // 按钮事件中用
-                _that.flowParams.issignningA_ = result.issignningA // 按钮事件中用
-                _that.flowParams.issignplushandleA = result.issignplushandleA // 按钮事件中用
+              if (buttonData.result) {
+                if (buttonData.taskAuth) {
+                  let result = FBtnUtils.setNewFlowButton(buttonData.taskAuth);
+                  _that.buttonArr = result.btnArr;
+                  _that.flowParams.isjiaqian_ = !!result.isjiaqian // 按钮事件中用
+                  _that.flowParams.issignningA_ = result.issignningA // 按钮事件中用
+                  _that.flowParams.issignplushandleA = result.issignplushandleA // 按钮事件中用
+                }
+              } else {
+                if (buttonData.taskAuth) {
+                  let result = FBtnUtils.setFlowButton(buttonData.taskAuth);
+                  _that.buttonArr = result.btnArr;
+                  _that.flowParams.isjiaqian_ = !!result.isjiaqian // 按钮事件中用
+                  _that.flowParams.issignningA_ = result.issignningA // 按钮事件中用
+                  _that.flowParams.issignplushandleA = result.issignplushandleA // 按钮事件中用
+                }
               }
             })
             _that.getDingUserInfo(flowdata.PERNR_)

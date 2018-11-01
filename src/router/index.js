@@ -124,6 +124,11 @@ const router = new Router({
       meta: {title: '明细'}
     },
     {
+      path: '/flowHtml',
+      component: require('@/views/flow/flowHtml'),
+      meta: {title: '详细信息'}
+    },
+    {
       path: '/flowEdit',
       component: require('@/views/flow/flowEditContent'),
       meta: {title: '填写', ddConfig: true}
@@ -165,6 +170,28 @@ const router = new Router({
       path: '/itops',
       component: require('@/views/ITops/itops'),
       meta: {title: 'IT运维派单申请'}
+    },
+    {
+      path: '/myFlow',
+      name: 'myFlow',
+      component: require('@/views/flow/myFlow'),
+      children: [
+        {
+          path: '/',
+          name: 'myFlowList',
+          component: require('@/views/flow/myFlowList')
+        },
+        {
+          path: 'selected',
+          name: 'selectedFlag',
+          component: require('@/views/flow/selectedFlag')
+        },
+        {
+          path: 'sd',
+          name: 'selectedDate',
+          component: require('@/views/flow/selectedDate')
+        }
+      ]
     }
   ]
 })

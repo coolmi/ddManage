@@ -73,6 +73,18 @@
         <!--<x-textarea class="weui-cells" :title="subC.title" :value="subC.nvalue || subC.value"-->
         <!--v-if="subC.nvalue || subC.value"></x-textarea>-->
       </template>
+      <template v-else-if="subC.component === 'html'">
+        <flow-child-card
+          :title="subC.title"
+          value-align="left"
+          is-link
+          v-show="subC.component !== 'hidden' && !subC.hidden && subC.title"
+          :link="{path: '/flowHtml', query: {htmlVal: subC}}"
+        >点击查看详细
+        </flow-child-card>
+        <!--<x-textarea class="weui-cells" :title="subC.title" :value="subC.nvalue || subC.value"-->
+        <!--v-if="subC.nvalue || subC.value"></x-textarea>-->
+      </template>
       <template v-else>
         <!--<acell value-align="left" :title="subC.title" :value="subC.nvalue || subC.value"-->
         <!--v-show="subC.component !== 'hidden'" v-if="flag === 'details'"></acell>-->

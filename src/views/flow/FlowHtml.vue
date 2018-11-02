@@ -1,6 +1,7 @@
 <template>
   <div class="content">
-    <div v-html="htmlVal.value"></div>
+    <div v-if="htmlVal.value !== undefined" v-html="htmlVal.value"></div>
+    <div v-else>暂无信息</div>
   </div>
 </template>
 

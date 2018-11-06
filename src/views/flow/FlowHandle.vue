@@ -390,7 +390,7 @@
         api.getAuthor(flowParams, function (authorRes) {
           // 按钮处理
           let buttonData = authorRes.data;
-          if (buttonData.result) {
+          if (buttonData.newflow) {
             if (buttonData.taskAuth) {
               let result = FBtnUtils.setNewFlowButton(buttonData.taskAuth);
               _that.buttonArr = result.btnArr;

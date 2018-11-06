@@ -13,6 +13,7 @@
     <!--<swiper-item v-for="(item, index) in dblist" :key="index">-->
     <div class="tab-swiper vux-center" ref="list">
       <group gutter="0" label-width="18rem" v-if="(flowType === 0 || flowType === '0') && dbList.length > 0">
+        <cell link="/myFlow">123</cell>
         <!--待办 | getDateDiff-->
         <cell v-for="(item, index) in dbList" :key="index"
               v-if="(item.ishidden === '0' || item.ISHIDDEN === 0) && dbList.length > 0"

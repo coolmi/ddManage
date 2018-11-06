@@ -3,12 +3,17 @@
     <group gutter='0'>
       <selector title='审批意见' placeholder='选择审批意见' :options='ideaList' v-model='checkidea'></selector>
       <x-textarea :max='200' :height='200' placeholder='请输入审批意见' v-model='idea'></x-textarea>
-      <cell @click.native="checkPer" title="选择人员(必选)" is-link
-            v-if="(btype === 'jq' || btype === 'zb') && userInfo.length <= 0"></cell>
+      <template v-if="(btype === 'jq' || btype === 'zb' || btype === 'cy' || btype === 'hq') && userInfo.length <= 0">
+        <cell @click.native="checkPer()" title="选择人员" is-link></cell>
+      </template>
       <cell v-for="u in userInfo" :key="u.emplId" :title="u.name" is-link @click.native="checkPer"
             v-if="userInfo.length > 0">
         <!--<img :src="u.avatar" v-if="u.avatar" slot="icon" width="30" class="userAvatar">-->
       </cell>
+    </group>
+    <group title="选择一个退回环节" v-if="btnHandleBackJumpList.length > 0">
+      <radio :options="btnHandleBackJumpList" v-model="btnHandleBackJumpTask">
+      </radio>
     </group>
     <box gap="10px 10px">
       <x-button plain type="primary" @click.native="commitFlow" :disabled="disButton">提交</x-button>
@@ -23,7 +28,7 @@
   import ding from '@/lib/ding'
   import api from 'api'
   import whole from '@/lib/whole'
-  import {XTextarea, Group, Selector, Cell, XButton, Box} from 'vux'
+  import {XTextarea, Group, Selector, Cell, XButton, Box, Radio} from 'vux'
 
   export default {
     components: {
@@ -32,10 +37,13 @@
       Selector,
       Cell,
       XButton,
-      Box
+      Box,
+      Radio
     },
     data() {
       return {
+        btnHandleBackJumpList: [], // 退回前的环节
+        btnHandleBackJumpTask: '', // 选择的退回环节
         flowParams: {}, // 流程信息
         btype: '', // 按钮类别
         idea: '', // 意见
@@ -52,7 +60,7 @@
     },
     watch: {
       checkidea: function (val) {
-        this.idea = val === '同意' ? val : ''
+        this.idea = val === '同意' ? val : (val === '拒绝' ? val : '')
       }
     },
     created() {
@@ -64,8 +72,11 @@
       if (typeof param === 'string') {
         param = JSON.parse(param);
       }
-      this.flowParams = param
       this.btype = this.$route.query.btype;
+      this.flowParams = param
+      if (this.btype === 'th' && param.btnHandleBackJump) { // 驳回选环节
+        this.getBtnHandleBackJumpInfo()
+      }
       if (this.btype === 'tj' || this.btype === 'zb' || this.btype === 'jq') {
         this.checkidea = '同意'
       } else if (this.btype === 'th') {
@@ -74,6 +85,21 @@
       this.flag = this.$route.query.flag;
     },
     methods: {
+      getBtnHandleBackJumpInfo() {
+        let _that = this;
+        api.nextAssignTaskList(_that.flowParams, function (res) {
+          if (res.data.msg === 'success') {
+            let result = []
+            for (let l of res.data.resultList) {
+              let a = {};
+              a.key = l.taskDefinitionKey
+              a.value = l.taskname + '-' + l.username
+              result.push(a)
+            }
+            _that.btnHandleBackJumpList = result;
+          }
+        })
+      },
       // 选择人员
       checkPer() {
         let pickedUsers = [];
@@ -81,10 +107,11 @@
           pickedUsers.push(u.emplId);
         }
         let _that = this;
-//        let num = 1;
         let dd = window.dd;
-        let num = (_that.btype === 'jq') ? 1000 : 1
-        let limitTips = (_that.btype === 'jq') ? '请选择加签人员' : '请选择一位转办人员'
+        let num = (_that.btype === 'hy' || _that.btype === 'zb') ? 1 : 10000
+        let limitTips = '请选择人员'
+//        let num = (_that.btype === 'jq' || _that.btype === 'tj') ? 1000 : 1
+//        let limitTips = (_that.btype === 'jq') ? '请选择加签人员' : '请选择一位人员'
         dd.ready(function () {
           dd.biz.contact.complexPicker({
             title: '选择人员',
@@ -209,6 +236,7 @@
             _that.disButton = false;
             return;
           }
+          dataStr.btnHandleBackJumpTask = this.btnHandleBackJumpTask;
           dataStr.ctype = 'adujst';
           dataStr.isagree = false;
           dataStr.comment = _that.idea;
@@ -236,6 +264,45 @@
           }
           dataStr.delegatemsg = _that.idea || '同意';
           _that.goJQandZb(dataStr);
+        } else if (_that.btype === 'cy') { // 传阅
+          dataStr.taskid = flowParams.TASK_ID_;
+          if (_that.userInfo.length <= 0) {
+            whole.showTop('请选择人员');
+            _that.disButton = false;
+            return;
+          }
+          dataStr.delegatemsg = _that.idea || '传阅';
+          _that.goCY(dataStr);
+        } else if (_that.btype === 'hq') { // 会签
+          dataStr.taskid = flowParams.TASK_ID_;
+          if (_that.userInfo.length <= 0) {
+            whole.showTop('请选择人员');
+            _that.disButton = false;
+            return;
+          }
+          dataStr.delegatemsg = _that.idea || '会签';
+          _that.goHq(dataStr);
+        } else if (_that.btype === 'zf') { // 作废
+          let confirmConfig = {
+            message: '确认作废此流程？',
+            title: '提示',
+            buttonLabels: ['确定', '取消'],
+            onSuccess: function (result) {
+              if (result.buttonIndex === 0) {
+                dataStr.taskid = flowParams.TASK_ID_;
+                if (_that.userInfo.length <= 0) {
+                  whole.showTop('请选择人员');
+                  return;
+                }
+                dataStr.delegatemsg = _that.idea || '作废';
+                _that.goHq(dataStr);
+              }
+            },
+            onFail: function (err) {
+            }
+          }
+          _that.disButton = false;
+          ding.confirm(confirmConfig)
         }
       },
       // 加签和转办
@@ -283,6 +350,70 @@
         })
         _that.disButton = false;
       },
+      // 传阅
+      goCY(dataStr) {
+        let _that = this;
+        let params = {}
+        if (this.userInfo.length > 0) {
+          let aa = [];
+          for (let u of this.userInfo) {
+            aa.push(u.emplId);
+          }
+          params.ddid = aa;
+        }
+        api.getMPostidByDdid(params, function (res) {
+          _that.disButton = false;
+          if (res.data.data && res.data.data.error !== undefined) {
+            whole.showTop('无法获取此人的岗位，请联系HR人员');
+            return;
+          }
+          let beAsigners = res.data.data.postids
+          dataStr.beAsigners = beAsigners
+          api.goCY(dataStr, function (res) {
+            if (res.data.code) {
+              whole.showTop('传阅完成');
+              setTimeout(function () {
+                _that.$router.go(-2);
+              })
+            } else {
+              whole.showTop('提交失败，请重试~');
+            }
+          })
+        })
+        _that.disButton = false;
+      },
+      // 会签
+      goHq(dataStr) {
+        let _that = this;
+        let params = {}
+        if (this.userInfo.length > 0) {
+          let aa = [];
+          for (let u of this.userInfo) {
+            aa.push(u.emplId);
+          }
+          params.ddid = aa;
+        }
+        api.getMPostidByDdid(params, function (res) {
+          _that.disButton = false;
+          if (res.data.data && res.data.data.error !== undefined) {
+            whole.showTop('无法获取此人的岗位，请联系HR人员');
+            return;
+          }
+          let beAsigners = res.data.data.postids
+          dataStr.beAsigners = beAsigners
+          api.goHq(dataStr, function (res) {
+            if (res.data.code) {
+              whole.showTop('会签完成');
+              setTimeout(function () {
+                _that.$router.go(-2);
+              })
+            } else {
+              whole.showTop('提交失败，请重试~');
+            }
+          })
+        })
+        _that.disButton = false;
+      },
       // 下一步
       goNextAssigne(dataStr, selectPerson_, isjiaqian_) {
         let _that = this;
@@ -299,6 +430,7 @@
           if (data.error || data.err) {
             let errorstr = data.error || data.err;
             ding.alertInfo(errorstr);
+            return;
           } else {
             let isend = false;
             if (data.isEnd) {
@@ -308,7 +440,8 @@
             }
             let alertstr = data.msg || data.message;
             if (alertstr) {
-              if ((selectPerson_.selectAble && !selectPerson_.beforPop) && _that.btype === 'tj' && (isend !== 'true' || isend === true || isjiaqian_)) {
+              if (((selectPerson_.selectAble && !selectPerson_.beforPop) && _that.btype === 'tj' && (isend !== 'true' || isend === true || isjiaqian_)) || (data.canChooseApprover && data.canChooseMultiApprover)) {
+                let maxUsers = data.canChooseMultiApprover ? 100 : 1
                 let confirmConfig = {
                   message: alertstr,
                   title: '提示',
@@ -323,7 +456,7 @@
                           corpId: ding.getItemInLocation().corpId || ding.CORPID,
                           multiple: true,
                           limitTips: '请选择相关人员',
-                          maxUsers: 1,
+                          maxUsers: maxUsers,
                           pickedUsers: pickedUsers,
                           appId: 126759727,
                           permissionType: 'GLOBAL',

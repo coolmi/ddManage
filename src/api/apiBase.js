@@ -30,6 +30,7 @@ let APILIST = {
 
   // 下一环节 donextsub.jsp
   nextassigne_url: '/authapi/common/V1/nextAssigne',
+  nextassignetasklist_url: '/authapi/common/V1/nextAssignTaskList',
   // 确定 docommitesub.jsp
   commite_url: '/authapi/common/V1/commite',
 
@@ -43,6 +44,8 @@ let APILIST = {
   // 加签 转办 dosignplus_and_delegate.jsp
   signplus_url: '/authapi/common/V1/commiteSignPlus',
   delegate_url: '/authapi/common/V1/commiteDelegate',
+  cy_url: '/authapi/common/V1/jsoncirculate',
+  hq_url: '/authapi/common/V1/jsoncirculate',
   // 已结束详情
   yjs_info_url: '/authapi/forexmobi/V1/viewDetailForm',
   // 获取用户头像 .jsp

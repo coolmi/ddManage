@@ -27,7 +27,7 @@ axios.interceptors.request.use((config) => {
 axios.interceptors.response.use((res) => {
   whole.leave()
   if (res.data.code) {
-    if (res.data.code === '200') {
+    if (res.data.code === '200' || res.data.code === 200) {
       res.data.code = true;
     } else if (res.data.code === '401') {
       window.alert('授权失败')

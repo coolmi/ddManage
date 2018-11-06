@@ -394,6 +394,7 @@
             if (buttonData.taskAuth) {
               let result = FBtnUtils.setNewFlowButton(buttonData.taskAuth);
               _that.buttonArr = result.btnArr;
+              _that.flowParams.btnHandleBackJump = result.btnHandleBackJump; // 按钮事件中用
               _that.flowParams.isjiaqian_ = !!result.isjiaqian // 按钮事件中用
               _that.flowParams.issignningA_ = result.issignningA // 按钮事件中用
               _that.flowParams.issignplushandleA = result.issignplushandleA // 按钮事件中用
@@ -420,6 +421,7 @@
           }
           let flowdata = FDUtils.getFlowData(data); // 流程数据再处理
           _that.fileUrls = flowdata.fileUrls;  // 增加fileUrls 获取
+          _that.flowParams.taskDefinitionKey_ = flowdata.taskDefinitionKey // 按钮事件中用
           _that.flowParams.ID_ = flowdata.ID_ // 按钮事件中用
           _that.$store.dispatch('getEditFields', flowdata.EDITARR_)
 //          _that.flowParams.EDITARR_ = flowdata.EDITARR_ // 按钮事件中用 补填的字段 把补填字段放入状态管理中
@@ -440,23 +442,20 @@
             }
             api.getAuthor(flowParams, function (authorRes) {
               // 按钮处理
-              let buttonData = authorRes.data;
-              if (buttonData.result) {
-                if (buttonData.taskAuth) {
-                  let result = FBtnUtils.setNewFlowButton(buttonData.taskAuth);
-                  _that.buttonArr = result.btnArr;
-                  _that.flowParams.isjiaqian_ = !!result.isjiaqian // 按钮事件中用
-                  _that.flowParams.issignningA_ = result.issignningA // 按钮事件中用
-                  _that.flowParams.issignplushandleA = result.issignplushandleA // 按钮事件中用
-                }
+              let buttonData = authorRes.data.taskAuth;
+              if (buttonData.newflow) {
+                let result = FBtnUtils.setNewFlowButton(buttonData);
+                _that.buttonArr = result.btnArr;
+                _that.flowParams.btnHandleBackJump = result.btnHandleBackJump; // 按钮事件中用
+                _that.flowParams.isjiaqian_ = !!result.isjiaqian // 按钮事件中用
+                _that.flowParams.issignningA_ = result.issignningA // 按钮事件中用
+                _that.flowParams.issignplushandleA = result.issignplushandleA // 按钮事件中用
               } else {
-                if (buttonData.taskAuth) {
-                  let result = FBtnUtils.setFlowButton(buttonData.taskAuth);
-                  _that.buttonArr = result.btnArr;
-                  _that.flowParams.isjiaqian_ = !!result.isjiaqian // 按钮事件中用
-                  _that.flowParams.issignningA_ = result.issignningA // 按钮事件中用
-                  _that.flowParams.issignplushandleA = result.issignplushandleA // 按钮事件中用
-                }
+                let result = FBtnUtils.setFlowButton(buttonData);
+                _that.buttonArr = result.btnArr;
+                _that.flowParams.isjiaqian_ = !!result.isjiaqian // 按钮事件中用
+                _that.flowParams.issignningA_ = result.issignningA // 按钮事件中用
+                _that.flowParams.issignplushandleA = result.issignplushandleA // 按钮事件中用
               }
             })
             _that.getDingUserInfo(flowdata.PERNR_)

@@ -158,6 +158,19 @@ export default {
     })
   },
   /**
+   * 下一步
+   * @param parmas
+   * @param cb
+   */
+  nextAssignTaskList: function (parmas, cb) {
+    axios.post(APILIST.nextassignetasklist_url, parmas)
+      .then((res) => {
+        cb(res);
+      }).catch((error) => {
+      return Promise.reject(error)
+    })
+  },
+  /**
    * 提交
    * @param parmas
    * @param cb
@@ -278,6 +291,28 @@ export default {
    */
   goDelegate: function (params, cb) {
     axios.post(APILIST.delegate_url, params)
+      .then((res) => {
+        cb(res);
+      }).catch((error) => {
+      return Promise.reject(error)
+    })
+  },
+  /**
+   * 传阅
+   */
+  goCY: function (params, cb) {
+    axios.post(APILIST.cy_url, params)
+      .then((res) => {
+        cb(res);
+      }).catch((error) => {
+      return Promise.reject(error)
+    })
+  },
+  /**
+   * 会签
+   */
+  goHq: function (params, cb) {
+    axios.post(APILIST.hq_url, params)
       .then((res) => {
         cb(res);
       }).catch((error) => {

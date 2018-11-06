@@ -1,8 +1,11 @@
 <template>
   <div class="flow_footer flow_footer_padding vux-1px-t animated slideInUp">
     <flexbox>
-      <flexbox-item v-for="(btype, index) in buttonArr" :key="btype" style="margin-left: 0">
+      <flexbox-item v-for="(btype, index) in buttonArr" v-if="index < moreButtonNum" :key="btype" style="margin-left: 0">
         <div class="flow_button" @click="clickButton(btype)">{{fbname.buttonName[btype]}}</div>
+      </flexbox-item>
+      <flexbox-item v-if="buttonArr.length > moreButtonNum" style="margin-left: 0">
+        <div class="flow_button" @click="clickMoreButton(buttonArr)">更多</div>
       </flexbox-item>
     </flexbox>
   </div>
@@ -40,6 +43,7 @@
     },
     data() {
       return {
+        moreButtonNum: 4,
         fbname: {}
       }
     },
@@ -84,6 +88,28 @@
           })
         }
 //        this.$emit('on-fb-click')
+      },
+      clickMoreButton(buttonArr) {
+        let otherButtons = []
+        for (let btnIndex in buttonArr) {
+          if (btnIndex >= this.moreButtonNum) {
+            otherButtons.push(fbname.buttonName[buttonArr[btnIndex]])
+          }
+        }
+        let dd = window.dd;
+        let _that = this;
+        dd.device.notification.actionSheet({
+          title: '更多操作',
+          cancelButton: '取消',
+          otherButtons: otherButtons,
+          onSuccess: function(result) {
+            if (result.buttonIndex !== -1) { // 取消
+              let btype = fbname.buttonKey[otherButtons[result.buttonIndex]]
+              _that.clickButton(btype)
+            }
+          },
+          onFail: function(err) {}
+        })
       }
     }
   }

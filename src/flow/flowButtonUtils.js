@@ -100,6 +100,26 @@ export function setFlowButton(taskAuth) {
     return result;
   }
 }
+// {
+//   "isSuitableOrsign": false,// true非会签 false会签
+//   "isusevoid": false,//作废按钮
+//   "isNew": true,
+//   "btn_handle_back_jump": false,//驳回选环节
+//   "isEnd": false,// 流程是否结束
+//   "ishandlesumit": true,//办理提交按钮
+//   "ishandleback": true,//退回按钮
+//   "isusebackto": false,//任意跳转按钮
+//   "ishandlesave": true,//办理保存按钮
+//   "issignplushandle": false,//当前是否是加签环节
+//   "isAssignee": false,
+//   "isCirculate": true,//传阅按钮
+//   "isOwner": true,
+//   "isCandidate": false,//签收
+//   "issignplus": true,//加签按钮
+//   "isdelegate": true,//转办按钮
+//   "isuseprint": false//打印按钮
+// }
+// is
 // "btn_handle_back_jump": false,////驳回选环节
 //   "isCandidate": false,//签收
 //   "isCirculate": true,//传阅按钮
@@ -138,9 +158,13 @@ export function setNewFlowButton(taskAuth) {
     if (taskAuth.isSuitableOrsign) {
       btnArr.push('hq')
     }
+    if (taskAuth.isCirculate) {
+      btnArr.push('cy')
+    }
     if (taskAuth.isusevoid) {
       btnArr.push('zf')
     }
+    result.btnHandleBackJump = taskAuth.btn_handle_back_jump;
     result.btnArr = btnArr;
     result.issignningA = issignningA;
     result.issignplushandleA = issignplushandleA;

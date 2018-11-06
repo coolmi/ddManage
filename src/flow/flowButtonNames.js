@@ -7,8 +7,19 @@ const buttonName = {
   'bh': '驳回',
   'cy': '传阅',
   'hq': '会签',
-  'zf': '作废',
-  'other': '该流程不在启用状态，请到PC端启用'
+  'zf': '作废'
+}
+
+const buttonKey = {
+  '提交': 'tj',
+  '退回': 'th',
+  '加签': 'jq',
+  '转办': 'zb',
+  '签收': 'qs',
+  '驳回': 'bh',
+  '传阅': 'cy',
+  '会签': 'hq',
+  '作废': 'zf'
 }
 
 const rightButtonName = ['待办任务', '申请中', '已办理', '已结束']
@@ -29,6 +40,7 @@ const flowTile = {
 }
 
 export default {
+  buttonKey,
   buttonName,
   rightButtonName,
   flowType,

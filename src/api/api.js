@@ -320,6 +320,17 @@ export default {
     })
   },
   /**
+   * 会签
+   */
+  goZf: function (params, cb) {
+    axios.post(APILIST.zf_url, params)
+      .then((res) => {
+        cb(res);
+      }).catch((error) => {
+      return Promise.reject(error)
+    })
+  },
+  /**
    * 获取岗位和费用承担公司
    * @param  {Function} cb [返回数据]
    * @return {[type]}      [description]

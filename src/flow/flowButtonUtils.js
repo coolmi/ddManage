@@ -155,9 +155,6 @@ export function setNewFlowButton(taskAuth) {
     if (taskAuth.isCandidate) {
       btnArr.push('qs')
     }
-    if (taskAuth.isSuitableOrsign) {
-      btnArr.push('hq')
-    }
     if (taskAuth.isCirculate) {
       btnArr.push('cy')
     }

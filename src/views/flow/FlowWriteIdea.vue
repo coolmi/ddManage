@@ -289,13 +289,10 @@
             buttonLabels: ['确定', '取消'],
             onSuccess: function (result) {
               if (result.buttonIndex === 0) {
-                dataStr.taskid = flowParams.TASK_ID_;
-                if (_that.userInfo.length <= 0) {
-                  whole.showTop('请选择人员');
-                  return;
-                }
+                dataStr.taskId = flowParams.TASK_ID_;
+                dataStr.businessKey = flowParams.id;
                 dataStr.delegatemsg = _that.idea || '作废';
-                _that.goHq(dataStr);
+                _that.goZf(dataStr);
               }
             },
             onFail: function (err) {
@@ -411,6 +408,21 @@
               whole.showTop('提交失败，请重试~');
             }
           })
+        })
+        _that.disButton = false;
+      },
+      // 作废
+      goZf(dataStr) {
+        let _that = this;
+        api.goZf(dataStr, function (res) {
+          if (res.data.code) {
+            whole.showTop('作废成功');
+            setTimeout(function () {
+              _that.$router.go(-2);
+            })
+          } else {
+            whole.showTop('提交失败，请重试~');
+          }
         })
         _that.disButton = false;
       },

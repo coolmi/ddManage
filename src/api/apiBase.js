@@ -45,7 +45,8 @@ let APILIST = {
   signplus_url: '/authapi/common/V1/commiteSignPlus',
   delegate_url: '/authapi/common/V1/commiteDelegate',
   cy_url: '/authapi/common/V1/jsoncirculate',
-  hq_url: '/authapi/common/V1/jsoncirculate',
+  hq_url: '/authapi/common/V1/jsonvoidhq',
+  zf_url: '/authapi/common/V1/jsonvoidinstance',
   // 已结束详情
   yjs_info_url: '/authapi/forexmobi/V1/viewDetailForm',
   // 获取用户头像 .jsp

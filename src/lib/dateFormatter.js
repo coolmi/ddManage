@@ -1,5 +1,8 @@
 export function fmtDate(date, fmt = 'yyyy-MM-dd') {
   if (date) {
+    if (date.toString().indexOf('-') !== -1 || date.toString().indexOf('/') !== -1) {
+      return date;
+    }
     date = new Date(parseInt(date));
     var o = {
       'M+': date.getMonth() + 1, // 月份

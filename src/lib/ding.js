@@ -31,6 +31,8 @@ const GMK_CXN = '1962122737810613'  //  晓楠 ddid
 const GMK_XCM = '131509693424719696'  //  徐长孟 ddid
 const GMK_ZYM = '154262480124247593'  //  张月民 ddid
 const GMK_LHH = '045643174726213386'  //  李恒虎 ddid
+const GMK_YF = '47412324667285'  //  俞芳 ddid
+const GMK_GZC = '052936314036407067'  //  郭宗春 ddid
 const W3_CONCAT_DDID = '095117221320233106' // 明月的ddid
 const W3_YUNWEI_DDID = '131164676026354846' // 炳冉的ddid
 const JH_CONCAT_DDID = 'manager9648' // 京华世家任小冰的ddid
@@ -223,6 +225,8 @@ export default {
   GMK_ZYM,  // 月民
   GMK_LZH,    // 刘占华
   GMK_LHH,   // 李恒虎
+  GMK_YF,   // 俞芳
+  GMK_GZC,   // 郭宗春
   W3_CONCAT_DDID,  //  明月
   W3_YUNWEI_DDID, //  炳冉
   JH_CONCAT_DDID,

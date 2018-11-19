@@ -290,7 +290,7 @@
             onSuccess: function (result) {
               if (result.buttonIndex === 0) {
                 dataStr.taskId = flowParams.TASK_ID_;
-                dataStr.businessKey = flowParams.ID;
+                dataStr.businessKey = flowParams.ID_;
                 dataStr.delegatemsg = _that.idea || '作废';
                 _that.goZf(dataStr);
               }
